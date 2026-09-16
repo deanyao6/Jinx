@@ -14,6 +14,15 @@ A passport for sports fans: every game you attend becomes part of a living recor
 
 ## Where things stand (2026-09-16)
 
+**The presentation-layer rebuild has started.** `OVERNIGHT.md` is the log. The design
+system is ported (tokens, 19 static Archivo instances, 36 generated icons, 7 stadium
+shapes, 65 team palettes, a `TeamTheme` provider), the visual parity harness works
+(`npm run parity`), and Passport is the first screen rebuilt, at a 4.10% mean mismatch
+against `design/reference.html`. Every other screen in the reference is still to do.
+The new design system lives under `src/theme/reference/` and `src/components/reference/`;
+the old placeholder `src/theme/tokens.ts` still serves the screens not yet rebuilt.
+
+
 All ten milestones in SPEC.md Section 12 are implemented. Per-milestone detail and every decision
 that refines the spec are in [docs/progress.md](docs/progress.md). Read that before assuming
 anything is unbuilt.
@@ -79,6 +88,11 @@ npx supabase db reset       # apply migrations + seed (wipes local data: rerun i
 npx supabase migration up --local   # apply new migrations without wiping data
 npm run db:test             # pgTAP tests against the local database
 npm run db:types            # regenerate apps/mobile/src/lib/database.types.ts
+npm run parity              # visual parity: reference shots, app shots, diff, contact sheets
+npm run parity:selftest     # prove the parity harness end to end; measures the safe-area inset
+npm run build:design        # regenerate icons and stadium shapes from design/reference.html
+npm run fonts               # regenerate the static Archivo instances (fontTools)
+npm run seed:colors:check   # validate the 65 team palettes and their contrast
 npm run functions:test      # Deno tests for Edge Functions (syncs packages/core into _shared first)
 npm run functions:check     # Deno typecheck of every Edge Function
 python3 seed/scripts/build_seed_sql.py   # regenerate supabase/seed.sql from seed/*.json
