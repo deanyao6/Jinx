@@ -33,3 +33,7 @@ ingest/data/
 __pycache__/
 .venv/
 supabase/functions/_shared/core/
+
+# Visual parity harness output: reference shots, app shots, diffs and contact sheets.
+# Regenerated on every run and large (PNGs at device pixel ratio 3), so never committed.
+design/parity/
