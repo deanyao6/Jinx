@@ -1,8 +1,25 @@
 /**
- * Theme tokens. Colors, type, and spacing are placeholders per SPEC.md Section 8 and will change;
- * every screen must read from these tokens so restyling stays cheap.
- * Values mirror docs/turnstile-ui.html.
+ * Theme tokens for the screens that have not been rebuilt against `design/reference.html`
+ * yet (SPEC.md M0.5). 46 of them still read from here; the 13 rebuilt ones read
+ * `theme/reference/tokens.ts` directly.
+ *
+ * These used to be the placeholder palette from `docs/turnstile-ui.html`, which is why the
+ * sub screens looked like a different app: navy ink on a grey page, next to the reference's
+ * near-black on white. Every colour below is now DERIVED from the reference's own base
+ * colours rather than eyeballed, so a screen inherits the real design system's palette
+ * without being rewritten. That is a palette fix, not a port: layout, spacing and component
+ * shapes still differ, and each screen still has to move across properly.
+ *
+ * The mapping is one-to-one where the reference has an equivalent, and stated where it does
+ * not. `bg`/`scr`/`card`/`surface`/`ink`/`muted`/`line` carry over exactly.
  */
+import {
+  darkBase,
+  lightBase,
+  radius as referenceRadius,
+  type BaseColors,
+} from './reference/tokens';
+
 export type ColorTokens = {
   page: string;
   screen: string;
@@ -18,39 +35,38 @@ export type ColorTokens = {
   onInk: string;
 };
 
-export const lightColors: ColorTokens = {
-  page: '#DCE2E8',
-  screen: '#F6F7F9',
-  card: '#FFFFFF',
-  ink: '#14213D',
-  muted: '#5B6577',
-  line: '#D3D8E0',
-  red: '#C8102E',
-  blue: '#1F5FA8',
-  green: '#2E7D4F',
-  gold: '#A8740C',
-  tint: '#EAF0F7',
-  onInk: '#F6F7F9',
-};
+/** The reference's own names, for the mapping below. */
+function fromBase(b: BaseColors): ColorTokens {
+  return {
+    page: b.bg,
+    screen: b.scr,
+    card: b.card,
+    ink: b.ink,
+    muted: b.muted,
+    line: b.line,
+    red: b.bad,
+    blue: b.link,
+    green: b.good,
+    gold: b.warn,
+    // `tint` is this system's "slightly recessed fill", which is what `surface` is.
+    tint: b.surface,
+    // `onInk` is text drawn ON an ink-filled surface, so it is the screen colour.
+    onInk: b.scr,
+  };
+}
 
-export const darkColors: ColorTokens = {
-  page: '#0D131B',
-  screen: '#141B25',
-  card: '#1C2532',
-  ink: '#E8ECF2',
-  muted: '#98A2B3',
-  line: '#2A3445',
-  red: '#F0506A',
-  blue: '#6FA6E8',
-  green: '#5FBF86',
-  gold: '#E0AE4A',
-  tint: '#1F2A3A',
-  onInk: '#141B25',
-};
+export const lightColors: ColorTokens = fromBase(lightBase);
+export const darkColors: ColorTokens = fromBase(darkBase);
 
 export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 36 } as const;
 
-export const radius = { sm: 9, md: 12, lg: 18, pill: 999 } as const;
+/** The reference's radii, plus the `lg` these screens use for their larger cards. */
+export const radius = {
+  sm: referenceRadius.sm,
+  md: referenceRadius.md,
+  lg: referenceRadius.tile,
+  pill: referenceRadius.pill,
+} as const;
 
 export const type = {
   display: { fontSize: 64, fontWeight: '900', lineHeight: 60, letterSpacing: -1 },

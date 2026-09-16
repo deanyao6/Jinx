@@ -2,6 +2,7 @@ import { Stack } from 'expo-router';
 import React from 'react';
 
 import { LegacyBackButton } from '@/components/reference/BackHeader';
+import { fontFamily } from '@/theme/fonts';
 import { useTheme } from '@/theme/ThemeProvider';
 
 export default function YouStackLayout() {
@@ -20,7 +21,7 @@ export default function YouStackLayout() {
         headerTintColor: theme.colors.ink,
         headerStyle: { backgroundColor: theme.colors.screen },
         headerShadowVisible: false,
-        headerTitleStyle: { fontWeight: '700' },
+        headerTitleStyle: { fontFamily: fontFamily({ weight: 700 }) },
       }}
     >
       <Stack.Screen name="edit-profile" options={{ title: 'Edit profile' }} />
