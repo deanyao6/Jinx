@@ -10,7 +10,9 @@ import {
   companionLine,
   gameRowFromAttendance,
   listSentence,
+  pickASideFromContext,
   reliveFromGame,
+  storylineSource,
   streakLine,
   supabaseRepository,
   type PassportInputs,
@@ -52,8 +54,8 @@ const stats: StatsPayload = {
 const inputs: PassportInputs = {
   stats,
   teams: new Map([
-    [PHI, { id: PHI, name: 'Philadelphia Phillies', city: 'Philadelphia' }],
-    [PHL, { id: PHL, name: 'Philadelphia Eagles', city: 'Philadelphia' }],
+    [PHI, { id: PHI, name: 'Philadelphia Phillies', city: 'Philadelphia', abbreviation: 'PHI' }],
+    [PHL, { id: PHL, name: 'Philadelphia Eagles', city: 'Philadelphia', abbreviation: 'PHI' }],
   ]),
   shapes: new Map(),
   lastGame: 'Last Game: PHI 4 – 2 NYM',
@@ -245,8 +247,8 @@ describe('Games history mapping', () => {
   };
 
   const teamRefs = new Map([
-    [PHI, { id: PHI, name: 'Philadelphia Phillies', city: 'Philadelphia' }],
-    ['nym-id', { id: 'nym-id', name: 'New York Mets', city: 'New York' }],
+    [PHI, { id: PHI, name: 'Philadelphia Phillies', city: 'Philadelphia', abbreviation: 'PHI' }],
+    ['nym-id', { id: 'nym-id', name: 'New York Mets', city: 'New York', abbreviation: 'NYM' }],
   ]);
 
   it('writes the matchup away team first, as the reference does', () => {
@@ -303,5 +305,66 @@ describe('Games history mapping', () => {
     expect(
       gameRowFromAttendance({ ...base, game: { ...base.game, home: null } }, shapes, teamRefs),
     ).toBeNull();
+  });
+});
+
+describe('Pick a side mapping', () => {
+  const teamRefs = new Map([
+    ['nym-id', { id: 'nym-id', name: 'New York Mets', city: 'New York', abbreviation: 'NYM' }],
+    ['sd-id', { id: 'sd-id', name: 'San Diego Padres', city: 'San Diego', abbreviation: 'SD' }],
+  ]);
+
+  const ctx = {
+    sport_id: 'mlb',
+    venue: { name: 'Petco Park' },
+    away: { team_id: 'nym-id', name: 'New York Mets', win_prob: 0.58 },
+    home: { team_id: 'sd-id', name: 'San Diego Padres', win_prob: 0.42 },
+    pledge: null,
+  };
+
+  it('builds both sides from the game context', () => {
+    const p = pickASideFromContext(ctx, teamRefs, [], '12:34');
+    expect(p.venue).toBe('At Petco Park');
+    expect(p.lockCountdown).toBe('12:34');
+    expect(p.away.badge).toBe('NYM');
+    expect(p.away.name).toBe('Mets');
+    expect(p.away.button).toBe('Root for NYM Mets');
+    expect(p.home.winProb).toBe(0.42);
+  });
+
+  it('says something rather than nothing when the venue is unknown', () => {
+    expect(
+      pickASideFromContext({ ...ctx, venue: { name: null } }, teamRefs, [], '0:00').venue,
+    ).toBe('At the game');
+  });
+
+  it('falls back to even odds rather than rendering a broken bar', () => {
+    const noProb = { ...ctx, away: { ...ctx.away, win_prob: null } };
+    expect(pickASideFromContext(noProb, teamRefs, [], '1:00').away.winProb).toBe(0.5);
+  });
+
+  it('labels storyline sources the way the reference does', () => {
+    expect(storylineSource('results')).toBe('FROM RESULTS');
+    expect(storylineSource('probable_starter')).toBe('PROBABLE STARTERS');
+    expect(storylineSource('injury_report')).toBe('OFFICIAL INJURY REPORT');
+    // An unknown source is still shown rather than dropped.
+    expect(storylineSource('something_new')).toBe('SOMETHING NEW');
+  });
+
+  it('shows no storylines rather than placeholder ones when there are none', () => {
+    // Storyline generation is blocked on the Anthropic key, so this is the real state.
+    expect(pickASideFromContext(ctx, teamRefs, [], '1:00').storylines).toEqual([]);
+  });
+
+  it('carries storylines through with their labels', () => {
+    const p = pickASideFromContext(
+      ctx,
+      teamRefs,
+      [{ team_id: 'nym-id', text: 'Mets have won four straight.', source: 'results' }],
+      '1:00',
+    );
+    expect(p.storylines).toEqual([
+      { text: 'Mets have won four straight.', source: 'FROM RESULTS' },
+    ]);
   });
 });

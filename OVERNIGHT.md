@@ -563,6 +563,32 @@ which are `as const`, so `TeamPill.count` was typed `'48' | '17' | '8'` — a ty
 demo implementation could ever satisfy. A contract shaped by one of its implementations is
 not a contract. They are declared properly now.
 
+## Pick a side (M5), and a flaw in my own interface
+
+The mapping from the `game_context` RPC is written and tested: both sides with their
+badges, nicknames and win probabilities, the venue line, the lock countdown, and the
+storyline cards with their source labels. Storyline *generation* stays blocked on the
+Anthropic key, but reading the table is not, and an empty list renders as no cards rather
+than placeholder ones.
+
+**It is not wired, and that is the finding.** The repository serves the *current user's
+aggregate* data — their records, their stamps, their games. `pickASide()` and `relive()`
+do not fit that shape: they need a game id, and a synchronous method cannot serve one
+unless that game is already loaded into the implementation. Putting them on the repository
+was my mistake earlier tonight.
+
+They belong on per-game hooks instead — `useGameContext(gameId)` already exists, and I
+added `useGameStorySteps(gameId)` and `useGameWinProbability(gameId)` for Relive. What is
+left is moving those two screens onto the hooks directly and taking the methods off the
+interface. Until then both stay on fixtures, and neither appears in `SUPABASE_BACKED`, so
+nothing claims to be real that is not.
+
+Two data gaps found while mapping, both left empty rather than invented:
+
+- The season record under each team badge (`68–54` in the reference) is not in the game
+  context and there is no standings query.
+- The superlative context chips, as noted above.
+
 ### One open design question, for you
 
 The reference's tab bar has `padding-bottom: 20px`, which is its stand-in for the home

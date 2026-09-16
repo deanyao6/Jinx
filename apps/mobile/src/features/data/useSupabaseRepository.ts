@@ -28,7 +28,12 @@ export function useSupabaseRepository(): { repository: Repository; ready: boolea
 
     const teamRefs = new Map<string, TeamRef>();
     for (const team of teams.data ?? []) {
-      teamRefs.set(team.id, { id: team.id, name: team.name, city: team.city });
+      teamRefs.set(team.id, {
+        id: team.id,
+        name: team.name,
+        city: team.city,
+        abbreviation: team.abbreviation,
+      });
     }
 
     const shapeMap = new Map<string, ShapeKey>();

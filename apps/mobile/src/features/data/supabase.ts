@@ -24,10 +24,14 @@ import type { Repository } from './types';
 /**
  * The Supabase-backed repository (SPEC.md 8.9), built up milestone by milestone.
  *
- * **Only the Passport methods are real so far.** Passport's records are M3; Games is M2,
- * imports M4, Relive M8.5. Everything else still returns the demo fixtures, and
- * {@link SUPABASE_BACKED} says which is which so that state is legible rather than hidden
- * behind a screen that looks like it is showing your data and is not.
+ * {@link SUPABASE_BACKED} names exactly which methods are real. Everything else still
+ * returns demo fixtures, so that state is legible rather than hidden behind a screen that
+ * looks like it is showing your data and is not.
+ *
+ * The per-game mappings in this file — {@link pickASideFromContext} and
+ * {@link reliveFromGame} — are written and tested but deliberately NOT in that set. They
+ * need a game id, and this repository only holds the current user's aggregate data, so a
+ * synchronous method here cannot serve them. See the note on the Repository type.
  */
 export const SUPABASE_BACKED: ReadonlySet<keyof Repository> = new Set([
   'passportPills',
@@ -60,7 +64,7 @@ export function streakLine(current: number): string {
   return `${current > 0 ? '+' : '-'}${n} game ${kind} streak`;
 }
 
-export type TeamRef = { id: string; name: string; city: string | null };
+export type TeamRef = { id: string; name: string; city: string | null; abbreviation: string };
 
 /**
  * The hero's Last Game row: `Last Game: PHI 4 – 2 NYM`.
@@ -332,6 +336,71 @@ export function companionLine(names: readonly string[], shown = 2): string {
   const visible = names.slice(0, shown);
   const extra = names.length - visible.length;
   return `w/ ${visible.join(', ')}${extra > 0 ? ` +${extra}` : ''}`;
+}
+
+/**
+ * Pick a side (SPEC.md 8.8.3, 6.4), from the `game_context` RPC the check-in flow already
+ * uses. The countdown is formatted by the caller so it can tick.
+ */
+export type PickASideContext = {
+  sport_id: string;
+  venue: { name: string | null };
+  home: { team_id: string; name: string; win_prob: number | null };
+  away: { team_id: string; name: string; win_prob: number | null };
+  pledge: { team_id: string } | null;
+};
+
+export type StorylineRow = { team_id: string; text: string; source: string };
+
+/** The source label under a storyline card, as the reference writes them. */
+export function storylineSource(source: string): string {
+  switch (source) {
+    case 'results':
+      return 'FROM RESULTS';
+    case 'injury_report':
+      return 'OFFICIAL INJURY REPORT';
+    case 'probable_starter':
+      return 'PROBABLE STARTERS';
+    default:
+      return source.replace(/_/g, ' ').toUpperCase();
+  }
+}
+
+export function pickASideFromContext(
+  ctx: PickASideContext,
+  teams: ReadonlyMap<string, TeamRef>,
+  storylines: readonly StorylineRow[],
+  countdown: string,
+) {
+  const side = (team: PickASideContext['home']) => {
+    const ref = teams.get(team.team_id);
+    const short = nickname(team.name, ref?.city);
+    return {
+      team: team.team_id,
+      badge: ref?.abbreviation ?? '—',
+      name: short,
+      // The season record shown under each badge is not in the game context and there is
+      // no standings query yet, so it is left empty rather than invented. See
+      // OVERNIGHT.md.
+      record: '',
+      winProb: team.win_prob ?? 0.5,
+      button: `Root for ${ref?.abbreviation ?? ''} ${short}`.trim(),
+    };
+  };
+
+  return {
+    venue: ctx.venue.name ? `At ${ctx.venue.name}` : 'At the game',
+    lockCountdown: countdown,
+    title: 'Pick a side',
+    explainer:
+      "You don't follow either team. Pick who you're rooting for. It counts toward your neutral record.",
+    away: side(ctx.away),
+    home: side(ctx.home),
+    storylines: storylines.map((row) => ({
+      text: row.text,
+      source: storylineSource(row.source),
+    })),
+  };
 }
 
 export type ReliveGame = {
