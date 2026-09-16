@@ -89,9 +89,11 @@ function isolate(nth, width, height) {
     if (!shot.contains(phone)) shot.style.display = 'none';
   });
 
-  // The fake status row is presentation only; the app uses the real one.
-  const status = scr.querySelector('.status');
-  if (status) status.remove();
+  // The fake status rows are presentation only; the app uses the real one. There is more
+  // than one: each slide-over panel draws its own, and a panel that is open covers the
+  // screen, so removing only the first left a 28pt band in every panel shot and offset
+  // the whole comparison.
+  scr.querySelectorAll('.status').forEach((el) => el.remove());
 
   // Unwrap the frame: no bezel, no padding, no corner radius, at the device size.
   // The screen keeps every other CSS rule, so the layout reflows the way the CSS

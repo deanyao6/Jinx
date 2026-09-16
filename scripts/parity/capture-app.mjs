@@ -158,11 +158,31 @@ async function main() {
           continue;
         }
 
-        // Take the real shot after a settle, so the marker check does not race a
-        // screen that is still laying out.
-        await sleep(SETTLE_MS);
-        await screenshot(udid, raw);
-        png = await readPng(raw);
+        // Require two identical consecutive frames before accepting the shot.
+        //
+        // The marker proves WHICH screen rendered, not that it has finished rendering or
+        // that nothing is drawn over it. A Metro "Refreshing..." banner caught mid-reload
+        // pushed a whole screen down by 5pt and scored it at 8.62% instead of ~5%, which
+        // looks exactly like a layout bug. Anything transient - that banner, a fade, a
+        // late image - differs between two frames, so this rejects it.
+        let stable = false;
+        for (let attempt = 0; attempt < 6 && !stable; attempt++) {
+          await sleep(SETTLE_MS);
+          await screenshot(udid, raw);
+          const first = await readPng(raw);
+          await sleep(SETTLE_MS);
+          await screenshot(udid, raw);
+          png = await readPng(raw);
+          stable =
+            createHash('sha1').update(first.data).digest('hex') ===
+            createHash('sha1').update(png.data).digest('hex');
+        }
+        if (!stable) {
+          missing.push(
+            `${screen.id}.${theme} (never settled: the screen kept changing between frames)`,
+          );
+          continue;
+        }
 
         if (png.width !== DEVICE.width * DEVICE.scale) {
           console.error(

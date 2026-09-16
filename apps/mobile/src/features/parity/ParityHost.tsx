@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
 
+import { GameLogPanel } from '@/features/passport/reference/GameLogPanel';
 import { PassportScreen } from '@/features/passport/reference/PassportScreen';
 
 import { ParityMarker } from './ParityMarker';
@@ -27,6 +28,10 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   'passport-all': () => <PassportScreen initialPill="all" />,
   'passport-phi': () => <PassportScreen initialPill="phi" />,
   'passport-phl': () => <PassportScreen initialPill="phl" />,
+  // The record cards that open these carry the record and the label, so the panel is
+  // given the same values the reference passes from `data-rec` and `data-name`.
+  'passport-log-phillies': () => <GameLogPanel log="phi" title="Phillies" record="12 – 5" />,
+  'passport-log-neutral': () => <GameLogPanel log="neutral" title="As a neutral" record="10 – 9" />,
 };
 
 function SelfTest() {

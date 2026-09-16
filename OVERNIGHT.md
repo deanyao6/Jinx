@@ -199,7 +199,8 @@ in the repo.
 | Passport, All teams | **4.17%** | **3.55%** |
 | Passport, Phillies pill | **3.89%** | **3.35%** |
 | Passport, Eagles pill | **3.79%** | **3.20%** |
-| Record game log (Phillies, As a neutral) | not built | not built |
+| Record game log, Phillies | **5.55%** | **5.45%** |
+| Record game log, As a neutral | **5.02%** | **4.95%** |
 | Pick a side, and picked | not built | not built |
 | Games | not built | not built |
 | Relive, pregame and mid-story | not built | not built |
@@ -208,8 +209,30 @@ in the repo.
 | Profile | not built | not built |
 | Friends panel | not built | not built |
 
-Mean across what exists: **3.66%**. All 32 reference shots render; 26 of 32 app shots
-correctly report "not built" rather than being scored against something they are not.
+Mean across what exists: **4.29%** over ten comparisons. All 32 reference shots render;
+22 of 32 app shots correctly report "not built" rather than being scored against something
+they are not.
+
+### The game log slide-over
+
+Ported from `.panel#logPanel`. It is one of the earlier-concept screens, so it uses the
+older classes (`.top`, `.loghead`, `.li`, `.thumb`, `.circ`) exactly as the reference draws
+them, not the `fx-` set.
+
+It started at 13.45% and three bugs took it to 5.24%, two of them in the harness rather
+than the screen:
+
+- **The reference's panel draws its own fake status row**, and `capture-reference` only
+  removed the first one on the screen. Every panel shot therefore carried a 28pt band the
+  app does not have, offsetting the entire comparison. Now every `.status` is removed.
+- **A Metro "Refreshing..." banner** was caught mid-reload in one shot, pushing the screen
+  down 5pt and scoring it at 8.62% instead of 5.02% — which reads exactly like a layout
+  bug. `capture-app` now requires two identical consecutive frames before accepting a
+  shot, so anything transient is rejected rather than measured.
+- In the screen itself, the stadium thumbnails fill part of the shape with `currentColor`,
+  which needs `color` set on the `Svg` and not just `stroke`, and the panel's tab bar takes
+  the screen's neutral theme rather than the record's team colour, because in the reference
+  only `.loghead` carries the team class.
 
 ### What the remaining 4% is
 
