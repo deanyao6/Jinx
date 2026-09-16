@@ -9,6 +9,7 @@ import {
 } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Stack, useRouter, type Href } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, LogBox, useColorScheme, View } from 'react-native';
@@ -22,10 +23,17 @@ import { ParityHost } from '@/features/parity/ParityHost';
 import { useNotificationRuntime } from '@/features/notifications/push';
 import { useProfile } from '@/features/profile/queries';
 import { initSentry, wrapRoot } from '@/lib/sentry';
+import { useJinxFonts } from '@/theme/fonts';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 import { darkColors, lightColors } from '@/theme/tokens';
 
 initSentry();
+
+// Hold the native splash until the Archivo instances are registered (SPEC.md 8.2). Without this
+// the first frame paints in the system font and every heading visibly reflows a moment later.
+// It is released in RootNavigator as soon as the fonts settle, loaded or failed, so a font error
+// can never leave the app stuck on the splash. Rejection only means the splash was already gone.
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 // Simulator only: the build is unsigned (no Apple developer certificate yet), so the app has no
 // keychain entitlement and expo-notifications cannot read its stored registration. Push does not
@@ -112,6 +120,7 @@ function Splash({
 }
 
 function RootNavigator() {
+  const [fontsLoaded, fontError] = useJinxFonts();
   useNotificationRuntime();
   useAuthListener();
   const router = useRouter();
@@ -120,6 +129,13 @@ function RootNavigator() {
   const signOut = useSignOut();
   const pendingRoute = useNavStore((s) => s.pendingRoute);
   const setPendingRoute = useNavStore((s) => s.setPendingRoute);
+
+  // Loaded or failed: either way there is nothing further to wait for.
+  const fontsSettled = fontsLoaded || fontError != null;
+
+  useEffect(() => {
+    if (fontsSettled) void SplashScreen.hideAsync().catch(() => {});
+  }, [fontsSettled]);
 
   const signedIn = status === 'signedIn';
   const onboarded = signedIn && !!profile.data?.onboarded_at;
@@ -132,6 +148,8 @@ function RootNavigator() {
     }
   }, [onboarded, pendingRoute, router, setPendingRoute]);
 
+  // Splash is an ActivityIndicator with no text, so holding here cannot flash unstyled type.
+  if (!fontsSettled) return <Splash />;
   if (status === 'loading') return <Splash />;
   if (signedIn && profile.isError) {
     return <Splash error onRetry={() => profile.refetch()} onSignOut={signOut} />;

@@ -29,7 +29,13 @@
     "parity:app": "node scripts/parity/capture-app.mjs",
     "parity:diff": "node scripts/parity/diff.mjs",
     "parity:inset": "node scripts/parity/measure-inset.mjs",
-    "parity:selftest": "node scripts/parity/selftest.mjs"
+    "parity:selftest": "node scripts/parity/selftest.mjs",
+    "build:icons": "node scripts/design/build-icons.mjs",
+    "build:shapes": "node scripts/design/build-shapes.mjs",
+    "build:design": "npm run build:icons && npm run build:shapes",
+    "fonts": "python3 scripts/fonts/build-archivo.py",
+    "fonts:check": "python3 scripts/fonts/build-archivo.py --check",
+    "seed:colors:check": "python3 seed/scripts/check_team_colors.py"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",

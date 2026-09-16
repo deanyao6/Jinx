@@ -14,8 +14,68 @@ sheet per screen and theme. See "The parity harness" below.
 
 ## CSS features with no native equivalent
 
-*(Filled in as screens are ported. Nothing here yet: the design system port is the next
-piece of work, and an empty list at this stage is accurate rather than convenient.)*
+### `font-variation-settings: "wdth"` -> static Archivo instances
+
+**Done.** The reference loads Archivo as a variable font
+(`fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900`) and styles condensed
+display text with `font-variation-settings:"wdth" N` alongside `font-weight`. React Native has
+no reliable support for variable font axes, so `scripts/fonts/build-archivo.py` pins every
+(width, weight) pair the CSS actually asks for into its own static TTF with fontTools
+`varLib.instancer`. `apps/mobile/src/theme/fonts.ts` registers them with expo-font and
+`apps/mobile/src/app/_layout.tsx` holds the native splash until they are loaded.
+
+The set was derived by reading every CSS rule, every inline `style=` attribute and every SVG
+`font-weight` attribute in `reference.html`. **19 instances, 2,269,128 bytes (2.16 MiB)**,
+about 119 KB each, committed to `apps/mobile/assets/fonts/` along with the 4,388-byte OFL
+licence: 2,273,516 bytes (2.17 MiB) of assets in total.
+
+| Width | Weight | Used by |
+|---|---|---|
+| 62 | 900 | `.hero .rec`, `.ring .c b`, `.vs strong`, `.loghead b`, `.scorebug .sc`, `.fx-word`, `.fx-rec b`, `.fx-rc b`, `.fx-sh h3` |
+| 64 | 900 | `.side .pct`, `.fr .rec`, `.fx-wr strong` (also `.intro h1`, which is page chrome) |
+| 66 | 900 | `.ticket b` |
+| 70 | 700 | `.ticket .seat strong` - the rule sets no `font-weight`, so `strong` keeps the UA bold |
+| 70 | 850 | `.tile b` |
+| 72 | 850 | `.li .val`, `.side b` |
+| 74 | 850 | `.stats b` |
+| 78 | 850 | `.tl time` |
+| 80 | 850 | `.circ` |
+| 80 | 900 | `.fx-bd` |
+| 100 | 400 | `body` default |
+| 100 | 500 | `.wplbl .dog` |
+| 100 | 600 | `.scorebug .sc small` |
+| 100 | 650 | `.status`, `.fx-last`, `.fx-stamp span`, `.fx-chip`, `.fx-at`, `.fx-story` |
+| 100 | 700 | `.pill[aria-pressed]`, `.sec a`, `.stamp b`, `.li .tx b`, `.live`, `.tchip`, `.fx-pill`, bare `<b>`/`<strong>`, SVG `font-weight="700"` |
+| 100 | 750 | `.tabs .on`, `.seg [aria-selected]`, `.side .tag`, `.lockpill`, `.wplbl`, `.scorebug .tm`, `.fx-sub`, `.fx-r1`, `.fx-rc .lb`, `.fx-sh a`, `.fx-seg [aria-selected]`, `.fx-wpl`, `.fx-story small` |
+| 100 | 800 | `.sec h3`, `.badge`, `.matchup .v`, `.choose button`, `.fx-stamp b`, `.fx-row .tx b`, `.fx-mu b`, `.fx-root`, SVG `font-weight="800"` |
+| 100 | 850 | `.top h2`, `.vhero b`, `.prof h4`, `.matchup b`, `.fx-pill .n`, `.fx-li .tx b`, `.fx-title`, `.fx-live`, `.fx-lock`, `.fx-h1`, `.fx-vs`, `.fx-sth` |
+| 100 | 900 | `.fx-res`, SVG `font-weight="900"` |
+
+Consequences to keep in mind while porting:
+
+- **Never set `fontWeight` on a style that uses one of these families.** The weight is already in
+  the outlines; iOS would synthesise a second, fake bolding on top. Ask for the weight through
+  `fontFamily({ width, weight })` instead.
+- The families are *not* a weight family in the CSS sense. Each instance is a standalone
+  "Regular", so `fontWeight: 'bold'` has no meaningful sibling to resolve to.
+- `fontFamily()` snaps to the nearest available width and then the nearest weight at that width,
+  so it is total and never returns undefined. If a screen needs a pair that is not in the table,
+  add it to `INSTANCES` in the build script and regenerate rather than living on the fallback.
+- The build is deterministic (`head.modified` is pinned to the upstream value), so regenerating
+  and seeing a clean `git status` means the assets still match the reference. `--check` asserts
+  this without writing.
+
+```
+python3 scripts/fonts/build-archivo.py            # download if needed, then generate
+python3 scripts/fonts/build-archivo.py --check    # fail if any output is missing or stale
+python3 scripts/fonts/build-archivo.py --refresh  # re-download the upstream variable TTF
+```
+
+The upstream variable font and its licence are cached in the gitignored
+`scripts/fonts/.cache/`; the generated instances are committed because they are app assets.
+Archivo is SIL Open Font License 1.1, which permits bundling. See `docs/attribution.md`.
+
+### Still to come
 
 Known items the reference uses that will need an entry when their screen is ported:
 
@@ -25,7 +85,6 @@ Known items the reference uses that will need an entry when their screen is port
 | Hero grid texture | `.fx-hero` background | A tiled SVG pattern via react-native-svg `<Pattern>`. |
 | `color-mix()` | several | Resolved at build time into a literal hex in the token module; React Native has no runtime colour mixing. |
 | `box-shadow` with spread and negative offset | `.phone`, cards | iOS `shadowOffset`/`shadowRadius`/`shadowOpacity`, which has no spread. Values are re-tuned by eye against the diff, not converted arithmetically. |
-| `font-variation-settings: "wdth"` | headings, `.hero .rec` | Static Archivo instances generated with fontTools `varLib.instancer`, one per width and weight the CSS actually uses (SPEC.md 8.2). |
 | `overflow-x: auto` pill and stamp rails | `.pills`, `.fx-stamps` | `ScrollView horizontal` with `showsHorizontalScrollIndicator={false}`. |
 | `:focus-visible` outlines | interactive elements | Not ported. There is no keyboard focus ring on iOS touch. |
 

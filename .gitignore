@@ -27,6 +27,11 @@ apps/mobile/android/
 supabase/.temp/
 supabase/.branches/
 
+# Font build cache: the upstream Archivo variable TTF, re-downloaded on demand by
+# scripts/fonts/build-archivo.py. The generated static instances in
+# apps/mobile/assets/fonts/ ARE committed - they are app assets.
+scripts/fonts/.cache/
+
 # ingest scratch
 ingest/.cache/
 ingest/data/

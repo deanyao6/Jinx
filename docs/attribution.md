@@ -7,3 +7,5 @@
 Team and league names appear as plain text for identification only. No logos, wordmarks, or other marks are used.
 
 Venue coordinates are compiled from public sources including Wikipedia.
+
+**Archivo** is copyright 2020 The Archivo Project Authors (github.com/Omnibus-Type/Archivo), licensed under the SIL Open Font License, Version 1.1, which permits bundling in an application. Jinx ships static instances generated from the upstream variable font; the full licence text is in `apps/mobile/assets/fonts/OFL.txt`.

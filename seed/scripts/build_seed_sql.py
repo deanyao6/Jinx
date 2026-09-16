@@ -4,6 +4,7 @@
 Inputs:
   seed/mlb_teams.generated.json, seed/mlb_team_aliases.json
   seed/nfl_teams.json, seed/nfl_teams_colors.csv (nflverse, CC-BY-4.0)
+  seed/team_colors.json (light + dark --tf/--t/--t2/--on per team; see check_team_colors.py)
   seed/mlb_venues.generated.json, seed/mlb_venue_overrides.json, seed/nfl_venues.json
 Output:
   supabase/seed.sql  (run by `supabase db reset`; also safe to psql against production)
@@ -79,6 +80,24 @@ for sport, provider, pid, franchise, name, city, abbr, color, active, aliases, _
         lines.append(
             f"insert into public.team_aliases (team_id, alias) select id, {q(a)} from public.teams where provider = {q(provider)} and provider_team_id = {q(pid)} on conflict do nothing;"
         )
+
+# ---------------------------------------------------------------- team colors
+# Light and dark palettes mirroring the .t-* classes in design/reference.html (SPEC.md 8.2).
+# Rows marked 'reference' are verbatim from the reference CSS; the rest are hand-tuned.
+# seed/scripts/check_team_colors.py audits coverage, the verbatim rows and WCAG contrast.
+palette_cols = ("fill_hex", "on_fill_hex", "primary_light_hex", "secondary_light_hex", "primary_dark_hex", "secondary_dark_hex", "source")
+lines.append("")
+lines.append("-- team colors")
+for p in load("team_colors.json")["teams"]:
+    lines.append(
+        "insert into public.team_colors (team_id, " + ", ".join(palette_cols) + ") select id, "
+        + ", ".join(q(p[c]) for c in palette_cols)
+        + f" from public.teams where provider = {q(p['provider'])} and provider_team_id = {q(p['provider_team_id'])}"
+        + " on conflict (team_id) do update set "
+        + ", ".join(f"{c} = excluded.{c}" for c in palette_cols)
+        + ";"
+    )
+
 
 # ---------------------------------------------------------------- venues
 nfl = {v["key"]: v for v in load("nfl_venues.json")}
@@ -167,4 +186,5 @@ out = os.path.join(ROOT, "supabase", "seed.sql")
 with open(out, "w", encoding="utf8") as f:
     f.write("\n".join(lines))
 no_coords = [v["name"] for v in venues.values() if v["lat"] is None]
-print(f"wrote {out}: {len(teams)} teams, {len(venues)} venues ({len(no_coords)} without coordinates)", file=sys.stderr)
+palettes = len(load("team_colors.json")["teams"])
+print(f"wrote {out}: {len(teams)} teams, {palettes} team palettes, {len(venues)} venues ({len(no_coords)} without coordinates)", file=sys.stderr)
