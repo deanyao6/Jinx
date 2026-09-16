@@ -1,4 +1,5 @@
 import type { StatsPayload } from '@/features/passport/types';
+import { defaultShapeKey } from '@/features/venues/shapes';
 
 import { emptyRepository } from '../empty';
 import {
@@ -305,6 +306,7 @@ describe('Games history mapping', () => {
     rooting_team_id: PHI,
     game: {
       id: 'g1',
+      sport_id: 'mlb',
       status: 'final',
       scheduled_start: '2024-10-12T23:05:00Z',
       home_team_id: PHI,
@@ -530,6 +532,7 @@ describe('Record game log mapping', () => {
     rooting_team_id: PHI,
     game: {
       id: 'g-phi',
+      sport_id: 'mlb',
       status: 'final',
       scheduled_start: '2025-08-14T23:05:00Z',
       home_team_id: PHI,
@@ -548,6 +551,7 @@ describe('Record game log mapping', () => {
     rooting_team_id: null,
     game: {
       id: 'g-sf',
+      sport_id: 'mlb',
       status: 'final',
       scheduled_start: '2026-08-08T02:15:00Z',
       home_team_id: 'sf',
@@ -686,5 +690,25 @@ describe('Profile mapping', () => {
     const p = profileFromAccount(account, stats, companions);
     expect(p.rows[0]?.meta).toBe('1 companion');
     expect(p.facepile).toEqual(['p1']);
+  });
+});
+
+describe('stadium shapes', () => {
+  // The bug: venue_shapes shipped empty, every lookup missed, and the fallback was a flat
+  // 'ballparkA' — so Lincoln Financial Field was drawn as a baseball diamond.
+  it('falls back to the sport, not to a ballpark', () => {
+    expect(defaultShapeKey(['nfl'])).toBe('bowl');
+    expect(defaultShapeKey(['mlb'])).toBe('ballparkA');
+  });
+
+  it('treats a venue that hosts both as a ballpark', () => {
+    // A shared stadium (Oakland Coliseum, Rogers Centre) reads as a ballpark either way,
+    // and the seed assigns those a ballpark shape too, so the two agree.
+    expect(defaultShapeKey(['nfl', 'mlb'])).toBe('ballparkA');
+  });
+
+  it('gives a venue whose sports are not known a football bowl rather than a diamond', () => {
+    // Neutral-ish default: the bowl reads as "a stadium", the diamond claims a sport.
+    expect(defaultShapeKey([])).toBe('bowl');
   });
 });

@@ -15,7 +15,9 @@ import { momentDetail, momentLabel } from '@/features/attendances/moments';
 import { useDeleteAttendance, useMyAttendanceForGame } from '@/features/attendances/queries';
 import { isWithinCheckInWindow, pctLabel } from '@/features/checkin/lock';
 import { usePledgeForGame } from '@/features/checkin/queries';
+import { notablePlayers, othersLine } from '@/features/games/notable';
 import { useGame, useGameAppearances, useGameEvents } from '@/features/games/queries';
+import { useGameStorySteps } from '@/features/relive/queries';
 import {
   doubleheaderLabel,
   formatGameDateLong,
@@ -40,6 +42,8 @@ export default function GameDetailScreen() {
   const events = useGameEvents(gameId);
   const appearances = useGameAppearances(gameId);
   const pledge = usePledgeForGame(gameId);
+  // Relive only exists for a game whose play-by-play has been turned into story steps.
+  const story = useGameStorySteps(gameId);
   const remove = useDeleteAttendance();
   const [openedAt] = useState(() => Date.now());
 
@@ -49,17 +53,13 @@ export default function GameDetailScreen() {
   const teamName = (teamId: string | null) =>
     teamId === g?.home?.id ? g?.home?.name : teamId === g?.away?.id ? g?.away?.name : null;
 
+  // Who to name and who to count. See features/games/notable.ts for why "star player" is
+  // "did something in this game" rather than a reputation the database does not hold.
   const playersByTeam = useMemo(() => {
-    const map = new Map<string, string[]>();
-    for (const row of appearances.data ?? []) {
-      if (!row.player) continue;
-      const arr = map.get(row.team_id) ?? [];
-      arr.push(row.player.full_name);
-      map.set(row.team_id, arr);
-    }
-    for (const arr of map.values()) arr.sort();
-    return map;
-  }, [appearances.data]);
+    const groups = notablePlayers(appearances.data ?? [], events.data ?? []);
+    return new Map(groups.map((g) => [g.teamId, g]));
+  }, [appearances.data, events.data]);
+  const [showAllPlayers, setShowAllPlayers] = useState(false);
 
   const onDelete = () => {
     if (!a) return;
@@ -359,6 +359,35 @@ export default function GameDetailScreen() {
         </Card>
       )}
 
+      {/*
+        Relive and the stadium guide had no entry point anywhere in the app: both routes
+        existed and nothing linked to them (docs/interactions.md). This is that link.
+        Relive appears only once the game has story steps, so it never opens onto an
+        empty screen.
+      */}
+      {story.data && story.data.length > 0 ? (
+        <Card label="Relive">
+          <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.sm }}>
+            Play the game back moment by moment, with the win probability as it swung.
+          </Text>
+          <Button
+            title="Relive this game"
+            onPress={() => router.push(`/relive/${gameId}`)}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        </Card>
+      ) : null}
+
+      {g.venue ? (
+        <Button
+          title={`Guide to ${g.venue.name}`}
+          variant="secondary"
+          small
+          onPress={() => router.push(`/guide/${g.venue!.id}`)}
+          style={{ alignSelf: 'flex-start' }}
+        />
+      ) : null}
+
       {/* Friends (M7): mutuals at this game and remove-my-tag. Owned by features/social. */}
       <AlsoThere gameId={gameId} />
 
@@ -400,18 +429,48 @@ export default function GameDetailScreen() {
               : 'Lineups arrive after the game.'}
           </Text>
         ) : null}
-        {[g.away, g.home].map((t) =>
-          t && playersByTeam.get(t.id)?.length ? (
+        {[g.away, g.home].map((t) => {
+          const group = t ? playersByTeam.get(t.id) : undefined;
+          if (!t || !group) return null;
+          const rest = othersLine(group.others.length);
+          return (
             <View key={t.id} style={{ marginBottom: theme.spacing.sm }}>
               <Text variant="bodyStrong" style={{ marginBottom: 2 }}>
                 {t.name}
               </Text>
-              <Text variant="sub" color="muted">
-                {playersByTeam.get(t.id)?.join(', ')}
-              </Text>
+              {group.notable.map((p) => (
+                <Text key={p.playerId} variant="sub">
+                  {p.name} — <Text color="muted">{p.did}</Text>
+                </Text>
+              ))}
+              {group.notable.length === 0 ? (
+                <Text variant="sub" color="muted">
+                  Nothing notable recorded for this side.
+                </Text>
+              ) : null}
+              {/* The roster is still here, just folded away: a count by default, the full
+                  list on request. Printing 25 names nobody reads was the old behaviour. */}
+              {showAllPlayers ? (
+                <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
+                  {group.others.join(', ')}
+                </Text>
+              ) : rest ? (
+                <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
+                  {rest}
+                </Text>
+              ) : null}
             </View>
-          ) : null,
-        )}
+          );
+        })}
+        {(appearances.data ?? []).length > 0 ? (
+          <Button
+            title={showAllPlayers ? 'Show only notable players' : 'Show everyone who played'}
+            variant="secondary"
+            small
+            onPress={() => setShowAllPlayers((v) => !v)}
+            style={{ alignSelf: 'flex-start', marginTop: theme.spacing.sm }}
+          />
+        ) : null}
       </Card>
     </Screen>
   );

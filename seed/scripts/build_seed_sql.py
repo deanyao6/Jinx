@@ -169,6 +169,57 @@ for k in sorted(venues):
         lines.append(f"insert into public.venue_aliases (venue_id, alias) select id, {q(a)} from public.venues where key = {q(k)} on conflict do nothing;")
 
 lines.append("")
+lines.append("-- venue shapes")
+# The stylized stadium outlines the seals and thumbnails draw (SPEC.md 8.5). Seven shapes
+# come from design/reference.html; this assigns one per venue.
+#
+# The rule is a venue's SPORT first, because getting that wrong is what a user sees: before
+# this ran, venue_shapes was empty and every venue fell back to 'ballparkA', so Lincoln
+# Financial Field was drawn as a baseball diamond. A venue that has ever hosted MLB takes a
+# ballpark shape; an NFL-only venue takes a football one.
+#
+# Within a sport the choice is a stylized likeness, not an architectural record: ROOFED is
+# "has a fixed roof, a retractable roof, or a canopy over the seating bowl", COLONNADE is
+# the two neoclassical colonnaded stadiums. Both lists are by name (or alias, since MLB
+# renames parks), so a venue missing from them just gets its sport's default.
+MLB_SHAPES = {
+    "Dodger Stadium": "dodger",
+    "Wrigley Field": "wrigley",
+    "Fenway Park": "wrigley",   # the reference draws Fenway with the wrigley outline
+    "Oracle Park": "oracle",
+}
+ROOFED = {
+    "AT&T Stadium", "Alamodome", "Allegiant Stadium", "Caesars Superdome", "Ford Field",
+    "Georgia Dome", "Hard Rock Stadium", "Hubert H. Humphrey Metrodome", "Lucas Oil Stadium",
+    "Mercedes-Benz Stadium", "Pontiac Silverdome", "RCA Dome", "Reliant Stadium",
+    "Rogers Centre", "SoFi Stadium", "State Farm Stadium", "Texas Stadium",
+    "The Dome at America's Center", "U.S. Bank Stadium",
+}
+COLONNADE = {"Soldier Field", "Los Angeles Memorial Coliseum"}
+
+def shape_key(v):
+    names = set(v["aliases"]) | {v["name"]}
+    if "mlb" in v["sports"]:
+        for n in names:
+            if n in MLB_SHAPES:
+                return MLB_SHAPES[n]
+        return "ballparkA"
+    if names & COLONNADE:
+        return "colonnade"
+    if names & ROOFED:
+        return "canopy"
+    return "bowl"
+
+shape_counts = {}
+for k in sorted(venues):
+    key = shape_key(venues[k])
+    shape_counts[key] = shape_counts.get(key, 0) + 1
+    lines.append(
+        f"insert into public.venue_shapes (venue_id, shape_key, source) select id, {q(key)}, 'placeholder' "
+        f"from public.venues where key = {q(k)} on conflict (venue_id) do update set shape_key = excluded.shape_key;"
+    )
+
+lines.append("")
 lines.append("-- team home venues")
 for sport, provider, pid, franchise, name, city, abbr, color, active, aliases, _division, home, _nick in teams:
     kind, ref = home
@@ -187,4 +238,6 @@ with open(out, "w", encoding="utf8") as f:
     f.write("\n".join(lines))
 no_coords = [v["name"] for v in venues.values() if v["lat"] is None]
 palettes = len(load("team_colors.json")["teams"])
+shapes_desc = ", ".join(f"{n} {k}" for k, n in sorted(shape_counts.items(), key=lambda kv: -kv[1]))
 print(f"wrote {out}: {len(teams)} teams, {palettes} team palettes, {len(venues)} venues ({len(no_coords)} without coordinates)", file=sys.stderr)
+print(f"  venue shapes: {shapes_desc}", file=sys.stderr)

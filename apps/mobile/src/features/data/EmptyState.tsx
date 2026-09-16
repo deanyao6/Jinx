@@ -23,14 +23,22 @@ export function EmptyState({
   text,
   /** Overrides the default while the user's data is still loading. */
   loadingText = 'Loading your games…',
+  /**
+   * Overrides the repository's own status, for a screen whose data is a separate read.
+   * Relive is the case: it reads one game's story steps directly, so the repository can be
+   * settled while the thing this pane is about has not arrived.
+   */
+  loading: loadingOverride,
   children,
 }: {
   text: string;
   loadingText?: string;
+  loading?: boolean;
   children?: React.ReactNode;
 }) {
   const { base } = useReferenceTheme();
-  const loading = useRepositoryStatus() === 'loading';
+  const status = useRepositoryStatus() === 'loading';
+  const loading = loadingOverride ?? status;
   return (
     <View
       accessibilityRole="summary"

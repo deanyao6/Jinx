@@ -7,6 +7,7 @@ import {
 } from '@jinx/core';
 
 import { superlativeRows } from '@/features/passport/format';
+import { defaultShapeKey } from '@/features/venues/shapes';
 import type { StatsPayload, StatsStamp, StatsTeam } from '@/features/passport/types';
 
 import { emptyRepository } from './empty';
@@ -134,9 +135,9 @@ function toStamp(
     name: stamp.name,
     city: (stamp.city ?? '').toUpperCase(),
     ring: stamp.name.toUpperCase(),
-    // Until `venue_shapes` is populated for a venue, the reference's generic ballpark is
-    // the placeholder, which is what SPEC.md 8.5 says v1 ships.
-    shape: shapes.get(stamp.venue_id) ?? 'ballparkA',
+    // A venue with no `venue_shapes` row falls back to its sport's family rather than to a
+    // ballpark, which is what drew football stadiums as baseball diamonds (SPEC.md 8.5).
+    shape: shapes.get(stamp.venue_id) ?? defaultShapeKey(stamp.sports),
     metal: stampMetal(stamp, homeVenueIds),
     teams,
   };
@@ -371,7 +372,7 @@ export function logRowFromAttendance(
   return {
     gameId: g.id,
     team: g.home?.id ?? 'none',
-    shape: (g.venue && shapes.get(g.venue.id)) || 'ballparkA',
+    shape: (g.venue && shapes.get(g.venue.id)) || defaultShapeKey([g.sport_id]),
     title: row?.title ?? 'Game',
     meta: g.venue?.name ? `${g.venue.name}, ${when}` : when,
     // A game with no side to root for, a tie, or one that is not final has no result, and
@@ -483,6 +484,8 @@ export type AttendanceRow = {
   rooting_team_id: string | null;
   game: {
     id: string;
+    /** Chooses the stadium-shape family when the venue has no `venue_shapes` row. */
+    sport_id: string;
     status: string;
     scheduled_start: string;
     home_team_id: string;
@@ -546,7 +549,7 @@ export function gameRowFromAttendance(
   return {
     gameId: g.id,
     team: g.home.id,
-    shape: (g.venue && shapes.get(g.venue.id)) || 'ballparkA',
+    shape: (g.venue && shapes.get(g.venue.id)) || defaultShapeKey([g.sport_id]),
     title,
     meta: g.venue?.name ? `${g.venue.name}, ${when}` : when,
     // Real people have their own profile photos; the generated avatar keys are a demo

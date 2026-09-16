@@ -58,6 +58,8 @@ export interface NflversePbpRow {
   desc: string | null;
   /** 1 = scoring play. */
   sp: number | null;
+  /** Home team's win probability after the play, as a fraction. Drives Relive (SPEC 6.19). */
+  home_wp?: number | null;
   play_type: string | null;
   /** Score after the play. */
   total_home_score: number | null;

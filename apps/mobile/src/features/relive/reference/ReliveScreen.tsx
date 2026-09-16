@@ -19,6 +19,8 @@ import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { motion, screenPadding } from '@/theme/reference/tokens';
 
+import { useReliveGame } from '../useReliveGame';
+
 /**
  * Relive, ported from the fourth phone in `design/reference.html` (SPEC.md 6.19, 8.8.4).
  *
@@ -29,11 +31,22 @@ import { motion, screenPadding } from '@/theme/reference/tokens';
  * The screen takes the home team's theme, as the reference's `.scr.t-phi` does, which is
  * what colours the play button and the win probability line.
  */
-export function ReliveScreen({ step = 0 }: { step?: number }) {
-  const relive = useRepository().relive();
+export function ReliveScreen({ step = 0, gameId }: { step?: number; gameId?: string }) {
+  // Two sources on purpose. With a gameId this is one real game, read from the database;
+  // without one it is whatever the repository holds, which is the reference's fixture in
+  // demo mode and the empty state otherwise. The parity harness mounts the second form.
+  const repo = useRepository();
+  const perGame = useReliveGame(gameId);
+  const relive = gameId ? perGame.relive : repo.relive();
   return (
     <ReferenceThemeProvider team={relive.home.team}>
-      <Body initialStep={step} />
+      <Body
+        initialStep={step}
+        relive={relive}
+        steps={gameId ? perGame.steps : repo.reliveSteps()}
+        winProb={gameId ? perGame.winProb : repo.reliveWinProb()}
+        isPending={gameId ? perGame.isPending : false}
+      />
     </ReferenceThemeProvider>
   );
 }
@@ -78,12 +91,22 @@ function useStoryPlayer(initialStep: number, stepCount: number) {
   return { step, playing, toggle };
 }
 
-function Body({ initialStep }: { initialStep: number }) {
+function Body({
+  initialStep,
+  relive,
+  steps,
+  winProb,
+  isPending,
+}: {
+  initialStep: number;
+  relive: ReliveFixture;
+  steps: readonly ReliveStep[];
+  winProb: readonly number[];
+  isPending: boolean;
+}) {
   const { base, team } = useReferenceTheme();
   const repo = useRepository();
   const router = useRouter();
-  const relive = repo.relive();
-  const steps = repo.reliveSteps();
   const { step, playing, toggle } = useStoryPlayer(initialStep, steps.length);
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
@@ -112,10 +135,10 @@ function Body({ initialStep }: { initialStep: number }) {
   /**
    * No story, no screen.
    *
-   * Relive needs a game's scoring timeline and win probability, which this repository
-   * cannot serve: it holds the user's aggregate data and `relive()` gets no game id (see
-   * the note on the Repository type). Rather than replay someone else's Phillies game,
-   * the screen says there is nothing to relive and keeps its way out.
+   * A game only has one once its play-by-play has been ingested and turned into story
+   * steps, which the detail worker does after the game goes final (SPEC.md 4.7). Until
+   * then, and for a screen opened with no gameId at all, this says so and keeps its way
+   * out rather than replaying someone else's game.
    */
   if (!current) {
     return (
@@ -145,6 +168,7 @@ function Body({ initialStep }: { initialStep: number }) {
           <EmptyState
             text="Nothing to relive yet. A game gets a story once its play-by-play has been ingested for a game you attended."
             loadingText="Loading this game…"
+            loading={isPending}
           />
         </ScrollView>
         <TabBar active="Games" />
@@ -264,7 +288,7 @@ function Body({ initialStep }: { initialStep: number }) {
           </View>
         </View>
 
-        <WinProbChart series={repo.reliveWinProb()} upTo={current.wp} />
+        <WinProbChart series={winProb} upTo={current.wp} />
 
         <View style={s.chartLabels}>
           <Text style={[s.chartLabel, { color: base.muted }]}>{relive.chartLabels.left}</Text>

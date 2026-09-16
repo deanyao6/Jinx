@@ -114,6 +114,7 @@ export function toPbpRow(r: RawRecord): NflversePbpRow {
     start_time: str(r, 'start_time'),
     desc: str(r, 'desc'),
     sp: num(r, 'sp'),
+    home_wp: num(r, 'home_wp'),
     play_type: str(r, 'play_type'),
     total_home_score: num(r, 'total_home_score'),
     total_away_score: num(r, 'total_away_score'),

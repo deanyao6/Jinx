@@ -25,3 +25,18 @@ export function useVenueShapes() {
     staleTime: 24 * 60 * 60_000,
   });
 }
+
+/**
+ * The shape to draw for a venue that has no `venue_shapes` row.
+ *
+ * The fallback used to be a flat `'ballparkA'`, which is what made a football stadium
+ * render as a baseball diamond: the table shipped empty, so *every* venue took it. The
+ * per-venue shapes are seeded now, but a fallback that ignores the sport is still wrong
+ * for any venue added before the seed catches up, so it picks the family instead.
+ *
+ * `sports` is whatever the caller knows: a stamp's list of sports played at the venue, or
+ * a single game's sport id.
+ */
+export function defaultShapeKey(sports: readonly string[]): ShapeKey {
+  return sports.includes('mlb') ? 'ballparkA' : 'bowl';
+}

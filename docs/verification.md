@@ -88,3 +88,44 @@ only if this endpoint is unavailable for a given game, which should be treated a
 timeline rather than a reason to estimate one.
 
 NFL keeps using nflverse's own per-play `home_wp` column, as recorded above.
+
+## NFL per-play win probability (SPEC 4.3b) — VERIFIED 2026-09-16
+
+`play_by_play_{season}.csv.gz` (nflverse `pbp` release) carries win probability inline, so
+NFL needs no extra download. Checked against `2025_13_CHI_PHI` (Bears at Eagles, Lincoln
+Financial Field, 2025-11-28, final 24–15): 181 plays.
+
+Per play:
+- `home_wp` is the home team's probability as a **fraction** (0.537572950124741), unlike the
+  MLB feed's percentages. It goes into `game_wp_timeline.home_wp` unscaled.
+- `def_wp`, `away_wp`, `home_wp_post`, `vegas_home_wp` are also present. `home_wp` is the
+  one used, because it is the pre-snap state and matches the MLB series' meaning.
+- `sp = 1` marks a scoring play. For 2025_13_CHI_PHI that is 10 plays, and each carries the
+  post-play score in `total_home_score` / `total_away_score`, so scores are read rather than
+  accumulated.
+- `desc` is the play description ("(1:35) (Shotgun) 4-D.Swift right guard for 3 yards,
+  TOUCHDOWN.") and is what a story step shows, verbatim. No text is generated.
+- An extra point is its own scoring play, so a touchdown and the kick after it are two
+  steps. That matches what the scoreboard did and is left alone.
+- `qtr` is 1–4 with 5+ for overtime; marker rows (END QUARTER, timeouts) have an empty
+  `home_wp` and are dropped rather than interpolated.
+
+`ingest/src/nfl/relive.ts` writes both tables from this. The column had to be added to
+`toPbpRow` and `NflversePbpRow`: the parser read ~40 pbp columns and `home_wp` was not one
+of them, which is why NFL games had no Relive story at all.
+
+## Venue shapes (SPEC 8.5) — corrected 2026-09-16
+
+`venue_shapes` shipped **empty**: no migration, seed or ingest ever wrote a row. Every
+lookup missed and fell through to a hardcoded `'ballparkA'`, so all 224 venues — Lincoln
+Financial Field, Soldier Field, SoFi — drew the reference's baseball diamond.
+
+`seed/scripts/build_seed_sql.py` now assigns one of the reference's seven shapes per venue
+and `supabase/seed.sql` carries the 224 rows. The rule is sport first (a venue that has ever
+hosted MLB gets a ballpark shape, an NFL-only venue gets a football one), then a named list
+for the distinctive ones. The seven the reference itself draws all agree: Citizens Bank
+`ballparkA`, Fenway `wrigley`, Oracle `oracle`, Dodger `dodger`, Lincoln Financial `bowl`,
+MetLife `bowl`, SoFi `canopy`, Soldier Field `colonnade`.
+
+These remain stylized placeholders, not traced footprints; `source` is `'placeholder'` and
+SPEC 8.5's OSM tracing pass still applies.

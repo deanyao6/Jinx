@@ -161,3 +161,24 @@ Parity cannot catch any of this, by construction. Every control above needs a te
 it and asserts the navigation or the state change, in the style of
 `features/*/reference/__tests__/interactions.test.tsx`. The tab bar test added when the screens
 were wired is the pattern: render the real screen, press by accessibility label, assert the route.
+
+## Update, 2026-09-16: Relive's entry point
+
+"Finished games with detail offer Relive" (Games rows, above) was the one row in this
+document that nothing satisfied, and the gap was bigger than a missing link:
+
+1. **Nothing in the app routed to `/relive/[gameId]`.** The route existed; no screen pushed
+   to it. Game detail now does, as a card, and only when the game has story steps — so the
+   link never opens onto the empty state.
+2. **The route dropped its own parameter.** `relive/[gameId].tsx` rendered `<ReliveScreen />`
+   with no id, and the screen read `relive()` off the repository, which holds the signed-in
+   user's aggregate data and takes no game id. Every real user therefore saw "nothing to
+   relive" on every game. `useReliveGame(gameId)` is the missing half.
+3. **NFL games had no story to show.** `ingest/src/nfl/relive.ts` and the `home_wp` column it
+   needs are new; see docs/verification.md.
+
+`/guide/[venueId]` had the same problem — a route with no inbound link — and game detail now
+links to it from the venue as well.
+
+Still open on this screen: photo upload (`attendance_photos` has no writer), the fan photo
+strip, and the per-game highlight URL, all unchanged from the table above.
