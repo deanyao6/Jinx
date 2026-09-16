@@ -120,7 +120,6 @@ function Splash({
 }
 
 function RootNavigator() {
-  const [fontsLoaded, fontError] = useJinxFonts();
   useNotificationRuntime();
   useAuthListener();
   const router = useRouter();
@@ -129,13 +128,6 @@ function RootNavigator() {
   const signOut = useSignOut();
   const pendingRoute = useNavStore((s) => s.pendingRoute);
   const setPendingRoute = useNavStore((s) => s.setPendingRoute);
-
-  // Loaded or failed: either way there is nothing further to wait for.
-  const fontsSettled = fontsLoaded || fontError != null;
-
-  useEffect(() => {
-    if (fontsSettled) void SplashScreen.hideAsync().catch(() => {});
-  }, [fontsSettled]);
 
   const signedIn = status === 'signedIn';
   const onboarded = signedIn && !!profile.data?.onboarded_at;
@@ -148,8 +140,6 @@ function RootNavigator() {
     }
   }, [onboarded, pendingRoute, router, setPendingRoute]);
 
-  // Splash is an ActivityIndicator with no text, so holding here cannot flash unstyled type.
-  if (!fontsSettled) return <Splash />;
   if (status === 'loading') return <Splash />;
   if (signedIn && profile.isError) {
     return <Splash error onRetry={() => profile.refetch()} onSignOut={signOut} />;
@@ -179,6 +169,30 @@ function RootNavigator() {
   );
 }
 
+/**
+ * Holds the splash until Archivo is registered, then releases it.
+ *
+ * This sits above ParityHost on purpose. ParityHost renders a parity screen *instead of*
+ * its children, so with the font loading further down inside RootNavigator the hook never
+ * ran in parity mode and the native splash stayed up forever. Fonts are app-wide, so they
+ * belong above anything that can replace the tree.
+ *
+ * The splash is an ActivityIndicator with no text, so holding here cannot flash unstyled
+ * type. Loaded or failed, there is nothing further to wait for: a font failure must not
+ * be able to strand the app on the splash screen.
+ */
+function FontGate({ children }: { children: React.ReactNode }) {
+  const [fontsLoaded, fontError] = useJinxFonts();
+  const settled = fontsLoaded || fontError != null;
+
+  useEffect(() => {
+    if (settled) void SplashScreen.hideAsync().catch(() => {});
+  }, [settled]);
+
+  if (!settled) return <Splash />;
+  return <>{children}</>;
+}
+
 function RootLayout() {
   const scheme = useColorScheme();
   const dark = scheme === 'dark';
@@ -200,11 +214,13 @@ function RootLayout() {
         <ThemeProvider>
           <NavThemeProvider value={navTheme}>
             <StatusBar style={dark ? 'light' : 'dark'} />
-            {/* Development only, and inert unless the visual parity harness is
-                running. See scripts/parity/ and SPEC.md M0.5. */}
-            <ParityHost>
-              <RootNavigator />
-            </ParityHost>
+            <FontGate>
+              {/* Development only, and inert unless the visual parity harness is
+                  running. See scripts/parity/ and SPEC.md M0.5. */}
+              <ParityHost>
+                <RootNavigator />
+              </ParityHost>
+            </FontGate>
           </NavThemeProvider>
         </ThemeProvider>
       </PersistQueryClientProvider>

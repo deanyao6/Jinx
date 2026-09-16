@@ -1,0 +1,98 @@
+import React from 'react';
+import { ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { PASSPORT, PASSPORT_PILLS, stampsFor } from '@/features/demo/fixtures';
+import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
+import { screenPadding } from '@/theme/reference/tokens';
+
+import {
+  Head,
+  Hero,
+  Pills,
+  RecordCards,
+  SectionHeader,
+  Stamps,
+  SuperlativeList,
+  TabBar,
+} from './parts';
+
+/**
+ * The Passport screen, ported from the first phone in `design/reference.html`
+ * (SPEC.md 8.8.1).
+ *
+ * Selecting a team pill filters the whole screen: the hero label, record, win rate,
+ * streak, last game, glow colour, the three record cards, the stamps row and the
+ * superlatives all change together, exactly as `renderPassport()` does in the reference.
+ * That is one state variable here, because the reference derives all of it from the pill.
+ */
+export function PassportScreen({
+  initialPill = 'all',
+  onOpenLog,
+}: {
+  initialPill?: string;
+  onOpenLog?: (log: string) => void;
+}) {
+  const [pill, setPill] = React.useState(initialPill);
+  const data = PASSPORT[pill] ?? PASSPORT.all;
+  if (!data) throw new Error(`no passport fixture for "${pill}"`);
+
+  return (
+    <ReferenceThemeProvider team={data.teamKey}>
+      <PassportBody
+        pill={pill}
+        onSelect={setPill}
+        data={data}
+        onOpenLog={onOpenLog ?? (() => {})}
+      />
+    </ReferenceThemeProvider>
+  );
+}
+
+function PassportBody({
+  pill,
+  onSelect,
+  data,
+  onOpenLog,
+}: {
+  pill: string;
+  onSelect: (key: string) => void;
+  data: NonNullable<(typeof PASSPORT)[string]>;
+  onOpenLog: (log: string) => void;
+}) {
+  const { base } = useReferenceTheme();
+  // The reference draws a fake status row inside `.scr` and starts `.body` below it.
+  // The app uses the real status bar instead (SPEC.md 8.1), so the content begins at the
+  // top safe-area inset and then takes `.body`'s own 4px padding.
+  const insets = useSafeAreaInsets();
+  return (
+    <View style={{ flex: 1, backgroundColor: base.canvas, paddingTop: insets.top }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          paddingTop: screenPadding.top,
+          paddingHorizontal: screenPadding.horizontal,
+          paddingBottom: screenPadding.bottom,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Head title="JINX" subtitle="FAN PASSPORT" />
+        <Pills pills={PASSPORT_PILLS} selected={pill} onSelect={onSelect} />
+        <Hero
+          label={data.label}
+          badge={data.badge}
+          record={data.record}
+          winRate={data.winRate}
+          streak={data.streak}
+          lastGame={data.lastGame}
+        />
+        <RecordCards cards={data.cards} onOpen={onOpenLog} />
+        <SectionHeader title="Stadium stamps" action={data.stampCount} />
+        <Stamps stamps={stampsFor(pill)} />
+        <SectionHeader title="Fan superlatives" />
+        <SuperlativeList items={data.superlatives} />
+      </ScrollView>
+      <TabBar active="Passport" />
+    </View>
+  );
+}

@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
 
+import { PassportScreen } from '@/features/passport/reference/PassportScreen';
+
 import { ParityMarker } from './ParityMarker';
 import { SELFTEST_ID, SELFTEST_INK } from './marker';
 import type { ParityScreenId } from './screens';
@@ -21,7 +23,11 @@ import { useParityControl } from './useParityControl';
  */
 
 /** Ported screens, keyed by the ids in scripts/parity/screens.mjs. */
-const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {};
+const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
+  'passport-all': () => <PassportScreen initialPill="all" />,
+  'passport-phi': () => <PassportScreen initialPill="phi" />,
+  'passport-phl': () => <PassportScreen initialPill="phl" />,
+};
 
 function SelfTest() {
   const insets = useSafeAreaInsets();
@@ -53,7 +59,15 @@ export function ParityHost({ children }: { children: React.ReactNode }) {
   const render = control.screenId ? PORTED[control.screenId] : undefined;
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.screen }}>
+    // Keyed by screen id so switching screens remounts rather than reusing the instance.
+    // Without this, a screen whose state is seeded from a prop (Passport's selected pill)
+    // keeps whatever it was first mounted with, and the harness captures three different
+    // screen ids showing identical pixels. The duplicate-shot backstop in capture-app.mjs
+    // caught exactly that. Parity screens must be a pure function of their id.
+    <View
+      key={control.screenId ?? 'none'}
+      style={{ flex: 1, backgroundColor: theme.colors.screen }}
+    >
       {render ? (
         render()
       ) : (
