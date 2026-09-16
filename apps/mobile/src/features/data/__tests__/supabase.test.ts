@@ -8,7 +8,11 @@ import {
   passportFromStats,
   passportPillsFromStats,
   companionLine,
+  companionTone,
+  friendsFromRecords,
   gameRowFromAttendance,
+  overlapLine,
+  togetherLine,
   listSentence,
   pickASideFromContext,
   reliveFromGame,
@@ -173,8 +177,12 @@ describe('Supabase passport mapping', () => {
     expect(repo.games()).toEqual([]);
     // Not yet backed: these still return demo fixtures, which the Plan and Guide shells
     // need in v1 anyway.
+    expect(SUPABASE_BACKED.has('friends')).toBe(true);
+    // Per-game methods are deliberately absent: they need a game id, which this
+    // repository has no way to supply. See the note on the Repository type.
+    expect(SUPABASE_BACKED.has('pickASide')).toBe(false);
+    expect(SUPABASE_BACKED.has('relive')).toBe(false);
     expect(SUPABASE_BACKED.has('guide')).toBe(false);
-    expect(SUPABASE_BACKED.has('friends')).toBe(false);
     expect(repo.guideRows('food').length).toBeGreaterThan(0);
   });
 });
@@ -366,5 +374,77 @@ describe('Pick a side mapping', () => {
     expect(p.storylines).toEqual([
       { text: 'Mets have won four straight.', source: 'FROM RESULTS' },
     ]);
+  });
+});
+
+describe('Friends mapping', () => {
+  const companions = [
+    { person_id: 'p1', display_name: 'Dad', games: 11, wins: 7, losses: 1, ties: 0 },
+    { person_id: 'p2', display_name: 'Maya Chen', games: 6, wins: 4, losses: 2, ties: 0 },
+    { person_id: 'p3', display_name: 'Priya Nair', games: 4, wins: 3, losses: 1, ties: 0 },
+    { person_id: 'p4', display_name: 'Jordan Ellis', games: 4, wins: 0, losses: 4, ties: 0 },
+  ];
+
+  it('colours the records the way the reference does', () => {
+    // 7-1 green, 0-4 red, and both 4-2 and 3-1 plain ink: it is not simply win or lose.
+    const f = friendsFromRecords(companions, [], []);
+    expect(f.people.map((p) => p.tone)).toEqual(['good', 'ink', 'ink', 'bad']);
+    expect(f.people[0]?.record).toBe('7–1');
+    expect(f.people[0]?.sub).toBe('11 games together');
+  });
+
+  it('gets the singular right for one game', () => {
+    expect(togetherLine(1)).toBe('1 game together');
+    expect(togetherLine(11)).toBe('11 games together');
+  });
+
+  it('treats a record with no decided games as neutral, not as a loss', () => {
+    expect(companionTone({ wins: 0, losses: 0, ties: 3 })).toBe('ink');
+  });
+
+  it('builds the rivalry card from the first rivalry', () => {
+    const f = friendsFromRecords(
+      companions,
+      [{ rival_display_name: 'Jordan', rival_teams: ['Mets'], my_wins: 5, rival_wins: 3 }],
+      [],
+    );
+    expect(f.rivalry?.label).toBe('Rivalry with Jordan, Mets fan');
+    expect(f.rivalry?.you.score).toBe('5');
+    expect(f.rivalry?.them.score).toBe('3');
+  });
+
+  it('omits the rivalry and overlap cards when there are none', () => {
+    const f = friendsFromRecords(companions, [], []);
+    expect(f.rivalry).toBeNull();
+    expect(f.overlap).toBeNull();
+  });
+
+  it('prefers an overlap that really was before you connected', () => {
+    const after = {
+      other_display_name: 'Sam',
+      home_team_name: 'Phillies',
+      away_team_name: 'Mets',
+      scheduled_start: '2023-05-01T00:00:00Z',
+      section_gap: 2,
+      before_connected: false,
+    };
+    const before = { ...after, other_display_name: 'Maya', before_connected: true };
+    const f = friendsFromRecords(companions, [], [after, before]);
+    expect(f.overlap?.text).toContain('You and Maya');
+  });
+
+  it('leaves the section gap out when it is unknown', () => {
+    const o = {
+      other_display_name: 'Maya',
+      home_team_name: 'Phillies',
+      away_team_name: 'Mets',
+      scheduled_start: '2019-08-14T23:00:00Z',
+      section_gap: null,
+      before_connected: true,
+    };
+    expect(overlapLine(o)).toBe('You and Maya were both at Phillies vs Mets in August 2019.');
+    expect(overlapLine({ ...o, section_gap: 11 })).toBe(
+      'You and Maya were both at Phillies vs Mets in August 2019, 11 sections apart.',
+    );
   });
 });

@@ -23,14 +23,7 @@ export type {
 /** One photo on Relive. `kind` chooses the placeholder scene in demo mode. */
 export type PhotoRef = { kind: 'selfie' | 'field' | 'board'; seed: number };
 
-import type {
-  GAME_DAY,
-  GUIDE,
-  FRIENDS,
-  PICK_A_SIDE,
-  PROFILE,
-  RELIVE,
-} from '@/features/demo/fixtures';
+import type { GAME_DAY, GUIDE, PICK_A_SIDE, PROFILE, RELIVE } from '@/features/demo/fixtures';
 
 /**
  * Declared here rather than derived from the demo constant.
@@ -53,4 +46,32 @@ export type ReliveFixture = typeof RELIVE;
 export type GameDayFixture = typeof GAME_DAY;
 export type GuideFixture = typeof GUIDE;
 export type ProfileFixture = typeof PROFILE;
-export type FriendsFixture = typeof FRIENDS;
+/**
+ * Declared rather than derived from the demo constant, for the same reason as
+ * {@link TeamPill}: the fixture is `as const`, and a contract shaped by one of its
+ * implementations is not a contract.
+ *
+ * The rivalry and overlap cards are nullable because a real user may have neither, and
+ * the panel omits the card rather than rendering an empty one.
+ */
+export type FriendsFixture = {
+  readonly tabs: readonly string[];
+  note: string;
+  people: readonly {
+    key: string;
+    name: string;
+    team: string;
+    teamName: string;
+    sub: string;
+    record: string;
+    tone: string;
+  }[];
+  rivalry: {
+    team: string;
+    label: string;
+    you: { team: string; score: string; label: string };
+    them: { score: string; label: string };
+    middle: string;
+  } | null;
+  overlap: { label: string; text: string } | null;
+};

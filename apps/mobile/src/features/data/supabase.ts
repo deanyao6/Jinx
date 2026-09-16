@@ -38,6 +38,7 @@ export const SUPABASE_BACKED: ReadonlySet<keyof Repository> = new Set([
   'passport',
   'stamps',
   'games',
+  'friends',
 ]);
 
 /**
@@ -86,6 +87,10 @@ export function lastGameLine(game: {
 
 export type PassportInputs = {
   stats: StatsPayload;
+  /** Companion records, rivalries and overlaps for the Friends panel. */
+  companions?: readonly CompanionRow[];
+  rivalries?: readonly RivalryRow[];
+  overlaps?: readonly OverlapRow[];
   /** The user's attended games, most recent first. */
   attendances?: readonly AttendanceRow[];
   /** Team lookup, for turning a full team name into the nickname a pill shows. */
@@ -403,6 +408,114 @@ export function pickASideFromContext(
   };
 }
 
+export type CompanionRow = {
+  person_id: string;
+  display_name: string;
+  games: number;
+  wins: number;
+  losses: number;
+  ties: number;
+};
+
+export type RivalryRow = {
+  rival_display_name: string;
+  rival_teams: string[];
+  my_wins: number;
+  rival_wins: number;
+};
+
+export type OverlapRow = {
+  other_display_name: string;
+  home_team_name: string;
+  away_team_name: string;
+  scheduled_start: string;
+  section_gap: number | null;
+  /** True when you were both there before you followed each other (SPEC.md 6.12). */
+  before_connected: boolean;
+};
+
+/**
+ * The colour of a companion record, which is an inference.
+ *
+ * The reference shows Dad at 7-1 in green, Jordan at 0-4 in red, and Maya at 4-2 and Priya
+ * at 3-1 in plain ink. So it is not simply "winning or losing": .750 is still ink. The
+ * thresholds below reproduce all four, but nothing in the design states them, so this is a
+ * reading of the sample rather than a rule I was given.
+ */
+export function companionTone(rec: WinLossRecord): 'good' | 'bad' | 'ink' {
+  const decided = rec.wins + rec.losses;
+  if (decided === 0) return 'ink';
+  const rate = rec.wins / decided;
+  if (rate > 0.8) return 'good';
+  if (rate < 0.2) return 'bad';
+  return 'ink';
+}
+
+/** "11 games together", and the singular for one. */
+export function togetherLine(games: number): string {
+  return `${games} game${games === 1 ? '' : 's'} together`;
+}
+
+/**
+ * The Friends panel (SPEC.md 8.8.8), from `companion_records`, `rivalries` and `overlaps`.
+ *
+ * Each person's favourite team is not returned by `companion_records`, so their row is
+ * drawn in the neutral theme rather than their team colour and the team name is left out
+ * of the subtitle. The reference shows both. Noted in OVERNIGHT.md.
+ */
+export function friendsFromRecords(
+  companions: readonly CompanionRow[],
+  rivalries: readonly RivalryRow[],
+  overlaps: readonly OverlapRow[],
+) {
+  const rival = rivalries[0];
+  // The card is literally titled "Before you connected", so prefer one that was.
+  const overlap = overlaps.find((o) => o.before_connected) ?? overlaps[0];
+
+  return {
+    tabs: ['With', 'Following', 'Rivals'] as const,
+    note: 'Your record when you go together',
+    people: companions.map((c) => {
+      const rec = { wins: c.wins, losses: c.losses, ties: c.ties };
+      return {
+        key: c.person_id,
+        name: c.display_name,
+        team: 'none',
+        teamName: '',
+        sub: togetherLine(c.games),
+        record: formatRecord(rec),
+        tone: companionTone(rec),
+      };
+    }),
+    rivalry: rival
+      ? {
+          team: 'none',
+          label: `Rivalry with ${rival.rival_display_name}${rival.rival_teams[0] ? `, ${rival.rival_teams[0]} fan` : ''}`,
+          you: { team: 'none', score: String(rival.my_wins), label: 'You' },
+          them: { score: String(rival.rival_wins), label: rival.rival_display_name },
+          middle: 'Head to head',
+        }
+      : null,
+    overlap: overlap
+      ? {
+          label: 'Before you connected',
+          text: overlapLine(overlap),
+        }
+      : null,
+  };
+}
+
+/** "You and Maya were both at Phillies vs Mets in August 2019, eleven sections apart." */
+export function overlapLine(o: OverlapRow): string {
+  const when = new Date(o.scheduled_start).toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+  const base = `You and ${o.other_display_name} were both at ${o.home_team_name} vs ${o.away_team_name} in ${when}`;
+  // The section gap is only known when both of you recorded a seat.
+  return o.section_gap == null ? `${base}.` : `${base}, ${o.section_gap} sections apart.`;
+}
+
 export type ReliveGame = {
   scheduled_start: string;
   home: { abbreviation: string; name: string; id: string } | null;
@@ -471,5 +584,7 @@ export function supabaseRepository(inputs: PassportInputs): Repository {
       (inputs.attendances ?? [])
         .map((a) => gameRowFromAttendance(a, inputs.shapes, inputs.teams))
         .filter((row): row is GameRowFixture => row != null),
+    friends: () =>
+      friendsFromRecords(inputs.companions ?? [], inputs.rivalries ?? [], inputs.overlaps ?? []),
   };
 }

@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 
 import { useMyAttendances } from '@/features/attendances/queries';
 import { useMyStats } from '@/features/passport/queries';
+import { useCompanionRecords } from '@/features/people/queries';
+import { useOverlaps, useRivalries } from '@/features/social/queries';
 import { useTeams } from '@/features/teams/queries';
 import { useVenueShapes } from '@/features/venues/shapes';
 
@@ -22,6 +24,9 @@ export function useSupabaseRepository(): { repository: Repository; ready: boolea
   const teams = useTeams(false);
   const shapes = useVenueShapes();
   const attendances = useMyAttendances();
+  const companions = useCompanionRecords();
+  const rivalries = useRivalries();
+  const overlaps = useOverlaps();
 
   return useMemo(() => {
     if (!stats.data) return { repository: demoRepository, ready: false };
@@ -50,8 +55,19 @@ export function useSupabaseRepository(): { repository: Repository; ready: boolea
         shapes: shapeMap,
         lastGame: latest ? lastGameLine(latest.game) : null,
         attendances: (attendances.data ?? []).filter((a) => a.status === 'attended'),
+        companions: companions.data ?? [],
+        rivalries: rivalries.data ?? [],
+        overlaps: overlaps.data ?? [],
       }),
       ready: true,
     };
-  }, [stats.data, teams.data, shapes.data, attendances.data]);
+  }, [
+    stats.data,
+    teams.data,
+    shapes.data,
+    attendances.data,
+    companions.data,
+    rivalries.data,
+    overlaps.data,
+  ]);
 }

@@ -10,9 +10,9 @@ sections are appended at the bottom as work lands.
 2. **Every screen in the reference is rebuilt**, in both themes, interactive, at a
    **4.37% mean mismatch**. Best 0.93% (Game day), worst 8.93% (Stadium guide, and that
    one is a bug in the reference rather than the port). Per-screen table in section (g).
-3. **Passport, Games and Relive read real data**; the rest still render demo fixtures
-   behind the same repository interface. `SUPABASE_BACKED` says which is which, and a test
-   asserts it.
+3. **Passport, Games and the Friends panel read real data**; the rest still render demo
+   fixtures behind the same repository interface. `SUPABASE_BACKED` says which is which,
+   and a test asserts it.
 4. Nothing remote was touched: no migrations pushed, no Apple certificates, nothing of
    SalusLink's, and the Metro watcher settings are untouched. **The M1 ingestion
    rearchitecture was deliberately not started** — it is the one piece that could damage
@@ -562,6 +562,26 @@ One thing the repository refactor caught: the contract types were derived from t
 which are `as const`, so `TeamPill.count` was typed `'48' | '17' | '8'` — a type only the
 demo implementation could ever satisfy. A contract shaped by one of its implementations is
 not a contract. They are declared properly now.
+
+## Companions and the Friends panel (M6/M7)
+
+Backed by `companion_records`, `rivalries` and `overlaps`. Unlike Pick a side, this one
+genuinely is aggregate user data, so it fits the repository and is in `SUPABASE_BACKED`.
+
+The panel now omits the rivalry and overlap cards when a user has neither, rather than
+rendering empty ones — a new account has no rivals. That needed `FriendsFixture` declared
+properly instead of derived from the `as const` fixture, the same leak `TeamPill` had.
+
+Two things worth your eye:
+
+- **The record colours are an inference.** The reference shows Dad at 7-1 green, Jordan at
+  0-4 red, and both Maya at 4-2 and Priya at 3-1 in plain ink. So it is not "winning or
+  losing": .750 is still ink. Thresholds of above .8 and below .2 reproduce all four, but
+  nothing states them, so this is a reading of the sample.
+- **Each companion's favourite team is not returned by `companion_records`**, so their row
+  is drawn neutral rather than in their team colour and the team name is left out of the
+  subtitle. The reference shows both. It needs either a join in that function or a second
+  query.
 
 ## Pick a side (M5), and a flaw in my own interface
 

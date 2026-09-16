@@ -29,7 +29,7 @@ export function FriendsPanel({ onClose }: { onClose?: () => void }) {
 function Body({ onClose }: { onClose: () => void }) {
   // `friends.tabs` is `as const`, so without widening this infers the literal 'With'.
   const friends = useRepository().friends();
-  const [tab, setTab] = React.useState<string>(friends.tabs[0]);
+  const [tab, setTab] = React.useState<string>(friends.tabs[0] ?? 'With');
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
@@ -93,17 +93,22 @@ function Body({ onClose }: { onClose: () => void }) {
           ))}
         </View>
 
-        {/* The rivalry card takes the rival's team colour. */}
-        <TeamTheme team={friends.rivalry.team}>
-          <RivalryCard>
-            <Swords size={20} color={base.muted} />
-          </RivalryCard>
-        </TeamTheme>
+        {/* The rivalry card takes the rival's team colour. A user with no rival, or none
+            they have played, gets no card rather than an empty one. */}
+        {friends.rivalry ? (
+          <TeamTheme team={friends.rivalry.team}>
+            <RivalryCard rivalry={friends.rivalry}>
+              <Swords size={20} color={base.muted} />
+            </RivalryCard>
+          </TeamTheme>
+        ) : null}
 
-        <View style={[s.card, { backgroundColor: base.surface }]}>
-          <Text style={[s.cardLabel, { color: base.muted }]}>{friends.overlap.label}</Text>
-          <Text style={[s.overlapText, { color: base.ink }]}>{friends.overlap.text}</Text>
-        </View>
+        {friends.overlap ? (
+          <View style={[s.card, { backgroundColor: base.surface }]}>
+            <Text style={[s.cardLabel, { color: base.muted }]}>{friends.overlap.label}</Text>
+            <Text style={[s.overlapText, { color: base.ink }]}>{friends.overlap.text}</Text>
+          </View>
+        ) : null}
       </ScrollView>
       <TabBar active="Profile" />
     </View>
@@ -144,9 +149,15 @@ function FriendRow({
 }
 
 /** `.card.t-nym` with the head-to-head `.vs` row. */
-function RivalryCard({ children }: { children: React.ReactNode }) {
+function RivalryCard({
+  rivalry,
+  children,
+}: {
+  rivalry: NonNullable<FriendsFixture['rivalry']>;
+  children: React.ReactNode;
+}) {
   const { base, team } = useReferenceTheme();
-  const r = useRepository().friends().rivalry;
+  const r = rivalry;
   return (
     <View style={[s.card, { backgroundColor: base.surface }]}>
       <Text style={[s.cardLabel, { color: base.muted }]}>{r.label}</Text>
