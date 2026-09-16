@@ -4,6 +4,15 @@ A passport for sports fans: every game you attend becomes part of a living recor
 
 **The full product and engineering spec is [SPEC.md](SPEC.md). Read it before changing anything.** The UI reference mockup is [docs/turnstile-ui.html](docs/turnstile-ui.html) (styling is placeholder; structure and hierarchy are the reference).
 
+> **A spec revision is in flight.** `docs/SPEC.new.md` supersedes `SPEC.md` once Dean approves it,
+> and `CLAUDE_CODE_PROMPT.md` at the repo root is the kickoff brief for that work. It renames the app
+> to Jinx, makes `design/reference.html` the single visual source of truth, adds milestones M0.5
+> (design system and UI parity) and M8.5 (Relive), narrows sign-in to Apple only, and replaces bulk
+> detail ingestion with an on-demand `detail_queue`. An audit put roughly 55-60% of this codebase as
+> surviving that change: the domain layer, ingestion and database are ~90% intact, the presentation
+> layer is a rebuild. Read the "Handoff corrections" section of `CLAUDE_CODE_PROMPT.md` first; it
+> lists what is missing and what the prompt gets wrong.
+
 ## Where things stand (2026-09-16)
 
 All ten milestones in SPEC.md Section 12 are implemented. Per-milestone detail and every decision

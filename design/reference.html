@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jinx, UI reference v4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E7EAEE; --scr:#FFFFFF; --surface:#F3F4F6; --ink:#101318; --muted:#6B7280; --line:#E6E8EC;
+  --good:#1B9E5A; --bad:#D63B33; --warn:#C98B12; --frame:#14171C; --shadow:rgba(16,19,24,.28); --canvas:#F4F5F7; --card:#FFFFFF; --link:#2563EB;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#06080B; --scr:#0E1115; --surface:#181C22; --ink:#F1F3F6; --muted:#9AA3AE; --line:#252A31;
+    --good:#3CCB7F; --bad:#FF6A60; --warn:#F2B84B; --frame:#000; --shadow:rgba(0,0,0,.7); --canvas:#101216; --card:#1A1D23; --link:#6EA0FF;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#06080B; --scr:#0E1115; --surface:#181C22; --ink:#F1F3F6; --muted:#9AA3AE; --line:#252A31;
+  --good:#3CCB7F; --bad:#FF6A60; --warn:#F2B84B; --frame:#000; --shadow:rgba(0,0,0,.7); --canvas:#101216; --card:#1A1D23; --link:#6EA0FF;
+}
+
+/* Team themes: light values, then dark values */
+.t-none{--tf:#101318;--t:#101318;--t2:#6B7280;--on:#fff}
+.t-phi{--tf:#E81828;--t:#E81828;--t2:#002D72;--on:#fff}
+.t-phl{--tf:#004C54;--t:#004C54;--t2:#A5ACAF;--on:#fff}
+.t-chi{--tf:#0B162A;--t:#0B162A;--t2:#C83803;--on:#fff}
+.t-gb{--tf:#203731;--t:#203731;--t2:#FFB612;--on:#fff}
+.t-lar{--tf:#003594;--t:#003594;--t2:#FFA300;--on:#fff}
+.t-lad{--tf:#005A9C;--t:#005A9C;--t2:#EF3E42;--on:#fff}
+.t-sf{--tf:#FD5A1E;--t:#FD5A1E;--t2:#27251F;--on:#fff}
+.t-chc{--tf:#0E3386;--t:#0E3386;--t2:#CC3433;--on:#fff}
+.t-nym{--tf:#002D72;--t:#002D72;--t2:#FF5910;--on:#fff}
+.t-sd{--tf:#2F241D;--t:#2F241D;--t2:#FFC425;--on:#fff}
+.t-nyg{--tf:#0B2265;--t:#0B2265;--t2:#A71930;--on:#fff}
+.t-bos{--tf:#0C2340;--t:#BD3039;--t2:#0C2340;--on:#fff}
+.t-lv{--tf:#1A1A1A;--t:#1A1A1A;--t2:#A5ACAF;--on:#fff}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .t-none{--t:#F1F3F6;--t2:#9AA3AE;--on:#0E1115}
+  :root:not([data-theme="light"]) .t-phi{--t:#FF3B49;--t2:#7F9DE8}
+  :root:not([data-theme="light"]) .t-phl{--t:#1E9AA3;--t2:#C9CED1}
+  :root:not([data-theme="light"]) .t-chi{--t:#E8692F;--t2:#8DA2CC}
+  :root:not([data-theme="light"]) .t-gb{--t:#3E9B72;--t2:#FFC43D}
+  :root:not([data-theme="light"]) .t-lar{--t:#5A8AF2;--t2:#FFB43D}
+  :root:not([data-theme="light"]) .t-lad{--t:#4FA0E6;--t2:#FF6B6E}
+  :root:not([data-theme="light"]) .t-sf{--t:#FF7440;--t2:#BDB6A8}
+  :root:not([data-theme="light"]) .t-chc{--t:#6F90EE;--t2:#FF6664}
+  :root:not([data-theme="light"]) .t-nym{--t:#6F90EE;--t2:#FF7A3D}
+  :root:not([data-theme="light"]) .t-sd{--t:#D6B98C;--t2:#FFC425}
+  :root:not([data-theme="light"]) .t-nyg{--t:#6F8FE8;--t2:#E0485F}
+  :root:not([data-theme="light"]) .t-bos{--t:#FF5A63;--t2:#7F9DE8}
+  :root:not([data-theme="light"]) .t-lv{--t:#C9CED1;--t2:#A5ACAF}
+}
+:root[data-theme="dark"] .t-none{--t:#F1F3F6;--t2:#9AA3AE;--on:#0E1115}
+:root[data-theme="dark"] .t-phi{--t:#FF3B49;--t2:#7F9DE8}
+:root[data-theme="dark"] .t-phl{--t:#1E9AA3;--t2:#C9CED1}
+:root[data-theme="dark"] .t-chi{--t:#E8692F;--t2:#8DA2CC}
+:root[data-theme="dark"] .t-gb{--t:#3E9B72;--t2:#FFC43D}
+:root[data-theme="dark"] .t-lar{--t:#5A8AF2;--t2:#FFB43D}
+:root[data-theme="dark"] .t-lad{--t:#4FA0E6;--t2:#FF6B6E}
+:root[data-theme="dark"] .t-sf{--t:#FF7440;--t2:#BDB6A8}
+:root[data-theme="dark"] .t-chc{--t:#6F90EE;--t2:#FF6664}
+:root[data-theme="dark"] .t-nym{--t:#6F90EE;--t2:#FF7A3D}
+:root[data-theme="dark"] .t-sd{--t:#D6B98C;--t2:#FFC425}
+:root[data-theme="dark"] .t-nyg{--t:#6F8FE8;--t2:#E0485F}
+:root[data-theme="dark"] .t-bos{--t:#FF5A63;--t2:#7F9DE8}
+:root[data-theme="dark"] .t-lv{--t:#C9CED1;--t2:#A5ACAF}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.ico{width:20px;height:20px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.intro{max-width:1240px;margin:0 auto;padding:44px 24px 4px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between}
+.intro h1{font-size:clamp(44px,8vw,92px);line-height:.86;margin:0;font-weight:900;font-variation-settings:"wdth" 64;letter-spacing:-.01em}
+.intro p{max-width:58ch;color:var(--muted);font-size:16.5px;line-height:1.5;margin:12px 0 0}
+.theme{display:flex;background:var(--scr);border:1px solid var(--line);border-radius:999px;padding:4px}
+.theme button{border:0;background:transparent;padding:8px 14px;border-radius:999px;font-size:14px;cursor:pointer;color:var(--muted)}
+.theme button[aria-pressed="true"]{background:var(--ink);color:var(--scr);font-weight:700}
+.rail{display:flex;gap:34px;overflow-x:auto;padding:34px 24px 56px;scroll-snap-type:x mandatory}
+.rail::after{content:"";flex:0 0 1px}
+.shot{flex:0 0 auto;scroll-snap-align:center;width:340px;margin:0}
+.shot figcaption{margin-top:16px;font-size:15px;line-height:1.45;color:var(--muted);max-width:33ch}
+.shot figcaption b{color:var(--ink);display:block;font-size:17px;margin-bottom:2px}
+.phone{width:340px;height:710px;background:var(--frame);border-radius:50px;padding:11px;box-shadow:0 34px 60px -34px var(--shadow)}
+.scr{width:100%;height:100%;background:var(--scr);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.status{display:flex;justify-content:space-between;padding:14px 28px 2px;font-size:13px;font-weight:650}
+.body{flex:1;overflow-y:auto;padding:4px 16px 16px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.tabs{display:flex;justify-content:space-around;border-top:1px solid var(--line);padding:9px 6px 20px;background:var(--scr)}
+.tabs span{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--muted);min-width:56px}
+.tabs .on{color:var(--t);font-weight:750}
+.tabs .ico{width:23px;height:23px}
+.top{display:flex;align-items:center;justify-content:space-between;margin:6px 0 10px}
+.top h2{font-size:28px;margin:0;font-weight:850;letter-spacing:-.01em}
+.iconbtn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:0;cursor:pointer}
+.row{display:flex;align-items:center;gap:10px}
+.sp{flex:1}
+.pills{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 12px;padding:0 16px;scrollbar-width:none}
+.pill{border:1.5px solid var(--line);background:var(--scr);border-radius:999px;padding:7px 13px;font-size:13.5px;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.pill .dot{width:9px;height:9px;border-radius:50%;background:var(--t)}
+.pill[aria-pressed="true"]{background:var(--t);border-color:var(--t);color:var(--on);font-weight:700}
+.pill[aria-pressed="true"] .dot{background:var(--on)}
+.pill:focus-visible,.iconbtn:focus-visible,.side:focus-visible,.link:focus-visible{outline:2.5px solid var(--t);outline-offset:2px}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:18px 0 8px}
+.sec h3{margin:0;font-size:18px;font-weight:800}
+.sec a,.link{color:var(--t);font-size:13.5px;font-weight:700;text-decoration:none;background:none;border:0;cursor:pointer;padding:0}
+
+/* hero record */
+.hero{background:var(--t);color:var(--on);border-radius:24px;padding:16px 16px 14px;position:relative;overflow:hidden;transition:background .25s}
+.hero .lbl{font-size:13px;opacity:.85}
+.hero .rec{font-size:80px;line-height:.82;font-weight:900;font-variation-settings:"wdth" 62;letter-spacing:-.02em;margin:6px 0 4px}
+.hero .meta{font-size:13.5px;opacity:.9}
+.hero .ghost{position:absolute;right:-18px;top:-10px;width:150px;height:150px;opacity:.14}
+.hero .ghost path,.hero .ghost rect,.hero .ghost ellipse{stroke:var(--on)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.tile{background:var(--surface);border-radius:16px;padding:10px}
+.tile b{display:block;font-size:22px;font-weight:850;font-variation-settings:"wdth" 70}
+.tile span{font-size:11.5px;color:var(--muted);line-height:1.25;display:block}
+.tile.acc b{color:var(--t)}
+
+/* stamps */
+.stamps{display:flex;gap:10px;overflow-x:auto;margin:0 -16px;padding:2px 16px 4px;scrollbar-width:none}
+.stamp{flex:0 0 auto;width:104px;text-align:center}
+.stamp svg{width:96px;height:96px;display:block;margin:0 auto}
+.stamp b{display:block;font-size:12.5px;font-weight:700;margin-top:2px;line-height:1.2}
+.stamp span{font-size:11.5px;color:var(--muted)}
+.stamp.todo{opacity:.45}
+
+.list{list-style:none;margin:0;padding:0}
+.li{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.li:first-child{border-top:0}
+.li .ic{width:36px;height:36px;border-radius:12px;background:var(--surface);display:grid;place-items:center;color:var(--t);flex:0 0 auto}
+.li .tx{flex:1;min-width:0}
+.li .tx b{display:block;font-size:14.5px;font-weight:700}
+.li .tx span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .val{font-size:17px;font-weight:850;font-variation-settings:"wdth" 72;white-space:nowrap}
+
+/* score circle (Beli-style) */
+.circ{width:42px;height:42px;border-radius:50%;border:2.5px solid currentColor;display:grid;place-items:center;font-weight:850;font-size:15px;flex:0 0 auto;font-variation-settings:"wdth" 80}
+.circ.w{color:var(--good)} .circ.l{color:var(--bad)} .circ.t{color:var(--warn)} .circ.n{color:var(--muted)}
+.circ.s-hi{color:var(--good)} .circ.s-mid{color:var(--warn)} .circ.s-lo{color:var(--bad)}
+.thumb{width:48px;height:48px;border-radius:14px;background:var(--surface);display:grid;place-items:center;flex:0 0 auto}
+.thumb svg{width:38px;height:38px}
+.avs{display:flex;align-items:center;margin-top:5px}
+.avs svg{width:20px;height:20px;border-radius:50%;border:2px solid var(--scr);margin-right:-6px}
+.avs small{margin-left:12px;font-size:12px;color:var(--muted)}
+.verified{color:var(--t);width:15px;height:15px;vertical-align:-2px}
+
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:14px;padding:10px 12px;color:var(--muted);font-size:14px;margin-bottom:10px}
+.seg{display:flex;background:var(--surface);border-radius:12px;padding:3px;margin-bottom:6px}
+.seg button{flex:1;border:0;background:transparent;font-size:13.5px;padding:7px;border-radius:9px;color:var(--muted);cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--scr);color:var(--ink);font-weight:750;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.badge{background:var(--t);color:var(--on);border-radius:999px;font-size:10.5px;padding:1px 6px;margin-left:4px;font-weight:800}
+
+/* pledge */
+.live{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--bad);margin-top:8px}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--bad);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.ring{position:relative;width:170px;height:170px;margin:10px auto 6px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .c b{display:block;font-size:48px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.9}
+.ring .c span{font-size:12px;color:var(--muted)}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.side{border:2px solid var(--line);background:var(--scr);border-radius:20px;padding:14px 12px;text-align:left;cursor:pointer;position:relative;overflow:hidden}
+.side .bar{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--t)}
+.side b{display:block;font-size:22px;font-weight:850;font-variation-settings:"wdth" 72;margin-left:4px}
+.side span{display:block;font-size:12.5px;color:var(--muted);margin-left:4px}
+.side .pct{font-size:26px;font-weight:900;font-variation-settings:"wdth" 64;color:var(--ink);margin-top:8px}
+.side .tag{display:inline-block;margin-top:4px;font-size:11px;font-weight:750;color:var(--t2);}
+.side[aria-pressed="true"]{background:var(--t);border-color:var(--t)}
+.side[aria-pressed="true"] *{color:var(--on)!important}
+.side[aria-pressed="true"] .bar{background:var(--t2)}
+.note{font-size:13px;color:var(--muted);line-height:1.45}
+.confirm{display:none;background:var(--surface);border-radius:16px;padding:12px;font-size:13.5px;line-height:1.4;margin-bottom:10px}
+.confirm.show{display:flex;gap:10px}
+
+/* plan */
+.ticket{background:var(--t);color:var(--on);border-radius:22px;padding:16px;position:relative;margin-bottom:12px;overflow:hidden}
+.ticket::before,.ticket::after{content:"";position:absolute;top:66%;width:20px;height:20px;border-radius:50%;background:var(--scr)}
+.ticket::before{left:-10px}.ticket::after{right:-10px}
+.ticket b{font-size:28px;font-variation-settings:"wdth" 66;font-weight:900;display:block;line-height:1}
+.ticket .t{font-size:13px;opacity:.85;margin-top:4px}
+.ticket .seat{display:flex;gap:18px;border-top:1.5px dashed color-mix(in srgb,var(--on) 40%,transparent);margin-top:16px;padding-top:10px;font-size:12px}
+.ticket .seat strong{display:block;font-size:20px;font-variation-settings:"wdth" 70}
+.ticket .stripe{position:absolute;right:0;top:0;bottom:0;width:10px;background:var(--t2)}
+.tl{list-style:none;margin:6px 0 0;padding:0}
+.tl li{display:flex;gap:12px;position:relative;padding-bottom:14px}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:17px;top:38px;bottom:2px;width:2px;background:var(--line)}
+.tl .ic{width:36px;height:36px;border-radius:50%;background:var(--surface);display:grid;place-items:center;color:var(--t);flex:0 0 auto}
+.tl li.now .ic{background:var(--t);color:var(--on)}
+.tl time{font-weight:850;font-size:14.5px;font-variation-settings:"wdth" 78}
+.tl p{margin:1px 0 0;font-size:13px;color:var(--muted);line-height:1.4}
+
+/* guide */
+.vhero{border-radius:22px;background:var(--surface);padding:12px;display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.vhero svg{width:88px;height:88px}
+.vhero b{display:block;font-size:19px;font-weight:850;line-height:1.1}
+.vhero span{font-size:12.5px;color:var(--muted)}
+
+/* profile */
+.prof{text-align:center;padding-top:6px}
+.prof .pfp{width:92px;height:92px;border-radius:50%;margin:0 auto;border:3px solid var(--t);padding:3px;background:var(--scr)}
+.prof .pfp svg{width:100%;height:100%;border-radius:50%}
+.prof h4{margin:10px 0 0;font-size:22px;font-weight:850}
+.prof .h{font-size:13.5px;color:var(--muted)}
+.chips{display:flex;justify-content:center;gap:6px;margin:10px 0 2px;flex-wrap:wrap}
+.tchip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 10px 4px 5px;font-size:12.5px;font-weight:700;background:var(--surface)}
+.tchip i{width:16px;height:16px;border-radius:50%;background:var(--t);display:block;box-shadow:inset 0 0 0 3px var(--t2)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:14px 0 6px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0}
+.stats div{text-align:center}
+.stats b{display:block;font-size:20px;font-weight:850;font-variation-settings:"wdth" 74}
+.stats span{font-size:11.5px;color:var(--muted)}
+.navrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;cursor:pointer}
+.navrow:first-child{border-top:0}
+.navrow .ic{width:36px;height:36px;border-radius:12px;background:var(--surface);display:grid;place-items:center;color:var(--t)}
+.navrow .tx{flex:1}
+.navrow .tx b{display:block;font-size:14.5px}
+.navrow .tx span{font-size:12.5px;color:var(--muted)}
+.facepile{display:flex}
+.facepile svg{width:26px;height:26px;border-radius:50%;border:2px solid var(--scr);margin-left:-8px}
+.panel{position:absolute;inset:0;background:var(--scr);transform:translateX(100%);transition:transform .32s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;z-index:5}
+.panel.open{transform:none}
+.fr{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.fr:first-child{border-top:0}
+.fr .pfp{width:46px;height:46px;border-radius:50%;flex:0 0 auto;padding:2px;border:2px solid var(--t)}
+.fr .pfp svg{width:100%;height:100%;border-radius:50%;display:block}
+.fr .tx{flex:1;min-width:0}
+.fr .tx b{display:block;font-size:14.5px}
+.fr .tx span{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted)}
+.fr .tx span i{width:9px;height:9px;border-radius:50%;background:var(--t);display:block}
+.fr .rec{font-size:19px;font-weight:900;font-variation-settings:"wdth" 64}
+.card{background:var(--surface);border-radius:18px;padding:13px;margin-top:10px}
+.card .k{font-size:12.5px;color:var(--muted);margin:0 0 6px}
+.vs{display:flex;justify-content:space-between;align-items:center;text-align:center}
+.vs strong{font-size:42px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.9;display:block}
+.vs span{font-size:12px;color:var(--muted)}
+.muted{color:var(--muted)}
+
+/* tiles as buttons + record log panel */
+button.tile{border:0;text-align:left;cursor:pointer;position:relative;width:100%}
+button.tile::after{content:"";position:absolute;right:9px;top:13px;width:6px;height:6px;border-right:2px solid var(--muted);border-top:2px solid var(--muted);transform:rotate(45deg)}
+button.tile:focus-visible{outline:2.5px solid var(--t);outline-offset:2px}
+.loghead{background:var(--t);color:var(--on);border-radius:22px;padding:14px 16px;margin-bottom:8px}
+.loghead span{font-size:13px;opacity:.9}
+.loghead b{display:block;font-size:56px;line-height:.85;font-weight:900;font-variation-settings:"wdth" 62;margin:4px 0 2px}
+.more{font-size:13px;color:var(--muted);text-align:center;padding:10px 0 4px}
+
+/* matchup / pick a side v2 */
+.lockpill{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:750}
+.lockpill .ico{width:16px;height:16px;color:var(--bad)}
+.matchup{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin:14px 0 8px;text-align:center}
+.matchup b{display:block;font-size:19px;font-weight:850;margin-top:4px}
+.matchup span{font-size:12px;color:var(--muted)}
+.matchup .v{font-size:15px;font-weight:800;color:var(--muted)}
+.wpbar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:6px 0 4px;gap:3px}
+.wpbar i{display:block;height:100%;background:var(--t)}
+.wplbl{display:flex;justify-content:space-between;font-size:12.5px;font-weight:750}
+.wplbl .dog{color:var(--muted);font-weight:500}
+.choose{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.choose button{border:2px solid var(--t);background:transparent;color:var(--t);border-radius:16px;padding:12px 8px;font-weight:800;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.choose button[aria-pressed="true"]{background:var(--t);color:var(--on)}
+.choose button:focus-visible{outline:2.5px solid var(--t);outline-offset:2px}
+.story{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.story:first-of-type{border-top:0}
+.story p{margin:0;font-size:13.5px;line-height:1.4}
+.story p small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+
+/* relive */
+.scorebug{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:var(--surface);border-radius:22px;padding:12px}
+.scorebug .tm{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12.5px;font-weight:750}
+.scorebug .fx-bd{width:46px;height:46px;font-size:13.5px;border-width:2.5px;margin:0 auto 4px}
+.scorebug .sc{font-size:46px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.9;min-width:110px;text-align:center}
+.scorebug .sc small{display:block;font-size:12px;font-weight:600;color:var(--muted);font-variation-settings:"wdth" 100}
+.player{display:flex;align-items:center;gap:10px;margin:12px 0 8px}
+.playbtn{width:44px;height:44px;border-radius:50%;background:var(--t);color:var(--on);border:0;display:grid;place-items:center;cursor:pointer;flex:0 0 auto}
+.playbtn:focus-visible{outline:2.5px solid var(--t);outline-offset:2px}
+.playbtn svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.storycard{flex:1;background:var(--surface);border-radius:16px;padding:10px 12px;font-size:13.5px;line-height:1.4;min-height:58px}
+.storycard small{display:block;color:var(--muted);font-size:11.5px;margin-bottom:2px}
+.chart{width:100%;height:92px;display:block}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.photos svg{width:100%;aspect-ratio:1;border-radius:12px;display:block}
+.photos .add{aspect-ratio:1;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;color:var(--muted)}
+
+
+/* ===== v4: Figma-derived screens (Passport, Games, Pick a side) ===== */
+.scr.fx{background:var(--canvas)}
+.fx .tabs{background:var(--card)}
+.fx-head{display:flex;justify-content:space-between;align-items:center;margin:8px 0 12px}
+.fx-word{font-size:32px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.85;letter-spacing:.01em}
+.fx-sub{font-size:9.5px;font-weight:750;color:var(--muted);letter-spacing:.07em;margin-top:3px}
+.fx-ib{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.fx-ib .ico{width:18px;height:18px}
+.fx-pills{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 12px;padding:0 16px;scrollbar-width:none}
+.fx-pill{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 6px 5px 12px;font-size:13px;font-weight:700;display:inline-flex;gap:7px;align-items:center;white-space:nowrap;cursor:pointer}
+.fx-pill .n{font-size:10.5px;font-weight:850;border-radius:999px;padding:2px 7px;background:var(--surface);color:var(--t)}
+.fx-pill.t-none .n{color:var(--muted)}
+.fx-pill[aria-pressed="true"]{background:var(--tf);border-color:var(--tf);color:#fff}
+:root[data-theme="dark"] .fx-pill.t-none[aria-pressed="true"]{background:#F1F3F6;border-color:#F1F3F6;color:#0E1115}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fx-pill.t-none[aria-pressed="true"]{background:#F1F3F6;border-color:#F1F3F6;color:#0E1115}}
+.fx-pill[aria-pressed="true"] .n{background:rgba(255,255,255,.22);color:inherit}
+.fx-pill:focus-visible,.fx-rc:focus-visible,.fx-root:focus-visible,.fx-ib:focus-visible{outline:2.5px solid var(--link);outline-offset:2px}
+.fx-hero{position:relative;overflow:hidden;border-radius:18px;border:1px solid rgba(255,255,255,.08);padding:13px 15px 11px;color:#fff;background:linear-gradient(160deg,#1C2331 0%,#0B0F16 100%)}
+.fx-hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
+.fx-hero .glow{position:absolute;right:-50px;top:-60px;width:170px;height:170px;border-radius:50%;background:var(--tf);filter:blur(46px);opacity:.55;transition:background .25s}
+.fx-hero.t-none .glow{opacity:0}
+.fx-hero > *:not(.glow){position:relative}
+.fx-r1{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;font-weight:750;letter-spacing:.07em;color:rgba(255,255,255,.62)}
+.fx-badge{background:rgba(255,255,255,.1);color:#fff;border-radius:6px;padding:4px 7px;font-size:9px;letter-spacing:.05em}
+.fx-rec{display:flex;align-items:flex-end;gap:12px;margin:12px 0 12px}
+.fx-rec b{font-size:64px;line-height:.78;font-weight:900;font-variation-settings:"wdth" 62;letter-spacing:-.01em;white-space:nowrap}
+.fx-wr strong{display:block;font-size:19px;font-weight:900;font-variation-settings:"wdth" 64;line-height:1;letter-spacing:.01em}
+.fx-wr span{font-size:10.5px;color:rgba(255,255,255,.6)}
+.fx-last{display:flex;align-items:center;gap:7px;border-top:1px solid rgba(255,255,255,.1);padding-top:10px;font-size:11.5px;font-weight:650;cursor:pointer}
+.fx-last i{width:6px;height:6px;border-radius:50%;background:#EF4444;display:block}
+.fx-last .ico{width:16px;height:16px;margin-left:auto}
+.fx-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 18px}
+.fx-rc{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:9px 10px 10px;text-align:left;cursor:pointer;color:var(--ink)}
+.fx-rc .lb{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:750;color:var(--t)}
+.fx-rc .lb i{width:6px;height:6px;border-radius:50%;background:var(--t);display:block}
+.fx-rc.neutral .lb{color:var(--muted)} .fx-rc.neutral .lb i{background:var(--muted)}
+.fx-rc b{display:block;font-size:27px;font-weight:900;font-variation-settings:"wdth" 62;margin:7px 0 3px;line-height:1}
+.fx-rc .p{font-size:10px;color:var(--muted)}
+.fx-sh{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 10px}
+.fx-sh h3{font-size:17px;font-weight:900;font-variation-settings:"wdth" 62;text-transform:uppercase;margin:0;letter-spacing:.01em}
+.fx-sh a{font-size:11.5px;color:var(--link);font-weight:750;text-decoration:none}
+.fx-stamps{display:flex;gap:4px;overflow-x:auto;margin:0 -16px 18px;padding:0 16px;scrollbar-width:none}
+.fx-stamp{flex:0 0 auto;width:98px;text-align:center}
+.fx-stamp svg{width:78px;height:78px;display:block;margin:0 auto 6px}
+.fx-stamp b{display:block;font-size:10.5px;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-stamp span{font-size:8.5px;color:var(--muted);letter-spacing:.05em;font-weight:650}
+.fx-list{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:2px 12px}
+.fx-li{display:flex;align-items:center;gap:11px;padding:11px 0;border-top:1px solid var(--line)}
+.fx-li:first-child{border-top:0}
+.fx-li > .ico{width:19px;height:19px}
+.fx-li .tx{flex:1;min-width:0}
+.fx-li .tx small{display:block;font-size:10.5px;color:var(--muted)}
+.fx-li .tx b{display:block;font-size:14.5px;font-weight:850;margin-top:1px}
+.fx-chip{font-size:10px;font-weight:650;border:1px solid var(--line);border-radius:6px;padding:3px 7px;background:var(--surface);white-space:nowrap}
+
+.fx-title{font-size:28px;font-weight:850;margin:0;letter-spacing:-.01em}
+.fx-search{white-space:nowrap;overflow:hidden;display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:9px 11px;font-size:12.5px;color:var(--muted);margin:12px 0 10px}
+.fx-search .ico{width:16px;height:16px}
+.fx-seg{display:flex;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:3px;margin-bottom:12px}
+.fx-seg button{flex:1;border:0;background:transparent;font-size:12.5px;padding:6px;border-radius:7px;color:var(--muted);cursor:pointer}
+.fx-seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:750}
+.fx-row{display:flex;align-items:center;gap:11px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;cursor:pointer}
+.fx-th{width:42px;height:42px;border-radius:9px;overflow:hidden;flex:0 0 auto;display:block}
+.fx-row .tx{flex:1;min-width:0}
+.fx-row .tx b{font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.fx-row .tx b .ico{width:14px;height:14px;color:var(--good)}
+.fx-row .tx > span{display:block;font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-row .avs{margin-top:5px}
+.fx-row .avs svg{width:17px;height:17px;border-color:var(--card)}
+.fx-row .avs small{font-size:11px}
+.fx-res{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:900;color:#fff;flex:0 0 auto}
+.fx-res.w{background:var(--good)} .fx-res.l{background:var(--bad)}
+
+.fx-top{display:flex;align-items:center;gap:8px;margin:10px 0 14px;font-size:11px}
+.fx-live{display:inline-flex;gap:5px;align-items:center;border:1.5px solid var(--good);color:var(--good);border-radius:6px;padding:3px 7px;font-weight:850;font-size:9.5px;letter-spacing:.05em}
+.fx-live i{width:6px;height:6px;border-radius:50%;background:var(--good);display:block;animation:pulse 1.6s infinite}
+.fx-at{color:var(--muted);flex:1;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-lock{border:1.5px solid var(--warn);color:var(--warn);border-radius:6px;padding:3px 7px;font-weight:850;font-size:9.5px;letter-spacing:.05em;white-space:nowrap}
+.fx-h1{font-size:31px;font-weight:850;margin:0 0 6px;letter-spacing:-.01em}
+.fx-ex{font-size:12.5px;color:var(--muted);line-height:1.45;margin:0}
+.fx-mu{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;text-align:center;margin:20px 0 16px}
+.fx-bd{width:62px;height:62px;border-radius:50%;background:var(--tf);border:3px solid var(--t2);display:grid;place-items:center;color:#fff;font-weight:900;font-size:17px;margin:0 auto;font-variation-settings:"wdth" 80}
+.fx-mu b{display:block;font-size:14px;font-weight:800;margin-top:8px}
+.fx-mu span{font-size:10.5px;color:var(--muted)}
+.fx-vs{font-style:italic;font-weight:850;color:var(--muted);font-size:14px}
+.fx-wp{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--surface)}
+.fx-wp i{display:block;height:100%;background:var(--tf)}
+.fx-wpl{display:flex;justify-content:space-between;font-size:11px;font-weight:750;margin:7px 0 16px}
+.fx-root{width:100%;border-radius:10px;padding:13px;font-weight:800;font-size:14px;background:var(--tf);color:#fff;border:1.5px solid var(--t2);margin-bottom:10px;cursor:pointer;display:flex;justify-content:center;gap:8px;align-items:center;transition:opacity .2s}
+.fx-root .ico{width:17px;height:17px;display:none}
+.fx-root[aria-pressed="true"] .ico{display:block}
+.fx-root[aria-pressed="true"]{box-shadow:0 0 0 2px var(--canvas),0 0 0 4px var(--t2)}
+.fx-pick.has-pick .fx-root[aria-pressed="false"]{opacity:.5}
+.fx-sth{display:flex;gap:6px;align-items:center;font-weight:850;font-size:13.5px;margin:14px 0 8px}
+.fx-sth .ico{width:16px;height:16px}
+.fx-story{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;margin-bottom:8px;font-size:12.5px;font-weight:650;line-height:1.35}
+.fx-story small{display:block;margin-top:5px;font-size:9.5px;font-weight:750;color:var(--muted);letter-spacing:.06em}
+
+@media (prefers-reduced-motion: reduce){.live::before,.fx-live i{animation:none}.panel,.hero{transition:none}}
+</style>
+</head>
+<body>
+
+<!-- Icon sprite: original line icons, 24px grid -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-passport" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><circle cx="12" cy="10.5" r="3.2"/><path d="M8.8 10.5h6.4M12 7.3c1 .9 1.4 2 1.4 3.2s-.4 2.3-1.4 3.2M12 7.3c-1 .9-1.4 2-1.4 3.2s.4 2.3 1.4 3.2M9 17h6"/></symbol>
+ <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8.5V6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v2a2.5 2.5 0 0 0 0 5v2a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 15.5v-2a2.5 2.5 0 0 0 0-5z"/><path d="M15 5v2M15 11v2M15 17v1"/></symbol>
+ <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><path d="M18 11.5c1.9-2 3-3.5 3-5a3 3 0 0 0-6 0c0 1.5 1.1 3 3 5z"/><circle cx="18" cy="6.5" r=".6"/><path d="M8 18h7.5a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h2"/></symbol>
+ <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-3.8 4.1-5.6 7.5-5.6s6.3 1.8 7.5 5.6"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+ <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5v-6"/></symbol>
+ <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+ <symbol id="i-verified" viewBox="0 0 24 24"><path d="M12 2.8 14.3 4.5l2.8-.2.9 2.7 2.3 1.7-.9 2.7.9 2.7-2.3 1.7-.9 2.7-2.8-.2L12 21.2l-2.3-1.7-2.8.2-.9-2.7-2.3-1.7.9-2.7-.9-2.7 2.3-1.7.9-2.7 2.8.2z"/><path d="m8.8 12.2 2.2 2.2 4.3-4.6"/></symbol>
+ <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+ <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9.5 5.5 6.5 6.5-6.5 6.5"/></symbol>
+ <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+ <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16.5V12l2-5h12l2 5v4.5z"/><path d="M4 12h16"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/></symbol>
+ <symbol id="i-grill" viewBox="0 0 24 24"><path d="M4.5 9.5h15a7.5 7.5 0 0 1-15 0z"/><path d="M8 17l-2 4M16 17l2 4M9 6c0-1.2 1-1.5 1-2.8M13 6c0-1.2 1-1.5 1-2.8"/></symbol>
+ <symbol id="i-gate" viewBox="0 0 24 24"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M8 21v-9a4 4 0 0 1 8 0v9M3 21h18"/></symbol>
+ <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M5.5 4.5h11l-2 3.5 2 3.5h-11"/></symbol>
+ <symbol id="i-food" viewBox="0 0 24 24"><path d="M7 3v7.5a2 2 0 0 0 4 0V3M9 12.5V21M17 21V3c-2 1.5-3 4-3 7.5h3"/></symbol>
+ <symbol id="i-door" viewBox="0 0 24 24"><path d="M6 21V4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21M4 21h16"/><circle cx="14.5" cy="12.5" r=".9"/></symbol>
+ <symbol id="i-seat" viewBox="0 0 24 24"><path d="M7 12V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v6"/><path d="M5 12h14v4H5zM7 16v5M17 16v5"/></symbol>
+ <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M10 14.5V5a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0z"/><path d="M12 17.5V10"/></symbol>
+ <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+ <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 5 13.5h6l-1 8 8-11h-6z"/></symbol>
+ <symbol id="i-trend" viewBox="0 0 24 24"><path d="m3.5 17 6-6 4 4 7-7.5"/><path d="M15 7.5h5.5V13"/></symbol>
+ <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+ <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.3"/><path d="M3 19.5c.9-3 3.2-4.5 6-4.5s5.1 1.5 6 4.5"/><path d="M15.5 5.8a3.3 3.3 0 0 1 0 6.4M17.5 15.2c1.7.5 3 1.9 3.5 4.3"/></symbol>
+ <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></symbol>
+ <symbol id="i-map" viewBox="0 0 24 24"><path d="m3.5 6 5.5-2.5 6 2.5 5.5-2.5v14.5L15 20.5 9 18l-5.5 2.5z"/><path d="M9 3.5V18M15 6v14.5"/></symbol>
+ <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></symbol>
+ <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5v-3l-2.1-.5-.6-1.4 1.1-1.9-2.1-2.1-1.9 1.1-1.4-.6L11.5 3h-3l-.5 2.1-1.4.6-1.9-1.1-2.1 2.1 1.1 1.9-.6 1.4-2.1.5v3l2.1.5.6 1.4-1.1 1.9 2.1 2.1 1.9-1.1 1.4.6.5 2.1h3l.5-2.1 1.4-.6 1.9 1.1 2.1-2.1-1.1-1.9.6-1.4z" transform="translate(1.5 0)"/></symbol>
+ <symbol id="i-swords" viewBox="0 0 24 24"><path d="M3.5 3.5h4l9 9M20.5 3.5h-4l-9 9M13.5 15.5l5 5M10.5 15.5l-5 5M15 19l4-4M9 19l-4-4"/></symbol>
+ <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+ <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.3l1.5-2.5h5.4L16.2 7h2.3A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.8" r="3.4"/></symbol>
+ <symbol id="i-news" viewBox="0 0 24 24"><path d="M5 5.5h11v13H6.5A1.5 1.5 0 0 1 5 17z"/><path d="M16 9h3v8.5a1.5 1.5 0 0 1-3 0M8 9h5M8 12.5h5M8 16h3"/></symbol>
+ <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18.3 6.5a8 8 0 0 1 0 11"/></symbol>
+ <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10.2 5.2 7.6 4.5 4 4.5v14c3.6 0 6.2.7 8 2 1.8-1.3 4.4-2 8-2v-14c-3.6 0-6.2.7-8 2zM12 6.5v14"/></symbol>
+ <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.3 12.2 2.5 2.5 4.9-5.2"/></symbol>
+ <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+
+<header class="intro">
+  <div>
+    <h1>Jinx</h1>
+    <p>UI reference v4. Passport, Pick a side, and Games follow the Figma design, with corrections applied. The other screens are from v3. Scroll sideways. Try the team pills and record cards on Passport, the pick buttons, Relive, the guide tabs, and Friends on Profile. All data is sample data.</p>
+  </div>
+  <div class="theme" role="group" aria-label="Color theme">
+    <button data-mode="system" aria-pressed="true">System</button>
+    <button data-mode="light" aria-pressed="false">Light</button>
+    <button data-mode="dark" aria-pressed="false">Dark</button>
+  </div>
+</header>
+
+<main class="rail" aria-label="App screens">
+
+<!-- 1 PASSPORT (from Figma) -->
+<figure class="shot">
+ <div class="phone"><div class="scr fx t-none" id="passport">
+  <div class="status"><span>9:41</span><span>5G</span></div>
+  <div class="body">
+   <div class="fx-head"><div><div class="fx-word">JINX</div><div class="fx-sub">FAN PASSPORT</div></div><div class="row" style="gap:8px"><button class="fx-ib" aria-label="Notifications"><svg class="ico"><use href="#i-bell"/></svg></button><button class="fx-ib" aria-label="Profile"><svg class="ico"><use href="#i-user"/></svg></button></div></div>
+   <div class="fx-pills" role="group" aria-label="Team filter">
+    <button class="fx-pill t-none" data-team="all" aria-pressed="true">All Teams<span class="n">48</span></button>
+    <button class="fx-pill t-phi" data-team="phi" aria-pressed="false">Phillies<span class="n">17</span></button>
+    <button class="fx-pill t-phl" data-team="phl" aria-pressed="false">Eagles<span class="n">8</span></button>
+   </div>
+   <div class="fx-hero t-none" id="fxHero">
+    <span class="glow"></span>
+    <div class="fx-r1"><span id="hLbl">LIFETIME RECORD</span><span class="fx-badge" id="hBadge">48 GAMES ATTENDED</span></div>
+    <div class="fx-rec"><b id="hRec">31 – 17</b><div class="fx-wr"><strong id="hWr">WIN RATE .646</strong><span id="hStreak">+3 game win streak</span></div></div>
+    <div class="fx-last"><i></i><span id="hLast">Last Game: PHI 4 – 2 NYM</span><svg class="ico"><use href="#i-chev-r"/></svg></div>
+   </div>
+   <div class="fx-cards" id="tiles"></div>
+   <div class="fx-sh"><h3>Stadium stamps</h3><a href="#" onclick="return false" id="stampCount">View All (8)</a></div>
+   <div class="fx-stamps" id="stamps"></div>
+   <div class="fx-sh"><h3>Fan superlatives</h3></div>
+   <div class="fx-list" id="supers"></div>
+  </div>
+  <nav class="tabs"><span class="on"><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+  <div class="panel" id="logPanel" aria-hidden="true">
+   <div class="status"><span>7:42</span><span>5G</span></div>
+   <div class="body">
+    <div class="top"><div class="row"><button class="iconbtn" id="closeLog" aria-label="Back to passport"><svg class="ico"><use href="#i-chev-l"/></svg></button><h2 style="font-size:22px" id="logTitle">Game log</h2></div><button class="iconbtn" aria-label="Share"><svg class="ico"><use href="#i-share"/></svg></button></div>
+    <div class="loghead" id="logHead"><span id="logSub"></span><b id="logRec"></b><span id="logMeta"></span></div>
+    <ul class="list" id="logList"></ul>
+    <div class="more" id="logMore"></div>
+   </div>
+   <nav class="tabs"><span class="on"><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+  </div>
+ </div></div>
+ <figcaption><b>Passport</b>From the Figma design. Team pills filter the whole screen and tint the record card. Tap a record card for its game log.</figcaption>
+</figure>
+
+<!-- 2 PICK A SIDE (from Figma) -->
+<figure class="shot">
+ <div class="phone"><div class="scr fx t-none">
+  <div class="status"><span>9:41</span><span>5G</span></div>
+  <div class="body">
+   <div class="fx-top"><span class="fx-live"><i></i>LIVE</span><span class="fx-at">At Petco Park</span><span class="fx-lock">LOCKS IN <span id="clock">12:34</span></span></div>
+   <h2 class="fx-h1">Pick a side</h2>
+   <p class="fx-ex">You don't follow either team. Pick who you're rooting for. It counts toward your neutral record.</p>
+   <div class="fx-mu">
+    <div class="t-nym"><div class="fx-bd">NYM</div><b>Mets</b><span>68–54</span></div>
+    <div class="fx-vs">vs</div>
+    <div class="t-sd"><div class="fx-bd">SD</div><b>Padres</b><span>70–53</span></div>
+   </div>
+   <div class="fx-wp"><i class="t-nym" style="width:58%"></i><i class="t-sd" style="width:42%"></i></div>
+   <div class="fx-wpl"><span>58% Win Prob</span><span>42%</span></div>
+   <div class="fx-pick" id="fxPick">
+    <button class="fx-root t-nym" aria-pressed="false" data-team="Mets" data-p="0.58"><svg class="ico"><use href="#i-check-c"/></svg>Root for NY Mets</button>
+    <button class="fx-root t-sd" aria-pressed="false" data-team="Padres" data-p="0.42"><svg class="ico"><use href="#i-check-c"/></svg>Root for SD Padres</button>
+   </div>
+   <div class="confirm" id="confirm" role="status"><svg class="ico" style="color:var(--good)"><use href="#i-lock"/></svg><span id="confirmTx"></span></div>
+   <div class="fx-sth"><svg class="ico"><use href="#i-book"/></svg>Storylines</div>
+   <div class="fx-story">Mets look to extend a 4-game winning streak on the road.<small>FROM RESULTS</small></div>
+   <div class="fx-story">Padres probable starter makes his first start of the season.<small>PROBABLE STARTERS</small></div>
+  </div>
+  <nav class="tabs"><span><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span class="on"><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+ </div></div>
+ <figcaption><b>Pick a side</b>From the Figma design, with the storyline sources and stadium corrected. Tap a button to pick; the other dims.</figcaption>
+</figure>
+
+<!-- 3 GAMES (from Figma) -->
+<figure class="shot">
+ <div class="phone"><div class="scr fx t-none">
+  <div class="status"><span>9:41</span><span>5G</span></div>
+  <div class="body">
+   <div class="fx-head" style="margin-bottom:0"><h2 class="fx-title">Games</h2><button class="fx-ib" aria-label="Log a game"><svg class="ico"><use href="#i-plus"/></svg></button></div>
+   <div class="fx-search"><svg class="ico"><use href="#i-search"/></svg>Search attended games, stadiums, teams...</div>
+   <div class="fx-seg" role="tablist"><button role="tab" aria-selected="true">History</button><button role="tab" aria-selected="false">Upcoming</button><button role="tab" aria-selected="false">Imports</button></div>
+   <div id="games"></div>
+  </div>
+  <nav class="tabs"><span><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span class="on"><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+ </div></div>
+ <figcaption><b>Games</b>From the Figma design. Thumbnails use the stadium's art until you add your own photo from that game. Tap a game to relive it.</figcaption>
+</figure>
+
+<!-- 3b RELIVE -->
+<figure class="shot">
+ <div class="phone"><div class="scr t-phi">
+  <div class="status"><span>10:14</span><span>5G</span></div>
+  <div class="body">
+   <div class="top"><div class="row"><button class="iconbtn" aria-label="Back"><svg class="ico"><use href="#i-chev-l"/></svg></button><h2 style="font-size:22px">Relive</h2></div><button class="iconbtn" aria-label="Share"><svg class="ico"><use href="#i-share"/></svg></button></div>
+   <div class="scorebug">
+    <div class="tm t-nym"><span class="fx-bd">NYM</span>Mets</div>
+    <div class="sc"><span id="rvScore">0 – 0</span><small id="rvInning">Pregame</small></div>
+    <div class="tm t-phi"><span class="fx-bd">PHI</span>Phillies</div>
+   </div>
+   <p class="note" style="text-align:center;margin:8px 0 0">Aug 14, 2025, Citizens Bank Park, Section 321 with Dad and Maya</p>
+   <div class="player">
+    <button class="playbtn" id="rvPlay" aria-label="Play the game story"><svg viewBox="0 0 24 24"><path id="rvIcon" d="M8 5.5v13l10.5-6.5z"/></svg></button>
+    <div class="storycard" id="rvStory" aria-live="polite"><small>Tap play to relive it</small>Phillies were 55% to win before first pitch.</div>
+   </div>
+   <svg class="chart" viewBox="0 0 300 92" preserveAspectRatio="none" aria-label="Phillies win probability over the game">
+    <line x1="0" y1="46" x2="300" y2="46" stroke="var(--line)" stroke-dasharray="3 4"/>
+    <polyline id="rvLine" fill="none" stroke="var(--t)" stroke-width="2.5" stroke-linejoin="round" points=""/>
+    <circle id="rvDot" r="4.5" fill="var(--t)" cx="0" cy="41"/>
+   </svg>
+   <div class="wplbl" style="margin-top:2px"><span class="dog">1st</span><span class="dog">Phillies win probability</span><span class="dog">9th</span></div>
+   <div class="sec"><h3>Your photos</h3><a href="#" onclick="return false">Add</a></div>
+   <div class="photos" id="rvPhotos"></div>
+   <div class="sec"><h3>From fans at this game</h3><a href="#" onclick="return false">23</a></div>
+   <div class="photos" id="rvFans"></div>
+   <ul class="list" style="margin-top:8px">
+    <li class="li"><span class="ic"><svg class="ico"><use href="#i-eye"/></svg></span><span class="tx"><b>Official highlights</b><span>Opens in the league's video site</span></span><svg class="ico muted"><use href="#i-ext"/></svg></li>
+   </ul>
+  </div>
+  <nav class="tabs"><span><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span class="on"><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+ </div></div>
+ <figcaption><b>Relive</b>Opens from any game. Press play to step through the scoring as a story with the win probability line, then your photos and other fans'.</figcaption>
+</figure>
+
+<!-- 4 PLAN -->
+<figure class="shot">
+ <div class="phone"><div class="scr t-phl">
+  <div class="status"><span>9:15</span><span>5G</span></div>
+  <div class="body">
+   <div class="top"><h2>Game day</h2><button class="iconbtn" aria-label="Share plan"><svg class="ico"><use href="#i-share"/></svg></button></div>
+   <div class="ticket">
+    <span class="stripe"></span>
+    <b>Eagles at Rams</b>
+    <div class="t">Sunday, 1:25 PM, SoFi Stadium</div>
+    <div class="seat"><span>Section<strong>121</strong></span><span>Row<strong>14</strong></span><span>Seat<strong>7</strong></span><span>Gate<strong>3</strong></span></div>
+   </div>
+   <div class="avs"><span id="planAvs" style="display:flex"></span><small>Going with Maya and Jordan</small></div>
+   <ol class="tl" style="margin-top:14px">
+    <li class="now"><span class="ic"><svg class="ico"><use href="#i-car"/></svg></span><div><time>9:45 AM</time><p>Leave home. 41 min with Sunday traffic.</p></div></li>
+    <li><span class="ic"><svg class="ico"><use href="#i-grill"/></svg></span><div><time>10:30 AM</time><p>Park in Lot L. Eagles fans tailgate at the north end.</p></div></li>
+    <li><span class="ic"><svg class="ico"><use href="#i-gate"/></svg></span><div><time>12:40 PM</time><p>Enter at Gate 3, the shortest line for Section 121.</p></div></li>
+    <li><span class="ic"><svg class="ico"><use href="#i-flag"/></svg></span><div><time>5:30 PM</time><p>Post-game at an Eagles bar in Santa Monica. 34 fans going.</p></div></li>
+   </ol>
+  </div>
+  <nav class="tabs"><span><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span class="on"><svg class="ico"><use href="#i-map"/></svg>Plan</span><span><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+ </div></div>
+ <figcaption><b>Game day plan</b>Themed to the team you're rooting for, even at an away stadium. (Later phase, kept here for the concept.)</figcaption>
+</figure>
+
+<!-- 5 GUIDE -->
+<figure class="shot">
+ <div class="phone"><div class="scr t-phi">
+  <div class="status"><span>6:20</span><span>5G</span></div>
+  <div class="body">
+   <div class="top"><button class="iconbtn" aria-label="Back"><svg class="ico"><use href="#i-chev-l"/></svg></button><button class="iconbtn" aria-label="Share"><svg class="ico"><use href="#i-share"/></svg></button></div>
+   <div class="vhero"><svg viewBox="0 0 64 64" fill="none" stroke-width="2" id="guideShape"></svg><div><b>Citizens Bank Park</b><span>Philadelphia, home of the Phillies</span><div class="avs"><span id="guideAvs" style="display:flex"></span><small>You and 12 friends visited</small></div></div></div>
+   <div class="seg" role="tablist" aria-label="Guide sections">
+    <button role="tab" aria-selected="true" data-tab="food">Food</button>
+    <button role="tab" aria-selected="false" data-tab="bath">Bathrooms</button>
+    <button role="tab" aria-selected="false" data-tab="seats">Seats</button>
+   </div>
+   <ul class="list" id="guide"></ul>
+  </div>
+  <nav class="tabs"><span><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span class="on"><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+ </div></div>
+ <figcaption><b>Stadium guide</b>The most direct Beli borrow: ranked rows with score circles, green to red. (Later phase.)</figcaption>
+</figure>
+
+<!-- 6 PROFILE + FRIENDS -->
+<figure class="shot">
+ <div class="phone"><div class="scr t-phi">
+  <div class="status"><span>11:02</span><span>5G</span></div>
+  <div class="body">
+   <div class="top"><h2 style="font-size:20px">@deanyao</h2><button class="iconbtn" aria-label="Settings"><svg class="ico"><use href="#i-gear"/></svg></button></div>
+   <div class="prof">
+    <div class="pfp" id="myPfp"></div>
+    <h4>Dean Yao</h4>
+    <div class="h">Philly fan in Los Angeles</div>
+    <div class="chips"><span class="tchip t-phi"><i></i>Phillies</span><span class="tchip t-phl"><i></i>Eagles</span></div>
+   </div>
+   <div class="stats"><div><b>48</b><span>Games</span></div><div><b>14</b><span>Stadiums</span></div><div><b>132</b><span>Followers</span></div><div><b>98</b><span>Following</span></div></div>
+   <div>
+    <button class="navrow" id="openFriends"><span class="ic"><svg class="ico"><use href="#i-users"/></svg></span><span class="tx"><b>Friends</b><span>Companions, rivals, overlaps</span></span><span class="facepile" id="pile"></span><svg class="ico muted"><use href="#i-chev-r"/></svg></button>
+    <button class="navrow"><span class="ic"><svg class="ico"><use href="#i-target"/></svg></span><span class="tx"><b>2026 goals</b><span>2 of 3 in progress</span></span><svg class="ico muted"><use href="#i-chev-r"/></svg></button>
+    <button class="navrow"><span class="ic"><svg class="ico"><use href="#i-map"/></svg></span><span class="tx"><b>Map</b><span>14 stadiums, 3 countries</span></span><svg class="ico muted"><use href="#i-chev-r"/></svg></button>
+    <button class="navrow"><span class="ic"><svg class="ico"><use href="#i-spark"/></svg></span><span class="tx"><b>2025 Wrapped</b><span>MLB and NFL</span></span><svg class="ico muted"><use href="#i-chev-r"/></svg></button>
+   </div>
+  </div>
+  <nav class="tabs"><span><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span class="on"><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+
+  <!-- Friends panel -->
+  <div class="panel" id="friends" aria-hidden="true">
+   <div class="status"><span>11:02</span><span>5G</span></div>
+   <div class="body">
+    <div class="top"><div class="row"><button class="iconbtn" id="closeFriends" aria-label="Back to profile"><svg class="ico"><use href="#i-chev-l"/></svg></button><h2 style="font-size:24px">Friends</h2></div><button class="iconbtn" aria-label="Find people"><svg class="ico"><use href="#i-search"/></svg></button></div>
+    <div class="seg" role="tablist"><button role="tab" aria-selected="true">With</button><button role="tab" aria-selected="false">Following</button><button role="tab" aria-selected="false">Rivals</button></div>
+    <p class="note" style="margin:6px 0 2px">Your record when you go together</p>
+    <div id="friendList"></div>
+    <div class="card t-nym">
+     <p class="k">Rivalry with Jordan, Mets fan</p>
+     <div class="vs"><div><strong class="t-phi" style="color:var(--t)">5</strong><span>You</span></div><div class="note" style="display:flex;flex-direction:column;align-items:center;gap:2px"><svg class="ico"><use href="#i-swords"/></svg>Head to head</div><div><strong class="rv-them" style="color:var(--t)">3</strong><span>Jordan</span></div></div>
+    </div>
+    <div class="card">
+     <p class="k">Before you connected</p>
+     <div style="font-size:14px;line-height:1.45">You and Maya were both at Phillies vs Mets in August 2019, eleven sections apart.</div>
+    </div>
+   </div>
+   <nav class="tabs"><span><svg class="ico"><use href="#i-passport"/></svg>Passport</span><span><svg class="ico"><use href="#i-ticket"/></svg>Games</span><span><svg class="ico"><use href="#i-map"/></svg>Plan</span><span class="on"><svg class="ico"><use href="#i-user"/></svg>Profile</span></nav>
+  </div>
+ </div></div>
+ <figcaption><b>Profile and Friends</b>Friends opens as a panel from Profile. Everyone appears as the profile photo they set, ringed in their team's color.</figcaption>
+</figure>
+
+</main>
+
+<script>
+(function(){
+  var $ = function(s,r){return (r||document).querySelector(s)}, $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  /* Theme toggle */
+  $$('.theme button').forEach(function(b){
+    b.addEventListener('click', function(){
+      $$('.theme button').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      b.setAttribute('aria-pressed','true');
+      var m=b.dataset.mode;
+      if(m==='system') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',m);
+    });
+  });
+
+  /* Stylized stadium footprints (placeholders; production would trace real outlines) */
+  var SHAPES = {
+    ballparkA:'<path d="M32 58 6 35Q8 13 31 8q21 1 27 22l-6 6z"/><path d="M32 50 16 36q4-14 16-16 12 2 16 16z" fill="currentColor" fill-opacity=".14"/><path d="m32 49-5-5 5-5 5 5z"/>',
+    dodger:'<path d="M32 58 12 39l7-6q13-7 26 0l7 6z"/><path d="M9 31Q32 2 55 31" stroke-dasharray="3 3"/><path d="m7 27 5-3 3 4-4 4zM57 27l-5-3-3 4 4 4z"/><path d="m32 50-5-5 5-5 5 5z"/>',
+    wrigley:'<rect x="8" y="8" width="48" height="48" rx="5"/><path d="M32 54 14 37q3-16 18-19 15 3 18 19z" fill="currentColor" fill-opacity=".14"/><path d="m32 48-4-4 4-4 4 4z"/>',
+    oracle:'<path d="M32 58 7 34Q10 12 32 8h14l10 20-6 8z"/><path d="M50 10q4 2 3 5t3 5M54 20q4 2 3 5" stroke-dasharray="2 3"/><path d="m32 49-5-5 5-5 5 5z"/>',
+    bowl:'<rect x="5" y="13" width="54" height="38" rx="17"/><rect x="17" y="22" width="30" height="20" rx="2" fill="currentColor" fill-opacity=".14"/><path d="M32 22v20"/>',
+    canopy:'<path d="M5 20q0-9 9-9h36q9 0 9 9v24q0 9-9 9H14q-9 0-9-9z"/><rect x="17" y="22" width="30" height="20" rx="2" fill="currentColor" fill-opacity=".14"/><path d="M5 20 17 22M59 20l-12 2M5 44l12-2M59 44l-12-2"/>',
+    colonnade:'<ellipse cx="32" cy="32" rx="26" ry="20"/><rect x="18" y="23" width="28" height="18" rx="2" fill="currentColor" fill-opacity=".14"/><path d="M10 22v20M13 18v28M51 18v28M54 22v20"/>'
+  };
+  function shapeSVG(key){return SHAPES[key]}
+
+  var uid=0;
+  function stamp(v){
+    uid++;
+    var id='arc'+uid, rot=(v.rot||0);
+    return '<div class="stamp '+v.team+(v.todo?' todo':'')+'" style="color:var(--t)">'+
+      '<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" style="transform:rotate('+rot+'deg)">'+
+      '<defs><path id="'+id+'" d="M16 50a34 34 0 0 1 68 0"/></defs>'+
+      '<circle cx="50" cy="50" r="46" stroke-width="2.6"'+(v.todo?' stroke-dasharray="4 4"':'')+'/><circle cx="50" cy="50" r="40.5" stroke-width="1" stroke-dasharray="1.5 2.5"/>'+
+      '<text font-size="8.2" font-weight="800" fill="currentColor" stroke="none" font-family="Archivo, sans-serif" letter-spacing=".4"><textPath href="#'+id+'" startOffset="50%" text-anchor="middle">'+v.short+'</textPath></text>'+
+      '<g transform="translate(29 34) scale(.66)" stroke-width="2.8">'+shapeSVG(v.shape)+'</g>'+
+      '<text x="50" y="86" font-size="8" font-weight="700" fill="currentColor" stroke="none" text-anchor="middle" font-family="Archivo, sans-serif">'+v.year+'</text>'+
+      '</svg><b>'+v.name+'</b><span>'+v.sub+'</span></div>';
+  }
+
+  /* Generated avatar placeholders (stand-ins for uploaded profile photos) */
+  var AV = {
+    dean:['#F3C9A5','#2B2118','#7FB3D5'], dad:['#D9A57A','#8A8A8A','#9BC7A6'], maya:['#C98A62','#3A2317','#E8B4C8'],
+    jordan:['#8D5A3B','#1D1D1D','#F2C26B'], priya:['#B97A55','#241612','#A7B8F0'], sam:['#F0CFB0','#C9772E','#B5DDD1']
+  };
+  function avatar(k){
+    var c=AV[k];
+    return '<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="'+c[2]+'"/>'+
+      '<path d="M6 42c1-9 7-13 14-13s13 4 14 13z" fill="'+c[1]+'" opacity=".85"/>'+
+      '<circle cx="20" cy="17" r="8" fill="'+c[0]+'"/><path d="M12 16c0-6 4-9 8-9s8 3 8 9c-2-3-5-4-8-4s-6 1-8 4z" fill="'+c[1]+'"/></svg>';
+  }
+
+  /* Passport (Figma layout) */
+  var STAMPS=[
+    {name:'Citizens Bank',city:'PHILADELPHIA',ring:'CITIZENS BANK PARK',shape:'ballparkA',metal:'brass',teams:['all','phi']},
+    {name:'Lincoln Financial',city:'PHILADELPHIA',ring:'LINCOLN FINANCIAL',shape:'bowl',metal:'brass',teams:['all','phl']},
+    {name:'Citi Field',city:'NEW YORK',ring:'CITI FIELD',shape:'ballparkA',metal:'silver',teams:['all','phi']},
+    {name:'Dodger Stadium',city:'LOS ANGELES',ring:'DODGER STADIUM',shape:'dodger',metal:'silver',teams:['all','phi']},
+    {name:'SoFi Stadium',city:'INGLEWOOD',ring:'SOFI STADIUM',shape:'canopy',metal:'silver',teams:['all','phl']},
+    {name:'MetLife Stadium',city:'EAST RUTHERFORD',ring:'METLIFE STADIUM',shape:'bowl',metal:'silver',teams:['all','phl']}
+  ];
+  var METAL={brass:['#F3EBD3','#D9C79C','#6E5A33'],silver:['#EEF0F2','#C5CAD0','#4A5260']};
+  var sealN=0;
+  function seal(v){
+    sealN++; var m=METAL[v.metal], g='sg'+sealN, rp='sr'+sealN;
+    return '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="'+g+'" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="'+m[0]+'"/><stop offset="1" stop-color="'+m[1]+'"/></radialGradient><path id="'+rp+'" d="M22 50a28 28 0 0 1 56 0"/></defs>'+
+      '<circle cx="50" cy="50" r="47" fill="none" stroke="var(--ink)" stroke-width="1.3" stroke-dasharray="3 2.6"/>'+
+      '<circle cx="50" cy="50" r="40" fill="url(#'+g+')" stroke="'+m[2]+'" stroke-width="1.4"/>'+
+      '<circle cx="50" cy="50" r="36" fill="none" stroke="'+m[2]+'" stroke-width=".8"/>'+
+      '<circle cx="50" cy="50" r="24" fill="none" stroke="'+m[2]+'" stroke-width="2.5" stroke-dasharray=".8 2.2" opacity=".55"/>'+
+      '<text font-size="6.4" font-weight="800" fill="'+m[2]+'" font-family="Archivo, sans-serif" letter-spacing=".5"><textPath href="#'+rp+'" startOffset="50%" text-anchor="middle">'+v.ring+'</textPath></text>'+
+      '<g transform="translate(35 36) scale(.47)" fill="none" stroke="'+m[2]+'" stroke-width="3" color="'+m[2]+'">'+SHAPES[v.shape]+'</g>'+
+      '<path d="M40 72h20" stroke="'+m[2]+'" stroke-width="1"/><circle cx="36" cy="72" r="1" fill="'+m[2]+'"/><circle cx="64" cy="72" r="1" fill="'+m[2]+'"/>'+
+      '</svg>';
+  }
+  var P={
+    all:{cls:'t-none',lbl:'LIFETIME RECORD',badge:'48 GAMES ATTENDED',rec:'31 – 17',wr:'.646',streak:'+3 game win streak',last:'Last Game: PHI 4 – 2 NYM',stampCount:'View All (8)',
+      cards:[['Phillies','12 – 5','.706 pct','t-phi','phi'],['Eagles','6 – 2','.750 pct','t-phl','phl'],['Neutral','10 – 9','.526 pct','neutral','neutral']],
+      supers:[['i-thermo','Coldest Recorded Game','-2 °F','Linc, Jan 2024'],['i-user','Most Seen Player','Bryce Harper','11 Games'],['i-speaker','Loudest Stadium Visited','98.4 dB','Citizens Bank']]},
+    phi:{cls:'t-phi',lbl:'PHILLIES RECORD',badge:'17 GAMES ATTENDED',rec:'12 – 5',wr:'.706',streak:'+2 game win streak',last:'Last Game: PHI 4 – 2 NYM',stampCount:'View All (4)',
+      cards:[['Home','9 – 3','.750 pct','t-phi','phiHome'],['Road','3 – 2','.600 pct','t-phi','phiRoad'],['With Dad','7 – 1','.875 pct','t-phi','dad']],
+      supers:[['i-user','Most Seen Phillie','Bryce Harper','11 Games'],['i-clock','Longest Game','4:41','13 inn, 2023'],['i-bolt','Walk-offs Witnessed','2','Citizens Bank']]},
+    phl:{cls:'t-phl',lbl:'EAGLES RECORD',badge:'8 GAMES ATTENDED',rec:'6 – 2',wr:'.750',streak:'+1 game win streak',last:'Last Game: PHI 24 – 27 LAR',stampCount:'View All (3)',
+      cards:[['Home','4 – 1','.800 pct','t-phl','phlHome'],['Road','2 – 1','.667 pct','t-phl','phlRoad'],['Playoffs','1 – 0','1.000 pct','t-phl','phlPost']],
+      supers:[['i-thermo','Coldest Recorded Game','-2 °F','Linc, Jan 2024'],['i-trend','Biggest Comeback','+17','vs DAL, 2022'],['i-user','Most Seen Eagle','Jalen Hurts','7 Games']]}
+  };
+  var root=$('#passport'), hero=$('#fxHero');
+  function renderPassport(k){
+    var d=P[k];
+    hero.className='fx-hero '+d.cls;
+    $('#hLbl').textContent=d.lbl; $('#hBadge').textContent=d.badge; $('#hRec').textContent=d.rec;
+    $('#hWr').textContent='WIN RATE '+d.wr; $('#hStreak').textContent=d.streak; $('#hLast').textContent=d.last;
+    $('#stampCount').textContent=d.stampCount;
+    $('#tiles').innerHTML=d.cards.map(function(c){
+      var cls=c[3]==='neutral'?'neutral t-none':c[3];
+      return '<button class="fx-rc '+cls+'" data-log="'+c[4]+'" data-rec="'+c[1]+'" data-name="'+c[0]+'"><span class="lb">'+c[0]+'<i></i></span><b>'+c[1]+'</b><span class="p">'+c[2]+'</span></button>';
+    }).join('');
+    $('#stamps').innerHTML=STAMPS.filter(function(v){return v.teams.indexOf(k)>-1}).map(function(v){return '<div class="fx-stamp">'+seal(v)+'<b>'+v.name+'</b><span>'+v.city+'</span></div>'}).join('');
+    $('#supers').innerHTML=d.supers.map(function(r){return '<div class="fx-li"><svg class="ico"><use href="#'+r[0]+'"/></svg><div class="tx"><small>'+r[1]+'</small><b>'+r[2]+'</b></div><span class="fx-chip">'+r[3]+'</span></div>'}).join('');
+  }
+  $$('#passport .fx-pill').forEach(function(p){
+    p.addEventListener('click',function(){
+      $$('#passport .fx-pill').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      p.setAttribute('aria-pressed','true'); renderPassport(p.dataset.team);
+    });
+  });
+  renderPassport('all');
+
+  /* Games list (Figma layout) */
+  var G=[
+    {team:'t-phi',shape:'ballparkA',title:'Mets 3, Phillies 5',meta:'Citizens Bank Park, Oct 12, 2024',with:['jordan','sam'],withTx:'w/ Alex, Marcus',res:'w'},
+    {team:'t-nyg',shape:'bowl',title:'Cowboys 27, Giants 20',meta:'MetLife Stadium, Sep 26, 2024',with:['maya'],withTx:'w/ Sarah',res:'w'},
+    {team:'t-lad',shape:'dodger',title:'Phillies 2, Dodgers 5',meta:'Dodger Stadium, May 18, 2024',with:['priya','maya','sam'],withTx:'w/ Chloe, David +1',res:'l'},
+    {team:'t-bos',shape:'wrigley',title:'Yankees 4, Red Sox 6',meta:'Fenway Park, Jun 15, 2024',with:[],withTx:'',res:'l'},
+    {team:'t-lv',shape:'canopy',title:'Chiefs 31, Raiders 17',meta:'Allegiant Stadium, Nov 26, 2023',with:['dad'],withTx:'w/ Dad',res:'w'}
+  ];
+  var thN=0;
+  function thumb(g){
+    thN++; var id='tg'+thN;
+    return '<svg class="fx-th '+g.team+'" viewBox="0 0 42 42" aria-hidden="true"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E1424"/><stop offset="1" stop-color="var(--tf)"/></linearGradient></defs>'+
+      '<rect width="42" height="42" fill="url(#'+id+')"/><circle cx="8" cy="8" r="1.2" fill="#FFF3C4"/><circle cx="34" cy="7" r="1.2" fill="#FFF3C4"/><circle cx="21" cy="5" r="1" fill="#FFF3C4" opacity=".7"/>'+
+      '<g transform="translate(9 11) scale(.37)" fill="none" stroke="#fff" stroke-width="3.4" color="#fff" opacity=".9">'+SHAPES[g.shape]+'</g></svg>';
+  }
+  $('#games').innerHTML=G.map(function(g){
+    return '<div class="fx-row">'+thumb(g)+'<div class="tx"><b>'+g.title+'<svg class="ico"><use href="#i-check-c"/></svg></b><span>'+g.meta+'</span>'+
+      (g.with.length?'<div class="avs">'+g.with.map(avatar).join('')+'<small>'+g.withTx+'</small></div>':'')+
+      '</div><span class="fx-res '+g.res+'">'+g.res.toUpperCase()+'</span></div>';
+  }).join('');
+
+  /* Plan avatars */
+  $('#planAvs').innerHTML=['dean','maya','jordan'].map(avatar).join('');
+
+  /* Guide */
+  $('#guideShape').innerHTML=shapeSVG('ballparkA');
+  $('#guideShape').parentNode.style.color='var(--t)';
+  $('#guideShape').setAttribute('stroke','currentColor');
+  $('#guideAvs').innerHTML=['maya','dad','priya'].map(avatar).join('');
+  var GD={
+    food:[['i-food','Cheesesteak','Stand near Section 104, 6 min line','9.2'],['i-food','Crab fries','Outfield concourse','8.7'],['i-food','Roast pork sandwich','Behind Section 141','8.4'],['i-food','Soft pretzel','Carts on every level','7.1'],['i-food','Nachos helmet','Section 120','5.8']],
+    bath:[['i-door','Near Section 132','Cleanest, about 2 min wait','9.0'],['i-door','Upper deck, 320s','Quiet after the 6th','8.1'],['i-door','Main gate concourse','Avoid between innings','4.3']],
+    seats:[['i-seat','Section 321, rows 1–5','Skyline view, shaded late','9.1'],['i-seat','Section 104','Close to the bullpen','8.6'],['i-seat','Section 142','Full sun at day games','6.2']]
+  };
+  function circCls(s){s=parseFloat(s);return s>=8?'s-hi':s>=6?'s-mid':'s-lo'}
+  function renderGuide(t){
+    $('#guide').innerHTML=GD[t].map(function(r){return '<li class="li"><span class="ic"><svg class="ico"><use href="#'+r[0]+'"/></svg></span><span class="tx"><b>'+r[1]+'</b><span>'+r[2]+'</span></span><span class="circ '+circCls(r[3])+'">'+r[3]+'</span></li>'}).join('');
+  }
+  $$('[data-tab]').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('[data-tab]').forEach(function(x){x.setAttribute('aria-selected','false')});
+      b.setAttribute('aria-selected','true'); renderGuide(b.dataset.tab);
+    });
+  });
+  renderGuide('food');
+
+
+  /* Pick a side (Figma layout) */
+  var secs=754, locked=false, clock=$('#clock');
+  var sides=$$('.fx-root'), pick=$('#fxPick');
+  var timer=setInterval(function(){
+    if(secs<=0){clearInterval(timer);locked=true;clock.textContent='0:00';sides.forEach(function(s){s.disabled=true});return;}
+    secs--; clock.textContent=Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');
+  },1000);
+  sides.forEach(function(b){
+    b.addEventListener('click',function(){
+      if(locked)return;
+      sides.forEach(function(s){s.setAttribute('aria-pressed','false')});
+      b.setAttribute('aria-pressed','true'); pick.classList.add('has-pick');
+      var p=parseFloat(b.dataset.p);
+      $('#confirmTx').textContent='You\'re rooting for the '+b.dataset.team+'. Switch anytime before it locks. A win adds +'+(1-p).toFixed(2)+' to your neutral record vs expected.';
+      $('#confirm').classList.add('show');
+    });
+  });
+
+  /* Record game logs */
+  var LOGS={
+    phi:{title:'Phillies',cls:'t-phi',sub:'Phillies record at games',meta:'17 games, .706',more:'10 more games',rows:[
+      ['t-phi','ballparkA','Phillies 6, Mets 3','Citizens Bank Park, Aug 14, 2025','w'],['t-phi','ballparkA','Phillies 4, Braves 1','Citizens Bank Park, Jul 3, 2025','w'],['t-lad','dodger','Phillies 2, Dodgers 5','Dodger Stadium, May 18, 2025','l'],['t-phi','ballparkA','Phillies 8, Marlins 2','Citizens Bank Park, Sep 1, 2024','w'],['t-sf','oracle','Phillies 5, Giants 4','Oracle Park, Jun 9, 2024','w'],['t-phi','ballparkA','Phillies 1, Cubs 3','Citizens Bank Park, Aug 20, 2023','l'],['t-phi','ballparkA','Phillies 7, Nationals 6','Citizens Bank Park, 13 innings, 2023','w']]},
+    phl:{title:'Eagles',cls:'t-phl',sub:'Eagles record at games',meta:'8 games, .750',more:'3 more games',rows:[
+      ['t-lar','canopy','Eagles 24, Rams 27','SoFi Stadium, Nov 24, 2024','l'],['t-phl','bowl','Eagles 31, Cowboys 28','Lincoln Financial Field, Dec 2022','w'],['t-phl','bowl','Eagles 38, Giants 7','Lincoln Financial Field, playoffs, Jan 2023','w'],['t-lar','canopy','Eagles 26, Rams 20','SoFi Stadium, Sep 2023','w'],['t-phl','bowl','Eagles 17, Commanders 20','Lincoln Financial Field, Oct 2021','l']]},
+    neutral:{title:'As a neutral',cls:'t-none',sub:'Record as a neutral',meta:'19 games, +2.4 vs expected',more:'13 more games',rows:[
+      ['t-lad','dodger','Picked Dodgers vs Giants','Won, picked at 58%, +0.42','w'],['t-chi','colonnade','Picked Bears vs Packers','Won, picked at 38%, +0.62','w'],['t-sf','oracle','Picked Giants vs Tigers','Lost, picked at 54%, −0.54','l'],['t-lar','canopy','Picked Rams vs 49ers','Won, picked at 41%, +0.59','w'],['t-lad','dodger','Picked Padres vs Dodgers','Lost, picked at 36%, −0.36','l'],['t-lar','canopy','Picked Chargers vs Chiefs','Lost, picked at 30%, −0.30','l']]}
+  };
+  ['phiHome','phiRoad','dad'].forEach(function(k){LOGS[k]=LOGS.phi});
+  ['phlHome','phlRoad','phlPost'].forEach(function(k){LOGS[k]=LOGS.phl});
+  var logPanel=$('#logPanel');
+  $('#tiles').addEventListener('click',function(e){
+    var t=e.target.closest('button[data-log]'); if(!t)return;
+    var L=LOGS[t.dataset.log]; if(!L)return;
+    var head=$('#logHead'); head.className='loghead '+(t.dataset.log==='neutral'?'t-none':L.cls);
+    $('#logTitle').textContent=t.dataset.name==='Neutral'?'As a neutral':t.dataset.name;
+    $('#logSub').textContent=L.sub; $('#logRec').textContent=t.dataset.rec; $('#logMeta').textContent=L.meta;
+    $('#logList').innerHTML=L.rows.map(function(r){
+      return '<li class="li"><span class="thumb '+r[0]+'" style="color:var(--t)"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6">'+SHAPES[r[1]]+'</svg></span><span class="tx"><b>'+r[2]+'</b><span>'+r[3]+'</span></span><span class="circ '+r[4]+'">'+r[4].toUpperCase()+'</span></li>';
+    }).join('');
+    $('#logMore').textContent=L.more;
+    logPanel.classList.add('open'); logPanel.setAttribute('aria-hidden','false'); $('#closeLog').focus();
+  });
+  $('#closeLog').addEventListener('click',function(){logPanel.classList.remove('open');logPanel.setAttribute('aria-hidden','true');});
+
+  /* Relive */
+  var WP=[.55,.53,.49,.44,.47,.62,.60,.58,.50,.52,.56,.86,.88,.87,.84,.95,.96,1];
+  function pt(i){return [(i/(WP.length-1))*292+4, 88-WP[i]*84]}
+  var STEPS=[
+    [0,'0 – 0','Pregame','Phillies were 55% to win before first pitch.'],
+    [3,'1 – 0','Top 2nd','Mets score first on a sacrifice fly.'],
+    [5,'1 – 2','Bottom 3rd','Two-run double puts the Phillies ahead. First high five with Dad.'],
+    [8,'2 – 2','Top 5th','Solo homer to left ties it.'],
+    [11,'2 – 5','Bottom 6th','Three-run homer into the seats below Section 321.'],
+    [14,'3 – 5','Top 8th','Mets get one back with two outs.'],
+    [15,'3 – 6','Bottom 8th','Insurance run on a bases-loaded walk.'],
+    [17,'3 – 6','Final','Phillies win. Your record with Dad goes to 7–1.']
+  ];
+  var line=$('#rvLine'), dot=$('#rvDot'), step=0, playing=null;
+  function drawTo(idx){
+    var pts=[]; for(var i=0;i<=idx;i++){var q=pt(i);pts.push(q[0].toFixed(1)+','+q[1].toFixed(1))}
+    line.setAttribute('points',pts.join(' ')); var q=pt(idx); dot.setAttribute('cx',q[0]); dot.setAttribute('cy',q[1]);
+  }
+  function show(k){
+    var st=STEPS[k]; drawTo(st[0]);
+    $('#rvScore').textContent=st[1]; $('#rvInning').textContent=st[2];
+    $('#rvStory').innerHTML='<small>'+st[2]+'</small>'+st[3];
+  }
+  function setIcon(p){$('#rvIcon').setAttribute('d',p?'M7 5.5h3.5v13H7zM13.5 5.5H17v13h-3.5z':'M8 5.5v13l10.5-6.5z')}
+  drawTo(0);
+  $('#rvPlay').addEventListener('click',function(){
+    if(playing){clearInterval(playing);playing=null;setIcon(false);return;}
+    if(step>=STEPS.length-1)step=-1;
+    setIcon(true);
+    var adv=function(){step++;show(step);if(step>=STEPS.length-1){clearInterval(playing);playing=null;setIcon(false);}};
+    adv(); playing=setInterval(adv,1700);
+  });
+
+  /* Placeholder photos */
+  function scene(kind,seed){
+    var sky=['#1D2B53','#243B6B','#3B2C5A'][seed%3];
+    if(kind==='selfie') return '<svg viewBox="0 0 90 90"><rect width="90" height="90" fill="'+sky+'"/><path d="M0 62h90v28H0z" fill="#2E7D4F"/><circle cx="12" cy="14" r="2" fill="#FFF6C8"/><circle cx="78" cy="10" r="2" fill="#FFF6C8"/>'+
+      '<g transform="translate(8 26) scale(1.05)">'+avatarRaw('dean')+'</g><g transform="translate(44 30) scale(.95)">'+avatarRaw('dad')+'</g></svg>';
+    if(kind==='field') return '<svg viewBox="0 0 90 90"><rect width="90" height="90" fill="'+sky+'"/><path d="M0 40h90v50H0z" fill="#2E7D4F"/><path d="M45 84 18 57l27-17 27 17z" fill="#C49A6C"/><path d="M45 76 30 61l15-10 15 10z" fill="#3A8D5C"/><path d="M8 40V18M82 40V18" stroke="#DDE3EA" stroke-width="2"/><rect x="3" y="12" width="10" height="6" fill="#FFF6C8"/><rect x="77" y="12" width="10" height="6" fill="#FFF6C8"/></svg>';
+    return '<svg viewBox="0 0 90 90"><rect width="90" height="90" fill="#101418"/><rect x="10" y="16" width="70" height="44" rx="4" fill="#1C232B" stroke="#3A444F"/><text x="45" y="45" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="20" fill="#FFD166">6 – 3</text><path d="M0 70h90v20H0z" fill="#2B2F36"/></svg>';
+  }
+  function avatarRaw(k){var c=AV[k];return '<rect width="40" height="40" rx="20" fill="'+c[2]+'"/><circle cx="20" cy="17" r="8" fill="'+c[0]+'"/><path d="M12 16c0-6 4-9 8-9s8 3 8 9c-2-3-5-4-8-4s-6 1-8 4z" fill="'+c[1]+'"/><path d="M8 40c1-7 6-10 12-10s11 3 12 10z" fill="'+c[1]+'"/>'}
+  $('#rvPhotos').innerHTML=scene('selfie',0)+scene('field',1)+'<div class="add"><svg class="ico"><use href="#i-camera"/></svg></div>';
+  $('#rvFans').innerHTML=scene('board',0)+scene('field',2)+scene('selfie',2);
+
+  /* Profile */
+  $('#myPfp').innerHTML=avatar('dean');
+  $('#pile').innerHTML=['dad','maya','jordan'].map(avatar).join('');
+  var F=[
+    {k:'dad',name:'Dad',team:'t-phi',teamName:'Phillies',sub:'11 games together',rec:'7–1',c:'var(--good)'},
+    {k:'maya',name:'Maya Chen',team:'t-phi',teamName:'Phillies',sub:'6 games together',rec:'4–2',c:'var(--ink)'},
+    {k:'priya',name:'Priya Nair',team:'t-lad',teamName:'Dodgers',sub:'4 games together',rec:'3–1',c:'var(--ink)'},
+    {k:'jordan',name:'Jordan Ellis',team:'t-nym',teamName:'Mets',sub:'4 games together',rec:'0–4',c:'var(--bad)'}
+  ];
+  $('#friendList').innerHTML=F.map(function(f){
+    return '<div class="fr '+f.team+'"><span class="pfp">'+avatar(f.k)+'</span><span class="tx"><b>'+f.name+'</b><span><i></i>'+f.teamName+', '+f.sub+'</span></span><span class="rec" style="color:'+f.c+'">'+f.rec+'</span></div>';
+  }).join('');
+  var panel=$('#friends');
+  $('#openFriends').addEventListener('click',function(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');$('#closeFriends').focus();});
+  $('#closeFriends').addEventListener('click',function(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');$('#openFriends').focus();});
+})();
+</script>
+</body>
+</html>
