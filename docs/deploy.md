@@ -123,8 +123,15 @@ npx tsx ingest/src/elo/run.ts --sport mlb && npx tsx ingest/src/elo/run.ts --spo
 
 ### 7. GitHub Actions secrets
 
-Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in the repository settings. They are used by
-`nfl-ingest.yml` (daily in season) and `daily-jobs.yml`. The `ci.yml` workflow needs no secrets.
+`nfl-ingest.yml` (daily in season) and `daily-jobs.yml` need `SUPABASE_URL` and
+`SUPABASE_SERVICE_ROLE_KEY`. `ci.yml` uses no secrets.
+
+Copy both values from the Supabase dashboard under Project Settings > API, then add them in the
+GitHub repository under Settings > Secrets and variables > Actions. Or run `gh secret set NAME`
+for each, which prompts for the value so it stays out of your shell history.
+
+The repository is public, which is fine for these two: both workflows trigger only on `schedule`
+and `workflow_dispatch`, never on `pull_request`, so a fork cannot reach the secrets.
 
 ### 8. EAS
 
