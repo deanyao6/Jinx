@@ -26,6 +26,7 @@ docs/             Spec attachments, verification notes, ADRs
 ## Commands
 ```
 npm install                 # workspaces: apps/mobile, packages/core, ingest
+npm run ios                 # build into the iOS Simulator (needs Xcode; see docs/simulator.md)
 npm test                    # all unit tests (core, ingest, mobile)
 npm run typecheck           # tsc across workspaces
 npm run lint
