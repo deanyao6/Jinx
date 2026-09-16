@@ -1,10 +1,17 @@
-import { formatRecord, formatVsExpected, formatWinRate, type WinLossRecord } from '@jinx/core';
+import {
+  formatRecord,
+  formatVsExpected,
+  formatWinRate,
+  gameResult,
+  type WinLossRecord,
+} from '@jinx/core';
 
 import { superlativeRows } from '@/features/passport/format';
 import type { StatsPayload, StatsStamp, StatsTeam } from '@/features/passport/types';
 
 import { demoRepository } from './demo';
 import type {
+  GameRowFixture,
   PassportFixture,
   RecordCardFixture,
   ShapeKey,
@@ -26,6 +33,7 @@ export const SUPABASE_BACKED: ReadonlySet<keyof Repository> = new Set([
   'passportPills',
   'passport',
   'stamps',
+  'games',
 ]);
 
 /**
@@ -74,6 +82,8 @@ export function lastGameLine(game: {
 
 export type PassportInputs = {
   stats: StatsPayload;
+  /** The user's attended games, most recent first. */
+  attendances?: readonly AttendanceRow[];
   /** Team lookup, for turning a full team name into the nickname a pill shows. */
   teams: ReadonlyMap<string, TeamRef>;
   /** Stadium shape per venue, from `venue_shapes`. */
@@ -236,6 +246,94 @@ export function stampsFromStats(inputs: PassportInputs, pill: string): StampFixt
     .map((stamp) => toStamp(stamp, shapes, homeVenueIds, ['all', pill]));
 }
 
+export type AttendanceRow = {
+  rooting_team_id: string | null;
+  game: {
+    id: string;
+    status: string;
+    scheduled_start: string;
+    home_team_id: string;
+    away_team_id: string;
+    home_score: number | null;
+    away_score: number | null;
+    home: { id: string; name: string; abbreviation: string } | null;
+    away: { id: string; name: string; abbreviation: string } | null;
+    venue: { id: string; name: string; city: string | null } | null;
+  };
+  companions: { person: { id: string; display_name: string } | null }[];
+};
+
+/**
+ * One row of the Games history list (SPEC.md 8.8.2).
+ *
+ * The row takes the HOME team's colours, because the thumbnail's gradient ends in that
+ * team's fill and the thumbnail is a picture of that stadium. The reference's own sample
+ * does the same: a Phillies game at Dodger Stadium is a Dodgers-blue row.
+ *
+ * The W/L circle is the result from the side the user was rooting for, which is why this
+ * calls `gameResult` from packages/core rather than comparing the scores here. A game with
+ * no rooting side, or one that is not final, has no result and shows no circle.
+ */
+export function gameRowFromAttendance(
+  attendance: AttendanceRow,
+  shapes: ReadonlyMap<string, ShapeKey>,
+  teams: ReadonlyMap<string, TeamRef>,
+): GameRowFixture | null {
+  const g = attendance.game;
+  if (!g.home || !g.away) return null;
+
+  const homeCity = teams.get(g.home.id)?.city ?? null;
+  const awayCity = teams.get(g.away.id)?.city ?? null;
+  const title =
+    g.home_score == null || g.away_score == null
+      ? `${nickname(g.away.name, awayCity)} at ${nickname(g.home.name, homeCity)}`
+      : `${nickname(g.away.name, awayCity)} ${g.away_score}, ${nickname(g.home.name, homeCity)} ${g.home_score}`;
+
+  const when = new Date(g.scheduled_start).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  const people = attendance.companions
+    .map((c) => c.person)
+    .filter((p): p is { id: string; display_name: string } => p != null);
+
+  const result = gameResult(
+    {
+      status: g.status as 'final',
+      homeTeamId: g.home_team_id,
+      awayTeamId: g.away_team_id,
+      homeScore: g.home_score,
+      awayScore: g.away_score,
+    } as Parameters<typeof gameResult>[0],
+    attendance.rooting_team_id,
+  );
+
+  return {
+    team: g.home.id,
+    shape: (g.venue && shapes.get(g.venue.id)) || 'ballparkA',
+    title,
+    meta: g.venue?.name ? `${g.venue.name}, ${when}` : when,
+    // Real people have their own profile photos; the generated avatar keys are a demo
+    // concern, so a person's id is passed through and the Avatar falls back to a
+    // generated one when there is no photo (SPEC.md 8.6).
+    withAvatars: people.slice(0, 3).map((p) => p.id),
+    withText: companionLine(people.map((p) => p.display_name)),
+    // `.fx-res` has only w and l, so a tie or an undecided game gets no circle rather
+    // than being mislabelled as a loss. See GameRowFixture.
+    result: result === 'win' ? 'w' : result === 'loss' ? 'l' : null,
+  };
+}
+
+/** `w/ Alex, Marcus` or `w/ Chloe, David +1`, as the reference writes them. */
+export function companionLine(names: readonly string[], shown = 2): string {
+  if (names.length === 0) return '';
+  const visible = names.slice(0, shown);
+  const extra = names.length - visible.length;
+  return `w/ ${visible.join(', ')}${extra > 0 ? ` +${extra}` : ''}`;
+}
+
 export type ReliveGame = {
   scheduled_start: string;
   home: { abbreviation: string; name: string; id: string } | null;
@@ -300,5 +398,9 @@ export function supabaseRepository(inputs: PassportInputs): Repository {
     passportPills: () => passportPillsFromStats(inputs),
     passport: (pill) => passportFromStats(inputs, pill),
     stamps: (pill) => stampsFromStats(inputs, pill),
+    games: () =>
+      (inputs.attendances ?? [])
+        .map((a) => gameRowFromAttendance(a, inputs.shapes, inputs.teams))
+        .filter((row): row is GameRowFixture => row != null),
   };
 }

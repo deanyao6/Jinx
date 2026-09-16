@@ -208,9 +208,16 @@ export type GameRowFixture = {
   title: string;
   meta: string;
   /** Avatar keys for the companions shown on the row. */
-  withAvatars: string[];
+  withAvatars: readonly string[];
   withText: string;
-  result: 'w' | 'l';
+  /**
+   * The filled W/L circle, or null when there is nothing to show.
+   *
+   * The reference's `.fx-res` has only `w` and `l` classes, so this design has no state
+   * for a tie or a game that is not final. NFL ties are real and SPEC.md 6.2 counts them,
+   * so rather than label a tie a loss, the circle is omitted. Flagged for Dean.
+   */
+  result: 'w' | 'l' | null;
 };
 
 /** The Games screen's History list. */

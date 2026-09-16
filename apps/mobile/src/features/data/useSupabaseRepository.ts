@@ -44,6 +44,7 @@ export function useSupabaseRepository(): { repository: Repository; ready: boolea
         teams: teamRefs,
         shapes: shapeMap,
         lastGame: latest ? lastGameLine(latest.game) : null,
+        attendances: (attendances.data ?? []).filter((a) => a.status === 'attended'),
       }),
       ready: true,
     };

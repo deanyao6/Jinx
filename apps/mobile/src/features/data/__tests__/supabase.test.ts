@@ -7,6 +7,8 @@ import {
   nickname,
   passportFromStats,
   passportPillsFromStats,
+  companionLine,
+  gameRowFromAttendance,
   listSentence,
   reliveFromGame,
   streakLine,
@@ -162,11 +164,16 @@ describe('Supabase passport mapping', () => {
     const repo = supabaseRepository(inputs);
     // Backed by the database.
     expect(SUPABASE_BACKED.has('passport')).toBe(true);
+    expect(SUPABASE_BACKED.has('games')).toBe(true);
     expect(repo.passport('all').record).toBe('31 – 17');
-    // Not yet: these still return demo fixtures, and say so rather than looking real.
-    expect(SUPABASE_BACKED.has('games')).toBe(false);
-    expect(SUPABASE_BACKED.has('relive')).toBe(false);
-    expect(repo.games().length).toBeGreaterThan(0);
+    // Backed, and this user has no attendances, so the list is genuinely empty rather
+    // than quietly falling back to the fixtures.
+    expect(repo.games()).toEqual([]);
+    // Not yet backed: these still return demo fixtures, which the Plan and Guide shells
+    // need in v1 anyway.
+    expect(SUPABASE_BACKED.has('guide')).toBe(false);
+    expect(SUPABASE_BACKED.has('friends')).toBe(false);
+    expect(repo.guideRows('food').length).toBeGreaterThan(0);
   });
 });
 
@@ -208,5 +215,93 @@ describe('Relive mapping', () => {
     const r = reliveFromGame({ ...game, home: null, away: null, venue: null });
     expect(r.home.badge).toBe('—');
     expect(r.note).toBe('Aug 14, 2025');
+  });
+});
+
+describe('Games history mapping', () => {
+  const shapes = new Map<'ballparkA' | 'dodger', never>() as unknown as ReadonlyMap<
+    string,
+    'ballparkA'
+  >;
+
+  const base = {
+    rooting_team_id: PHI,
+    game: {
+      id: 'g1',
+      status: 'final',
+      scheduled_start: '2024-10-12T23:05:00Z',
+      home_team_id: PHI,
+      away_team_id: 'nym-id',
+      home_score: 5,
+      away_score: 3,
+      home: { id: PHI, name: 'Philadelphia Phillies', abbreviation: 'PHI' },
+      away: { id: 'nym-id', name: 'New York Mets', abbreviation: 'NYM' },
+      venue: { id: 'v1', name: 'Citizens Bank Park', city: 'Philadelphia' },
+    },
+    companions: [
+      { person: { id: 'p1', display_name: 'Alex' } },
+      { person: { id: 'p2', display_name: 'Marcus' } },
+    ],
+  };
+
+  const teamRefs = new Map([
+    [PHI, { id: PHI, name: 'Philadelphia Phillies', city: 'Philadelphia' }],
+    ['nym-id', { id: 'nym-id', name: 'New York Mets', city: 'New York' }],
+  ]);
+
+  it('writes the matchup away team first, as the reference does', () => {
+    const row = gameRowFromAttendance(base, shapes, teamRefs);
+    expect(row?.title).toBe('Mets 3, Phillies 5');
+    expect(row?.meta).toBe('Citizens Bank Park, Oct 12, 2024');
+  });
+
+  it('takes the home team colours, even for an away game', () => {
+    // The thumbnail is a picture of that stadium, so the row is the home team's colour.
+    const away = {
+      ...base,
+      game: {
+        ...base.game,
+        home_team_id: 'lad',
+        home: { id: 'lad', name: 'Los Angeles Dodgers', abbreviation: 'LAD' },
+      },
+    };
+    expect(gameRowFromAttendance(away, shapes, teamRefs)?.team).toBe('lad');
+  });
+
+  it('shows the result from the side you were rooting for', () => {
+    expect(gameRowFromAttendance(base, shapes, teamRefs)?.result).toBe('w');
+    // Same game, rooting for the Mets.
+    const mets = { ...base, rooting_team_id: 'nym-id' };
+    expect(gameRowFromAttendance(mets, shapes, teamRefs)?.result).toBe('l');
+  });
+
+  it('omits the circle rather than calling a tie a loss', () => {
+    const tied = { ...base, game: { ...base.game, home_score: 3, away_score: 3 } };
+    expect(gameRowFromAttendance(tied, shapes, teamRefs)?.result).toBeNull();
+    // And for a game with no rooting side at all.
+    const neutral = { ...base, rooting_team_id: null };
+    expect(gameRowFromAttendance(neutral, shapes, teamRefs)?.result).toBeNull();
+  });
+
+  it('handles a game that has not been played yet', () => {
+    const upcoming = {
+      ...base,
+      game: { ...base.game, status: 'scheduled', home_score: null, away_score: null },
+    };
+    const row = gameRowFromAttendance(upcoming, shapes, teamRefs);
+    expect(row?.title).toBe('Mets at Phillies');
+    expect(row?.result).toBeNull();
+  });
+
+  it('abbreviates the companion line the way the reference does', () => {
+    expect(companionLine([])).toBe('');
+    expect(companionLine(['Alex', 'Marcus'])).toBe('w/ Alex, Marcus');
+    expect(companionLine(['Chloe', 'David', 'Sam'])).toBe('w/ Chloe, David +1');
+  });
+
+  it('drops a row whose team joins are missing rather than rendering a blank', () => {
+    expect(
+      gameRowFromAttendance({ ...base, game: { ...base.game, home: null } }, shapes, teamRefs),
+    ).toBeNull();
   });
 });

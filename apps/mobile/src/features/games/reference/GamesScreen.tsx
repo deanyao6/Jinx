@@ -149,7 +149,7 @@ function GameRow({ game }: { game: GameRowFixture }) {
           </View>
         ) : null}
       </View>
-      <ResultPip result={game.result} />
+      {game.result ? <ResultPip result={game.result} /> : null}
     </View>
   );
 }
