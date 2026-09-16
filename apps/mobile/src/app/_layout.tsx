@@ -20,10 +20,12 @@ import { Text } from '@/components/Text';
 import { useAuth, useAuthListener, useSignOut } from '@/features/auth/hooks';
 import { useNavStore } from '@/features/nav/store';
 import { ParityHost } from '@/features/parity/ParityHost';
+import { useTeamPalettes } from '@/features/teams/queries';
 import { useNotificationRuntime } from '@/features/notifications/push';
 import { useProfile } from '@/features/profile/queries';
 import { initSentry, wrapRoot } from '@/lib/sentry';
 import { useJinxFonts } from '@/theme/fonts';
+import { TeamPaletteProvider } from '@/theme/reference/TeamTheme';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 import { darkColors, lightColors } from '@/theme/tokens';
 
@@ -181,6 +183,18 @@ function RootNavigator() {
  * type. Loaded or failed, there is nothing further to wait for: a font failure must not
  * be able to strand the app on the splash screen.
  */
+/**
+ * Supplies the full team palette set to everything below.
+ *
+ * It never blocks rendering: while the query is in flight, or when it fails, or in demo
+ * mode where there is no backend, the theme falls through to the 14 static palettes and
+ * then to neutral. A team is always themed, just possibly with the fallback.
+ */
+function TeamPalettes({ children }: { children: React.ReactNode }) {
+  const palettes = useTeamPalettes();
+  return <TeamPaletteProvider palettes={palettes.data}>{children}</TeamPaletteProvider>;
+}
+
 function FontGate({ children }: { children: React.ReactNode }) {
   const [fontsLoaded, fontError] = useJinxFonts();
   const settled = fontsLoaded || fontError != null;
@@ -215,11 +229,13 @@ function RootLayout() {
           <NavThemeProvider value={navTheme}>
             <StatusBar style={dark ? 'light' : 'dark'} />
             <FontGate>
-              {/* Development only, and inert unless the visual parity harness is
-                  running. See scripts/parity/ and SPEC.md M0.5. */}
-              <ParityHost>
-                <RootNavigator />
-              </ParityHost>
+              <TeamPalettes>
+                {/* Development only, and inert unless the visual parity harness is
+                    running. See scripts/parity/ and SPEC.md M0.5. */}
+                <ParityHost>
+                  <RootNavigator />
+                </ParityHost>
+              </TeamPalettes>
             </FontGate>
           </NavThemeProvider>
         </ThemeProvider>

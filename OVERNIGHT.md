@@ -405,6 +405,24 @@ It reports Reduce Motion as **off**, so the tests exercise the animated path rat
 the shortcut. `jest.resolver.js` also delegates to the resolver react-native-worklets
 ships, which steers it away from its native-only entry points.
 
+## Team colours wired up
+
+The 65 seeded palettes are now read by the app. Until this, only the 14 the reference
+itself defines existed in the theme layer, so every other team rendered in the neutral grey.
+
+`useTeamPalettes` loads `team_colors` once and keeps it a day; a `TeamPaletteProvider` near
+the root supplies them, and both `ReferenceThemeProvider` and the nested `TeamTheme`
+resolve through it. The lookup falls through in order: a loaded palette, then one of the
+14 static ones, then neutral. **It never blocks rendering** — while the query is in flight,
+when it fails, and in demo mode where there is no backend at all, a screen still draws with
+the fallback. A team is therefore always themed, just sometimes with the fallback rather
+than its own colours.
+
+The mapping from row to palette is in a module with no Supabase or storage import, so the
+theme layer and its tests can use it without dragging the network stack along. Six tests
+cover the whole fallback chain, including that the dark accent comes from the stored value
+rather than being derived, and that the fill stays the same across themes.
+
 ### One open design question, for you
 
 The reference's tab bar has `padding-bottom: 20px`, which is its stand-in for the home
@@ -444,19 +462,15 @@ Nothing below is blocked on you except items 1 and 6.
 
 1. **Decide the Stadium guide avatar question** above. It is the single largest remaining
    parity gap and it is one line either way.
-2. **Wire `team_colors` into the app.** The 65 palettes are seeded but nothing reads them;
-   the app uses the 14 static fallbacks, so every team outside Philadelphia and the demo
-   set currently falls back to neutral. A repository that loads the table and falls back to
-   the static set is small, and the cross-check test already guarantees the two agree.
-3. **Replace the demo fixtures with the real queries.** The screens read through
+2. **Replace the demo fixtures with the real queries.** The screens read through
    `features/demo/fixtures.ts` today. SPEC.md 8.9 wants them behind a repository interface
    so demo and Supabase are interchangeable; the fixtures are already shaped that way, so
    this is mostly introducing the interface and a second implementation.
-4. **The last typography offsets.** Passport's header sits 2-3pt high and its hero 3pt low;
+3. **The last typography offsets.** Passport's header sits 2-3pt high and its hero 3pt low;
    Pick a side and the game log have similar small ones. Worth roughly 2 points of parity
    across the board. Read the warnings above first: four of my six attempts here made
    things worse, and all four came from reasoning rather than measuring.
-5. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
+4. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
    key, and Relive (6.19) against real data rather than fixtures.
 
 ## State of the checks## State of the checks
