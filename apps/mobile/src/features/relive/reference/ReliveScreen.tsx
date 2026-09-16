@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Line, Path, Polyline } from 'react-native-svg';
 
 import { ICONS } from '@/components/reference/icons';
+import { TightText } from '@/components/reference/TightText';
 import { PhotoScene } from '@/components/reference/PhotoScene';
 import { relivePoint } from '@/features/demo/fixtures';
 import { useRepository } from '@/features/data/context';
@@ -120,7 +121,9 @@ function Body({ initialStep }: { initialStep: number }) {
             <ScorebugTeam badge={relive.away.badge} name={relive.away.name} />
           </TeamTheme>
           <View style={s.score}>
-            <Text style={[s.scoreValue, { color: base.ink }]}>{current.score}</Text>
+            <TightText fontSize={46} lineHeight={0.9} style={[s.scoreValue, { color: base.ink }]}>
+              {current.score}
+            </TightText>
             <Text style={[s.scoreLabel, { color: base.muted }]}>{current.label}</Text>
           </View>
           <TeamTheme team={relive.home.team}>
@@ -301,8 +304,7 @@ const s = StyleSheet.create({
   // `.scorebug .sc{font-size:46px;line-height:.9;min-width:110px}`
   score: { minWidth: 110, alignItems: 'center' },
   scoreValue: {
-    fontSize: 46,
-    lineHeight: 46 * 0.9,
+    // fontSize and the line box are set by <TightText>.
     fontFamily: fontFamily({ width: 62, weight: 900 }),
   },
   scoreLabel: { fontSize: 12, fontFamily: fontFamily({ weight: 600 }) },

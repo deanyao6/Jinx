@@ -4,6 +4,7 @@ import Svg, { Defs, LinearGradient, RadialGradient, Rect, Stop } from 'react-nat
 
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { Seal } from '@/components/reference/Seal';
+import { TightText } from '@/components/reference/TightText';
 import { fontFamily } from '@/theme/fonts';
 import { TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, iconSize, radius, screenPadding } from '@/theme/reference/tokens';
@@ -26,7 +27,9 @@ export function Head({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <View style={s.head}>
       <View>
-        <Text style={[s.word, { color: base.ink }]}>{title}</Text>
+        <TightText fontSize={32} lineHeight={0.85} style={[s.word, { color: base.ink }]}>
+          {title}
+        </TightText>
         <Text style={[s.sub, { color: base.muted }]}>{subtitle}</Text>
       </View>
       <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -168,9 +171,13 @@ export function Hero({
       </View>
 
       <View style={s.heroRec}>
-        <Text style={s.heroRecord}>{record}</Text>
+        <TightText fontSize={64} lineHeight={0.78} style={s.heroRecord}>
+          {record}
+        </TightText>
         <View>
-          <Text style={s.heroWinRate}>{`WIN RATE ${winRate}`}</Text>
+          <TightText fontSize={19} lineHeight={1} style={s.heroWinRate}>
+            {`WIN RATE ${winRate}`}
+          </TightText>
           <Text style={s.heroStreak}>{streak}</Text>
         </View>
       </View>
@@ -296,7 +303,9 @@ function RecordCardView({ card, onPress }: { card: RecordCard; onPress: () => vo
         </Text>
         <View style={[s.recordCardDot, { backgroundColor: accent }]} />
       </View>
-      <Text style={[s.recordCardValue, { color: base.ink }]}>{card.record}</Text>
+      <TightText fontSize={27} lineHeight={1} style={[s.recordCardValue, { color: base.ink }]}>
+        {card.record}
+      </TightText>
       <Text style={[s.recordCardPct, { color: base.muted }]}>{card.pct}</Text>
     </Pressable>
   );
@@ -421,9 +430,8 @@ const s = StyleSheet.create({
     marginBottom: 12,
   },
   word: {
-    fontSize: 32,
+    // fontSize and the line box are set by <TightText>.
     fontFamily: fontFamily({ width: 62, weight: 900 }),
-    lineHeight: 32 * 0.85,
     letterSpacing: 32 * 0.01,
   },
   sub: {
@@ -495,16 +503,14 @@ const s = StyleSheet.create({
   },
   heroRec: { flexDirection: 'row', alignItems: 'flex-end', gap: 12, marginVertical: 12 },
   heroRecord: {
-    fontSize: 64,
-    lineHeight: 64 * 0.78,
+    // fontSize and the line box are set by <TightText>.
     fontFamily: fontFamily({ width: 62, weight: 900 }),
     letterSpacing: -64 * 0.01,
     color: '#FFFFFF',
   },
   heroWinRate: {
-    fontSize: 19,
+    // fontSize and the line box are set by <TightText>.
     fontFamily: fontFamily({ width: 64, weight: 900 }),
-    lineHeight: 19,
     letterSpacing: 19 * 0.01,
     color: '#FFFFFF',
   },
@@ -542,9 +548,8 @@ const s = StyleSheet.create({
   recordCardName: { fontSize: 11, lineHeight: 11 * 1.2, fontFamily: fontFamily({ weight: 750 }) },
   recordCardDot: { width: 6, height: 6, borderRadius: 3 },
   recordCardValue: {
-    fontSize: 27,
+    // fontSize and the line box are set by <TightText>.
     fontFamily: fontFamily({ width: 62, weight: 900 }),
-    lineHeight: 27,
     marginTop: 7,
     marginBottom: 3,
   },

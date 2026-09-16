@@ -198,25 +198,25 @@ disk, not in the repo.
 
 | Screen | Light | Dark |
 |---|---|---|
-| Game day | **0.96%** | **0.96%** |
+| Game day | **0.93%** | **0.93%** |
 | Profile | **1.04%** | **1.03%** |
-| Relive, pregame | **2.90%** | **2.71%** |
+| Relive, pregame | **2.77%** | **2.58%** |
+| Relive, mid story | **3.06%** | **2.87%** |
 | Games, History | **3.32%** | **2.92%** |
-| Relive, mid story | **3.25%** | **3.06%** |
 | Friends panel | **3.48%** | **3.43%** |
-| Passport, Eagles pill | **3.79%** | **3.20%** |
-| Passport, Phillies pill | **3.89%** | **3.35%** |
-| Passport, All teams | **4.17%** | **3.55%** |
-| Record game log, As a neutral | **4.94%** | **4.91%** |
+| Passport, Eagles pill | **3.74%** | **3.19%** |
+| Passport, Phillies pill | **3.78%** | **3.28%** |
+| Passport, All teams | **4.14%** | **3.55%** |
+| Record game log, As a neutral | **4.66%** | **4.61%** |
+| Record game log, Phillies | **5.18%** | **5.08%** |
 | Pick a side | **5.37%** | **5.06%** |
-| Record game log, Phillies | **5.42%** | **5.39%** |
-| Pick a side, picked | **5.70%** | **5.39%** |
+| Pick a side, picked | **5.70%** | **5.40%** |
 | Stadium guide, Seats | **7.93%** | **7.48%** |
 | Stadium guide, Bathrooms | **8.15%** | **7.70%** |
 | Stadium guide, Food | **8.93%** | **8.48%** |
 
 **Every screen in the reference is now built**, in both themes. 32 comparisons, mean
-**4.43%**. Best is Game day at 0.96%; worst is the Stadium guide at 8.93%, and that one is
+**4.37%**. Best is Game day at 0.96%; worst is the Stadium guide at 8.93%, and that one is
 a bug in the reference rather than the port — see below.
 
 Games, Relive, Game day and Profile each measured well on the first attempt, without any
@@ -448,6 +448,44 @@ is finished.
 
 Parity is unchanged at 4.44% through all of it.
 
+## The typography problem, solved
+
+Four earlier attempts at this made parity worse, all of them from reasoning about metrics
+rather than measuring. The fifth worked, and the reason is worth writing down.
+
+**The symptom.** The Passport wordmark sat 2pt high and its glyphs measured 20.7pt tall
+against the reference's 22.0pt. Same font, same size, different height.
+
+**The first useful measurement** was the glyph *width*, which was identical at 56.0pt. That
+ruled out a font fallback — the condensed instance really was being used — and left only
+one explanation for a shorter glyph: the descender on the J was being clipped.
+
+**The cause.** `.fx-word` is `line-height:.85`, a line box shorter than the glyphs. In CSS
+they simply overflow it. React Native instead compresses the line, moves the baseline up
+and clips. So the fix is to let the text keep its natural line and place it deliberately.
+
+**The number came out of the font, not out of trial and error.** `fontTools` reports
+Archivo's hhea ascent as 878 and descent as -210 over a 1000-unit em, so its content height
+is 1.088em. CSS puts the baseline at `(lineBox - contentHeight) / 2 + ascent` from the
+block's top. I first assumed React Native draws the baseline at `usWinAscent` (1.100em),
+which put the wordmark 6.7pt too *low*. Measuring showed it uses the hhea ascent instead,
+so the ascent terms cancel and **the offset is exactly CSS half-leading**. That is a real
+answer rather than a fudge factor, and it holds at every size.
+
+The wordmark now lands within 0.3pt of the reference.
+
+**One more mistake worth recording.** Applying it everywhere immediately made four screens
+worse, because I passed each style straight to the inner `Text` — including its margins,
+which then stacked on top of the half-leading offset. Margins belong to the block, not the
+glyphs. `TightText` now splits them out. The two places that had worked first time were
+exactly the two whose styles carried no margin.
+
+It is applied wherever the reference sets a line-height below Archivo's 1.088em: the
+wordmark, the record hero, the win rate, the record cards, the game log header, the Relive
+scorebug and the ticket title. One exception: `.vs strong` on the Friends panel measured
+*worse* with it than with a plain line height, so it is left alone with a comment saying
+so. I do not know why, and guessing is what cost me the first four attempts.
+
 ### One open design question, for you
 
 The reference's tab bar has `padding-bottom: 20px`, which is its stand-in for the home
@@ -491,10 +529,8 @@ Nothing below is blocked on you except items 1 and 6.
    demo implementation is behind it; what is missing is the second implementation, and that
    is genuinely per-milestone work — Passport's records are M3, imports are M4, and so on.
    No screen changes when it lands.
-3. **The last typography offsets.** Passport's header sits 2-3pt high and its hero 3pt low;
-   Pick a side and the game log have similar small ones. Worth roughly 2 points of parity
-   across the board. Read the warnings above first: four of my six attempts here made
-   things worse, and all four came from reasoning rather than measuring.
+3. **The typography offsets that remain.** The big one is solved (see below). What is left
+   is Pick a side's records and the top band of a few screens, each a point or two.
 4. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
    key, and Relive (6.19) against real data rather than fixtures.
 

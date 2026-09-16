@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/reference/Avatar';
+import { TightText } from '@/components/reference/TightText';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
 import { TabBar } from '@/features/passport/reference/parts';
@@ -55,7 +56,9 @@ function Body() {
           <View style={[s.ticketStripe, { backgroundColor: team.second }]} />
           <View style={[s.notch, s.notchLeft, { backgroundColor: base.scr }]} />
           <View style={[s.notch, s.notchRight, { backgroundColor: base.scr }]} />
-          <Text style={[s.ticketTitle, { color: team.onFill }]}>{plan.matchup}</Text>
+          <TightText fontSize={28} lineHeight={1} style={[s.ticketTitle, { color: team.onFill }]}>
+            {plan.matchup}
+          </TightText>
           <Text style={[s.ticketWhen, { color: team.onFill }]}>{plan.when}</Text>
           <View style={[s.seatRow, { borderTopColor: mix(team.onFill, 0.4) }]}>
             {plan.seat.map((field) => (
@@ -149,8 +152,7 @@ const s = StyleSheet.create({
   notchLeft: { left: -10 },
   notchRight: { right: -10 },
   ticketTitle: {
-    fontSize: 28,
-    lineHeight: 28,
+    // fontSize and the line box are set by <TightText>.
     fontFamily: fontFamily({ width: 66, weight: 900 }),
   },
   ticketWhen: { fontSize: 13, opacity: 0.85, marginTop: 4, fontFamily: fontFamily() },

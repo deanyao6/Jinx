@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg from 'react-native-svg';
 
 import { ICONS } from '@/components/reference/icons';
+import { TightText } from '@/components/reference/TightText';
 import { StadiumShape } from '@/components/reference/StadiumShape';
 import { useRepository } from '@/features/data/context';
 import type { GameLogFixture, LogRowFixture } from '@/features/data/shapes';
@@ -97,7 +98,13 @@ function PanelBody({
         {/* `.loghead` takes the record's own team colour. */}
         <View style={[s.logHead, { backgroundColor: team.accent }]}>
           <Text style={[s.logHeadLabel, { color: team.onFill }]}>{data.sub}</Text>
-          <Text style={[s.logHeadRecord, { color: team.onFill }]}>{record}</Text>
+          <TightText
+            fontSize={56}
+            lineHeight={0.85}
+            style={[s.logHeadRecord, { color: team.onFill }]}
+          >
+            {record}
+          </TightText>
           <Text style={[s.logHeadLabel, { color: team.onFill }]}>{data.meta}</Text>
         </View>
 
@@ -198,8 +205,7 @@ const s = StyleSheet.create({
   logHeadLabel: { fontSize: 13, opacity: 0.9, fontFamily: fontFamily() },
   // `.loghead b{font-size:56px;line-height:.85;margin:4px 0 2px}`
   logHeadRecord: {
-    fontSize: 56,
-    lineHeight: 56 * 0.85,
+    // fontSize and the line box are set by <TightText>.
     fontFamily: fontFamily({ width: 62, weight: 900 }),
     marginTop: 4,
     marginBottom: 2,

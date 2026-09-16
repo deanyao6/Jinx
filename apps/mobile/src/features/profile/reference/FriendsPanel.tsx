@@ -231,6 +231,8 @@ const s = StyleSheet.create({
   cardLabel: { fontSize: 12.5, marginBottom: 6, fontFamily: fontFamily() },
   vs: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   vsScore: {
+    // `.vs strong{font-size:42px;line-height:.9}`. Left as a plain Text: <TightText>
+    // measured worse here than the explicit line height, unlike everywhere else.
     fontSize: 42,
     lineHeight: 42 * 0.9,
     fontFamily: fontFamily({ width: 62, weight: 900 }),
