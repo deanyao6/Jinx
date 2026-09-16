@@ -202,14 +202,16 @@ in the repo.
 | Record game log, Phillies | **5.55%** | **5.45%** |
 | Record game log, As a neutral | **5.02%** | **4.95%** |
 | Pick a side, and picked | not built | not built |
-| Games | not built | not built |
+| Games, History | **3.32%** | **2.92%** |
 | Relive, pregame and mid-story | not built | not built |
 | Game day | not built | not built |
 | Stadium guide (Food, Bathrooms, Seats) | not built | not built |
 | Profile | not built | not built |
 | Friends panel | not built | not built |
 
-Mean across what exists: **4.29%** over ten comparisons. All 32 reference shots render;
+Mean across what exists: **4.09%** over twelve comparisons. Games came in at 3.12% on the
+first attempt, which suggests the components built for Passport and the game log are
+carrying their weight. All 32 reference shots render;
 22 of 32 app shots correctly report "not built" rather than being scored against something
 they are not.
 
