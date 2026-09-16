@@ -1,3 +1,4 @@
+import { useRouter, type Href } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -93,6 +94,7 @@ function PassportBody({
 }) {
   const { base } = useReferenceTheme();
   const repo = useRepository();
+  const router = useRouter();
   // The reference draws a fake status row inside `.scr` and starts `.body` below it.
   // The app uses the real status bar instead (SPEC.md 8.1), so the content begins at the
   // top safe-area inset and then takes `.body`'s own 4px padding.
@@ -108,7 +110,14 @@ function PassportBody({
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Head title="JINX" subtitle="FAN PASSPORT" />
+        <Head
+          title="JINX"
+          subtitle="FAN PASSPORT"
+          onBellPress={() => router.push('/you/notifications')}
+          // Profile is a tab, so it replaces rather than pushing: pushing would stack a
+          // second copy of a tab screen on top of this one.
+          onProfilePress={() => router.replace('/profile')}
+        />
         <Pills pills={repo.passportPills()} selected={pill} onSelect={onSelect} />
         <Hero
           label={data.label}
@@ -117,12 +126,26 @@ function PassportBody({
           winRate={data.winRate}
           streak={data.streak}
           lastGame={data.lastGame}
+          // The fixture has no game id for the last game, only its display line. See
+          onLastGamePress={() => router.push(`/games/${data.lastGameId}` as Href)}
         />
         <RecordCards cards={data.cards} onOpen={onOpenLog} />
-        <SectionHeader title="Stadium stamps" action={data.stampCount} />
-        <Stamps stamps={repo.stamps(pill)} />
+        <SectionHeader
+          title="Stadium stamps"
+          action={data.stampCount}
+          onActionPress={() => router.push('/passport/stamps')}
+        />
+        {/* The stamps screen has no per-venue route: it opens a venue in its own sheet.
+            So a tile opens the screen, and selecting the venue there is still a step the
+            user has to take. */}
+        <Stamps stamps={repo.stamps(pill)} onStampPress={() => router.push('/passport/stamps')} />
         <SectionHeader title="Fan superlatives" />
-        <SuperlativeList items={data.superlatives} />
+        {/* Each row could open the game, venue or player it names, but the fixture carries
+            only display text for those. So every row opens the superlatives screen. */}
+        <SuperlativeList
+          items={data.superlatives}
+          onItemPress={() => router.push('/passport/superlatives')}
+        />
       </ScrollView>
       <TabBar active="Passport" />
     </View>

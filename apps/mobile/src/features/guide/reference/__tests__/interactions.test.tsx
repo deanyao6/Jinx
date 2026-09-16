@@ -5,6 +5,19 @@ import { renderScreen } from '@/test/renderScreen';
 
 import { StadiumGuideScreen } from '../StadiumGuideScreen';
 
+// The screen and its tab bar call `useRouter`. The real module is not loadable under Jest:
+// expo-router pulls in `standard-navigation`, which ships untransformed ESM and is not in
+// this package's `transformIgnorePatterns`, so requiring it fails the whole suite. The
+// navigation tests next door mock the same surface.
+jest.mock('expo-router', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+    canGoBack: () => true,
+  }),
+}));
+
 describe('Stadium guide interactions', () => {
   it('switches the ranked list between segments', async () => {
     const { getByText, queryByText } = await renderScreen(<StadiumGuideScreen />);

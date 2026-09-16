@@ -49,6 +49,8 @@ export type PassportFixture = {
   winRate: string;
   streak: string;
   lastGame: string;
+  /** The game the Last Game row opens. See GameRowFixture.gameId. */
+  lastGameId: string;
   stampCount: string;
   cards: RecordCardFixture[];
   superlatives: SuperlativeFixture[];
@@ -82,6 +84,7 @@ export const PASSPORT: Record<string, PassportFixture> = {
     winRate: '.646',
     streak: '+3 game win streak',
     lastGame: 'Last Game: PHI 4 – 2 NYM',
+    lastGameId: 'demo-phillies-mets-2025-08-14',
     stampCount: 'View All (8)',
     cards: [
       { name: 'Phillies', record: '12 – 5', pct: '.706 pct', team: 'phi', log: 'phi' },
@@ -107,6 +110,7 @@ export const PASSPORT: Record<string, PassportFixture> = {
     winRate: '.706',
     streak: '+2 game win streak',
     lastGame: 'Last Game: PHI 4 – 2 NYM',
+    lastGameId: 'demo-phillies-mets-2025-08-14',
     stampCount: 'View All (4)',
     cards: [
       { name: 'Home', record: '9 – 3', pct: '.750 pct', team: 'phi', log: 'phiHome' },
@@ -127,6 +131,7 @@ export const PASSPORT: Record<string, PassportFixture> = {
     winRate: '.750',
     streak: '+1 game win streak',
     lastGame: 'Last Game: PHI 24 – 27 LAR',
+    lastGameId: 'demo-eagles-commanders-2024-12-22',
     stampCount: 'View All (3)',
     cards: [
       { name: 'Home', record: '4 – 1', pct: '.800 pct', team: 'phl', log: 'phlHome' },
@@ -203,6 +208,11 @@ export function stampsFor(pill: string): StampFixture[] {
 export { AVATARS, METAL, PHOTO_SKIES } from '@/components/reference/palettes';
 
 export type GameRowFixture = {
+  /**
+   * The game this row opens. Demo ids are readable rather than UUID-shaped so a wrong
+   * link is obvious in a URL; against Supabase this is the real games.id.
+   */
+  gameId: string;
   team: string;
   shape: ShapeKey;
   title: string;
@@ -223,6 +233,7 @@ export type GameRowFixture = {
 /** The Games screen's History list. */
 export const GAMES: GameRowFixture[] = [
   {
+    gameId: 'demo-mets-phillies-2024-10-12',
     team: 'phi',
     shape: 'ballparkA',
     title: 'Mets 3, Phillies 5',
@@ -232,6 +243,7 @@ export const GAMES: GameRowFixture[] = [
     result: 'w',
   },
   {
+    gameId: 'demo-cowboys-giants-2024-09-26',
     team: 'nyg',
     shape: 'bowl',
     title: 'Cowboys 27, Giants 20',
@@ -241,6 +253,7 @@ export const GAMES: GameRowFixture[] = [
     result: 'w',
   },
   {
+    gameId: 'demo-phillies-dodgers-2024-05-18',
     team: 'lad',
     shape: 'dodger',
     title: 'Phillies 2, Dodgers 5',
@@ -250,6 +263,7 @@ export const GAMES: GameRowFixture[] = [
     result: 'l',
   },
   {
+    gameId: 'demo-yankees-red-2024-06-15',
     team: 'bos',
     shape: 'wrigley',
     title: 'Yankees 4, Red Sox 6',
@@ -259,6 +273,7 @@ export const GAMES: GameRowFixture[] = [
     result: 'l',
   },
   {
+    gameId: 'demo-chiefs-raiders-2023-11-26',
     team: 'lv',
     shape: 'canopy',
     title: 'Chiefs 31, Raiders 17',
@@ -270,6 +285,8 @@ export const GAMES: GameRowFixture[] = [
 ];
 
 export type LogRowFixture = {
+  /** The game this row opens. See GameRowFixture.gameId. */
+  gameId: string;
   team: string;
   shape: ShapeKey;
   title: string;
@@ -294,6 +311,7 @@ const PHI_LOG: GameLogFixture = {
   more: '10 more games',
   rows: [
     {
+      gameId: 'demo-phillies-mets-2025-08-14',
       team: 'phi',
       shape: 'ballparkA',
       title: 'Phillies 6, Mets 3',
@@ -301,6 +319,7 @@ const PHI_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-phillies-braves-2025-07-03',
       team: 'phi',
       shape: 'ballparkA',
       title: 'Phillies 4, Braves 1',
@@ -308,6 +327,7 @@ const PHI_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-phillies-dodgers-2025-05-18',
       team: 'lad',
       shape: 'dodger',
       title: 'Phillies 2, Dodgers 5',
@@ -315,6 +335,7 @@ const PHI_LOG: GameLogFixture = {
       result: 'l',
     },
     {
+      gameId: 'demo-phillies-marlins-2024-09-01',
       team: 'phi',
       shape: 'ballparkA',
       title: 'Phillies 8, Marlins 2',
@@ -322,6 +343,7 @@ const PHI_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-phillies-giants-2024-06-09',
       team: 'sf',
       shape: 'oracle',
       title: 'Phillies 5, Giants 4',
@@ -329,6 +351,7 @@ const PHI_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-phillies-cubs-2023-08-20',
       team: 'phi',
       shape: 'ballparkA',
       title: 'Phillies 1, Cubs 3',
@@ -336,6 +359,7 @@ const PHI_LOG: GameLogFixture = {
       result: 'l',
     },
     {
+      gameId: 'demo-phillies-nationals-2023',
       team: 'phi',
       shape: 'ballparkA',
       title: 'Phillies 7, Nationals 6',
@@ -353,6 +377,7 @@ const PHL_LOG: GameLogFixture = {
   more: '3 more games',
   rows: [
     {
+      gameId: 'demo-eagles-rams-2024-11-24',
       team: 'lar',
       shape: 'canopy',
       title: 'Eagles 24, Rams 27',
@@ -360,6 +385,7 @@ const PHL_LOG: GameLogFixture = {
       result: 'l',
     },
     {
+      gameId: 'demo-eagles-cowboys-2022',
       team: 'phl',
       shape: 'bowl',
       title: 'Eagles 31, Cowboys 28',
@@ -367,6 +393,7 @@ const PHL_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-eagles-giants-2023',
       team: 'phl',
       shape: 'bowl',
       title: 'Eagles 38, Giants 7',
@@ -374,6 +401,7 @@ const PHL_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-eagles-rams-2023',
       team: 'lar',
       shape: 'canopy',
       title: 'Eagles 26, Rams 20',
@@ -381,6 +409,7 @@ const PHL_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-eagles-commanders-2021',
       team: 'phl',
       shape: 'bowl',
       title: 'Eagles 17, Commanders 20',
@@ -398,6 +427,7 @@ const NEUTRAL_LOG: GameLogFixture = {
   more: '13 more games',
   rows: [
     {
+      gameId: 'demo-neutral-dodgers-giants',
       team: 'lad',
       shape: 'dodger',
       title: 'Picked Dodgers vs Giants',
@@ -405,6 +435,7 @@ const NEUTRAL_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-neutral-bears-packers',
       team: 'chi',
       shape: 'colonnade',
       title: 'Picked Bears vs Packers',
@@ -412,6 +443,7 @@ const NEUTRAL_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-neutral-giants-tigers',
       team: 'sf',
       shape: 'oracle',
       title: 'Picked Giants vs Tigers',
@@ -419,6 +451,7 @@ const NEUTRAL_LOG: GameLogFixture = {
       result: 'l',
     },
     {
+      gameId: 'demo-neutral-rams-49ers',
       team: 'lar',
       shape: 'canopy',
       title: 'Picked Rams vs 49ers',
@@ -426,6 +459,7 @@ const NEUTRAL_LOG: GameLogFixture = {
       result: 'w',
     },
     {
+      gameId: 'demo-neutral-padres-dodgers',
       team: 'lad',
       shape: 'dodger',
       title: 'Picked Padres vs Dodgers',
@@ -433,6 +467,7 @@ const NEUTRAL_LOG: GameLogFixture = {
       result: 'l',
     },
     {
+      gameId: 'demo-neutral-chargers-chiefs',
       team: 'lar',
       shape: 'canopy',
       title: 'Picked Chargers vs Chiefs',

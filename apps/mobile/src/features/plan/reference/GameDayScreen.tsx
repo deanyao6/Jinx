@@ -1,12 +1,16 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/reference/Avatar';
 import { TightText } from '@/components/reference/TightText';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
+import type { GameDayFixture } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
+import { openShare } from '@/features/share/navigate';
+import type { ShareGame } from '@/features/share/types';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { screenPadding } from '@/theme/reference/tokens';
@@ -31,6 +35,7 @@ function Body() {
   const { base, team } = useReferenceTheme();
   const plan = useRepository().gameDay();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const Share = ICONS['i-share'];
 
   return (
@@ -46,10 +51,20 @@ function Body() {
       >
         <View style={s.top}>
           <Text style={[s.topTitle, { color: base.ink }]}>Game day</Text>
-          <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Share this game"
+            onPress={() => openShare(router, gameDayShareGame(plan))}
+            style={[s.iconButton, { backgroundColor: base.surface }]}
+          >
             <Share size={20} color={base.ink} />
-          </View>
+          </Pressable>
         </View>
+
+        {/* Everything below stays inert. The planner is a demo shell in v1 (SPEC.md 2): the
+            ticket, the companions and the timeline are all fixture prose with no ticket, no
+            attendance row and no route behind them. docs/interactions.md sets the minimum for
+            this screen at the share icon, which is above. */}
 
         {/* `.ticket` with its `::before`/`::after` notches and the `.stripe` down the right. */}
         <View style={[s.ticket, { backgroundColor: team.accent }]}>
@@ -112,6 +127,42 @@ function Body() {
       <TabBar active="Plan" />
     </View>
   );
+}
+
+/**
+ * The share card for the game being planned.
+ *
+ * There is no "game day" share template. The sheet's templates are record, game, pledge,
+ * stamp, companion, goal and wrapped (features/share/types.ts), and `/share/[template]`
+ * needs a payload as well as a name, so a bare `/share/game-day` would land on the sheet's
+ * "This card could not be opened" state. The game itself is the closest existing template.
+ *
+ * The fixture is prose — "Eagles at Rams", "Sunday, 1:25 PM, SoFi Stadium" — so the matchup
+ * and the venue are read back out of it and the kickoff is left empty, because a weekday and
+ * a time are not a date and the card omits one it cannot parse. TODO: build this from the
+ * real upcoming game once the planner has one.
+ */
+function gameDayShareGame(plan: GameDayFixture): ShareGame {
+  const [away, home] = plan.matchup.split(' at ');
+  const parts = plan.when.split(', ');
+  return {
+    kind: 'game',
+    // The demo plan is an NFL game. TODO: take this from the game once there is one.
+    sport: 'nfl',
+    away: away ?? plan.matchup,
+    home: home ?? '',
+    // Not played yet, so the card draws a dash for each score rather than a number.
+    awayScore: null,
+    homeScore: null,
+    status: 'scheduled',
+    venue: parts.length > 1 ? (parts[parts.length - 1] ?? null) : null,
+    date: '',
+    // The screen is themed for the team the user roots for, which in the fixture is the away
+    // side (see the note on GameDayScreen), not the home team.
+    side: away ?? null,
+    result: null,
+    verified: false,
+  };
 }
 
 /**

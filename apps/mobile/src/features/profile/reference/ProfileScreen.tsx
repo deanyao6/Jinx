@@ -1,3 +1,4 @@
+import { useRouter, type Href } from 'expo-router';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -32,12 +33,60 @@ export function ProfileScreen({ initialPanel }: { initialPanel?: 'friends' }) {
   );
 }
 
+/**
+ * Where each stat goes, keyed by the fixture's own label.
+ *
+ * The repository gives a stat a value and a label and no id, so the label is the only
+ * thing identifying what it counts. A label with no entry here renders as a plain View,
+ * so nothing announces itself as a button and then does nothing.
+ *
+ * Games replaces rather than pushes because it is a tab, the same way the tab bar moves
+ * between them. Followers and Following both land on friend search: there is no follower
+ * or following list screen yet, and search is the nearest real destination.
+ */
+const STAT_ROUTES: Record<string, { href: Href; replace?: boolean }> = {
+  Games: { href: '/games' as Href, replace: true },
+  Stadiums: { href: '/passport/stamps' as Href },
+  Followers: { href: '/friends/find' as Href },
+  Following: { href: '/friends/find' as Href },
+};
+
+/**
+ * Where each nav row goes, keyed by the row's icon rather than its title, because two of
+ * the three titles carry a year ("2026 goals", "2025 Wrapped") and would break every
+ * January. Wrapped is not here because its route needs a season; see {@link wrappedHref}.
+ */
+const ROW_ROUTES: Record<string, Href> = {
+  'i-target': '/passport/goals' as Href,
+  'i-map': '/passport/map' as Href,
+};
+
+/**
+ * `/wrapped/[sport]/[season]` for the Wrapped row.
+ *
+ * The season comes out of the row's own title ("2025 Wrapped") because the fixture carries
+ * no season field; a title that names no year leaves the row inert rather than guessing
+ * one. The sport is MLB: the row's meta says "MLB and NFL", there is no combined route,
+ * and MLB is the sport the app leads with.
+ */
+function wrappedHref(title: string): Href | null {
+  const season = title.match(/\b(?:19|20)\d{2}\b/)?.[0];
+  return season ? (`/wrapped/mlb/${season}` as Href) : null;
+}
+
 function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
   const { base, team } = useReferenceTheme();
   const profile = useRepository().profile();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const Gear = ICONS['i-gear'];
   const Chevron = ICONS['i-chev-r'];
+
+  const rowPress = (row: (typeof profile.rows)[number]): (() => void) | undefined => {
+    if (row.facepile) return () => onOpenPanel('friends');
+    const href = row.icon === 'i-spark' ? wrappedHref(row.title) : (ROW_ROUTES[row.icon] ?? null);
+    return href ? () => router.push(href) : undefined;
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
@@ -52,20 +101,34 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
       >
         <View style={s.top}>
           <Text style={[s.handle, { color: base.ink }]}>{profile.handle}</Text>
-          <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Settings"
+            onPress={() => router.push('/settings' as Href)}
+            style={[s.iconButton, { backgroundColor: base.surface }]}
+          >
             <Gear size={20} color={base.ink} />
-          </View>
+          </Pressable>
         </View>
 
         <View style={s.prof}>
           {/* `.prof .pfp` is a ring in the user's team colour with 3px of padding inside. */}
-          <View style={[s.pfp, { borderColor: team.accent, backgroundColor: base.scr }]}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Edit profile"
+            onPress={() => router.push('/you/edit-profile' as Href)}
+            style={[s.pfp, { borderColor: team.accent, backgroundColor: base.scr }]}
+          >
             <View style={s.pfpInner}>
               <Avatar name={profile.avatar} size={80} />
             </View>
-          </View>
+          </Pressable>
           <Text style={[s.name, { color: base.ink }]}>{profile.name}</Text>
           <Text style={[s.tagline, { color: base.muted }]}>{profile.tagline}</Text>
+          {/* The chips stay inert. `chip.team` is a theme key, not a team id: it happens to
+              match a Passport pill in demo data, and would not for a user whose teams are
+              not the two the fixture ships. Wiring it needs a team id on the chip, and
+              Passport needs to accept an initial pill. */}
           <View style={s.chips}>
             {profile.teamChips.map((chip) => (
               <TeamTheme key={chip.team} team={chip.team}>
@@ -76,23 +139,49 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
         </View>
 
         <View style={[s.stats, { borderTopColor: base.line, borderBottomColor: base.line }]}>
-          {profile.stats.map((stat) => (
-            <View key={stat.label} style={{ flex: 1, alignItems: 'center' }}>
-              <Text style={[s.statValue, { color: base.ink }]}>{stat.value}</Text>
-              <Text style={[s.statLabel, { color: base.muted }]}>{stat.label}</Text>
-            </View>
-          ))}
+          {profile.stats.map((stat) => {
+            const to = STAT_ROUTES[stat.label];
+            // The label reads "48 Games" rather than "Games" so VoiceOver announces the
+            // number it sits under, and so it does not collide with the tab of that name.
+            const Wrap = to ? Pressable : View;
+            return (
+              <Wrap
+                key={stat.label}
+                {...(to
+                  ? {
+                      accessibilityRole: 'button' as const,
+                      accessibilityLabel: `${stat.value} ${stat.label}`,
+                      onPress: () => (to.replace ? router.replace(to.href) : router.push(to.href)),
+                    }
+                  : null)}
+                style={{ flex: 1, alignItems: 'center' }}
+              >
+                <Text style={[s.statValue, { color: base.ink }]}>{stat.value}</Text>
+                <Text style={[s.statLabel, { color: base.muted }]}>{stat.label}</Text>
+              </Wrap>
+            );
+          })}
         </View>
 
         <View>
           {profile.rows.map((row, i) => {
             const Icon = ICONS[row.icon as IconName];
+            const onPress = rowPress(row);
+            // A row with nowhere to go is a View, not a Pressable with no handler: the
+            // three rows that took a press and swallowed it were worse than inert, because
+            // they looked like they had worked. The chevron stays either way, since the
+            // fixture's rows all have destinations and the reference draws one on each.
+            const Wrap = onPress ? Pressable : View;
             return (
-              <Pressable
+              <Wrap
                 key={row.title}
-                accessibilityRole="button"
-                // Only the Friends row has a destination so far; the rest are M8 and M9.
-                onPress={row.facepile ? () => onOpenPanel('friends') : undefined}
+                {...(onPress
+                  ? {
+                      accessibilityRole: 'button' as const,
+                      accessibilityLabel: row.title,
+                      onPress,
+                    }
+                  : null)}
                 style={[
                   s.navrow,
                   i > 0 ? { borderTopWidth: border.hairline, borderTopColor: base.line } : null,
@@ -115,7 +204,7 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
                   </View>
                 ) : null}
                 <Chevron size={20} color={base.muted} />
-              </Pressable>
+              </Wrap>
             );
           })}
         </View>

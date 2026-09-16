@@ -99,6 +99,7 @@ export type PassportInputs = {
   shapes: ReadonlyMap<string, ShapeKey>;
   /** "PHI 4 – 2 NYM" for the hero's Last Game row, or null when there are no games yet. */
   lastGame: string | null;
+  lastGameId: string | null;
 };
 
 /**
@@ -212,6 +213,7 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
       winRate: formatWinRate(stats.overall),
       streak: streakLine(stats.streaks.current),
       lastGame: inputs.lastGame ?? 'No games logged yet',
+      lastGameId: inputs.lastGameId ?? '',
       stampCount: `View All (${stats.stamps.length})`,
       cards: [
         ...stats.teams.slice(0, 2).map((t) => teamCard(t, teams)),
@@ -238,6 +240,7 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
     winRate: formatWinRate(team.record),
     streak: streakLine(stats.streaks.current),
     lastGame: inputs.lastGame ?? 'No games logged yet',
+    lastGameId: inputs.lastGameId ?? '',
     stampCount: `View All (${stampsForPill.length})`,
     // Home / Road / Playoffs need per-game splits the stats cache does not carry yet, so
     // the team view shows the one card it can compute honestly rather than three
@@ -320,6 +323,7 @@ export function gameRowFromAttendance(
   );
 
   return {
+    gameId: g.id,
     team: g.home.id,
     shape: (g.venue && shapes.get(g.venue.id)) || 'ballparkA',
     title,

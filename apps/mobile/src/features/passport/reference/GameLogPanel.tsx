@@ -1,3 +1,4 @@
+import { useRouter, type Href } from 'expo-router';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -63,6 +64,7 @@ function PanelBody({
 }) {
   const { base, team } = useReferenceTheme();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const Back = ICONS['i-chev-l'];
   const Share = ICONS['i-share'];
 
@@ -90,6 +92,18 @@ function PanelBody({
             </Pressable>
             <Text style={[s.topTitle, { color: base.ink }]}>{title}</Text>
           </View>
+          {/*
+            Deliberately inert, not routed.
+
+            openShare() needs a ShareRecord: win/loss/tie counts, per-team records, the
+            pledge record and totals. This panel has display strings ("12 – 5", ".706 pct")
+            and the fixture shape carries nothing structured to rebuild them from. Pushing
+            a bare /share/... path instead opens the sheet's "card could not be opened"
+            state, which is worse than a button that does nothing.
+
+            Wire this when the repository returns the record as numbers. See
+            docs/interactions.md.
+          */}
           <View style={[s.iconButton, { backgroundColor: base.surface }]}>
             <Share size={20} color={base.ink} />
           </View>
@@ -110,11 +124,29 @@ function PanelBody({
 
         <View>
           {data.rows.map((row, i) => (
-            <LogRow key={`${row.title}-${i}`} row={row} first={i === 0} />
+            <LogRow
+              key={`${row.title}-${i}`}
+              row={row}
+              first={i === 0}
+              onPress={() => router.push(`/games/${row.gameId}` as Href)}
+            />
           ))}
         </View>
 
-        <Text style={[s.more, { color: base.muted }]}>{data.more}</Text>
+        {/* The reference pages the list here. There is no paged log query yet, so it
+            opens History instead, which is the other half of what the spec allows. */}
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={data.more}
+          onPress={() => router.push('/games')}
+          hitSlop={8}
+        >
+          {({ pressed }) => (
+            <Text style={[s.more, { color: base.muted, opacity: pressed ? 0.6 : 1 }]}>
+              {data.more}
+            </Text>
+          )}
+        </Pressable>
       </ScrollView>
       {/* Only `.loghead` carries the record's team class in the reference. The tab bar
           sits on `.scr`, which is `t-none`, so it stays neutral. */}
@@ -126,14 +158,26 @@ function PanelBody({
 }
 
 /** `.li` with a `.thumb` on the left and a `.circ` result on the right. */
-function LogRow({ row, first }: { row: LogRowFixture; first: boolean }) {
+function LogRow({
+  row,
+  first,
+  onPress,
+}: {
+  row: LogRowFixture;
+  first: boolean;
+  onPress: () => void;
+}) {
   const { base } = useReferenceTheme();
   return (
     <TeamTheme team={row.team}>
-      <View
-        style={[
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${row.title}, ${row.meta}`}
+        onPress={onPress}
+        style={({ pressed }) => [
           s.li,
           first ? null : { borderTopWidth: border.hairline, borderTopColor: base.line },
+          pressed && { opacity: 0.6 },
         ]}
       >
         <Thumb shapeKey={row.shape} />
@@ -144,7 +188,7 @@ function LogRow({ row, first }: { row: LogRowFixture; first: boolean }) {
           </Text>
         </View>
         <ResultCircle result={row.result} />
-      </View>
+      </Pressable>
     </TeamTheme>
   );
 }

@@ -21,7 +21,17 @@ import { border, iconSize, radius, screenPadding } from '@/theme/reference/token
  */
 
 /** `.fx-head` plus `.fx-word` and `.fx-sub`. */
-export function Head({ title, subtitle }: { title: string; subtitle: string }) {
+export function Head({
+  title,
+  subtitle,
+  onBellPress,
+  onProfilePress,
+}: {
+  title: string;
+  subtitle: string;
+  onBellPress?: () => void;
+  onProfilePress?: () => void;
+}) {
   const { base } = useReferenceTheme();
   const Bell = ICONS['i-bell'];
   const User = ICONS['i-user'];
@@ -34,10 +44,10 @@ export function Head({ title, subtitle }: { title: string; subtitle: string }) {
         <Text style={[s.sub, { color: base.muted }]}>{subtitle}</Text>
       </View>
       <View style={{ flexDirection: 'row', gap: 8 }}>
-        <IconButton>
+        <IconButton onPress={onBellPress} label="Notifications">
           <Bell size={18} color={base.ink} />
         </IconButton>
-        <IconButton>
+        <IconButton onPress={onProfilePress} label="Your profile">
           <User size={18} color={base.ink} />
         </IconButton>
       </View>
@@ -46,12 +56,28 @@ export function Head({ title, subtitle }: { title: string; subtitle: string }) {
 }
 
 /** `.fx-ib`. */
-function IconButton({ children }: { children: React.ReactNode }) {
+export function IconButton({
+  children,
+  onPress,
+  label,
+}: {
+  children: React.ReactNode;
+  onPress?: () => void;
+  label?: string;
+}) {
   const { base } = useReferenceTheme();
+  const style = [s.iconButton, { borderColor: base.line, backgroundColor: base.card }];
+  // Stays a View without an action, so decorative uses do not announce a dead button.
+  if (!onPress) return <View style={style}>{children}</View>;
   return (
-    <View style={[s.iconButton, { borderColor: base.line, backgroundColor: base.card }]}>
+    <Pressable
+      style={({ pressed }) => [style, pressed && { opacity: 0.6 }]}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+    >
       {children}
-    </View>
+    </Pressable>
   );
 }
 
@@ -141,6 +167,7 @@ export function Hero({
   winRate,
   streak,
   lastGame,
+  onLastGamePress,
 }: {
   label: string;
   badge: string;
@@ -148,6 +175,7 @@ export function Hero({
   winRate: string;
   streak: string;
   lastGame: string;
+  onLastGamePress?: () => void;
 }) {
   const { team, teamKey } = useReferenceTheme();
   const Chevron = ICONS['i-chev-r'];
@@ -183,11 +211,24 @@ export function Hero({
         </View>
       </View>
 
-      <View style={s.heroLast}>
-        <View style={s.heroDot} />
-        <Text style={s.heroLastText}>{lastGame}</Text>
-        <Chevron size={16} color="#FFFFFF" />
-      </View>
+      {onLastGamePress ? (
+        <Pressable
+          style={({ pressed }) => [s.heroLast, pressed && { opacity: 0.6 }]}
+          onPress={onLastGamePress}
+          accessibilityRole="button"
+          accessibilityLabel={lastGame}
+        >
+          <View style={s.heroDot} />
+          <Text style={s.heroLastText}>{lastGame}</Text>
+          <Chevron size={16} color="#FFFFFF" />
+        </Pressable>
+      ) : (
+        <View style={s.heroLast}>
+          <View style={s.heroDot} />
+          <Text style={s.heroLastText}>{lastGame}</Text>
+          <Chevron size={16} color="#FFFFFF" />
+        </View>
+      )}
     </View>
   );
 }
@@ -313,12 +354,37 @@ function RecordCardView({ card, onPress }: { card: RecordCard; onPress: () => vo
 }
 
 /** `.fx-sh`. */
-export function SectionHeader({ title, action }: { title: string; action?: string }) {
+export function SectionHeader({
+  title,
+  action,
+  onActionPress,
+}: {
+  title: string;
+  action?: string;
+  onActionPress?: () => void;
+}) {
   const { base } = useReferenceTheme();
   return (
     <View style={s.sectionHeader}>
       <Text style={[s.sectionTitle, { color: base.ink }]}>{title.toUpperCase()}</Text>
-      {action ? <Text style={[s.sectionAction, { color: base.link }]}>{action}</Text> : null}
+      {action ? (
+        onActionPress ? (
+          <Pressable
+            onPress={onActionPress}
+            accessibilityRole="link"
+            accessibilityLabel={`${title}: ${action}`}
+            hitSlop={8}
+          >
+            {({ pressed }) => (
+              <Text style={[s.sectionAction, { color: base.link, opacity: pressed ? 0.6 : 1 }]}>
+                {action}
+              </Text>
+            )}
+          </Pressable>
+        ) : (
+          <Text style={[s.sectionAction, { color: base.link }]}>{action}</Text>
+        )
+      ) : null}
     </View>
   );
 }
@@ -332,7 +398,13 @@ export type StampItem = {
 };
 
 /** `.fx-stamps` and `.fx-stamp`. */
-export function Stamps({ stamps }: { stamps: readonly StampItem[] }) {
+export function Stamps({
+  stamps,
+  onStampPress,
+}: {
+  stamps: readonly StampItem[];
+  onStampPress?: (stamp: StampItem) => void;
+}) {
   const { base } = useReferenceTheme();
   return (
     <ScrollView
@@ -341,25 +413,38 @@ export function Stamps({ stamps }: { stamps: readonly StampItem[] }) {
       style={s.stampsRail}
       contentContainerStyle={s.stampsContent}
     >
-      {stamps.map((stamp) => (
-        <View key={stamp.name} style={s.stamp}>
-          <View style={{ marginBottom: 6 }}>
-            <Seal
-              ring={stamp.ring}
-              shapeKey={stamp.shape}
-              metal={stamp.metal}
-              size={78}
-              inkColor={base.ink}
-            />
-          </View>
-          <Text style={[s.stampName, { color: base.ink }]} numberOfLines={1}>
-            {stamp.name}
-          </Text>
-          <Text style={[s.stampCity, { color: base.muted }]} numberOfLines={1}>
-            {stamp.city}
-          </Text>
-        </View>
-      ))}
+      {stamps.map((stamp) => {
+        const Tile = onStampPress ? Pressable : View;
+        return (
+          <Tile
+            key={stamp.name}
+            style={s.stamp}
+            {...(onStampPress
+              ? {
+                  onPress: () => onStampPress(stamp),
+                  accessibilityRole: 'button' as const,
+                  accessibilityLabel: `${stamp.name}, ${stamp.city}`,
+                }
+              : {})}
+          >
+            <View style={{ marginBottom: 6 }}>
+              <Seal
+                ring={stamp.ring}
+                shapeKey={stamp.shape}
+                metal={stamp.metal}
+                size={78}
+                inkColor={base.ink}
+              />
+            </View>
+            <Text style={[s.stampName, { color: base.ink }]} numberOfLines={1}>
+              {stamp.name}
+            </Text>
+            <Text style={[s.stampCity, { color: base.muted }]} numberOfLines={1}>
+              {stamp.city}
+            </Text>
+          </Tile>
+        );
+      })}
     </ScrollView>
   );
 }
@@ -367,19 +452,33 @@ export function Stamps({ stamps }: { stamps: readonly StampItem[] }) {
 export type Superlative = { icon: string; label: string; value: string; chip: string };
 
 /** `.fx-list`, `.fx-li` and `.fx-chip`. */
-export function SuperlativeList({ items }: { items: readonly Superlative[] }) {
+export function SuperlativeList({
+  items,
+  onItemPress,
+}: {
+  items: readonly Superlative[];
+  onItemPress?: (item: Superlative) => void;
+}) {
   const { base } = useReferenceTheme();
   return (
     <View style={[s.list, { backgroundColor: base.card, borderColor: base.line }]}>
       {items.map((item, i) => {
         const Icon = ICONS[item.icon as IconName];
+        const Row = onItemPress ? Pressable : View;
         return (
-          <View
+          <Row
             key={item.label}
             style={[
               s.listItem,
               i > 0 ? { borderTopWidth: border.hairline, borderTopColor: base.line } : null,
             ]}
+            {...(onItemPress
+              ? {
+                  onPress: () => onItemPress(item),
+                  accessibilityRole: 'button' as const,
+                  accessibilityLabel: `${item.label}: ${item.value}`,
+                }
+              : {})}
           >
             {Icon ? <Icon size={19} color={base.ink} /> : null}
             <View style={{ flex: 1, minWidth: 0 }}>
@@ -389,7 +488,7 @@ export function SuperlativeList({ items }: { items: readonly Superlative[] }) {
             <View style={[s.chip, { borderColor: base.line, backgroundColor: base.surface }]}>
               <Text style={[s.chipText, { color: base.ink }]}>{item.chip}</Text>
             </View>
-          </View>
+          </Row>
         );
       })}
     </View>

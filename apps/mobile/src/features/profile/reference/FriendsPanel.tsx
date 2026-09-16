@@ -1,3 +1,4 @@
+import { useRouter, type Href } from 'expo-router';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,15 +27,59 @@ export function FriendsPanel({ onClose }: { onClose?: () => void }) {
   );
 }
 
+type Person = FriendsFixture['people'][number];
+
+/**
+ * The person a card is about, found by the name the card itself prints.
+ *
+ * The rivalry and overlap cards carry prose and scores, not ids: the rivalry names its
+ * rival in `them.label` ("Jordan") and the overlap names a companion inside its sentence.
+ * Matching that text against the first word of each person's name is the only link the
+ * fixture supports, so it is what the cards navigate by. When the repository carries a
+ * person id on each card this becomes a lookup and this function goes away. A card that
+ * matches nobody stays inert rather than opening someone else's profile.
+ */
+function personNamedIn(people: readonly Person[], text: string): Person | null {
+  return people.find((p) => text.includes(p.name.split(' ')[0] ?? p.name)) ?? null;
+}
+
+/** What each tab says when it has nobody to show, keyed by the fixture's own tab label. */
+const EMPTY_TAB: Record<string, string> = {
+  With: 'No games with anyone yet.',
+  Following: 'You are not following anyone yet.',
+  Rivals: 'No rivals yet.',
+};
+
 function Body({ onClose }: { onClose: () => void }) {
   // `friends.tabs` is `as const`, so without widening this infers the literal 'With'.
   const friends = useRepository().friends();
   const [tab, setTab] = React.useState<string>(friends.tabs[0] ?? 'With');
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const openPerson = (person: Person) =>
+    // `key` is the avatar seed, and the only per-person identifier the fixture carries.
+    // Against Supabase it is the profile id, which is what this route already expects.
+    router.push(`/friends/person/${person.key}` as Href);
   const Back = ICONS['i-chev-l'];
   const Search = ICONS['i-search'];
   const Swords = ICONS['i-swords'];
+
+  /**
+   * The tabs used to set state and change nothing, so all three showed the same people.
+   *
+   * `friends.people` is a list of companion records — everyone on it has a shared-games
+   * count and a record — and nobody on it carries a follow flag. So "With" is the list as
+   * given, "Rivals" is whoever the rivalry card names, and "Following" has no data behind
+   * it at all and says so. Showing the same four people under three labels was a lie;
+   * an honest empty state is not.
+   */
+  const rival = friends.rivalry ? personNamedIn(friends.people, friends.rivalry.them.label) : null;
+  const people = tab === 'With' ? friends.people : tab === 'Rivals' ? (rival ? [rival] : []) : [];
+  // Each card belongs to the tab it describes: the head-to-head is about the rival, the
+  // overlap is about a companion you went with.
+  const showRivalry = friends.rivalry != null && (tab === 'With' || tab === 'Rivals');
+  const showOverlap = friends.overlap != null && tab === 'With';
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
@@ -59,9 +104,14 @@ function Body({ onClose }: { onClose: () => void }) {
             </Pressable>
             <Text style={[s.topTitle, { color: base.ink }]}>Friends</Text>
           </View>
-          <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Find friends"
+            onPress={() => router.push('/friends/find' as Href)}
+            style={[s.iconButton, { backgroundColor: base.surface }]}
+          >
             <Search size={20} color={base.ink} />
-          </View>
+          </Pressable>
         </View>
 
         <View style={[s.seg, { backgroundColor: base.surface }]}>
@@ -86,28 +136,35 @@ function Body({ onClose }: { onClose: () => void }) {
         <Text style={[s.note, { color: base.muted }]}>{friends.note}</Text>
 
         <View>
-          {friends.people.map((person, i) => (
+          {people.map((person, i) => (
             <TeamTheme key={person.key} team={person.team}>
-              <FriendRow person={person} first={i === 0} />
+              <FriendRow person={person} first={i === 0} onPress={() => openPerson(person)} />
             </TeamTheme>
           ))}
+          {people.length === 0 ? (
+            <Text style={[s.empty, { color: base.muted }]}>{EMPTY_TAB[tab] ?? 'Nobody yet.'}</Text>
+          ) : null}
         </View>
 
         {/* The rivalry card takes the rival's team colour. A user with no rival, or none
             they have played, gets no card rather than an empty one. */}
-        {friends.rivalry ? (
+        {showRivalry && friends.rivalry ? (
           <TeamTheme team={friends.rivalry.team}>
-            <RivalryCard rivalry={friends.rivalry}>
+            <RivalryCard
+              rivalry={friends.rivalry}
+              onPress={rival ? () => openPerson(rival) : undefined}
+            >
               <Swords size={20} color={base.muted} />
             </RivalryCard>
           </TeamTheme>
         ) : null}
 
-        {friends.overlap ? (
-          <View style={[s.card, { backgroundColor: base.surface }]}>
-            <Text style={[s.cardLabel, { color: base.muted }]}>{friends.overlap.label}</Text>
-            <Text style={[s.overlapText, { color: base.ink }]}>{friends.overlap.text}</Text>
-          </View>
+        {showOverlap && friends.overlap ? (
+          <OverlapCard
+            overlap={friends.overlap}
+            person={personNamedIn(friends.people, friends.overlap.text)}
+            onOpen={openPerson}
+          />
         ) : null}
       </ScrollView>
       <TabBar active="Profile" />
@@ -119,14 +176,19 @@ function Body({ onClose }: { onClose: () => void }) {
 function FriendRow({
   person,
   first,
+  onPress,
 }: {
-  person: FriendsFixture['people'][number];
+  person: Person;
   first: boolean;
+  onPress: () => void;
 }) {
   const { base, team } = useReferenceTheme();
   const tone = person.tone === 'good' ? base.good : person.tone === 'bad' ? base.bad : base.ink;
   return (
-    <View
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${person.name}, ${person.teamName}, ${person.sub}`}
+      onPress={onPress}
       style={[s.fr, first ? null : { borderTopWidth: border.hairline, borderTopColor: base.line }]}
     >
       <View style={[s.frPfp, { borderColor: team.accent }]}>
@@ -144,7 +206,36 @@ function FriendRow({
         </View>
       </View>
       <Text style={[s.frRecord, { color: tone }]}>{person.record}</Text>
-    </View>
+    </Pressable>
+  );
+}
+
+/** `.card` for "Before you connected". Opens the companion it names, when it names one. */
+function OverlapCard({
+  overlap,
+  person,
+  onOpen,
+}: {
+  overlap: NonNullable<FriendsFixture['overlap']>;
+  person: Person | null;
+  onOpen: (person: Person) => void;
+}) {
+  const { base } = useReferenceTheme();
+  const Wrap = person ? Pressable : View;
+  return (
+    <Wrap
+      {...(person
+        ? {
+            accessibilityRole: 'button' as const,
+            accessibilityLabel: `${overlap.label}: ${person.name}`,
+            onPress: () => onOpen(person),
+          }
+        : null)}
+      style={[s.card, { backgroundColor: base.surface }]}
+    >
+      <Text style={[s.cardLabel, { color: base.muted }]}>{overlap.label}</Text>
+      <Text style={[s.overlapText, { color: base.ink }]}>{overlap.text}</Text>
+    </Wrap>
   );
 }
 
@@ -152,14 +243,22 @@ function FriendRow({
 function RivalryCard({
   rivalry,
   children,
+  onPress,
 }: {
   rivalry: NonNullable<FriendsFixture['rivalry']>;
   children: React.ReactNode;
+  onPress?: () => void;
 }) {
   const { base, team } = useReferenceTheme();
   const r = rivalry;
+  const Wrap = onPress ? Pressable : View;
   return (
-    <View style={[s.card, { backgroundColor: base.surface }]}>
+    <Wrap
+      {...(onPress
+        ? { accessibilityRole: 'button' as const, accessibilityLabel: r.label, onPress }
+        : null)}
+      style={[s.card, { backgroundColor: base.surface }]}
+    >
       <Text style={[s.cardLabel, { color: base.muted }]}>{r.label}</Text>
       <View style={s.vs}>
         <View style={{ alignItems: 'center' }}>
@@ -178,7 +277,7 @@ function RivalryCard({
           <Text style={[s.vsLabel, { color: base.muted }]}>{r.them.label}</Text>
         </View>
       </View>
-    </View>
+    </Wrap>
   );
 }
 
@@ -251,4 +350,7 @@ const s = StyleSheet.create({
   vsLabel: { fontSize: 12, fontFamily: fontFamily() },
   vsMiddle: { fontSize: 13, fontFamily: fontFamily() },
   overlapText: { fontSize: 14, lineHeight: 14 * 1.45, fontFamily: fontFamily() },
+  // Only ever drawn on a tab with nothing behind it, so it cannot move the default view
+  // the parity harness measures.
+  empty: { fontSize: 14, lineHeight: 14 * 1.45, paddingVertical: 14, fontFamily: fontFamily() },
 });

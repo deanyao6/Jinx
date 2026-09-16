@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,9 +8,11 @@ import { Avatar } from '@/components/reference/Avatar';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { StadiumShape } from '@/components/reference/StadiumShape';
 import { useRepository } from '@/features/data/context';
-import type { GuideRow } from '@/features/data/shapes';
+import type { GuideFixture, GuideRow } from '@/features/data/shapes';
 import { scoreClass } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
+import { openShare } from '@/features/share/navigate';
+import type { ShareStamp } from '@/features/share/types';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, screenPadding } from '@/theme/reference/tokens';
@@ -31,11 +34,23 @@ function Body({ initialTab }: { initialTab: string }) {
   const [tab, setTab] = React.useState(initialTab);
   const { base, team } = useReferenceTheme();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const Back = ICONS['i-chev-l'];
   const Share = ICONS['i-share'];
   const repo = useRepository();
   const guide = repo.guide();
   const rows = repo.guideRows(tab);
+
+  /**
+   * The escape hatch. This chevron shipped as a plain View, which left the tab bar as the
+   * only way off the screen (docs/interactions.md). The guide is reached from a venue or a
+   * game, so popping is right; the fallback covers a cold deep link into /guide/[venueId],
+   * where there is nothing to pop back into.
+   */
+  const goBack = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace('/');
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
@@ -49,15 +64,27 @@ function Body({ initialTab }: { initialTab: string }) {
         showsVerticalScrollIndicator={false}
       >
         <View style={s.top}>
-          <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Back"
+            onPress={goBack}
+            style={[s.iconButton, { backgroundColor: base.surface }]}
+          >
             <Back size={20} color={base.ink} />
-          </View>
-          <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Share this stadium"
+            onPress={() => openShare(router, guideShareStamp(guide))}
+            style={[s.iconButton, { backgroundColor: base.surface }]}
+          >
             <Share size={20} color={base.ink} />
-          </View>
+          </Pressable>
         </View>
 
-        {/* `.vhero` puts the venue's stadium shape beside its name.
+        {/* `.vhero` puts the venue's stadium shape beside its name. Inert on purpose: the
+            guide is a demo shell in v1 (SPEC.md 2) and the hero has no venue screen to open,
+            because the screen renders the demo guide and ignores the route's venueId.
             NOTE: the reference renders the friends' avatars here at 88x88 rather than the
             20x20 every other avatar stack uses, because `.vhero svg` and `.avs svg` have
             identical specificity and `.vhero svg` is declared later, so it wins for the
@@ -120,6 +147,8 @@ function Body({ initialTab }: { initialTab: string }) {
           })}
         </View>
 
+        {/* The rows stay inert for the same reason: the tips are fixture prose, with no
+            stand, bathroom or seating section behind them to open. */}
         <View>
           {rows.map((row, i) => (
             <GuideListRow key={row.title} row={row} first={i === 0} />
@@ -129,6 +158,29 @@ function Body({ initialTab }: { initialTab: string }) {
       <TabBar active="Games" />
     </View>
   );
+}
+
+/**
+ * The share card for this venue.
+ *
+ * There is no "guide" share template. The sheet's templates are record, game, pledge, stamp,
+ * companion, goal and wrapped (features/share/types.ts), and `/share/[template]` needs a
+ * payload as well as a name, so a bare `/share/guide` would land on the sheet's "This card
+ * could not be opened" state. A venue's card is the stamp, so Share opens that.
+ *
+ * The demo guide carries no visit history, so the counts are the card's own empty states: a
+ * stamp with no number and no first-visit line. TODO: read the real visit count and first
+ * visit once the screen takes the route's venueId.
+ */
+function guideShareStamp(guide: GuideFixture): ShareStamp {
+  return {
+    kind: 'stamp',
+    venue: guide.venue,
+    place: guide.subtitle,
+    visits: 1,
+    firstVisit: null,
+    stampCount: null,
+  };
 }
 
 /** `.li` with a score `.circ` whose colour comes from the score, not the team. */

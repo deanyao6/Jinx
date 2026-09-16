@@ -62,6 +62,7 @@ const inputs: PassportInputs = {
     [PHL, { id: PHL, name: 'Philadelphia Eagles', city: 'Philadelphia', abbreviation: 'PHI' }],
   ]),
   shapes: new Map(),
+  lastGameId: 'game-1',
   lastGame: 'Last Game: PHI 4 – 2 NYM',
 };
 
