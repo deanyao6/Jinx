@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import { MapView, Marker, Polyline, type MapHandle } from '@/features/map/native-map';
 
 import { Chip } from '@/components/Chip';
 import { Loading } from '@/components/Loading';
@@ -60,7 +60,7 @@ export default function MapScreen() {
   const games = useGoalGames();
   const profile = useProfile();
   const favorites = useFavoriteTeams();
-  const mapRef = useRef<MapView>(null);
+  const mapRef = useRef<MapHandle>(null);
 
   const [sport, setSport] = useState<string | null>(null);
   const [franchiseId, setFranchiseId] = useState<string | null>(null);
