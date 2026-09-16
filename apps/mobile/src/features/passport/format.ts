@@ -2,7 +2,7 @@
  * Pure helpers over the stats payload: normalizing the JSON from the server and turning it into
  * display rows. No I/O so the profile screen can reuse them for another user's passport.
  */
-import { formatRecord } from '@appname/core';
+import { formatRecord } from '@jinx/core';
 
 import { momentLabel } from '@/features/attendances/moments';
 import type {

@@ -4,4 +4,4 @@ export {
   upsertGames,
   type DetailWriteResult,
   type GameWriteContext,
-} from '@appname/core';
+} from '@jinx/core';

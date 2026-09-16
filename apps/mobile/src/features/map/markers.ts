@@ -1,5 +1,5 @@
 /** Pure helpers for the map screen: marker models, sizing, and region fitting. */
-import type { GoalGame } from '@appname/core';
+import type { GoalGame } from '@jinx/core';
 
 import type { VenueLite } from '@/features/bucketlists/queries';
 import type { StatsStamp } from '@/features/passport/types';

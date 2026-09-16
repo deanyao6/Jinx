@@ -44,7 +44,7 @@ export function parseMarkdownLite(md: string): Block[] {
 }
 
 function withAppName(s: string): string {
-  return s.replace(/APPNAME/g, APP_NAME);
+  return s.replace(/Jinx/g, APP_NAME);
 }
 
 /** Renders docs copy as plain themed text. The `# ` heading is skipped (the screen has a title). */

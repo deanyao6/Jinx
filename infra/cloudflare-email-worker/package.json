@@ -1,5 +1,5 @@
 {
-  "name": "appname-inbound-email-worker",
+  "name": "jinx-inbound-email-worker",
   "private": true,
   "type": "module",
   "scripts": {

@@ -27,8 +27,8 @@ Xcode 26.6 is now installed and the app has been verified running in the iOS Sim
 - **Sender verification for extra forwarding emails is by sending, not OTP.** There is no outbound email service in the stack, so a user adds an address in Settings and then sends any email from it to their forwarding address; the inbound function marks it verified. The sign-in email is always allowed.
 - **Goals are evaluated by the shared core evaluator** in the app (for live progress) and in the `evaluate-goals` Edge Function after game finals (for completion notifications), instead of SQL predicates.
 - **"Going" entries are attendances with `status = 'going'`** that flip to `attended` when the game goes final.
-- **EAS project slug is `appname-monorepo`** (id 7746f5f4-0d93-4ce4-9156-6b6bfb128f8f, owner deanyao) because `eas init` named it after the root package. Rename it on expo.dev and update `slug` in `apps/mobile/app.json` when the final app name is chosen.
-- **Metro and Jest resolve `@appname/core`'s `.js`-suffixed imports** through `apps/mobile/metro.config.js` and `apps/mobile/jest.resolver.js`, which retry `.ts`/`.tsx` for files inside packages/core only.
+- **EAS project slug is `jinx`** (id 7746f5f4-0d93-4ce4-9156-6b6bfb128f8f, owner deanyao) because `eas init` named it after the root package. Rename it on expo.dev and update `slug` in `apps/mobile/app.json` when the final app name is chosen.
+- **Metro and Jest resolve `@jinx/core`'s `.js`-suffixed imports** through `apps/mobile/metro.config.js` and `apps/mobile/jest.resolver.js`, which retry `.ts`/`.tsx` for files inside packages/core only.
 - **NFL 2000-2005 primetime kickoffs** are listed as `09:00` by nflverse (12-hour clock); the parser maps them to 21:00 ET.
 - **Local Supabase ports** were moved to 54421 (API), 54422 (DB), 54423 (Studio), 54424 (Mailpit) because another project occupies the defaults on this machine.
 

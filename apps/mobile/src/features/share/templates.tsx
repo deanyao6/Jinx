@@ -3,7 +3,7 @@
  * the same component renders the light and dark variants. No icons fonts, so the card looks the
  * same in a snapshot as on screen.
  */
-import { formatRecord, formatVsExpected, formatWinRate } from '@appname/core';
+import { formatRecord, formatVsExpected, formatWinRate } from '@jinx/core';
 import React from 'react';
 import { View } from 'react-native';
 

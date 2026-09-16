@@ -1,4 +1,4 @@
-import type { NflverseGameRow, NflversePbpRow } from '@appname/core';
+import type { NflverseGameRow, NflversePbpRow } from '@jinx/core';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';

@@ -6,7 +6,7 @@ import {
   type GoalDefinition,
   type GoalGame,
   type GoalProgress,
-} from '@appname/core';
+} from '@jinx/core';
 
 export function parseDefinition(def: unknown): GoalDefinition | null {
   return validateGoalDefinition(def) ? def : null;

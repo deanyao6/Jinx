@@ -1,4 +1,4 @@
-import type { GoalDefinition, GoalProgress } from '@appname/core';
+import type { GoalDefinition, GoalProgress } from '@jinx/core';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 

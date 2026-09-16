@@ -1,5 +1,5 @@
 {
-  "name": "@appname/mobile",
+  "name": "@jinx/mobile",
   "main": "expo-router/entry",
   "version": "0.1.0",
   "private": true,
@@ -20,11 +20,11 @@
       "./jest.setup.ts"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|@appname/.*)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|@jinx/.*)"
     ]
   },
   "dependencies": {
-    "@appname/core": "*",
+    "@jinx/core": "*",
     "@expo/vector-icons": "^15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/native": "^7.4.1",

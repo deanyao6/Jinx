@@ -27,7 +27,7 @@ export class MlbClient {
     this.baseUrl = opts.baseUrl ?? 'https://statsapi.mlb.com/api/';
     this.minInterval = opts.minIntervalMs ?? 250;
     this.fetchImpl = opts.fetchImpl ?? fetch;
-    this.userAgent = opts.userAgent ?? 'appname-ingest/0.1 (personal, non-commercial)';
+    this.userAgent = opts.userAgent ?? 'jinx-ingest/0.1 (personal, non-commercial)';
   }
 
   private async throttle(): Promise<void> {

@@ -1,4 +1,4 @@
-// Metro config: extends Expo's defaults so the app can import @appname/core, an ESM TypeScript
+// Metro config: extends Expo's defaults so the app can import @jinx/core, an ESM TypeScript
 // package whose relative imports carry `.js` suffixes (`./types.js` -> `types.ts`). The retry is
 // limited to files inside packages/core.
 // getSentryExpoConfig extends Expo's defaults with debug ids for source maps; it is a no-op at

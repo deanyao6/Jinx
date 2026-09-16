@@ -1,4 +1,4 @@
-# Deploying APPNAME
+# Deploying Jinx
 
 ## Accounts and costs
 
@@ -81,7 +81,7 @@ for Sign in with Apple.
 ### 3. Auth providers
 
 In the Supabase dashboard, enable Sign in with Apple (Services ID + key) and email OTP. Set the
-site URL to `appname://` and add it to the redirect URLs.
+site URL to `jinx://` and add it to the redirect URLs.
 
 ### 4. Email delivery (Resend)
 

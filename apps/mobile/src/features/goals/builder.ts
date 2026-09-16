@@ -11,7 +11,7 @@ import {
   type GoalProgress,
   type GoalTemplate,
   type Sport,
-} from '@appname/core';
+} from '@jinx/core';
 
 import { momentLabel } from '@/features/attendances/moments';
 

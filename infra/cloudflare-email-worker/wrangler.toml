@@ -1,4 +1,4 @@
-name = "appname-inbound-email"
+name = "jinx-inbound-email"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
 

@@ -6,12 +6,7 @@
  * pass (run.ts) replaces that with the last play's `time_of_day` when pbp has one, and the
  * schedule pass keeps that better value on later runs instead of overwriting it.
  */
-import {
-  NFL_PROVIDER,
-  parseNflGame,
-  type CanonicalGame,
-  type NflverseGameRow,
-} from '@appname/core';
+import { NFL_PROVIDER, parseNflGame, type CanonicalGame, type NflverseGameRow } from '@jinx/core';
 import type { Readable } from 'node:stream';
 
 import { selectAll, setProgress, type Db } from '../db.js';

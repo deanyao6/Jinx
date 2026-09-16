@@ -48,7 +48,7 @@ const queryClient = new QueryClient({
  */
 const persister = createAsyncStoragePersister({
   storage: AsyncStorage,
-  key: 'appname-query-cache',
+  key: 'jinx-query-cache',
   throttleTime: 1000,
 });
 

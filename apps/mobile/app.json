@@ -1,21 +1,21 @@
 {
   "expo": {
-    "name": "APPNAME",
-    "slug": "appname-monorepo",
+    "name": "Jinx",
+    "slug": "jinx",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "appname",
+    "scheme": "jinx",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "com.deanyao.appname",
+      "bundleIdentifier": "com.deanyao.jinx",
       "supportsTablet": false,
       "usesAppleSignIn": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "APPNAME uses your location only when you tap Check in, to confirm you are at the stadium. Your coordinates are never stored.",
-        "NSPhotoLibraryUsageDescription": "APPNAME reads the ticket screenshots you choose so it can log the game for you.",
-        "NSCameraUsageDescription": "APPNAME can photograph a ticket to log the game for you.",
+        "NSLocationWhenInUseUsageDescription": "Jinx uses your location only when you tap Check in, to confirm you are at the stadium. Your coordinates are never stored.",
+        "NSPhotoLibraryUsageDescription": "Jinx reads the ticket screenshots you choose so it can log the game for you.",
+        "NSCameraUsageDescription": "Jinx can photograph a ticket to log the game for you.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "privacyManifests": {
@@ -83,7 +83,7 @@
       }
     },
     "android": {
-      "package": "com.deanyao.appname",
+      "package": "com.deanyao.jinx",
       "adaptiveIcon": {
         "backgroundColor": "#14213D",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -110,7 +110,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "APPNAME uses your location only when you tap Check in, to confirm you are at the stadium. Your coordinates are never stored.",
+          "locationWhenInUsePermission": "Jinx uses your location only when you tap Check in, to confirm you are at the stadium. Your coordinates are never stored.",
           "isIosBackgroundLocationEnabled": false,
           "isAndroidBackgroundLocationEnabled": false
         }
@@ -124,8 +124,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "APPNAME reads the ticket screenshots you choose so it can log the game for you.",
-          "cameraPermission": "APPNAME can photograph a ticket to log the game for you."
+          "photosPermission": "Jinx reads the ticket screenshots you choose so it can log the game for you.",
+          "cameraPermission": "Jinx can photograph a ticket to log the game for you."
         }
       ],
       "expo-sharing",

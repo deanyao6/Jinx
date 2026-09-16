@@ -5,9 +5,9 @@
  */
 export const ATTRIBUTION_MD = `# Data attribution (shown on the About screen)
 
-**MLB game data** is retrieved from the MLB Stats API (statsapi.mlb.com) and is the property of MLB Advanced Media, L.P. Used for personal, non-commercial purposes. APPNAME is not affiliated with, endorsed by, or sponsored by Major League Baseball or any of its clubs.
+**MLB game data** is retrieved from the MLB Stats API (statsapi.mlb.com) and is the property of MLB Advanced Media, L.P. Used for personal, non-commercial purposes. Jinx is not affiliated with, endorsed by, or sponsored by Major League Baseball or any of its clubs.
 
-**NFL game data** comes from nflverse (github.com/nflverse), licensed under Creative Commons Attribution 4.0 (CC-BY-4.0). APPNAME is not affiliated with, endorsed by, or sponsored by the National Football League or any of its clubs.
+**NFL game data** comes from nflverse (github.com/nflverse), licensed under Creative Commons Attribution 4.0 (CC-BY-4.0). Jinx is not affiliated with, endorsed by, or sponsored by the National Football League or any of its clubs.
 
 Team and league names appear as plain text for identification only. No logos, wordmarks, or other marks are used.
 
@@ -18,7 +18,7 @@ export const TERMS_MD = `# Terms of use (draft)
 
 _Last updated 2026-09-15._
 
-By using APPNAME you agree to these terms.
+By using Jinx you agree to these terms.
 
 1. You must be 13 or older.
 2. Log games you actually attended. Records are for fun; there is no wagering, prizes, or money involved.
@@ -26,14 +26,14 @@ By using APPNAME you agree to these terms.
 4. Do not upload tickets that are not yours. Ticket images are private to you and deleted after processing.
 5. The service is provided as-is, without warranty. Game data may contain errors; we correct what we can.
 6. We may change or discontinue features. You can delete your account at any time.
-7. Team and league names are used descriptively. APPNAME is not affiliated with or endorsed by any team or league.
+7. Team and league names are used descriptively. Jinx is not affiliated with or endorsed by any team or league.
 `;
 
 export const PRIVACY_MD = `# Privacy policy (draft)
 
-_Last updated 2026-09-15. Replace APPNAME with the final name before publishing._
+_Last updated 2026-09-15. Replace Jinx with the final name before publishing._
 
-APPNAME is a passport for sports fans. This policy explains what we collect and why.
+Jinx is a passport for sports fans. This policy explains what we collect and why.
 
 **What we collect**
 - Account: your email address (or Apple ID relay address), handle, display name, optional home city, birth date (used only to confirm you are 13 or older).
@@ -48,7 +48,7 @@ APPNAME is a passport for sports fans. This policy explains what we collect and 
 
 **Your controls**: export everything from Settings as JSON, delete your account from Settings (removes all data and files), block and report users.
 
-**Data sources**: game data comes from MLB Advanced Media and nflverse (CC-BY-4.0). APPNAME is not affiliated with MLB or the NFL.
+**Data sources**: game data comes from MLB Advanced Media and nflverse (CC-BY-4.0). Jinx is not affiliated with MLB or the NFL.
 
 **Contact**: support email on the About screen.
 `;

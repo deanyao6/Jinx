@@ -1,4 +1,4 @@
-import { GOAL_TEMPLATES, type Sport } from '@appname/core';
+import { GOAL_TEMPLATES, type Sport } from '@jinx/core';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';

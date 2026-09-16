@@ -18,7 +18,7 @@ import {
   parseNflGame,
   type NflverseGameRow,
   type NflversePbpRow,
-} from '@appname/core';
+} from '@jinx/core';
 
 import { createDb, getProgress, loadTeamMap, loadVenueMaps, setProgress, type Db } from '../db.js';
 import { upsertGameDetail, type GameWriteContext } from '../games.js';

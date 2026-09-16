@@ -1,1 +1,1 @@
-export { MlbClient } from '@appname/core';
+export { MlbClient } from '@jinx/core';

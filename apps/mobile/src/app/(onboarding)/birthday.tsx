@@ -28,7 +28,7 @@ function BirthdayForm({ initial }: { initial: string | null }) {
   const error = !date
     ? 'Enter a full date.'
     : age != null && age < MIN_AGE
-      ? `You must be at least ${MIN_AGE} to use APPNAME.`
+      ? `You must be at least ${MIN_AGE} to use Jinx.`
       : age != null && age > 120
         ? 'Check the year.'
         : null;
@@ -59,7 +59,7 @@ function BirthdayForm({ initial }: { initial: string | null }) {
       <StepHeader
         step={4}
         title="Your birthday"
-        subtitle="APPNAME is for fans 13 and up. We never show your birthday to anyone."
+        subtitle="Jinx is for fans 13 and up. We never show your birthday to anyone."
       />
       {update.error ? <Notice tone="error">{errorMessage(update.error)}</Notice> : null}
       <View style={{ flexDirection: 'row', gap: theme.spacing.sm }}>

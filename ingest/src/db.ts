@@ -1,8 +1,8 @@
 /**
  * Node-side Supabase service-role client. Everything else (upserts, maps, progress) is shared from
- * @appname/core so the Edge Functions use the same code.
+ * @jinx/core so the Edge Functions use the same code.
  */
-import { asDb, type MinimalDb } from '@appname/core';
+import { asDb, type MinimalDb } from '@jinx/core';
 import { createClient } from '@supabase/supabase-js';
 
 export {
@@ -15,7 +15,7 @@ export {
   upsertRows,
   type MinimalDb as Db,
   type VenueMaps,
-} from '@appname/core';
+} from '@jinx/core';
 
 export function createDb(): MinimalDb {
   const url = process.env['SUPABASE_URL'];

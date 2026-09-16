@@ -8,7 +8,7 @@
  *   (existing rows for games already started are never overwritten: probabilities are frozen).
  * - Prints backtest log loss over final games, which is the number to record in docs/elo-backtest.md.
  */
-import { ELO_PARAMS, runElo, type EloGameInput, type Sport } from '@appname/core';
+import { ELO_PARAMS, runElo, type EloGameInput, type Sport } from '@jinx/core';
 
 import { createDb, selectAll, upsertRows } from '../db.js';
 

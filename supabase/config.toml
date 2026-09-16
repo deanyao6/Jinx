@@ -156,7 +156,7 @@ max_indexes = 5
 enabled = true
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-site_url = "appname://"
+site_url = "jinx://"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
@@ -246,7 +246,7 @@ otp_expiry = 3600
 # user = "resend"
 # pass = "env(RESEND_API_KEY)"
 # admin_email = "noreply@<your-domain>"
-# sender_name = "APPNAME"
+# sender_name = "Jinx"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]
@@ -261,7 +261,7 @@ otp_expiry = 3600
 
 # The app signs in with a 6-digit code (SPEC.md 8.1). The default template only sends a link.
 [auth.email.template.magic_link]
-subject = "Your APPNAME sign-in code"
+subject = "Your Jinx sign-in code"
 content_path = "./supabase/templates/magic_link.html"
 
 [auth.sms]

@@ -49,7 +49,7 @@ describe('ShareCard', () => {
     const { getByText, getByLabelText } = await render(
       <ShareCard template={record} handle="dean" scheme="light" />,
     );
-    expect(getByText('APPNAME')).toBeTruthy();
+    expect(getByText('Jinx')).toBeTruthy();
     expect(getByText('@dean')).toBeTruthy();
     expect(getByText('31–17')).toBeTruthy();
     expect(getByText('12–5')).toBeTruthy();

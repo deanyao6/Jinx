@@ -1,4 +1,4 @@
-import { evaluateGoal, type GoalGame } from '@appname/core';
+import { evaluateGoal, type GoalGame } from '@jinx/core';
 
 import {
   buildCustomGoal,

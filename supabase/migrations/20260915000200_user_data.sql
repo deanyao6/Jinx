@@ -424,7 +424,7 @@ language plpgsql
 as $$
 begin
   if new.birth_date is not null and new.birth_date > (current_date - interval '13 years') then
-    raise exception 'You must be at least 13 to use APPNAME' using errcode = 'check_violation';
+    raise exception 'You must be at least 13 to use Jinx' using errcode = 'check_violation';
   end if;
   return new;
 end;

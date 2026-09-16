@@ -12,7 +12,7 @@ export function useExportData() {
     mutationFn: async (): Promise<string> => {
       const { data, error } = await supabase.rpc('export_my_data');
       if (error) throw error;
-      const file = new File(Paths.cache, `appname-export-${toIsoDate(new Date())}.json`);
+      const file = new File(Paths.cache, `jinx-export-${toIsoDate(new Date())}.json`);
       if (file.exists) file.delete();
       file.create();
       file.write(JSON.stringify(data, null, 2));

@@ -1,5 +1,5 @@
 /** Plain-copy builders for Wrapped cards, shared by the swipeable screen and the share card. Pure. */
-import { formatRecord, formatVsExpected } from '@appname/core';
+import { formatRecord, formatVsExpected } from '@jinx/core';
 
 import { momentLabel } from '@/features/attendances/moments';
 import { formatDuration, formatMiles } from '@/features/passport/format';

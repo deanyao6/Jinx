@@ -1,4 +1,4 @@
-// @appname/core: pure domain rules. No I/O, no framework imports.
+// @jinx/core: pure domain rules. No I/O, no framework imports.
 export * from './types.js';
 export * from './elo.js';
 export * from './rows.js';

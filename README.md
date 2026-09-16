@@ -1,4 +1,4 @@
-# APPNAME
+# Jinx
 
 A passport for sports fans. Every game you attend adds to your record: wins and losses at games, the stadiums you have collected, the players and moments you witnessed, the people you were there with, and a pledged record at neutral games.
 

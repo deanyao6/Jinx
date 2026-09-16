@@ -1,8 +1,8 @@
 # Privacy policy (draft)
 
-_Last updated 2026-09-15. Replace APPNAME with the final name before publishing._
+_Last updated 2026-09-15. Replace Jinx with the final name before publishing._
 
-APPNAME is a passport for sports fans. This policy explains what we collect and why.
+Jinx is a passport for sports fans. This policy explains what we collect and why.
 
 **What we collect**
 - Account: your email address (or Apple ID relay address), handle, display name, optional home city, birth date (used only to confirm you are 13 or older).
@@ -17,6 +17,6 @@ APPNAME is a passport for sports fans. This policy explains what we collect and 
 
 **Your controls**: export everything from Settings as JSON, delete your account from Settings (removes all data and files), block and report users.
 
-**Data sources**: game data comes from MLB Advanced Media and nflverse (CC-BY-4.0). APPNAME is not affiliated with MLB or the NFL.
+**Data sources**: game data comes from MLB Advanced Media and nflverse (CC-BY-4.0). Jinx is not affiliated with MLB or the NFL.
 
 **Contact**: support email on the About screen.

@@ -36,7 +36,7 @@ export default function WelcomeScreen() {
   return (
     <Screen scroll={false}>
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text variant="display">APPNAME</Text>
+        <Text variant="display">Jinx</Text>
         <Text variant="h2" style={{ marginTop: theme.spacing.md }}>
           A passport for every game you attend.
         </Text>
@@ -66,7 +66,7 @@ export default function WelcomeScreen() {
           disabled={busy}
         />
         <Text variant="caption" color="muted" align="center">
-          You must be 13 or older to use APPNAME.
+          You must be 13 or older to use Jinx.
         </Text>
       </View>
     </Screen>

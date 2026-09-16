@@ -1,4 +1,4 @@
-# APPNAME (working title)
+# Jinx
 
 A passport for sports fans: every game you attend becomes part of a living record. iOS first, MLB + NFL in v1.
 
@@ -21,9 +21,11 @@ anything is unbuilt.
 - **The app runs in the iOS Simulator.** `npm run ios`. Read [docs/simulator.md](docs/simulator.md)
   first: this machine has no Apple developer certificate, so the plain `expo run:ios` cannot work,
   and two Metro settings are pinned for reasons that are not guessable.
-- **Naming is in flux.** The code still says `APPNAME` / `appname` everywhere, including the bundle
-  ID. The GitHub repo and the Supabase project have been renamed to **Jinx**. The rename inside the
-  app has not happened. Do not start one unless asked; it touches `app.json` and needs a rebuild.
+- **The app is named Jinx.** The rename landed on 2026-09-16: workspace scope `@jinx/*`, bundle ID
+  `com.deanyao.jinx`, URL scheme `jinx://`, Xcode scheme `Jinx`. The Expo slug is now `jinx`, which
+  no longer matches the EAS project `appname-monorepo`; see `OVERNIGHT.md` for what Dean needs to do
+  on EAS before the next `eas build`. `supabase/config.toml` keeps `project_id = "name_tbd"` on
+  purpose: it names the local Docker volumes, and changing it would orphan the loaded database.
 - **Local backend is the one to develop against.** Supabase on ports 54421-54427, loaded with
   74,951 MLB and 7,289 NFL games. Sign in with "Continue with email", any address, and read the
   code from Mailpit at http://127.0.0.1:54424. Nothing is emailed anywhere.
@@ -46,7 +48,7 @@ anything is unbuilt.
 | [docs/attribution.md](docs/attribution.md), [privacy.md](docs/privacy.md), [terms.md](docs/terms.md), [moderation.md](docs/moderation.md) | User-facing legal and policy copy |
 
 ## Ground rules (from the spec)
-- `APPNAME` / `appname` is a placeholder name. Keep it find-and-replaceable. Bundle ID `com.deanyao.appname`.
+- The app is **Jinx**. Bundle ID `com.deanyao.jinx`, URL scheme `jinx://`, workspace scope `@jinx/*`.
 - Hobby project: $0 data sources, Supabase free tier, minimal moving parts.
 - Non-goals: betting or wagering, ticket marketplace, live chat, team or league logos and marks.
 - Never call MLB Stats API or the Anthropic API from the client. Never ship service-role or Anthropic keys in the app bundle.

@@ -16,7 +16,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APP_DIR="$ROOT/apps/mobile"
 IOS_DIR="$APP_DIR/ios"
 DEVICE="${IOS_SIM_DEVICE:-iPhone 17 Pro}"
-SCHEME="${IOS_SCHEME:-APPNAME}"
+SCHEME="${IOS_SCHEME:-Jinx}"
 export LANG="${LANG:-en_US.UTF-8}"
 
 if ! xcode-select -p 2>/dev/null | grep -q Xcode; then

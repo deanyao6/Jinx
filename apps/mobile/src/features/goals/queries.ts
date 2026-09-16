@@ -4,7 +4,7 @@ import {
   type GoalDefinition,
   type GoalGame,
   type GoalProgress,
-} from '@appname/core';
+} from '@jinx/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 

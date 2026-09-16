@@ -1,4 +1,4 @@
-import type { NflverseGameRow } from '@appname/core';
+import type { NflverseGameRow } from '@jinx/core';
 import { describe, expect, it } from 'vitest';
 
 import {

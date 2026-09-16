@@ -1,5 +1,5 @@
 {
-  "name": "@appname/ingest",
+  "name": "@jinx/ingest",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "lint": "eslint src --config ../eslint.config.mjs"
   },
   "dependencies": {
-    "@appname/core": "*",
+    "@jinx/core": "*",
     "@supabase/supabase-js": "^2.58.0",
     "csv-parse": "^7.0.2"
   },

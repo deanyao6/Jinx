@@ -5,7 +5,7 @@
  * turns every empty cell into null; the mappers coerce the columns that the core row types expect
  * as numbers. Anything that is not a finite number becomes null rather than NaN.
  */
-import type { NflverseGameRow, NflversePbpRow } from '@appname/core';
+import type { NflverseGameRow, NflversePbpRow } from '@jinx/core';
 import { parse } from 'csv-parse';
 import { pipeline, Readable } from 'node:stream';
 

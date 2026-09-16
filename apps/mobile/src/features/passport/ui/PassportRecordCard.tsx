@@ -1,4 +1,4 @@
-import { formatRecord, formatVsExpected, formatWinRate } from '@appname/core';
+import { formatRecord, formatVsExpected, formatWinRate } from '@jinx/core';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 

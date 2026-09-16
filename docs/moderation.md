@@ -1,6 +1,6 @@
 # Moderation policy
 
-APPNAME has user-generated content in handles, display names, placeholder companion names, notes, and feed reactions. This is how it is handled (App Store Guideline 1.2).
+Jinx has user-generated content in handles, display names, placeholder companion names, notes, and feed reactions. This is how it is handled (App Store Guideline 1.2).
 
 - **Filtering**: handles and display names are checked against a profanity list in the app before saving; the database rejects handles outside `[a-z0-9_]{3,20}`.
 - **Reporting**: any profile, attendance, feed event, or person can be reported from the overflow menu. Reports land in `public.reports` with the reporter, target, and reason.
