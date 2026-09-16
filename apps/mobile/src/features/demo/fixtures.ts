@@ -192,11 +192,10 @@ export function stampsFor(pill: string): StampFixture[] {
   return STAMPS.filter((s) => s.teams.includes(pill));
 }
 
-/** Seal metal gradients: [highlight, base, engraving]. */
-export const METAL: Record<'brass' | 'silver', readonly [string, string, string]> = {
-  brass: ['#F3EBD3', '#D9C79C', '#6E5A33'],
-  silver: ['#EEF0F2', '#C5CAD0', '#4A5260'],
-};
+// The SVG generators' palettes are part of the design rather than the demo data, so they
+// live with the components. Re-exported here because the test that verifies every fixture
+// value against design/reference.html checks them too.
+export { AVATARS, METAL, PHOTO_SKIES } from '@/components/reference/palettes';
 
 export type GameRowFixture = {
   team: string;
@@ -447,16 +446,6 @@ export const GAME_LOGS: Record<string, GameLogFixture> = {
   neutral: NEUTRAL_LOG,
 };
 
-/** Generated avatar palettes: [skin, hair, background]. */
-export const AVATARS: Record<string, readonly [string, string, string]> = {
-  dean: ['#F3C9A5', '#2B2118', '#7FB3D5'],
-  dad: ['#D9A57A', '#8A8A8A', '#9BC7A6'],
-  maya: ['#C98A62', '#3A2317', '#E8B4C8'],
-  jordan: ['#8D5A3B', '#1D1D1D', '#F2C26B'],
-  priya: ['#B97A55', '#241612', '#A7B8F0'],
-  sam: ['#F0CFB0', '#C9772E', '#B5DDD1'],
-};
-
 /**
  * Pick a side (SPEC.md 8.8.3). The countdown is the value the reference's markup starts
  * with, frozen: the harness stops the reference's timer, so this is what it displays.
@@ -562,13 +551,11 @@ export const RELIVE_STEPS: readonly ReliveStep[] = [
  * 300x92 viewBox with a 4pt inset on the left and the probability mapped to 84 of the
  * 92 units.
  */
-export function relivePoint(i: number): readonly [number, number] {
-  const wp = RELIVE_WP[i] ?? 0;
-  return [(i / (RELIVE_WP.length - 1)) * 292 + 4, 88 - wp * 84];
+export function relivePoint(series: readonly number[], i: number): readonly [number, number] {
+  const wp = series[i] ?? 0;
+  return [(i / (series.length - 1)) * 292 + 4, 88 - wp * 84];
 }
 
-/** The placeholder photo scenes, from `scene()` in the reference. */
-export const PHOTO_SKIES: readonly string[] = ['#1D2B53', '#243B6B', '#3B2C5A'];
 export const RELIVE_YOUR_PHOTOS = [
   { kind: 'selfie', seed: 0 },
   { kind: 'field', seed: 1 },

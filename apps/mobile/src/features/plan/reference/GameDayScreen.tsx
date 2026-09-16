@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/reference/Avatar';
 import { ICONS, type IconName } from '@/components/reference/icons';
-import { GAME_DAY } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -18,8 +18,9 @@ import { screenPadding } from '@/theme/reference/tokens';
  * away game at SoFi is still in Eagles colours.
  */
 export function GameDayScreen() {
+  const plan = useRepository().gameDay();
   return (
-    <ReferenceThemeProvider team={GAME_DAY.team}>
+    <ReferenceThemeProvider team={plan.team}>
       <Body />
     </ReferenceThemeProvider>
   );
@@ -27,6 +28,7 @@ export function GameDayScreen() {
 
 function Body() {
   const { base, team } = useReferenceTheme();
+  const plan = useRepository().gameDay();
   const insets = useSafeAreaInsets();
   const Share = ICONS['i-share'];
 
@@ -53,10 +55,10 @@ function Body() {
           <View style={[s.ticketStripe, { backgroundColor: team.second }]} />
           <View style={[s.notch, s.notchLeft, { backgroundColor: base.scr }]} />
           <View style={[s.notch, s.notchRight, { backgroundColor: base.scr }]} />
-          <Text style={[s.ticketTitle, { color: team.onFill }]}>{GAME_DAY.matchup}</Text>
-          <Text style={[s.ticketWhen, { color: team.onFill }]}>{GAME_DAY.when}</Text>
+          <Text style={[s.ticketTitle, { color: team.onFill }]}>{plan.matchup}</Text>
+          <Text style={[s.ticketWhen, { color: team.onFill }]}>{plan.when}</Text>
           <View style={[s.seatRow, { borderTopColor: mix(team.onFill, 0.4) }]}>
-            {GAME_DAY.seat.map((field) => (
+            {plan.seat.map((field) => (
               <View key={field.label}>
                 <Text style={[s.seatLabel, { color: team.onFill }]}>{field.label}</Text>
                 <Text style={[s.seatValue, { color: team.onFill }]}>{field.value}</Text>
@@ -66,7 +68,7 @@ function Body() {
         </View>
 
         <View style={s.avatars}>
-          {GAME_DAY.companions.map((who, i) => (
+          {plan.companions.map((who, i) => (
             <View
               key={who}
               style={[s.avatar, { borderColor: base.scr }, i > 0 ? { marginLeft: -6 } : null]}
@@ -74,13 +76,13 @@ function Body() {
               <Avatar name={who} size={20} />
             </View>
           ))}
-          <Text style={[s.avatarsText, { color: base.muted }]}>{GAME_DAY.companionsText}</Text>
+          <Text style={[s.avatarsText, { color: base.muted }]}>{plan.companionsText}</Text>
         </View>
 
         <View style={s.timeline}>
-          {GAME_DAY.timeline.map((item, i) => {
+          {plan.timeline.map((item, i) => {
             const Icon = ICONS[item.icon as IconName];
-            const last = i === GAME_DAY.timeline.length - 1;
+            const last = i === plan.timeline.length - 1;
             return (
               <View key={item.time} style={s.timelineItem}>
                 <View>

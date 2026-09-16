@@ -3,7 +3,9 @@ import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SlideOver } from '@/components/reference/SlideOver';
-import { GAME_LOGS, PASSPORT, PASSPORT_PILLS, stampsFor } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
+import type { PassportFixture } from '@/features/data/shapes';
+import type { Repository } from '@/features/data/types';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { screenPadding } from '@/theme/reference/tokens';
 
@@ -36,6 +38,7 @@ export function PassportScreen({
   /** Opens with that record's game log already showing, and no slide animation. */
   initialLog?: string;
 }) {
+  const repo = useRepository();
   const [pill, setPill] = React.useState(initialPill);
   // The card that opened the log is kept, not just its key, because the panel's header
   // shows that card's own label and record rather than the log's.
@@ -43,14 +46,13 @@ export function PassportScreen({
     log: string;
     name: string;
     record: string;
-  } | null>(() => initialCard(initialPill, initialLog));
+  } | null>(() => initialCard(repo, initialPill, initialLog));
 
-  const data = PASSPORT[pill] ?? PASSPORT.all;
-  if (!data) throw new Error(`no passport fixture for "${pill}"`);
+  const data = repo.passport(pill);
 
   const open = (log: string) => {
     const card = data.cards.find((c) => c.log === log);
-    if (card && GAME_LOGS[log]) setOpenLog({ log, name: card.name, record: card.record });
+    if (card && repo.gameLog(log)) setOpenLog({ log, name: card.name, record: card.record });
   };
 
   return (
@@ -72,10 +74,9 @@ export function PassportScreen({
 }
 
 /** Resolve the card a deep-linked log belongs to, so the panel header matches. */
-function initialCard(pill: string, log?: string) {
+function initialCard(repo: Repository, pill: string, log?: string) {
   if (!log) return null;
-  const data = PASSPORT[pill] ?? PASSPORT.all;
-  const card = data?.cards.find((c) => c.log === log);
+  const card = repo.passport(pill).cards.find((c) => c.log === log);
   return card ? { log, name: card.name, record: card.record } : null;
 }
 
@@ -87,10 +88,11 @@ function PassportBody({
 }: {
   pill: string;
   onSelect: (key: string) => void;
-  data: NonNullable<(typeof PASSPORT)[string]>;
+  data: PassportFixture;
   onOpenLog: (log: string) => void;
 }) {
   const { base } = useReferenceTheme();
+  const repo = useRepository();
   // The reference draws a fake status row inside `.scr` and starts `.body` below it.
   // The app uses the real status bar instead (SPEC.md 8.1), so the content begins at the
   // top safe-area inset and then takes `.body`'s own 4px padding.
@@ -107,7 +109,7 @@ function PassportBody({
         showsVerticalScrollIndicator={false}
       >
         <Head title="JINX" subtitle="FAN PASSPORT" />
-        <Pills pills={PASSPORT_PILLS} selected={pill} onSelect={onSelect} />
+        <Pills pills={repo.passportPills()} selected={pill} onSelect={onSelect} />
         <Hero
           label={data.label}
           badge={data.badge}
@@ -118,7 +120,7 @@ function PassportBody({
         />
         <RecordCards cards={data.cards} onOpen={onOpenLog} />
         <SectionHeader title="Stadium stamps" action={data.stampCount} />
-        <Stamps stamps={stampsFor(pill)} />
+        <Stamps stamps={repo.stamps(pill)} />
         <SectionHeader title="Fan superlatives" />
         <SuperlativeList items={data.superlatives} />
       </ScrollView>

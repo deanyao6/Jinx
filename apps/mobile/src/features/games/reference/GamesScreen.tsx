@@ -5,7 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar } from '@/components/reference/Avatar';
 import { GameThumb } from '@/components/reference/GameThumb';
 import { ICONS } from '@/components/reference/icons';
-import { GAMES, type GameRowFixture } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
+import type { GameRowFixture } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -29,6 +30,7 @@ export function GamesScreen({ initialSegment = 'History' }: { initialSegment?: s
 
 function Body({ initialSegment }: { initialSegment: string }) {
   const { base } = useReferenceTheme();
+  const repo = useRepository();
   const [segment, setSegment] = React.useState(initialSegment);
   const insets = useSafeAreaInsets();
   const Plus = ICONS['i-plus'];
@@ -66,7 +68,7 @@ function Body({ initialSegment }: { initialSegment: string }) {
           onSelect={setSegment}
         />
 
-        {GAMES.map((game, i) => (
+        {repo.games().map((game, i) => (
           <TeamTheme key={`${game.title}-${i}`} team={game.team}>
             <GameRow game={game} />
           </TeamTheme>

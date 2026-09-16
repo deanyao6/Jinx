@@ -5,7 +5,8 @@ import Svg from 'react-native-svg';
 
 import { ICONS } from '@/components/reference/icons';
 import { StadiumShape } from '@/components/reference/StadiumShape';
-import { GAME_LOGS, type GameLogFixture, type LogRowFixture } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
+import type { GameLogFixture, LogRowFixture } from '@/features/data/shapes';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, screenPadding } from '@/theme/reference/tokens';
@@ -34,8 +35,9 @@ export function GameLogPanel({
   record: string;
   onClose?: () => void;
 }) {
-  const data = GAME_LOGS[log];
-  if (!data) throw new Error(`no game log fixture for "${log}"`);
+  const repo = useRepository();
+  const data = repo.gameLog(log);
+  if (!data) throw new Error(`no game log for "${log}"`);
 
   // A screen root, so it establishes the theme rather than nesting inside one.
   // <TeamTheme> re-themes a subtree and requires a provider above it; in the real app this

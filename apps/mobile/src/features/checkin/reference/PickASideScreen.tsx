@@ -4,7 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ICONS } from '@/components/reference/icons';
 import { LiveDot } from '@/components/reference/LiveDot';
-import { PICK_A_SIDE, pickConfirmation } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
+import { pickConfirmation } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -33,7 +34,7 @@ function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
   const insets = useSafeAreaInsets();
   const Book = ICONS['i-book'];
   const Lock = ICONS['i-lock'];
-  const d = PICK_A_SIDE;
+  const d = useRepository().pickASide();
   const chosen = picked ? (picked === 'away' ? d.away : d.home) : null;
 
   return (

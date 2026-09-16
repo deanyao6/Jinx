@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar } from '@/components/reference/Avatar';
 import { SlideOver } from '@/components/reference/SlideOver';
 import { ICONS, type IconName } from '@/components/reference/icons';
-import { PROFILE } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
 import { TabBar } from '@/features/passport/reference/parts';
 
 import { FriendsPanel } from './FriendsPanel';
@@ -18,9 +18,10 @@ import { border, screenPadding } from '@/theme/reference/tokens';
  * The Friends row opens the Friends panel; see FriendsPanel.
  */
 export function ProfileScreen({ initialPanel }: { initialPanel?: 'friends' }) {
+  const profile = useRepository().profile();
   const [panel, setPanel] = React.useState<'friends' | null>(initialPanel ?? null);
   return (
-    <ReferenceThemeProvider team={PROFILE.team}>
+    <ReferenceThemeProvider team={profile.team}>
       <Body onOpenPanel={setPanel} />
       {panel === 'friends' ? (
         <SlideOver open initiallyOpen={initialPanel != null}>
@@ -33,6 +34,7 @@ export function ProfileScreen({ initialPanel }: { initialPanel?: 'friends' }) {
 
 function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
   const { base, team } = useReferenceTheme();
+  const profile = useRepository().profile();
   const insets = useSafeAreaInsets();
   const Gear = ICONS['i-gear'];
   const Chevron = ICONS['i-chev-r'];
@@ -49,7 +51,7 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
         showsVerticalScrollIndicator={false}
       >
         <View style={s.top}>
-          <Text style={[s.handle, { color: base.ink }]}>{PROFILE.handle}</Text>
+          <Text style={[s.handle, { color: base.ink }]}>{profile.handle}</Text>
           <View style={[s.iconButton, { backgroundColor: base.surface }]}>
             <Gear size={20} color={base.ink} />
           </View>
@@ -59,13 +61,13 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
           {/* `.prof .pfp` is a ring in the user's team colour with 3px of padding inside. */}
           <View style={[s.pfp, { borderColor: team.accent, backgroundColor: base.scr }]}>
             <View style={s.pfpInner}>
-              <Avatar name={PROFILE.avatar} size={80} />
+              <Avatar name={profile.avatar} size={80} />
             </View>
           </View>
-          <Text style={[s.name, { color: base.ink }]}>{PROFILE.name}</Text>
-          <Text style={[s.tagline, { color: base.muted }]}>{PROFILE.tagline}</Text>
+          <Text style={[s.name, { color: base.ink }]}>{profile.name}</Text>
+          <Text style={[s.tagline, { color: base.muted }]}>{profile.tagline}</Text>
           <View style={s.chips}>
-            {PROFILE.teamChips.map((chip) => (
+            {profile.teamChips.map((chip) => (
               <TeamTheme key={chip.team} team={chip.team}>
                 <TeamChip label={chip.label} />
               </TeamTheme>
@@ -74,7 +76,7 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
         </View>
 
         <View style={[s.stats, { borderTopColor: base.line, borderBottomColor: base.line }]}>
-          {PROFILE.stats.map((stat) => (
+          {profile.stats.map((stat) => (
             <View key={stat.label} style={{ flex: 1, alignItems: 'center' }}>
               <Text style={[s.statValue, { color: base.ink }]}>{stat.value}</Text>
               <Text style={[s.statLabel, { color: base.muted }]}>{stat.label}</Text>
@@ -83,7 +85,7 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
         </View>
 
         <View>
-          {PROFILE.rows.map((row, i) => {
+          {profile.rows.map((row, i) => {
             const Icon = ICONS[row.icon as IconName];
             return (
               <Pressable
@@ -105,7 +107,7 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
                 </View>
                 {row.facepile ? (
                   <View style={s.facepile}>
-                    {PROFILE.facepile.map((who) => (
+                    {profile.facepile.map((who) => (
                       <View key={who} style={[s.face, { borderColor: base.scr }]}>
                         <Avatar name={who} size={26} />
                       </View>

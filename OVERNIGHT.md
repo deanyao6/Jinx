@@ -423,6 +423,31 @@ theme layer and its tests can use it without dragging the network stack along. S
 cover the whole fallback chain, including that the dark accent comes from the stored value
 rather than being derived, and that the fill stays the same across themes.
 
+## The repository interface
+
+SPEC.md 8.9 asks for every screen to read data through a repository so demo fixtures and
+Supabase are interchangeable without touching UI code. **No screen imports a fixture any
+more.** They take a `Repository` from context, and the demo implementation is the default,
+which is what makes demo mode work with no backend and what the parity harness measures.
+
+Two things moved while doing it, because the refactor showed they were in the wrong place:
+
+- The SVG generators' palettes — seal metals, avatar colours, photo skies — are part of the
+  design, not the demo data. A component needs them whether it is drawing a fixture or a
+  real user's photo, so they now live beside the components. The fixtures re-export them so
+  the test that checks every value against the reference still covers them.
+- Relive's story steps, win probability series and photo lists are per-game **data**, so
+  they come through the repository. `relivePoint` now takes the series as an argument
+  rather than closing over the fixture, which makes it a chart function rather than a
+  fixture-bound one.
+
+**What is not done is the Supabase implementation.** That is deliberate: it is per-milestone
+work — Passport's records are M3, imports are M4 — and the point of the interface is that
+none of these screens change when it arrives. The structural half, which was the blocker,
+is finished.
+
+Parity is unchanged at 4.44% through all of it.
+
 ### One open design question, for you
 
 The reference's tab bar has `padding-bottom: 20px`, which is its stand-in for the home
@@ -462,10 +487,10 @@ Nothing below is blocked on you except items 1 and 6.
 
 1. **Decide the Stadium guide avatar question** above. It is the single largest remaining
    parity gap and it is one line either way.
-2. **Replace the demo fixtures with the real queries.** The screens read through
-   `features/demo/fixtures.ts` today. SPEC.md 8.9 wants them behind a repository interface
-   so demo and Supabase are interchangeable; the fixtures are already shaped that way, so
-   this is mostly introducing the interface and a second implementation.
+2. **Write the Supabase implementation of the repository.** The interface exists and the
+   demo implementation is behind it; what is missing is the second implementation, and that
+   is genuinely per-milestone work — Passport's records are M3, imports are M4, and so on.
+   No screen changes when it lands.
 3. **The last typography offsets.** Passport's header sits 2-3pt high and its hero 3pt low;
    Pick a side and the game log have similar small ones. Worth roughly 2 points of parity
    across the board. Read the warnings above first: four of my six attempts here made

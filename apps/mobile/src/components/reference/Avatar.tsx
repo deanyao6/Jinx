@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
-import { AVATARS } from '@/features/demo/fixtures';
+import { AVATARS } from './palettes';
 
 /**
  * The generated default avatar, ported from `avatar()` in `design/reference.html`

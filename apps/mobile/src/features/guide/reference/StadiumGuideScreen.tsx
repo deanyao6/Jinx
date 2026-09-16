@@ -6,7 +6,9 @@ import Svg from 'react-native-svg';
 import { Avatar } from '@/components/reference/Avatar';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { StadiumShape } from '@/components/reference/StadiumShape';
-import { GUIDE, GUIDE_ROWS, scoreClass, type GuideRow } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
+import type { GuideRow } from '@/features/data/shapes';
+import { scoreClass } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -17,8 +19,9 @@ import { border, screenPadding } from '@/theme/reference/tokens';
  * A demo shell in v1, behind FEATURE_GUIDE.
  */
 export function StadiumGuideScreen({ tab = 'food' }: { tab?: string }) {
+  const guide = useRepository().guide();
   return (
-    <ReferenceThemeProvider team={GUIDE.team}>
+    <ReferenceThemeProvider team={guide.team}>
       <Body initialTab={tab} />
     </ReferenceThemeProvider>
   );
@@ -30,7 +33,9 @@ function Body({ initialTab }: { initialTab: string }) {
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
   const Share = ICONS['i-share'];
-  const rows = GUIDE_ROWS[tab] ?? GUIDE_ROWS.food ?? [];
+  const repo = useRepository();
+  const guide = repo.guide();
+  const rows = repo.guideRows(tab);
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
@@ -69,13 +74,13 @@ function Body({ initialTab }: { initialTab: string }) {
             color={team.accent}
             strokeWidth={2}
           >
-            <StadiumShape shapeKey={GUIDE.shape} />
+            <StadiumShape shapeKey={guide.shape} />
           </Svg>
           <View style={{ flex: 1, minWidth: 0 }}>
-            <Text style={[s.venue, { color: base.ink }]}>{GUIDE.venue}</Text>
-            <Text style={[s.venueSub, { color: base.muted }]}>{GUIDE.subtitle}</Text>
+            <Text style={[s.venue, { color: base.ink }]}>{guide.venue}</Text>
+            <Text style={[s.venueSub, { color: base.muted }]}>{guide.subtitle}</Text>
             <View style={s.avatars}>
-              {GUIDE.visitors.map((who, i) => (
+              {guide.visitors.map((who, i) => (
                 <View
                   key={who}
                   style={[
@@ -88,7 +93,7 @@ function Body({ initialTab }: { initialTab: string }) {
                 </View>
               ))}
               <Text style={[s.avatarsText, { color: base.muted }]} numberOfLines={1}>
-                {GUIDE.visitorsText}
+                {guide.visitorsText}
               </Text>
             </View>
           </View>
@@ -97,7 +102,7 @@ function Body({ initialTab }: { initialTab: string }) {
         {/* `.seg`, the earlier screens' segmented control. Note it is not `.fx-seg`: the
             radii, padding and selected fill all differ. */}
         <View style={[s.seg, { backgroundColor: base.surface }]}>
-          {GUIDE.tabs.map((t) => {
+          {guide.tabs.map((t) => {
             const on = t.key === tab;
             return (
               <Pressable

@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { Circle, Path, Rect, Text as SvgText } from 'react-native-svg';
 
-import { AVATARS, PHOTO_SKIES } from '@/features/demo/fixtures';
+import { AVATARS, PHOTO_SKIES } from './palettes';
 import { fontFamily } from '@/theme/fonts';
 
 /**

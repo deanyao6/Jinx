@@ -5,13 +5,8 @@ import Svg, { Circle, Line, Path, Polyline } from 'react-native-svg';
 
 import { ICONS } from '@/components/reference/icons';
 import { PhotoScene } from '@/components/reference/PhotoScene';
-import {
-  RELIVE,
-  RELIVE_FAN_PHOTOS,
-  RELIVE_STEPS,
-  RELIVE_YOUR_PHOTOS,
-  relivePoint,
-} from '@/features/demo/fixtures';
+import { relivePoint } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -28,8 +23,9 @@ import { motion, screenPadding } from '@/theme/reference/tokens';
  * what colours the play button and the win probability line.
  */
 export function ReliveScreen({ step = 0 }: { step?: number }) {
+  const relive = useRepository().relive();
   return (
-    <ReferenceThemeProvider team={RELIVE.home.team}>
+    <ReferenceThemeProvider team={relive.home.team}>
       <Body initialStep={step} />
     </ReferenceThemeProvider>
   );
@@ -43,10 +39,10 @@ export function ReliveScreen({ step = 0 }: { step?: number }) {
  * Reduce Motion does not disable this: stepping through the story is the feature, not
  * decoration, and the reference's own steps are already discrete rather than animated.
  */
-function useStoryPlayer(initialStep: number) {
+function useStoryPlayer(initialStep: number, stepCount: number) {
   const [step, setStep] = React.useState(initialStep);
   const [playing, setPlaying] = React.useState(false);
-  const last = RELIVE_STEPS.length - 1;
+  const last = stepCount - 1;
 
   React.useEffect(() => {
     if (!playing) return;
@@ -77,7 +73,10 @@ function useStoryPlayer(initialStep: number) {
 
 function Body({ initialStep }: { initialStep: number }) {
   const { base, team } = useReferenceTheme();
-  const { step, playing, toggle } = useStoryPlayer(initialStep);
+  const repo = useRepository();
+  const relive = repo.relive();
+  const steps = repo.reliveSteps();
+  const { step, playing, toggle } = useStoryPlayer(initialStep, steps.length);
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
   const Share = ICONS['i-share'];
@@ -85,12 +84,12 @@ function Body({ initialStep }: { initialStep: number }) {
   const Eye = ICONS['i-eye'];
   const Ext = ICONS['i-ext'];
 
-  const index = Math.max(0, Math.min(step, RELIVE_STEPS.length - 1));
-  const current = RELIVE_STEPS[index];
+  const index = Math.max(0, Math.min(step, steps.length - 1));
+  const current = steps[index];
   if (!current) throw new Error(`no Relive step ${index}`);
   // The parity harness mounts a mid-story step directly rather than pressing play, so the
   // icon follows "is there more to come", which is what the reference's icon means.
-  const showPause = playing || (index > 0 && index < RELIVE_STEPS.length - 1);
+  const showPause = playing || (index > 0 && index < steps.length - 1);
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
@@ -117,19 +116,19 @@ function Body({ initialStep }: { initialStep: number }) {
 
         {/* `.scorebug` is a 1fr auto 1fr grid, so the score column is intrinsic. */}
         <View style={[s.scorebug, { backgroundColor: base.surface }]}>
-          <TeamTheme team={RELIVE.away.team}>
-            <ScorebugTeam badge={RELIVE.away.badge} name={RELIVE.away.name} />
+          <TeamTheme team={relive.away.team}>
+            <ScorebugTeam badge={relive.away.badge} name={relive.away.name} />
           </TeamTheme>
           <View style={s.score}>
             <Text style={[s.scoreValue, { color: base.ink }]}>{current.score}</Text>
             <Text style={[s.scoreLabel, { color: base.muted }]}>{current.label}</Text>
           </View>
-          <TeamTheme team={RELIVE.home.team}>
-            <ScorebugTeam badge={RELIVE.home.badge} name={RELIVE.home.name} />
+          <TeamTheme team={relive.home.team}>
+            <ScorebugTeam badge={relive.home.badge} name={relive.home.name} />
           </TeamTheme>
         </View>
 
-        <Text style={[s.note, { color: base.muted }]}>{RELIVE.note}</Text>
+        <Text style={[s.note, { color: base.muted }]}>{relive.note}</Text>
 
         <View style={s.player}>
           <Pressable
@@ -148,23 +147,23 @@ function Body({ initialStep }: { initialStep: number }) {
           </Pressable>
           <View style={[s.storyCard, { backgroundColor: base.surface }]}>
             <Text style={[s.storyLabel, { color: base.muted }]}>
-              {index === 0 ? RELIVE.idleHint : current.label}
+              {index === 0 ? relive.idleHint : current.label}
             </Text>
             <Text style={[s.storyText, { color: base.ink }]}>{current.text}</Text>
           </View>
         </View>
 
-        <WinProbChart upTo={current.wp} />
+        <WinProbChart series={repo.reliveWinProb()} upTo={current.wp} />
 
         <View style={s.chartLabels}>
-          <Text style={[s.chartLabel, { color: base.muted }]}>{RELIVE.chartLabels.left}</Text>
-          <Text style={[s.chartLabel, { color: base.muted }]}>{RELIVE.chartLabels.middle}</Text>
-          <Text style={[s.chartLabel, { color: base.muted }]}>{RELIVE.chartLabels.right}</Text>
+          <Text style={[s.chartLabel, { color: base.muted }]}>{relive.chartLabels.left}</Text>
+          <Text style={[s.chartLabel, { color: base.muted }]}>{relive.chartLabels.middle}</Text>
+          <Text style={[s.chartLabel, { color: base.muted }]}>{relive.chartLabels.right}</Text>
         </View>
 
         <SectionRow title="Your photos" action="Add" />
         <View style={s.photos}>
-          {RELIVE_YOUR_PHOTOS.map((photo, i) => (
+          {repo.relivePhotos().map((photo, i) => (
             <View key={`${photo.kind}-${i}`} style={s.photo}>
               <PhotoScene kind={photo.kind} seed={photo.seed} />
             </View>
@@ -174,9 +173,9 @@ function Body({ initialStep }: { initialStep: number }) {
           </View>
         </View>
 
-        <SectionRow title="From fans at this game" action={RELIVE.fanCount} />
+        <SectionRow title="From fans at this game" action={relive.fanCount} />
         <View style={s.photos}>
-          {RELIVE_FAN_PHOTOS.map((photo, i) => (
+          {repo.reliveFanPhotos().map((photo, i) => (
             <View key={`${photo.kind}-${i}`} style={s.photo}>
               <PhotoScene kind={photo.kind} seed={photo.seed} />
             </View>
@@ -223,14 +222,14 @@ function ScorebugTeam({ badge, name }: { badge: string; name: string }) {
  * The reference uses `preserveAspectRatio="none"` so the 300x92 viewBox stretches to the
  * full width; react-native-svg honours the same attribute.
  */
-function WinProbChart({ upTo }: { upTo: number }) {
+function WinProbChart({ series, upTo }: { series: readonly number[]; upTo: number }) {
   const { base, team } = useReferenceTheme();
   const points: string[] = [];
   for (let i = 0; i <= upTo; i++) {
-    const [x, y] = relivePoint(i);
+    const [x, y] = relivePoint(series, i);
     points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
   }
-  const [dotX, dotY] = relivePoint(upTo);
+  const [dotX, dotY] = relivePoint(series, upTo);
 
   return (
     <Svg width="100%" height={92} viewBox="0 0 300 92" preserveAspectRatio="none">

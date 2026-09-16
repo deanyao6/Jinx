@@ -4,7 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/reference/Avatar';
 import { ICONS } from '@/components/reference/icons';
-import { FRIENDS, PROFILE } from '@/features/demo/fixtures';
+import { useRepository } from '@/features/data/context';
+import type { FriendsFixture } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -17,16 +18,18 @@ import { border, screenPadding } from '@/theme/reference/tokens';
  * "before you connected" card, with every person ringed in their own team's colour.
  */
 export function FriendsPanel({ onClose }: { onClose?: () => void }) {
+  const profile = useRepository().profile();
   return (
-    <ReferenceThemeProvider team={PROFILE.team}>
+    <ReferenceThemeProvider team={profile.team}>
       <Body onClose={onClose ?? (() => {})} />
     </ReferenceThemeProvider>
   );
 }
 
 function Body({ onClose }: { onClose: () => void }) {
-  // `FRIENDS.tabs` is `as const`, so without widening this infers the literal 'With'.
-  const [tab, setTab] = React.useState<string>(FRIENDS.tabs[0]);
+  // `friends.tabs` is `as const`, so without widening this infers the literal 'With'.
+  const friends = useRepository().friends();
+  const [tab, setTab] = React.useState<string>(friends.tabs[0]);
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
@@ -62,7 +65,7 @@ function Body({ onClose }: { onClose: () => void }) {
         </View>
 
         <View style={[s.seg, { backgroundColor: base.surface }]}>
-          {FRIENDS.tabs.map((option) => {
+          {friends.tabs.map((option) => {
             const on = option === tab;
             return (
               <Pressable
@@ -80,10 +83,10 @@ function Body({ onClose }: { onClose: () => void }) {
           })}
         </View>
 
-        <Text style={[s.note, { color: base.muted }]}>{FRIENDS.note}</Text>
+        <Text style={[s.note, { color: base.muted }]}>{friends.note}</Text>
 
         <View>
-          {FRIENDS.people.map((person, i) => (
+          {friends.people.map((person, i) => (
             <TeamTheme key={person.key} team={person.team}>
               <FriendRow person={person} first={i === 0} />
             </TeamTheme>
@@ -91,15 +94,15 @@ function Body({ onClose }: { onClose: () => void }) {
         </View>
 
         {/* The rivalry card takes the rival's team colour. */}
-        <TeamTheme team={FRIENDS.rivalry.team}>
+        <TeamTheme team={friends.rivalry.team}>
           <RivalryCard>
             <Swords size={20} color={base.muted} />
           </RivalryCard>
         </TeamTheme>
 
         <View style={[s.card, { backgroundColor: base.surface }]}>
-          <Text style={[s.cardLabel, { color: base.muted }]}>{FRIENDS.overlap.label}</Text>
-          <Text style={[s.overlapText, { color: base.ink }]}>{FRIENDS.overlap.text}</Text>
+          <Text style={[s.cardLabel, { color: base.muted }]}>{friends.overlap.label}</Text>
+          <Text style={[s.overlapText, { color: base.ink }]}>{friends.overlap.text}</Text>
         </View>
       </ScrollView>
       <TabBar active="Profile" />
@@ -108,7 +111,13 @@ function Body({ onClose }: { onClose: () => void }) {
 }
 
 /** `.fr`: a ringed photo, name with the team dot, and the record in its tone colour. */
-function FriendRow({ person, first }: { person: (typeof FRIENDS.people)[number]; first: boolean }) {
+function FriendRow({
+  person,
+  first,
+}: {
+  person: FriendsFixture['people'][number];
+  first: boolean;
+}) {
   const { base, team } = useReferenceTheme();
   const tone = person.tone === 'good' ? base.good : person.tone === 'bad' ? base.bad : base.ink;
   return (
@@ -137,7 +146,7 @@ function FriendRow({ person, first }: { person: (typeof FRIENDS.people)[number];
 /** `.card.t-nym` with the head-to-head `.vs` row. */
 function RivalryCard({ children }: { children: React.ReactNode }) {
   const { base, team } = useReferenceTheme();
-  const r = FRIENDS.rivalry;
+  const r = useRepository().friends().rivalry;
   return (
     <View style={[s.card, { backgroundColor: base.surface }]}>
       <Text style={[s.cardLabel, { color: base.muted }]}>{r.label}</Text>

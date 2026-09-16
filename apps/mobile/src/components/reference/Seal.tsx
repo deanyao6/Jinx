@@ -1,7 +1,7 @@
 import React, { useId } from 'react';
 import Svg, { Circle, Defs, G, Path, RadialGradient, Stop, Text, TextPath } from 'react-native-svg';
 
-import { METAL } from '@/features/demo/fixtures';
+import { METAL } from './palettes';
 import { fontFamily } from '@/theme/fonts';
 
 import { StadiumShape } from './StadiumShape';
