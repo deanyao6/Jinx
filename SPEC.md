@@ -1,6 +1,18 @@
-# APPNAME: Product and Engineering Spec (v1 + roadmap)
+# Jinx: Product and Engineering Spec (v1 + roadmap)
 
-> **Codename:** `APPNAME` is a placeholder. The real name is undecided (Turnstile and Witness are taken in this category). Use `APPNAME` / `appname` everywhere so it can be find-and-replaced later. Bundle ID: `com.deanyao.appname`.
+> **Revision 7.** Adds `docs/ACCOUNTS.md` (accounts, identifiers, access setup) and an M0 access check. The Relive scorebug uses the circular team badges.
+>
+> **Revision 6.** Figma is no longer read directly. Passport, Pick a side, and Games from the Figma design have been recreated in `design/reference.html` with corrections applied, so the HTML reference is again the single visual source of truth for every screen (Section 8).
+>
+> **Revision 5.** Sign in with Apple is the only sign-in method until email is set up with Resend and a domain. Email OTP and the forwarding address are deferred to when the domain exists (Sections 2, 7.3, 8.1 onboarding, 12).
+>
+> **Revision 4.** The app is named **Jinx**. Figma is now the design source of truth for Passport, Games, and Pick a side, with `design/reference.html` covering all other screens and all interactions until they are designed in Figma (Section 8.1, `design/FIGMA_NOTES.md`).
+>
+> **Revision 3.** Game detail is now fetched on demand instead of bulk-ingested for all history (Sections 2, 4.5, 4.7, 12), to stay within the Supabase free database limit. Email uses Resend.
+>
+> **Revision 2.** Adds the UI v3 design system (Section 8, rewritten), "As a neutral" naming, record game logs, Relive, and storylines. The visual reference is `design/reference.html`. Where this spec and the reference disagree on anything visual, the reference wins.
+
+> **Name:** Jinx. Bundle ID: `com.deanyao.jinx`. Display name on the home screen: Jinx. The App Store listing name may need a suffix if "Jinx" is taken (e.g., "Jinx: Sports Fan Record"); confirm with Dean before creating store metadata.
 >
 > **Audience for this doc:** Claude Code, building from an empty repo. Read the whole doc before starting. Work milestone by milestone (Section 12). When something here is ambiguous or seems wrong once you're in the code, stop and ask rather than guessing. When a data source detail is marked **VERIFY**, confirm it against the live source before building on it.
 
@@ -8,7 +20,7 @@
 
 ## 1. Product summary
 
-APPNAME is a passport for sports fans that turns every game you attend into a living record. Your personal record, team records, and pledged record, the stadiums you've collected, the players and moments you witnessed, and the people you were there with all add up to a fan identity that changes every time you show up.
+Jinx is a passport for sports fans that turns every game you attend into a living record. Your personal record, team records, and pledged record, the stadiums you've collected, the players and moments you witnessed, and the people you were there with all add up to a fan identity that changes every time you show up.
 
 The core idea that separates it from existing scrapbook apps (Momento, Turnstile Stubs, Footbeen, The Ballpark Witness): **being there is a game.** Your presence has a record. At a neutral game you pledge a side before it's too late, and the app tracks how well you pick against expectations. You have records with the people you go with ("7–1 with Dad"), rivalries with friends who root for other teams, and goals for the year.
 
@@ -20,26 +32,30 @@ Later phases extend it before the game (logistics, meetups, trip planning) and a
 - Betting, prediction markets, odds display to users, or any wagering.
 - Ticket resale or a marketplace.
 - Live in-game chat.
-- Team or league logos, wordmarks, or official marks anywhere (trademark risk). Use plain-text team names, abbreviations, and neutral colors.
+- Team or league logos, wordmarks, or official marks anywhere (trademark risk). Use the circular team badges from the reference (team initials in team colors), plain-text names, and team colors.
+- Emojis anywhere in the UI. All iconography is the custom SVG icon set from the reference.
+- Hosting league broadcast clips or highlights. Link out to official highlights only.
 
 ---
 
 ## 2. Scope overview
 
 ### v1 (this spec, fully detailed)
-1. Accounts and onboarding (Sign in with Apple, email OTP; pick favorite teams; home city).
-2. Game data for **MLB and NFL**, domestic, current season plus historical back to at least 2000 where available.
-3. Logging attended games three ways: manual search, ticket screenshot upload, and a personal forwarding email address.
-4. Passport: overall, team, and pledge records; stadium stamps; superlatives; players seen; moments witnessed.
+1. Accounts and onboarding (Sign in with Apple only for now; email one-time codes added once Resend and a domain are set up; pick favorite teams; home city).
+2. Game data for **MLB and NFL**, domestic: schedules and final scores for every game from 2000 to present; full game detail (appearances, scoring timeline, win probability, moments, weather) fetched on demand only for games users log, check in to, or plan to attend (Section 4.7).
+3. Logging attended games three ways: manual search, ticket screenshot upload, and a personal forwarding email address (the forwarding address ships once the domain exists; build it behind a feature flag).
+4. Passport: overall, team, and neutral records, each opening a game log; stadium stamps drawn from stadium shapes; superlatives; players seen; moments witnessed.
 5. Map of stadiums visited.
-6. Live check-in (geofenced) and the allegiance pledge, with "vs expected" using self-computed Elo win probabilities.
+6. Live check-in (geofenced) and picking a side at neutral games (internally "pledge"; shown to users as "As a neutral" and "Pick a side"), with "vs expected" using self-computed Elo win probabilities, plus pregame storylines.
 7. Companions, including people not on the app, with companion records and account linking.
 8. One-way follows, a simple activity feed, reactions.
 9. Rivalries and "before you connected" overlap.
 10. Yearly goals and bucket lists.
 11. Season Wrapped.
 12. Share cards for Instagram stories.
-13. Moderation and App Store requirements (report, block, account deletion).
+13. Relive: a per-game story replay with a win probability line, your photos, photos from other fans at the game, and a link to official highlights.
+14. Moderation and App Store requirements (report, block, account deletion).
+15. UI shells for the game-day planner (Plan tab) and stadium guide, built to the reference with demo data behind a feature flag, so the full design exists before those features are implemented.
 
 ### Later phases (Section 13, summarized)
 Game-day planner, stadium guide and seat reviews, trip mode, meetups and displaced-fan hub, firsts and kid profiles, watched-games log, sportsbook odds for win probability, comments, more sports and leagues, keepsakes, Android.
@@ -62,13 +78,14 @@ Mirror the stack Dean already uses for SalusLink so patterns and build tooling c
 | Notifications | `expo-notifications` (pledge window reminders, pledge results, goal completions) |
 | Share cards | `react-native-view-shot` + `expo-sharing` |
 | Ticket parsing | Anthropic API called only from an Edge Function (never from the client). Use a small, cheap vision-capable model. Current candidate: `claude-haiku-4-5-20251001`. VERIFY the model string and image input format at https://docs.claude.com/en/api/overview |
-| Inbound email | Cloudflare Email Routing catch-all on a subdomain → Cloudflare Email Worker → HTTPS POST to a Supabase Edge Function (free; needs a domain on Cloudflare, about $10–15/yr) |
+| Transactional email | Resend (free plan: 3,000/month, 100/day, one domain), configured as Supabase Auth custom SMTP for login codes |
+| Inbound email | Preferred: Resend inbound on the same domain → webhook to a Supabase Edge Function. VERIFY inbound is available on the free plan and that received mail counts toward the same quota. Fallback: Cloudflare Email Routing catch-all → Cloudflare Email Worker → Edge Function |
 | Builds | EAS Build and EAS Submit → TestFlight → App Store |
 | Testing | Jest + React Native Testing Library for app logic; pgTAP or SQL test scripts for RLS and record calculations; Deno tests for Edge Functions |
 
-**Environment:** `.env` files for local, EAS secrets for builds, Supabase secrets for functions. The Anthropic API key and any service-role keys never ship in the app bundle.
+**Environment:** `.env` files for local, EAS secrets for builds, Supabase secrets for functions. The Anthropic API key and any service-role keys never ship in the app bundle. Accounts, identifiers, and how each service is connected are listed in `docs/ACCOUNTS.md`.
 
-**Costs to expect:** Apple Developer Program $99/yr, domain ~$12/yr, Anthropic API cents per parsed ticket. Everything else stays in free tiers. Note that Supabase free projects pause after a period of inactivity; keep a lightweight scheduled job running.
+**Costs to expect:** Apple Developer Program $99/yr (already paid through SalusLink's account), domain ~$12/yr, Anthropic API cents per parsed ticket. Everything else stays in free tiers. Note that Supabase free projects pause after a period of inactivity; keep a lightweight scheduled job running.
 
 ---
 
@@ -101,6 +118,12 @@ Base: `https://statsapi.mlb.com/api/`. No key required.
 - Implementation: a GitHub Actions workflow (Python with `nflreadpy` or pandas + pyarrow) pulls data nightly in season, transforms it into the canonical schema, and upserts into Supabase with the service role key stored as a GitHub secret.
 - **Live NFL data:** none in v1. NFL pledge locks are provisional and validated after data lands (Section 6.5).
 
+### 4.3b In-game win probability, injuries, and probable starters
+- **NFL in-game win probability:** nflverse play-by-play includes per-play win probability columns. VERIFY column names (home team WP).
+- **MLB in-game win probability:** check whether the MLB Stats API exposes a per-play win probability endpoint for a game. VERIFY. If not, compute a simple state-based model (inning, outs, base state, score differential) from historical play-by-play, or fall back to scoring-play-only story steps with no line.
+- **NFL injuries:** nflverse publishes weekly injury report data. VERIFY availability and timing.
+- **MLB probable pitchers:** available on the schedule endpoint with a probable pitcher hydration. VERIFY.
+
 ### 4.4 Provider adapter
 All ingestion goes through a `SportsDataProvider` interface so providers can be swapped later (commercial API, soccer, college). Canonical IDs are internal UUIDs; provider IDs live in mapping columns (`provider`, `provider_game_id`).
 
@@ -118,15 +141,28 @@ interface SportsDataProvider {
 | Job | Where | Frequency |
 |---|---|---|
 | Seed teams, venues, aliases | script | once, then manual edits |
-| Historical backfill (MLB 2000–present, NFL 2000–present or earliest available) | script / GitHub Action | once, resumable, rate-limited |
+| Historical backfill: schedules and final scores only (MLB and NFL, 2000–present) | script / GitHub Action | once, resumable, rate-limited |
 | MLB schedule sync (next 14 days, past 3 days) | Edge Function + pg_cron | every 6 hours |
-| MLB finals and details | Edge Function + pg_cron | every 15 min during game windows; re-fetch each game once more ~12h after final to catch corrections |
+| MLB finals (scores and status for all games) | Edge Function + pg_cron | every 15 min during game windows |
+| Game detail on demand (both sports) | Edge Function worker reading `detail_queue` | continuously; see 4.7 |
 | MLB live state (only games with an active check-in) | Edge Function | every 60s while any user is checked in |
-| NFL schedule, finals, pbp, appearances | GitHub Action | nightly; daily during season |
+| NFL schedules and finals; detail for queued NFL games | GitHub Action | nightly, daily during season |
 | Elo update | SQL function / Edge Function | after each game goes final |
 | Post-final processing (records, pledges, moments, goals, feed) | Edge Function triggered on status → final | on event |
 
 Historical backfill must be idempotent and resumable, logging progress per season.
+
+### 4.7 On-demand game detail
+The database must stay well under the Supabase free plan's 500 MB limit (target under 300 MB). Only schedules and final scores are stored for all games. Full detail is stored only for games someone cares about.
+
+- **What counts as detail:** `game_appearances`, `game_scoring_timeline`, `game_wp_timeline`, `game_story_steps`, `game_events`, and context fields (weather, duration, attendance).
+- **Triggers:** a row is added to `detail_queue(game_id, reason, requested_at, attempts, last_error, done_at)` when an attendance is created, a check-in happens, a "Going" entry is created, or a ticket import matches a game. Future games are queued but processed only after they go final.
+- **MLB worker:** an Edge Function drains the queue for MLB games, fetches the game feed, writes detail, sets `games.detail_ingested_at`, and re-fetches once about 12 hours after final to catch scoring corrections.
+- **NFL:** play-by-play arrives as season files. The nightly GitHub Action processes all queued NFL games from those files. When a user logs a historical NFL game, show a "Details arrive overnight" state for moments, players seen, and Relive; records and stamps work immediately because they only need final scores.
+- **Downstream:** when detail lands, recompute that game's moments, the stats caches of every user who attended it, pledge validation, goals, and Relive steps.
+- **UI:** while detail is pending, game detail and Relive show a loading state styled from the design system; superlatives and players seen simply exclude the game until then.
+- **Elo** needs only final scores, so it is computed over full history without detail.
+- **Monitoring:** a weekly job logs database size; alert in logs above 350 MB.
 
 ### 4.6 Venue seed file
 Hand-curate `seed/venues.json` for every current MLB and NFL venue plus major former venues that appear in the historical range (e.g., old Yankee Stadium, Candlestick Park). Fields: name, city, state, lat, lng, geofence radius meters (default 400), opened and closed years, sports, provider venue IDs. Shared stadiums (e.g., one venue hosting two NFL teams) are one venue row.
@@ -158,6 +194,12 @@ game_scoring_timeline(game_id, seq int, occurred_at timestamptz, period int, hal
       clock text null, home_score int, away_score int, description text)
 game_events(id uuid pk, game_id, type text, player_id null, team_id null,
       occurred_at timestamptz null, detail jsonb)           -- moments, see 6.7
+team_colors(team_id pk, primary_light, secondary_light, on_primary_light, primary_dark, secondary_dark, on_primary_dark)
+      -- dark variants are separate, hand-tuned values (see reference .t-* classes); never compute them
+venue_shapes(venue_id pk, svg_path text, source text: 'placeholder' | 'osm_traced', simplified_at)
+game_wp_timeline(game_id, seq int, period int, half text null, home_wp numeric, occurred_at timestamptz null)
+game_story_steps(game_id, seq int, wp_seq int, away_score int, home_score int, label text, text text)
+storylines(id uuid pk, game_id, team_id, text, source text: 'results' | 'injury_report' | 'probable_starter', facts jsonb, generated_at)
 team_elo(team_id, as_of date, rating numeric)
 game_win_prob(game_id pk, home_win_prob numeric, method text: 'elo_v1', computed_at)  -- frozen pregame
 ```
@@ -187,6 +229,7 @@ ticket_imports(id uuid pk, user_id, source text: 'screenshot' | 'email', storage
       raw_text text null, parsed jsonb null, status text: 'pending' | 'parsed' | 'needs_review' | 'matched' | 'failed' | 'discarded',
       candidate_game_ids uuid[], matched_attendance_id uuid null, created_at)
 inbound_addresses(user_id pk, token text unique, created_at, rotated_at)
+attendance_photos(id uuid pk, attendance_id, user_id, storage_path, kind text: 'photo' | 'video', visibility text: 'private' | 'followers' | 'public', created_at)
 user_emails(user_id, email text, verified bool)             -- allow-list for forwarded mail
 bucket_lists(id uuid pk, owner_user_id null, title, description, is_curated bool, definition jsonb)
 user_bucket_lists(user_id, bucket_list_id, added_at)
@@ -222,10 +265,12 @@ All records are **W–L–T** (ties only shown if nonzero). Only games with stat
 
 - **Overall record:** all attended games with a rooting side.
 - **Team record:** for each followed team, attended games where rooting_team_id is that team.
-- **Pledge record:** attended games with basis `pledge` and a valid pledge.
+- **Neutral record** (UI label: "As a neutral"; internal name: pledge record): attended games with basis `pledge` and a valid pledge.
 - **Pledge vs expected:** `sum(result_score - win_prob_at_pledge)` over valid pledges, where result_score is 1 for win, 0 for loss, 0.5 for tie. Display with sign and one decimal: "+2.4". Explain in UI: "How many more wins you've picked than expected."
 - **Companion record:** for each person, overall record over attended games where that person is tagged.
 - **Win rate:** wins / (wins + losses), ties excluded, three decimals like baseball (".646").
+
+- **Record game logs:** every record shown anywhere (overall, each team, as a neutral, home, road, playoffs, each companion) is tappable and opens the list of games that make up that record, newest first, with a W/L/T circle per game. For neutral games the row shows the team picked, the win probability at pick time, and the vs-expected delta ("Won, picked at 38%, +0.62"). The log header repeats the record in the relevant team's color.
 
 Records are computed in SQL views or functions and cached in `user_stats_cache`, recomputed when an attendance changes or a relevant game goes final or is corrected.
 
@@ -257,8 +302,8 @@ When game detail is ingested after final:
 1. Compute the true lock time from `game_scoring_timeline` and play-by-play: MLB = min(time of first run, end time of the last play of the bottom of the 1st); NFL = min(time of first scoring play, wall-clock time of the first play at or after 10:00 in Q1).
 2. If `pledged_at <= true_lock_time` → `valid`. Otherwise → `void` with reason `after_lock`. Allow a 60-second grace window for clock and feed skew.
 3. If timestamps are missing or unreliable for a game, keep the pledge `valid` and flag it for logging (never punish users for missing data).
-4. Set `result` from the final score. Notify the user: "Your pledge to the Bears won. Pledge record 11–9, +2.6 vs expected."
-5. Voids notify gently: "Your pledge was made after the first score, so it doesn't count."
+4. Set `result` from the final score. Notify the user: "The Bears won. You're 11–9 as a neutral, +2.6 vs expected."
+5. Voids notify gently: "Your pick came after the first score, so it doesn't count."
 
 ### 6.6 Win probability (Elo v1)
 - Self-computed, no paid data. One Elo system per sport, processed chronologically over historical games, then updated after each final.
@@ -289,6 +334,7 @@ Computed per user from attended final games:
 - Firsts: first game logged, first game at each venue.
 
 Superlatives that can't be computed for a game (missing weather, etc.) simply skip that game.
+- **Loudest stadium visited** appears in the Figma design but has no data source. v1 shows it only in demo mode. Candidate later feature: an opt-in crowd noise reading from the phone microphone during check-in (needs microphone permission and calibration caveats). Confirm with Dean.
 
 ### 6.9 Stamps
 - A stamp per venue attended. Shows visit count, first visit date, and sports seen there.
@@ -351,6 +397,22 @@ Superlatives that can't be computed for a game (missing weather, etc.) simply sk
 ### 6.17 Share cards
 Generated client-side as 1080×1920 images. Templates: passport record, single game (score, venue, date, your side, verified badge), pledge result, stamp unlocked, companion record, goal completed, Wrapped cards. Include the app name and handle, never team logos.
 
+### 6.18 Storylines
+- Shown on the Pick a side screen, and optionally on the Upcoming games list.
+- Generated pregame (morning of, refreshed 1 hour before start) per team from facts only: current streaks, home/road record, last meeting result, injury report entries for key players, MLB probable pitchers.
+- Pipeline: compute a facts JSON per team from the database → send facts to the Anthropic API from an Edge Function → get back 1 to 3 one-sentence storylines per team → validate each sentence only references provided facts (reject and regenerate otherwise) → store in `storylines` with the source label shown in the UI ("From results", "Official injury report").
+- Never generate claims that aren't in the facts JSON. No news scraping.
+
+### 6.19 Relive
+- Available on every attended game that is final and has detail ingested; opened from any game row or game detail.
+- **Scorebug:** away team badge (circular initials badge, same as Pick a side) and name, score, period label, home team badge and name.
+- **Story player:** a play button steps through `game_story_steps` every 1.7 seconds (pause and resume supported; restarts at the end). Each step updates the score, the period label, the story card text, and draws the win probability line up to that step with a dot at the current point.
+- **Story steps** are generated after final from the scoring timeline: a pregame step (pregame win probability), one step per scoring play, and a final step that includes a personal line from the user's own data (e.g., "Your record with Dad goes to 7–1"). Base text is templated from play-by-play; the personal final line is computed per user at view time, not stored.
+- **Your photos:** grid of the user's photos and videos for that attendance, plus an add tile (camera icon). Upload to private Storage; visibility per item.
+- **From fans at this game:** public photos from other users' attendances at the same game, only from public accounts, only items marked public, excluding blocked users. Count shown in the section header.
+- **Official highlights:** a row that opens the league's official video page for the game in the browser. No embedded or hosted clips.
+- Fan uploads get the same report and block tools as other user content.
+
 ---
 
 ## 7. Logging games and imports
@@ -376,7 +438,7 @@ Generated client-side as 1080×1920 images. Templates: passport record, single g
 
 ### 7.3 Forwarding email address
 - Each user gets `u-{token}@in.<domain>` (token random, 10+ chars, rotatable in settings).
-- Cloudflare Email Worker receives mail for `*@in.<domain>`, extracts token, text, HTML, and PDF attachments, and POSTs to the `inbound-email` Edge Function with a shared secret header.
+- The inbound provider (Resend inbound preferred, Cloudflare Email Worker as fallback) receives mail for `*@in.<domain>` and delivers token, text, HTML, and PDF attachments to the `inbound-email` Edge Function with a verified webhook signature or shared secret.
 - The function checks: token exists, and the sender (`From`) matches one of the user's verified `user_emails` (users add emails in settings with an OTP). Mail from unknown senders is dropped and the user is notified once per day at most ("We got mail from an address you haven't added").
 - A single email can contain multiple games (season plans). Parse all, create one `ticket_imports` row per ticket, then match.
 - Parsing uses the same function as screenshots, with text input first and PDF attachments as a fallback.
@@ -396,78 +458,61 @@ Input: parsed ticket fields. Output: ranked candidate games.
 
 ---
 
-## 8. Screens and navigation
+## 8. Design system and screens
 
-The UI mockup (`turnstile-ui.html`, attached alongside this spec) is the reference for screen structure and hierarchy. **Colors, type, and styling are placeholders** and will change; build with a theme token file so restyling is cheap. Support light and dark mode from day one.
+### 8.1 Source of truth
+`design/reference.html` is the visual specification for every screen. Passport, Pick a side, and Games in it were recreated from Dean's Figma design (see `design/figma/passport-games-pick-side.png` for the original, context only) with the corrections in `design/FIGMA_NOTES.md` already applied. The other screens come from the earlier concept and will be restyled later to match; until then, build them exactly as they appear in the reference.
 
-Tab bar (v1): **Passport**, **Games**, **Friends**, **You**. (A Plan tab arrives with the game-day planner in a later phase.)
+The shipped app must match the reference screen for screen: layout, spacing, sizes, radii, colors (light and dark), typography, iconography, copy, and interactions. The phone frames, fake status bars, page header, captions, and theme toggle are presentation only. The real iOS status bar and safe areas replace them.
 
-### 8.1 Onboarding
-1. Welcome → Sign in with Apple or email OTP.
-2. Handle and display name.
-3. Pick favorite teams (MLB and NFL, multi-select, searchable).
-4. Home city (for miles traveled and the map), optional.
-5. Add past games: three options (search, upload tickets, forwarding address). Skippable.
-6. Location and notification permission primers, requested only when relevant later (not upfront).
+### 8.2 Tokens (extract verbatim from the reference CSS)
+- Base palette: `--bg`, `--scr`, `--canvas`, `--card`, `--surface`, `--ink`, `--muted`, `--line`, `--link`, `--good`, `--bad`, `--warn` with light and dark values from `:root` and the dark blocks.
+- Team palettes: `--tf` (fill color, the same in both themes, used for badges, buttons, pills, thumbnails, and the hero glow), `--t` (accent for text and small marks, with a separate dark-mode value), `--t2` (secondary, used for rings and borders), `--on` (text on `--t`), per team from the `.t-*` classes. Store them in `team_colors`; add hand-tuned dark variants for every MLB and NFL team using the same approach (a lighter, higher-contrast primary for dark mode).
+- `.t-none` is the neutral theme (ink as accent) used for All teams and neutral contexts.
+- Typography: Archivo. The reference uses the variable width axis (`wdth` 62–100). React Native doesn't reliably support variable font axes, so generate static font instances for each width and weight used in the reference (for example with fontTools `varLib.instancer`) and bundle them with expo-font.
+- Radii, spacing, and font sizes: take exact values from the CSS classes (for example the hero card is 24px radius, 16px padding; tiles 16px radius; list rows 11px vertical padding; the tab bar icon is 23px).
+- Motion: side panels slide in from the right over 320ms with `cubic-bezier(.2,.8,.2,1)`; the hero card background transitions over 250ms; the live dot pulses at 1.6s. Respect Reduce Motion.
 
-### 8.2 Passport (home tab)
-Mirrors mockup screen 1:
-- Header: name, totals (games, stadiums, states).
-- Record card: overall record large, win rate, then team record tiles and the pledge tile with vs expected.
-- Stamps grid (preview) → full stamps screen.
-- Superlatives list → full superlatives screen.
-- Moments witnessed and players seen → list screens (players seen sorted by count, searchable).
-- Map entry → Map screen (8.6).
-- Goals and bucket lists preview → Goals screen (8.7).
-- Wrapped banner when available.
-- Share button → share card picker.
+### 8.3 Components (from reference classes)
+Figma-derived screens: header wordmark (`.fx-head`, `.fx-word`), count pills (`.fx-pill`), dark record hero with team glow (`.fx-hero`), record cards (`.fx-rc`), section headers (`.fx-sh`), engraved stamp seals (`.fx-stamp`, `seal()`), superlatives card list with chips (`.fx-list`, `.fx-li`, `.fx-chip`), search and segmented control (`.fx-search`, `.fx-seg`), game card rows with thumbnail and filled result circle (`.fx-row`, `.fx-th`, `.fx-res`), live and lock pills (`.fx-live`, `.fx-lock`), circular team badges (`.fx-bd`), win probability bar (`.fx-wp`), root buttons with selected and dimmed states (`.fx-root`), storyline cards (`.fx-story`). Earlier screens: pill filter (`.pill`), hero record card (`.hero`), record tile button (`.tile`), stamp (`stamp()` SVG with TextPath ring label, dashed inner ring, stadium shape, year), list row (`.li`), result circle and score circle (`.circ` with w/l/t/n and s-hi/s-mid/s-lo), stadium thumbnail (`.thumb`), avatar stack (`.avs`), search field, segmented control (`.seg`) with badge, lock pill, live label with pulsing dot, ticket card (`.ticket`), timeline (`.tl`), venue hero (`.vhero`), profile header with ringed photo and team chips, stats row, navigation row with facepile, slide-over panel (`.panel`), friend row (`.fr`), rivalry card, overlap card, scorebug, story player, win probability chart, photo grid with add tile, tab bar.
 
-### 8.3 Games tab
-- Segments: **Upcoming** (games from forwarded tickets and "Going"), **Log a game** (search), **History** (all attendances, filter by sport, team, season, venue, companion, verified).
-- Today banner: if a logged or nearby game is today, prominent **Check in** button.
-- Imports inbox: pending and needs-review ticket imports with a badge count.
-- Game detail: score, date, venue, your side, verified badge, companions, seat, note, moments from this game, players seen, pledge result, followed users who were also there (mutuals only). Edit and delete.
+All SVG (icons, engraved stadium seals from `seal()`, team badges (`.fx-bd`, used on Pick a side and the Relive scorebug), stadium shapes, game thumbnails from `thumb()`, chart) is rendered with `react-native-svg`, porting geometry verbatim from the reference.
 
-### 8.4 Check-in and pledge
-Mirrors mockup screen 2:
-- Check in flow: permission primer → location → success ("You're at Soldier Field") or failure with reason (too far, outside window).
-- If neutral: pledge screen with countdown, two team buttons with win probability and underdog label, confirmation text, and explanation of vs expected.
-- If a favorite is playing: "Rooting for the Eagles. Good luck." with companions quick-tag.
-- If both favorites: side picker.
-- Post-lock state and later result state.
+### 8.4 Icons
+The reference sprite (`#i-passport`, `#i-ticket`, `#i-route`, `#i-user`, and the rest) is the complete v1 icon set. Port each symbol to a typed React component with identical paths, 24×24 viewBox, stroke 1.9, round caps and joins, `currentColor`. New icons must be drawn in the same style. No emojis, no third-party icon fonts.
 
-### 8.5 Friends tab
-Mirrors mockup screen 5:
-- Feed (default segment).
-- **With**: companion records list (people and linked users), sorted by games together; tap for detail with shared game list and record.
-- **Rivals**: rivalry cards for mutuals.
-- **Overlap**: "before you connected" cards.
-- Find people: search handles, invite link, contacts import out of scope for v1.
+### 8.5 Stadium shapes
+The reference shapes (used inside seals and thumbnails) are stylized placeholders keyed by venue type (`ballparkA`, `dodger`, `wrigley`, `oracle`, `bowl`, `canopy`, `colonnade`). v1 ships those placeholders mapped to venues. A later task traces real footprints from OpenStreetMap stadium polygons (ODbL, attribution required), simplifies them to a 64×64 viewBox with a consistent stroke style, and stores them in `venue_shapes`.
 
-### 8.6 Map
-- Apple Maps with markers for visited venues (sized or labeled by visit count) and ghost markers for bucket-list venues.
-- Optional lines from home city to each visited venue.
-- Filter by sport and team. Tap marker → venue sheet with visits and games.
+### 8.6 Avatars
+Users upload a profile photo (cropped circle). Until they do, show a generated default avatar in the reference's style. Wherever a person appears (friend rows, avatar stacks, facepiles, profile), use their photo, ringed in their primary team's color where the reference shows a ring.
 
-### 8.7 Goals and bucket lists
-- This year's goals with progress bars, suggested goals, create goal (template picker + parameters).
-- Bucket lists: joined lists with progress, browse curated lists, create custom list.
+### 8.7 Navigation
+Tab bar: **Passport**, **Games**, **Plan**, **Profile**. The active tab uses the current screen's team accent.
+- Passport → record game log (slide-over), stamps, superlatives, players seen, moments.
+- Games → game detail → Relive; check-in → Pick a side; imports inbox.
+- Plan → game-day plan (demo shell behind `FEATURE_PLAN` in v1).
+- Profile → Friends (slide-over panel with With, Following, Rivals segments), Goals, Map, Wrapped, Settings.
+- Stadium guide opens from a venue or stamp (demo shell behind `FEATURE_GUIDE` in v1).
 
-### 8.8 Wrapped
-Full-screen swipeable cards per sport and season, each shareable.
+### 8.8 Screens
+Screens recreated from the Figma design:
+1. **Passport:** Jinx wordmark with a small "Fan passport" label; notifications and profile buttons. Team pills (All teams plus each favorite team) with game counts; selecting one filters the whole screen to that team, as in the reference. Dark lifetime record hero: label, games attended badge, large record, win rate, current streak, and a Last Game row that opens that game. Three record cards: in All teams, each favorite team plus Neutral; in a team view, Home, Road, and a companion or Playoffs card. Each card shows the record and percentage in the team's color and opens its game log. Stadium stamps row with a View All count. Fan superlatives as a card list: small label, large value, context chip.
+2. **Games:** title with add button; search; History, Upcoming, Imports segments; card rows with a thumbnail (stadium art until the user adds a photo from that game), matchup and score with verified badge, venue and date (or the neutral pick for neutral games), companion avatars with names, and a filled W/L circle. Rows open game detail and Relive.
+3. **Pick a side:** Live pill, "At {venue}", amber "Locks in" countdown pill; title and explainer; circular team badges (initials, team-color fill and ring) with names and records around "vs"; win probability bar in both teams' colors with percentages; two full-width "Root for {team}" buttons in team colors that toggle and confirm as in the reference; Storylines cards with source labels.
 
-### 8.9 You (profile and settings)
-- Public profile preview (what others see).
-- Edit profile, favorite teams, home city.
-- Privacy: private account, share seat info, show on overlap.
-- Forwarding address (copy, rotate) and verified sender emails.
-- Notifications settings.
-- Blocked users.
-- Export my data (JSON), delete account (required by App Store).
-- About, data attributions (MLB, nflverse), terms, privacy policy.
+Earlier concept screens (build exactly as in the reference; a later design pass will restyle them):
+4. **Relive:** as specified in 6.19.
+5. **Game day (Plan):** ticket card in the rooting team's colors with seat details; companions; timeline with icons. Demo shell in v1.
+6. **Stadium guide:** venue hero with shape and friends visited; Food, Bathrooms, Seats segments; ranked rows with score circles. Demo shell in v1.
+7. **Profile:** handle and settings; ringed photo, name, tagline, team chips; stats (Games, Stadiums, Followers, Following); rows for Friends (with facepile), goals, Map, Wrapped.
+8. **Friends panel:** back button, search, segments; companion records list with photos ringed in team color; rivalry card with crossed-swords icon; before-you-connected card.
+9. **Record game log:** slide-over from any record card, as in the reference.
 
-### 8.10 Other users' profiles
-Passport view (records, stamps, map, moments) subject to privacy; follow or request; report and block in overflow menu.
+Screens not in the reference (onboarding, game detail, check-in flow, imports review, map, goals, bucket lists, Wrapped, settings, other users' profiles) must be composed only from the components and tokens above, preferring the Figma-derived components, so they look native to the same design. Onboarding content is unchanged from revision 1: sign in, handle, favorite teams, home city, add past games, permissions requested in context.
+
+### 8.9 Demo mode
+A `DEMO=1` build flag loads a fixture account that reproduces every piece of sample data in the reference exactly (Dean Yao, 31–17, Phillies 12–5, Eagles 6–2, 10–9 as a neutral, the stamps, games, storylines, Relive steps, friends, and so on). Demo mode exists so visual parity can be verified screen by screen, and so the Plan and Guide shells have content.
 
 ---
 
@@ -478,6 +523,7 @@ Passport view (records, stamps, map, moments) subject to privacy; follow or requ
 - Overlap and rivalries: mutual follows only.
 - Never store raw location coordinates. Location is requested only at check-in.
 - Ticket images private, auto-deleted (7.2). Parsed fields retained.
+- Game photos default to followers-only; public items appear in "From fans at this game" only for public accounts.
 - Placeholder people are visible only to their owner.
 - Blocks are symmetric in effect: blocked users can't see each other's profiles, feed events, overlap, or tags.
 - Age: 13+ (App Store age rating and signup gate). Kid sub-profiles are a later phase.
@@ -502,7 +548,8 @@ All individually toggleable.
 ## 11. App Store and TestFlight requirements
 - Apple Developer Program account; EAS Build with production profile; EAS Submit to TestFlight.
 - Internal testing first (no review), then an external TestFlight group via public link (beta review).
-- Sign in with Apple as the primary sign-in, plus email OTP. Do not add Google or other social logins without also keeping Sign in with Apple.
+- Sign in with Apple as the only sign-in for now. Email one-time codes come later through Resend. Do not add Google or other social logins without also keeping Sign in with Apple.
+- App Review can sign in with their own Apple ID, so no demo account is required; still provide review notes explaining check-in needs a stadium location and how to try demo mode.
 - In-app account deletion.
 - User-generated content safeguards: report content and users, block users, a way to contact us, and a documented moderation response. Handles and display names pass a profanity filter.
 - Location permission strings explain the check-in use precisely. Foreground only.
@@ -518,15 +565,19 @@ All individually toggleable.
 Each milestone ends with passing tests, a short README update, and a TestFlight-capable build once M2 exists. Do not start the next milestone with failing tests.
 
 **M0. Repo and infrastructure**
-Monorepo (`apps/mobile`, `supabase/`, `packages/core`, `ingest/`). Expo app with expo-router, TypeScript strict, ESLint, Prettier, theme tokens (light and dark). Supabase project, local dev with Supabase CLI, migration pipeline, CI running tests. EAS project configured.
+First, run the access check in `docs/ACCOUNTS.md` and report results; stop if anything fails. Monorepo (`apps/mobile`, `supabase/`, `packages/core`, `ingest/`). Expo app with expo-router, TypeScript strict, ESLint, Prettier, theme tokens (light and dark). Supabase project, local dev with Supabase CLI, migration pipeline, CI running tests. EAS project configured.
 *Done when:* app boots to a placeholder tab bar in the simulator, CI is green, `supabase db reset` works.
 
+**M0.5. Design system and UI parity (demo mode)**
+Port tokens, fonts (static Archivo instances), icons, stamp seals, team badges, and every component in 8.3. Build every screen, slide-over panel, and interaction in the reference against demo fixtures behind a data repository interface. Build the visual parity harness (see the Claude Code prompt) and iterate until each screen matches the reference in light and dark mode.
+*Done when:* side-by-side screenshots of all screens in both themes are approved by Dean.
+
 **M1. Reference data and ingestion**
-Schema 5.1. Venue and team seeds with aliases. MLB adapter (schedule, game detail, appearances, scoring timeline, weather, duration) with fixtures. NFL GitHub Action (schedules, results, pbp timeline, appearances). Historical backfill scripts (resumable). Scheduled sync jobs. Elo computation and frozen pregame win probabilities. Moment detectors.
-*Done when:* every MLB and NFL game 2000–present exists with finals; spot-check 20 known games for score, venue, appearances, and at least one detected moment each (e.g., a known walk-off); Elo backtest log loss is printed and parameters recorded.
+Schema 5.1 plus `detail_queue`. Venue and team seeds with aliases. MLB adapter (schedule, game detail, appearances, scoring timeline, weather, duration) with fixtures. NFL GitHub Action (schedules, results, pbp timeline, appearances). Historical backfill scripts (resumable). Scheduled sync jobs. Elo computation and frozen pregame win probabilities. Moment detectors.
+*Done when:* every MLB and NFL game 2000–present exists with schedule and final score; queuing 20 known games (10 MLB, 10 NFL, including a known walk-off, an extra-innings game, and an overtime game) produces correct appearances, scoring timelines, win probability timelines, and moments; Elo backtest log loss is printed and parameters recorded; database size after backfill is reported and under 150 MB.
 
 **M2. Auth, onboarding, manual logging**
-Schema 5.2 (profiles, user_teams, attendances, people, companions). Sign in with Apple and email OTP. Onboarding flow. Manual search and log sheet. Bulk mode. Game detail. RLS policies with tests.
+Schema 5.2 (profiles, user_teams, attendances, people, companions). Sign in with Apple (email one-time codes deferred until Resend and a domain are set up; design auth so adding an email provider needs no schema changes). Onboarding flow. Manual search and log sheet. Bulk mode. Game detail. RLS policies with tests.
 *Done when:* a new user can sign up, pick teams, log 10 past games including a doubleheader, see them in History, and cannot read another user's private data (tested).
 
 **M3. Passport**
@@ -534,11 +585,11 @@ Rooting side logic, records (overall, team), win rate, stamps, superlatives, pla
 *Done when:* core rules in Section 6.1–6.2 and 6.7–6.9 have unit tests for all listed edge cases (ties, postponed games, neutral games, both favorites, relocated franchises), and the passport renders correctly for a seeded test user with 50 games.
 
 **M4. Ticket imports**
-Screenshot and PDF upload, parse-ticket function, zod validation, matcher with fixture tests, imports inbox and review UI. Cloudflare Email Worker, inbound-email function, sender allow-list, forwarding address UI, future "Going" games.
+Screenshot and PDF upload, parse-ticket function, zod validation, matcher with fixture tests, imports inbox and review UI. Inbound email (Resend inbound or the Cloudflare fallback), inbound-email function, sender allow-list, forwarding address UI, future "Going" games. If the domain isn't set up yet when M4 starts, build and test everything against a local fake inbound webhook and keep the feature flag off; ship screenshot import first.
 *Done when:* 30-fixture matcher suite passes; a real forwarded confirmation and a real screenshot each produce a verified attendance end to end; images auto-delete.
 
-**M5. Check-in and pledge**
-Geofenced check-in, verification badge, pledge screen, MLB live polling with lock detection, NFL estimated lock, provisional pledges, post-final validation, pledge record and vs expected, notifications.
+**M5. Check-in, pick a side, storylines**
+Geofenced check-in, verification badge, Pick a side screen wired to real data, storylines pipeline (6.18), MLB live polling with lock detection, NFL estimated lock, provisional pledges, post-final validation, pledge record and vs expected, notifications.
 *Done when:* simulated games (fixtures replayed with a fake clock) prove lock and validation logic for: pledge before first run, pledge after first run (void), MLB scoreless 1st (lock at end of inning), NFL first score before 10:00, NFL no score by 10:00, missing timestamps (stays valid).
 
 **M6. Companions**
@@ -552,6 +603,10 @@ Follows (public and private with requests), feed events, reactions, rivalries, o
 **M8. Map, goals, bucket lists**
 Map screen with visited and ghost markers and home lines. Goal predicate evaluator with tests, templates, suggestions, progress recompute. Curated bucket lists seeded, custom lists.
 *Done when:* the evaluator passes tests for every example in 6.13; "HR in 5 ballparks with a walk-off" goal completes on seeded data and fires a notification.
+
+**M8.5. Relive**
+Win probability timeline ingestion, story step generation, Relive screen wired to real data, photo and video upload with visibility, fans-at-this-game feed with privacy and block rules, official highlights link.
+*Done when:* Relive plays correctly for 5 real MLB and 5 real NFL games, including an extra-innings game and an overtime game.
 
 **M9. Share cards and Wrapped**
 All share card templates. Wrapped generation job, storage, swipeable UI, per-card sharing.
@@ -567,9 +622,9 @@ Account deletion and data export, settings completeness, attributions, empty and
 
 Specify each fully before building. Summaries capture intent.
 
-**Game-day planner.** Upload or select a ticket and answer a few questions (tailgate, meetup, post-game, driving or transit, who's coming) to generate an itinerary: when to leave, parking or transit, which gate to enter, tailgate spot, post-game spot. Venue logistics (gates, lots, tailgate areas) don't exist in any API and must be curated, so launch for a handful of stadiums first. Adds the Plan tab.
+**Game-day planner.** (UI shell exists from M0.5.) Upload or select a ticket and answer a few questions (tailgate, meetup, post-game, driving or transit, who's coming) to generate an itinerary: when to leave, parking or transit, which gate to enter, tailgate spot, post-game spot. Venue logistics (gates, lots, tailgate areas) don't exist in any API and must be curated, so launch for a handful of stadiums first. Wires up the Plan tab.
 
-**Stadium guide.** Interactive per-venue guide: Beli-style ranked food, bathrooms (cleanliness, wait), shortest lines, seat views. Ratings only from users who logged a game at that venue.
+**Stadium guide.** (UI shell exists from M0.5.) Interactive per-venue guide: Beli-style ranked food, bathrooms (cleanliness, wait), shortest lines, seat views. Ratings only from users who logged a game at that venue.
 
 **Seat reviews.** Rate your seat from the attendance log (view, sun or shade, value, notes, photo). Aggregated per section. Byproduct of logging, not a separate flow.
 
@@ -592,7 +647,10 @@ Specify each fully before building. Summaries capture intent.
 ---
 
 ## 14. Open questions to confirm with Dean during the build
-1. Final app name (replace `APPNAME`).
+1. App Store listing name if "Jinx" alone is unavailable.
+1b. Whether to license official team logos later to replace the initials badges.
+1c. Fourth tab is Plan (decided).
+1d. Game row thumbnails: the user's own photo from that game if one exists, otherwise the generated stadium thumbnail. No stock or scraped stadium photos.
 2. Whether historical favorites should be time-aware (6.1.4) once users ask for it.
 3. Default geofence radius per venue type after first real-world tests.
 4. How long to keep ticket images (default 7 days).
