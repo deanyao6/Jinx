@@ -201,7 +201,8 @@ in the repo.
 | Passport, Eagles pill | **3.79%** | **3.20%** |
 | Record game log, Phillies | **5.55%** | **5.45%** |
 | Record game log, As a neutral | **5.02%** | **4.95%** |
-| Pick a side, and picked | not built | not built |
+| Pick a side | **5.42%** | **5.45%** |
+| Pick a side, picked | **5.70%** | **5.78%** |
 | Games, History | **3.32%** | **2.92%** |
 | Relive, pregame and mid-story | not built | not built |
 | Game day | not built | not built |
@@ -209,9 +210,9 @@ in the repo.
 | Profile | not built | not built |
 | Friends panel | not built | not built |
 
-Mean across what exists: **4.09%** over twelve comparisons. Games came in at 3.12% on the
-first attempt, which suggests the components built for Passport and the game log are
-carrying their weight. All 32 reference shots render;
+Mean across what exists: **4.46%** over sixteen comparisons. Games came in at 3.12% on the
+first attempt, which suggests the components built for the earlier screens are carrying
+their weight. All 32 reference shots render;
 22 of 32 app shots correctly report "not built" rather than being scored against something
 they are not.
 
@@ -309,6 +310,22 @@ Worth knowing, because the same traps will come up on the next screens:
   could not have, since the marker was correct each time.
 - **The screen drew under the status bar**, because I had not applied the top safe-area
   inset.
+
+### The one typography rule that does generalise, and its limits
+
+The stamp-caption fix worked because of a *structural* difference, not a metrics one: an
+inline element's CSS line box is sized by the enclosing block's strut, and React Native
+sizes it from the Text's own font. That is worth knowing, and it recurs.
+
+But it is not a rule to apply on sight. `.fx-mu span` on Pick a side is the identical
+construction — an inline span in a block that inherits 16px — and applying the same fix
+there took that screen from 5.38% to 7.50%. Measuring afterwards showed why: the record
+line genuinely needed about 4.7pt more space, but everything below it was already sitting
+3pt high, so adding 6.4pt fixed one row and broke five. Reverted.
+
+The lesson is the method rather than the rule. Measure the ink rows in both PNGs, work out
+what each block actually needs, and only then change something. Four of my six typography
+changes made parity worse, and every one of them came from reasoning rather than measuring.
 
 ### One open design question, for you
 

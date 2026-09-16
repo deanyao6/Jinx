@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
 
+import { PickASideScreen } from '@/features/checkin/reference/PickASideScreen';
 import { GamesScreen } from '@/features/games/reference/GamesScreen';
 import { GameLogPanel } from '@/features/passport/reference/GameLogPanel';
 import { PassportScreen } from '@/features/passport/reference/PassportScreen';
@@ -34,6 +35,8 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   'passport-log-phillies': () => <GameLogPanel log="phi" title="Phillies" record="12 – 5" />,
   'passport-log-neutral': () => <GameLogPanel log="neutral" title="As a neutral" record="10 – 9" />,
   games: () => <GamesScreen />,
+  'pick-a-side': () => <PickASideScreen />,
+  'pick-a-side-picked': () => <PickASideScreen picked="away" />,
 };
 
 function SelfTest() {

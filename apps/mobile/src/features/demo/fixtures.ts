@@ -456,3 +456,49 @@ export const AVATARS: Record<string, readonly [string, string, string]> = {
   priya: ['#B97A55', '#241612', '#A7B8F0'],
   sam: ['#F0CFB0', '#C9772E', '#B5DDD1'],
 };
+
+/**
+ * Pick a side (SPEC.md 8.8.3). The countdown is the value the reference's markup starts
+ * with, frozen: the harness stops the reference's timer, so this is what it displays.
+ */
+export const PICK_A_SIDE = {
+  venue: 'At Petco Park',
+  lockCountdown: '12:34',
+  title: 'Pick a side',
+  explainer:
+    "You don't follow either team. Pick who you're rooting for. It counts toward your neutral record.",
+  away: {
+    team: 'nym',
+    badge: 'NYM',
+    name: 'Mets',
+    record: '68–54',
+    winProb: 0.58,
+    button: 'Root for NY Mets',
+  },
+  home: {
+    team: 'sd',
+    badge: 'SD',
+    name: 'Padres',
+    record: '70–53',
+    winProb: 0.42,
+    button: 'Root for SD Padres',
+  },
+  storylines: [
+    { text: 'Mets look to extend a 4-game winning streak on the road.', source: 'FROM RESULTS' },
+    {
+      text: 'Padres probable starter makes his first start of the season.',
+      source: 'PROBABLE STARTERS',
+    },
+  ],
+} as const;
+
+/**
+ * The confirmation line, built the way the reference's click handler builds it: the gain
+ * is 1 minus the probability the picked side was given, to two decimals.
+ */
+export function pickConfirmation(teamName: string, winProb: number): string {
+  return (
+    `You're rooting for the ${teamName}. Switch anytime before it locks. ` +
+    `A win adds +${(1 - winProb).toFixed(2)} to your neutral record vs expected.`
+  );
+}
