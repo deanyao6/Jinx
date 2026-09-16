@@ -4,6 +4,39 @@ A passport for sports fans: every game you attend becomes part of a living recor
 
 **The full product and engineering spec is [SPEC.md](SPEC.md). Read it before changing anything.** The UI reference mockup is [docs/turnstile-ui.html](docs/turnstile-ui.html) (styling is placeholder; structure and hierarchy are the reference).
 
+## Where things stand (2026-09-16)
+
+All ten milestones in SPEC.md Section 12 are implemented. Per-milestone detail and every decision
+that refines the spec are in [docs/progress.md](docs/progress.md). Read that before assuming
+anything is unbuilt.
+
+- **The app runs in the iOS Simulator.** `npm run ios`. Read [docs/simulator.md](docs/simulator.md)
+  first: this machine has no Apple developer certificate, so the plain `expo run:ios` cannot work,
+  and two Metro settings are pinned for reasons that are not guessable.
+- **Naming is in flux.** The code still says `APPNAME` / `appname` everywhere, including the bundle
+  ID. The GitHub repo and the Supabase project have been renamed to **Jinx**. The rename inside the
+  app has not happened. Do not start one unless asked; it touches `app.json` and needs a rebuild.
+- **Local backend is the one to develop against.** Supabase on ports 54421-54427, loaded with
+  74,951 MLB and 7,289 NFL games. Sign in with "Continue with email", any address, and read the
+  code from Mailpit at http://127.0.0.1:54424. Nothing is emailed anywhere.
+- **The hosted Supabase project is linked but empty**: 0 of 15 migrations applied, no function
+  secrets. GitHub Actions secrets are set, so the two scheduled workflows will run and fail until
+  the schema is pushed. [docs/deploy.md](docs/deploy.md) has the accounts, costs and steps.
+- **Sign in with Apple and ticket parsing cannot be tested here.** The first needs an Apple Services
+  ID in Supabase, the second needs `ANTHROPIC_API_KEY`. Neither is set.
+- **The repo is public** at `deanyao6/Jinx`. No secrets are tracked; keep it that way.
+
+## Docs
+| File | What it holds |
+|---|---|
+| [SPEC.md](SPEC.md) | The product and engineering spec. Authoritative |
+| [docs/progress.md](docs/progress.md) | Milestone status and decisions that differ from the spec |
+| [docs/simulator.md](docs/simulator.md) | Running the app locally, and why the build is non-standard |
+| [docs/deploy.md](docs/deploy.md) | Accounts, real costs, and the deployment steps |
+| [docs/verification.md](docs/verification.md) | VERIFY items from the spec checked against live sources |
+| [docs/elo-backtest.md](docs/elo-backtest.md) | Elo tuning evidence |
+| [docs/attribution.md](docs/attribution.md), [privacy.md](docs/privacy.md), [terms.md](docs/terms.md), [moderation.md](docs/moderation.md) | User-facing legal and policy copy |
+
 ## Ground rules (from the spec)
 - `APPNAME` / `appname` is a placeholder name. Keep it find-and-replaceable. Bundle ID `com.deanyao.appname`.
 - Hobby project: $0 data sources, Supabase free tier, minimal moving parts.
@@ -18,7 +51,7 @@ A passport for sports fans: every game you attend becomes part of a living recor
 apps/mobile/      Expo app (expo-router, TypeScript strict, TanStack Query, Zustand)
 packages/core/    Pure TypeScript domain rules (records, rooting, Elo, moments, matcher, goals). No I/O.
 supabase/         Migrations (plain SQL), Edge Functions (Deno), SQL/pgTAP tests, seed data
-ingest/           MLB adapter + backfill scripts (TS), NFL nflverse pipeline (Python) + GitHub Actions
+ingest/           MLB adapter + backfill scripts, NFL nflverse pipeline, all TypeScript + GitHub Actions
 seed/             Hand-curated venues, teams, aliases, curated bucket lists
 docs/             Spec attachments, verification notes, ADRs
 ```
@@ -26,7 +59,8 @@ docs/             Spec attachments, verification notes, ADRs
 ## Commands
 ```
 npm install                 # workspaces: apps/mobile, packages/core, ingest
-npm run ios                 # build into the iOS Simulator (needs Xcode; see docs/simulator.md)
+npm run ios                 # build + launch in the iOS Simulator (read docs/simulator.md first)
+bash scripts/check-setup.sh # which external credentials are in place, and what is missing
 npm test                    # all unit tests (core, ingest, mobile)
 npm run typecheck           # tsc across workspaces
 npm run lint

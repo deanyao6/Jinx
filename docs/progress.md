@@ -1,6 +1,8 @@
 # Build progress
 
-Milestones from SPEC.md Section 12. Status as of 2026-09-15.
+Milestones from SPEC.md Section 12. Status as of 2026-09-16.
+
+Xcode 26.6 is now installed and the app has been verified running in the iOS Simulator (iPhone 17 Pro, iOS 26.5), so the "needs device pass" notes below now mean a pass on real hardware, which still requires the Apple Developer Program. See docs/simulator.md.
 
 | Milestone | Status | Notes |
 |---|---|---|
