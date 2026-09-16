@@ -667,3 +667,84 @@ export function scoreClass(score: string): 's-hi' | 's-mid' | 's-lo' {
   const n = parseFloat(score);
   return n >= 8 ? 's-hi' : n >= 6 ? 's-mid' : 's-lo';
 }
+
+/** Profile (SPEC.md 8.8.7). */
+export const PROFILE = {
+  team: 'phi',
+  handle: '@deanyao',
+  avatar: 'dean',
+  name: 'Dean Yao',
+  tagline: 'Philly fan in Los Angeles',
+  teamChips: [
+    { team: 'phi', label: 'Phillies' },
+    { team: 'phl', label: 'Eagles' },
+  ],
+  stats: [
+    { value: '48', label: 'Games' },
+    { value: '14', label: 'Stadiums' },
+    { value: '132', label: 'Followers' },
+    { value: '98', label: 'Following' },
+  ],
+  facepile: ['dad', 'maya', 'jordan'],
+  rows: [
+    { icon: 'i-users', title: 'Friends', meta: 'Companions, rivals, overlaps', facepile: true },
+    { icon: 'i-target', title: '2026 goals', meta: '2 of 3 in progress', facepile: false },
+    { icon: 'i-map', title: 'Map', meta: '14 stadiums, 3 countries', facepile: false },
+    { icon: 'i-spark', title: '2025 Wrapped', meta: 'MLB and NFL', facepile: false },
+  ],
+} as const;
+
+/** The Friends slide-over (SPEC.md 8.8.8). */
+export const FRIENDS = {
+  tabs: ['With', 'Following', 'Rivals'],
+  note: 'Your record when you go together',
+  people: [
+    {
+      key: 'dad',
+      name: 'Dad',
+      team: 'phi',
+      teamName: 'Phillies',
+      sub: '11 games together',
+      record: '7–1',
+      tone: 'good',
+    },
+    {
+      key: 'maya',
+      name: 'Maya Chen',
+      team: 'phi',
+      teamName: 'Phillies',
+      sub: '6 games together',
+      record: '4–2',
+      tone: 'ink',
+    },
+    {
+      key: 'priya',
+      name: 'Priya Nair',
+      team: 'lad',
+      teamName: 'Dodgers',
+      sub: '4 games together',
+      record: '3–1',
+      tone: 'ink',
+    },
+    {
+      key: 'jordan',
+      name: 'Jordan Ellis',
+      team: 'nym',
+      teamName: 'Mets',
+      sub: '4 games together',
+      record: '0–4',
+      tone: 'bad',
+    },
+  ],
+  rivalry: {
+    team: 'nym',
+    label: 'Rivalry with Jordan, Mets fan',
+    you: { team: 'phi', score: '5', label: 'You' },
+    them: { score: '3', label: 'Jordan' },
+    middle: 'Head to head',
+  },
+  overlap: {
+    label: 'Before you connected',
+    text: 'You and Maya were both at Phillies vs Mets in August 2019, eleven sections apart.',
+  },
+} as const;

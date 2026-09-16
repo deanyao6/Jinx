@@ -7,10 +7,12 @@ sections are appended at the bottom as work lands.
 
 1. **Look at the contact sheets before anything else:** `open design/parity/sheets/`.
    Six of them, all Passport, each showing reference | app | diff side by side.
-2. Passport is the only screen rebuilt so far, at a **4.10% mean mismatch** against the
-   reference. Everything else is honestly reported as not built. The per-screen table is
-   in section (g) near the bottom.
-3. Six commits, all with the full check suite green. Nothing remote was touched.
+2. **Every screen in the reference is rebuilt**, in both themes, at a **4.43% mean
+   mismatch**. Best 0.96%, worst 8.93%. The per-screen table is in section (g).
+3. Nothing remote was touched: no migrations pushed, no Apple certificates, nothing of
+   SalusLink's, and the Metro watcher settings are untouched.
+4. Every commit has the full check suite green: typecheck, lint, format, 353 unit tests
+   and 117 database assertions.
 
 ## Needs Dean (short list)
 
@@ -180,7 +182,7 @@ record uses the reference's en-dash rather than a hyphen — a hyphen would chan
 and show up in the parity diff as a layout failure, sending the next person looking in the wrong
 place.
 
-## (g) Screens — Passport done and measured, the rest not started
+## (g) Screens — all sixteen built and measured
 
 **Look at these first**, before reading anything else:
 
@@ -188,37 +190,39 @@ place.
 open design/parity/sheets/          # reference | app | diff, one per screen and theme
 ```
 
-Six sheets are there, all Passport. They are gitignored on purpose — 2.5 MB each, and
-`npm run parity` regenerates them in about four minutes — so they exist on your disk, not
-in the repo.
+Thirty-two of them, one per screen and theme. They are gitignored on purpose — 2.5 MB
+each, and `npm run parity` regenerates them in about ten minutes — so they exist on your
+disk, not in the repo.
 
 ### Parity per screen and theme
 
 | Screen | Light | Dark |
 |---|---|---|
-| Passport, All teams | **4.17%** | **3.55%** |
-| Passport, Phillies pill | **3.89%** | **3.35%** |
-| Passport, Eagles pill | **3.79%** | **3.20%** |
-| Record game log, Phillies | **5.55%** | **5.45%** |
-| Record game log, As a neutral | **5.02%** | **4.95%** |
-| Pick a side | **5.37%** | **5.45%** |
-| Pick a side, picked | **5.70%** | **5.78%** |
-| Games, History | **3.32%** | **2.92%** |
-| Relive, pregame | **2.90%** | **2.71%** |
-| Relive, mid story | **3.25%** | **3.06%** |
 | Game day | **0.96%** | **0.96%** |
-| Stadium guide, Food | **8.93%** | **8.48%** |
-| Stadium guide, Bathrooms | **8.15%** | **7.70%** |
+| Profile | **1.04%** | **1.03%** |
+| Relive, pregame | **2.90%** | **2.71%** |
+| Games, History | **3.32%** | **2.92%** |
+| Relive, mid story | **3.25%** | **3.06%** |
+| Friends panel | **3.48%** | **3.43%** |
+| Passport, Eagles pill | **3.79%** | **3.20%** |
+| Passport, Phillies pill | **3.89%** | **3.35%** |
+| Passport, All teams | **4.17%** | **3.55%** |
+| Record game log, As a neutral | **4.94%** | **4.91%** |
+| Pick a side | **5.37%** | **5.06%** |
+| Record game log, Phillies | **5.42%** | **5.39%** |
+| Pick a side, picked | **5.70%** | **5.39%** |
 | Stadium guide, Seats | **7.93%** | **7.48%** |
-| Profile | not built | not built |
-| Friends panel | not built | not built |
+| Stadium guide, Bathrooms | **8.15%** | **7.70%** |
+| Stadium guide, Food | **8.93%** | **8.48%** |
 
-Mean across what exists: **4.78%** over twenty-eight comparisons. Game day at 0.96% is the
-closest; the Stadium guide is the outlier and the reason is a bug in the reference, below. Games came in at 3.12% on the
-first attempt, which suggests the components built for the earlier screens are carrying
-their weight. All 32 reference shots render;
-22 of 32 app shots correctly report "not built" rather than being scored against something
-they are not.
+**Every screen in the reference is now built**, in both themes. 32 comparisons, mean
+**4.43%**. Best is Game day at 0.96%; worst is the Stadium guide at 8.93%, and that one is
+a bug in the reference rather than the port — see below.
+
+Games, Relive, Game day and Profile each measured well on the first attempt, without any
+tuning. That is the return on building the design system against the reference rather than
+by eye: by the time those screens were written, almost every component they needed already
+existed and had been measured.
 
 ### The game log slide-over
 

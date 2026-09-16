@@ -7,6 +7,8 @@ import { useTheme } from '@/theme/ThemeProvider';
 
 import { PickASideScreen } from '@/features/checkin/reference/PickASideScreen';
 import { StadiumGuideScreen } from '@/features/guide/reference/StadiumGuideScreen';
+import { FriendsPanel } from '@/features/profile/reference/FriendsPanel';
+import { ProfileScreen } from '@/features/profile/reference/ProfileScreen';
 import { GameDayScreen } from '@/features/plan/reference/GameDayScreen';
 import { ReliveScreen } from '@/features/relive/reference/ReliveScreen';
 import { GamesScreen } from '@/features/games/reference/GamesScreen';
@@ -46,6 +48,8 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   'guide-food': () => <StadiumGuideScreen tab="food" />,
   'guide-bathrooms': () => <StadiumGuideScreen tab="bath" />,
   'guide-seats': () => <StadiumGuideScreen tab="seats" />,
+  profile: () => <ProfileScreen />,
+  friends: () => <FriendsPanel />,
 };
 
 function SelfTest() {

@@ -6,7 +6,7 @@
 // finished when the sheet looks right; a low percentage on a blank screen is still a
 // blank screen.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
@@ -37,6 +37,14 @@ async function main() {
   await mkdir(`${OUT_DIR}/diff`, { recursive: true });
   await mkdir(`${OUT_DIR}/sheets`, { recursive: true });
 
+  // Reference shots are only regenerated when asked, so a change to capture-reference.mjs
+  // silently leaves old ones in place and every number after it is measured against the
+  // wrong image. That happened once here: a fix to strip the slide-over panels' fake
+  // status rows was applied to some screens and not others, and the screens still holding
+  // an old reference scored nearly twice as high. Nothing about the output said so.
+  const captureMtime = (await stat('scripts/parity/capture-reference.mjs')).mtimeMs;
+  const stale = [];
+
   const rows = [];
 
   for (const screen of SCREENS) {
@@ -53,6 +61,8 @@ async function main() {
         rows.push({ id: screen.id, theme, status: 'not built' });
         continue;
       }
+
+      if ((await stat(refPath)).mtimeMs < captureMtime) stale.push(`${screen.id}.${theme}`);
 
       const ref = await readPng(refPath);
       const app = await readPng(appPath);
@@ -96,6 +106,14 @@ async function main() {
       `\n${scored.length} compared, mean ${mean.toFixed(2)}%, worst ${worst.id}.${worst.theme} at ${worst.pct.toFixed(2)}%`,
     );
   }
+  if (stale.length) {
+    console.log(
+      `\nWARNING: ${stale.length} reference shots are older than capture-reference.mjs, so ` +
+        `they were taken with different code.\nRun \`npm run parity:ref\` before trusting these ` +
+        `numbers:\n  ${stale.slice(0, 8).join(', ')}${stale.length > 8 ? ', ...' : ''}`,
+    );
+  }
+
   const unbuilt = rows.filter((r) => r.status === 'not built').length;
   if (unbuilt) console.log(`${unbuilt} screens not built in the app yet.`);
   console.log(`\nContact sheets: ${OUT_DIR}/sheets/  (reference | app | diff)`);
