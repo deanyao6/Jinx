@@ -502,3 +502,79 @@ export function pickConfirmation(teamName: string, winProb: number): string {
     `A win adds +${(1 - winProb).toFixed(2)} to your neutral record vs expected.`
   );
 }
+
+/**
+ * Relive (SPEC.md 6.19, 8.8.4). The win probability series and the story steps are the
+ * reference's `WP` and `STEPS` arrays verbatim.
+ */
+export const RELIVE = {
+  away: { team: 'nym', badge: 'NYM', name: 'Mets' },
+  home: { team: 'phi', badge: 'PHI', name: 'Phillies' },
+  note: 'Aug 14, 2025, Citizens Bank Park, Section 321 with Dad and Maya',
+  idleHint: 'Tap play to relive it',
+  chartLabels: { left: '1st', middle: 'Phillies win probability', right: '9th' },
+  fanCount: '23',
+} as const;
+
+/** `WP` in the reference: the home team's win probability at each point. */
+export const RELIVE_WP: readonly number[] = [
+  0.55, 0.53, 0.49, 0.44, 0.47, 0.62, 0.6, 0.58, 0.5, 0.52, 0.56, 0.86, 0.88, 0.87, 0.84, 0.95,
+  0.96, 1,
+];
+
+export type ReliveStep = {
+  /** Index into RELIVE_WP that this step sits on. */
+  wp: number;
+  score: string;
+  label: string;
+  text: string;
+};
+
+/** `STEPS` in the reference. */
+export const RELIVE_STEPS: readonly ReliveStep[] = [
+  { wp: 0, score: '0 – 0', label: 'Pregame', text: 'Phillies were 55% to win before first pitch.' },
+  { wp: 3, score: '1 – 0', label: 'Top 2nd', text: 'Mets score first on a sacrifice fly.' },
+  {
+    wp: 5,
+    score: '1 – 2',
+    label: 'Bottom 3rd',
+    text: 'Two-run double puts the Phillies ahead. First high five with Dad.',
+  },
+  { wp: 8, score: '2 – 2', label: 'Top 5th', text: 'Solo homer to left ties it.' },
+  {
+    wp: 11,
+    score: '2 – 5',
+    label: 'Bottom 6th',
+    text: 'Three-run homer into the seats below Section 321.',
+  },
+  { wp: 14, score: '3 – 5', label: 'Top 8th', text: 'Mets get one back with two outs.' },
+  { wp: 15, score: '3 – 6', label: 'Bottom 8th', text: 'Insurance run on a bases-loaded walk.' },
+  {
+    wp: 17,
+    score: '3 – 6',
+    label: 'Final',
+    text: 'Phillies win. Your record with Dad goes to 7–1.',
+  },
+];
+
+/**
+ * A point on the chart, from `pt()` in the reference: the series is spread across a
+ * 300x92 viewBox with a 4pt inset on the left and the probability mapped to 84 of the
+ * 92 units.
+ */
+export function relivePoint(i: number): readonly [number, number] {
+  const wp = RELIVE_WP[i] ?? 0;
+  return [(i / (RELIVE_WP.length - 1)) * 292 + 4, 88 - wp * 84];
+}
+
+/** The placeholder photo scenes, from `scene()` in the reference. */
+export const PHOTO_SKIES: readonly string[] = ['#1D2B53', '#243B6B', '#3B2C5A'];
+export const RELIVE_YOUR_PHOTOS = [
+  { kind: 'selfie', seed: 0 },
+  { kind: 'field', seed: 1 },
+] as const;
+export const RELIVE_FAN_PHOTOS = [
+  { kind: 'board', seed: 0 },
+  { kind: 'field', seed: 2 },
+  { kind: 'selfie', seed: 2 },
+] as const;

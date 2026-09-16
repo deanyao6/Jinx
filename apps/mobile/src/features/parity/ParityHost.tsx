@@ -6,6 +6,7 @@ import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
 
 import { PickASideScreen } from '@/features/checkin/reference/PickASideScreen';
+import { ReliveScreen } from '@/features/relive/reference/ReliveScreen';
 import { GamesScreen } from '@/features/games/reference/GamesScreen';
 import { GameLogPanel } from '@/features/passport/reference/GameLogPanel';
 import { PassportScreen } from '@/features/passport/reference/PassportScreen';
@@ -37,6 +38,8 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   games: () => <GamesScreen />,
   'pick-a-side': () => <PickASideScreen />,
   'pick-a-side-picked': () => <PickASideScreen picked="away" />,
+  'relive-start': () => <ReliveScreen step={0} />,
+  'relive-mid': () => <ReliveScreen step={5} />,
 };
 
 function SelfTest() {

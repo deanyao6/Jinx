@@ -1,0 +1,326 @@
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { Circle, Line, Path, Polyline } from 'react-native-svg';
+
+import { ICONS } from '@/components/reference/icons';
+import { PhotoScene } from '@/components/reference/PhotoScene';
+import {
+  RELIVE,
+  RELIVE_FAN_PHOTOS,
+  RELIVE_STEPS,
+  RELIVE_YOUR_PHOTOS,
+  relivePoint,
+} from '@/features/demo/fixtures';
+import { TabBar } from '@/features/passport/reference/parts';
+import { fontFamily } from '@/theme/fonts';
+import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
+import { screenPadding } from '@/theme/reference/tokens';
+
+/**
+ * Relive, ported from the fourth phone in `design/reference.html` (SPEC.md 6.19, 8.8.4).
+ *
+ * `step` is the index into RELIVE_STEPS the story player is showing. Step 0 is the
+ * pregame state the screen opens on, before play is pressed; the reference shows its
+ * idle hint until then, so that is what step 0 renders.
+ *
+ * The screen takes the home team's theme, as the reference's `.scr.t-phi` does, which is
+ * what colours the play button and the win probability line.
+ */
+export function ReliveScreen({ step = 0 }: { step?: number }) {
+  return (
+    <ReferenceThemeProvider team={RELIVE.home.team}>
+      <Body step={step} />
+    </ReferenceThemeProvider>
+  );
+}
+
+function Body({ step }: { step: number }) {
+  const { base, team } = useReferenceTheme();
+  const insets = useSafeAreaInsets();
+  const Back = ICONS['i-chev-l'];
+  const Share = ICONS['i-share'];
+  const Camera = ICONS['i-camera'];
+  const Eye = ICONS['i-eye'];
+  const Ext = ICONS['i-ext'];
+
+  const index = Math.max(0, Math.min(step, RELIVE_STEPS.length - 1));
+  const current = RELIVE_STEPS[index];
+  if (!current) throw new Error(`no Relive step ${index}`);
+  const playing = index > 0 && index < RELIVE_STEPS.length - 1;
+
+  return (
+    <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          paddingTop: screenPadding.top,
+          paddingHorizontal: screenPadding.horizontal,
+          paddingBottom: screenPadding.bottom,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={s.top}>
+          <View style={s.row}>
+            <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+              <Back size={20} color={base.ink} />
+            </View>
+            <Text style={[s.topTitle, { color: base.ink }]}>Relive</Text>
+          </View>
+          <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+            <Share size={20} color={base.ink} />
+          </View>
+        </View>
+
+        {/* `.scorebug` is a 1fr auto 1fr grid, so the score column is intrinsic. */}
+        <View style={[s.scorebug, { backgroundColor: base.surface }]}>
+          <TeamTheme team={RELIVE.away.team}>
+            <ScorebugTeam badge={RELIVE.away.badge} name={RELIVE.away.name} />
+          </TeamTheme>
+          <View style={s.score}>
+            <Text style={[s.scoreValue, { color: base.ink }]}>{current.score}</Text>
+            <Text style={[s.scoreLabel, { color: base.muted }]}>{current.label}</Text>
+          </View>
+          <TeamTheme team={RELIVE.home.team}>
+            <ScorebugTeam badge={RELIVE.home.badge} name={RELIVE.home.name} />
+          </TeamTheme>
+        </View>
+
+        <Text style={[s.note, { color: base.muted }]}>{RELIVE.note}</Text>
+
+        <View style={s.player}>
+          <View style={[s.playButton, { backgroundColor: team.accent }]}>
+            {/* The reference swaps one path between a triangle and two bars. */}
+            <Svg width={18} height={18} viewBox="0 0 24 24">
+              <Path
+                d={playing ? 'M7 5.5h3.5v13H7zM13.5 5.5H17v13h-3.5z' : 'M8 5.5v13l10.5-6.5z'}
+                fill={team.onFill}
+              />
+            </Svg>
+          </View>
+          <View style={[s.storyCard, { backgroundColor: base.surface }]}>
+            <Text style={[s.storyLabel, { color: base.muted }]}>
+              {index === 0 ? RELIVE.idleHint : current.label}
+            </Text>
+            <Text style={[s.storyText, { color: base.ink }]}>{current.text}</Text>
+          </View>
+        </View>
+
+        <WinProbChart upTo={current.wp} />
+
+        <View style={s.chartLabels}>
+          <Text style={[s.chartLabel, { color: base.muted }]}>{RELIVE.chartLabels.left}</Text>
+          <Text style={[s.chartLabel, { color: base.muted }]}>{RELIVE.chartLabels.middle}</Text>
+          <Text style={[s.chartLabel, { color: base.muted }]}>{RELIVE.chartLabels.right}</Text>
+        </View>
+
+        <SectionRow title="Your photos" action="Add" />
+        <View style={s.photos}>
+          {RELIVE_YOUR_PHOTOS.map((photo, i) => (
+            <View key={`${photo.kind}-${i}`} style={s.photo}>
+              <PhotoScene kind={photo.kind} seed={photo.seed} />
+            </View>
+          ))}
+          <View style={[s.photoAdd, { borderColor: base.line }]}>
+            <Camera size={20} color={base.muted} />
+          </View>
+        </View>
+
+        <SectionRow title="From fans at this game" action={RELIVE.fanCount} />
+        <View style={s.photos}>
+          {RELIVE_FAN_PHOTOS.map((photo, i) => (
+            <View key={`${photo.kind}-${i}`} style={s.photo}>
+              <PhotoScene kind={photo.kind} seed={photo.seed} />
+            </View>
+          ))}
+        </View>
+
+        <View style={s.highlights}>
+          <View style={s.li}>
+            <View style={[s.liIcon, { backgroundColor: base.surface }]}>
+              <Eye size={20} color={team.accent} />
+            </View>
+            <View style={{ flex: 1, minWidth: 0 }}>
+              <Text style={[s.liTitle, { color: base.ink }]}>Official highlights</Text>
+              <Text style={[s.liMeta, { color: base.muted }]} numberOfLines={1}>
+                Opens in the league&apos;s video site
+              </Text>
+            </View>
+            <Ext size={20} color={base.muted} />
+          </View>
+        </View>
+      </ScrollView>
+      <TabBar active="Games" />
+    </View>
+  );
+}
+
+/** `.scorebug .tm` with the circular `.fx-bd` badge above the name. */
+function ScorebugTeam({ badge, name }: { badge: string; name: string }) {
+  const { base, team } = useReferenceTheme();
+  return (
+    <View style={{ flex: 1, alignItems: 'center' }}>
+      <View style={[s.badge, { backgroundColor: team.fill, borderColor: team.second }]}>
+        <Text style={s.badgeText}>{badge}</Text>
+      </View>
+      <Text style={[s.teamName, { color: base.ink }]}>{name}</Text>
+    </View>
+  );
+}
+
+/**
+ * `.chart`: the win probability line drawn up to the current step, with a dot at the end
+ * and a dashed 50% rule behind it.
+ *
+ * The reference uses `preserveAspectRatio="none"` so the 300x92 viewBox stretches to the
+ * full width; react-native-svg honours the same attribute.
+ */
+function WinProbChart({ upTo }: { upTo: number }) {
+  const { base, team } = useReferenceTheme();
+  const points: string[] = [];
+  for (let i = 0; i <= upTo; i++) {
+    const [x, y] = relivePoint(i);
+    points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+  const [dotX, dotY] = relivePoint(upTo);
+
+  return (
+    <Svg width="100%" height={92} viewBox="0 0 300 92" preserveAspectRatio="none">
+      <Line x1="0" y1="46" x2="300" y2="46" stroke={base.line} strokeDasharray="3 4" />
+      <Polyline
+        points={points.join(' ')}
+        fill="none"
+        stroke={team.accent}
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+      />
+      <Circle r="4.5" fill={team.accent} cx={dotX} cy={dotY} />
+    </Svg>
+  );
+}
+
+/** `.sec`, the earlier screens' section header with a link on the right. */
+function SectionRow({ title, action }: { title: string; action: string }) {
+  const { base, team } = useReferenceTheme();
+  return (
+    <View style={s.sec}>
+      <Text style={[s.secTitle, { color: base.ink }]}>{title}</Text>
+      <Text style={[s.secAction, { color: team.accent }]}>{action}</Text>
+    </View>
+  );
+}
+
+const s = StyleSheet.create({
+  top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 6,
+    marginBottom: 10,
+  },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  topTitle: { fontSize: 22, fontFamily: fontFamily({ weight: 850 }), letterSpacing: -22 * 0.01 },
+  iconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // `.scorebug{border-radius:22px;padding:12px}`
+  scorebug: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 22,
+    padding: 12,
+  },
+  // `.scorebug .fx-bd{width:46px;height:46px;font-size:13.5px;border-width:2.5px;margin:0 auto 4px}`
+  badge: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    borderWidth: 2.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  badgeText: {
+    fontSize: 13.5,
+    fontFamily: fontFamily({ width: 80, weight: 900 }),
+    color: '#FFFFFF',
+  },
+  teamName: { fontSize: 12.5, fontFamily: fontFamily({ weight: 750 }) },
+  // `.scorebug .sc{font-size:46px;line-height:.9;min-width:110px}`
+  score: { minWidth: 110, alignItems: 'center' },
+  scoreValue: {
+    fontSize: 46,
+    lineHeight: 46 * 0.9,
+    fontFamily: fontFamily({ width: 62, weight: 900 }),
+  },
+  scoreLabel: { fontSize: 12, fontFamily: fontFamily({ weight: 600 }) },
+
+  // `.note{font-size:13px;line-height:1.45}` with the inline centring and top margin.
+  note: { fontSize: 13, lineHeight: 13 * 1.45, textAlign: 'center', marginTop: 8 },
+
+  // `.player{gap:10px;margin:12px 0 8px}`
+  player: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 12, marginBottom: 8 },
+  playButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  // `.storycard{border-radius:16px;padding:10px 12px;min-height:58px}`
+  storyCard: {
+    flex: 1,
+    borderRadius: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    minHeight: 58,
+  },
+  storyLabel: { fontSize: 11.5, fontFamily: fontFamily(), marginBottom: 2 },
+  storyText: { fontSize: 13.5, lineHeight: 13.5 * 1.4, fontFamily: fontFamily() },
+
+  // `.wplbl{font-size:12.5px}` with `.dog` at weight 500 and muted.
+  chartLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 2 },
+  chartLabel: { fontSize: 12.5, fontFamily: fontFamily({ weight: 500 }) },
+
+  // `.sec{margin:18px 0 8px}`
+  sec: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    marginTop: 18,
+    marginBottom: 8,
+  },
+  secTitle: { fontSize: 18, fontFamily: fontFamily({ weight: 800 }) },
+  secAction: { fontSize: 13.5, fontFamily: fontFamily({ weight: 700 }) },
+
+  // `.photos{grid-template-columns:repeat(3,1fr);gap:6px}` with square cells.
+  photos: { flexDirection: 'row', gap: 6 },
+  photo: { flex: 1, aspectRatio: 1, borderRadius: 12, overflow: 'hidden' },
+  photoAdd: {
+    flex: 1,
+    aspectRatio: 1,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  highlights: { marginTop: 8 },
+  li: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 11 },
+  // `.li .ic{width:36px;height:36px;border-radius:12px}`
+  liIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  liTitle: { fontSize: 14.5, fontFamily: fontFamily({ weight: 700 }) },
+  liMeta: { fontSize: 12.5, fontFamily: fontFamily() },
+});

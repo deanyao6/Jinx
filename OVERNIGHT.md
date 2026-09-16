@@ -204,13 +204,14 @@ in the repo.
 | Pick a side | **5.37%** | **5.45%** |
 | Pick a side, picked | **5.70%** | **5.78%** |
 | Games, History | **3.32%** | **2.92%** |
-| Relive, pregame and mid-story | not built | not built |
+| Relive, pregame | **2.90%** | **2.71%** |
+| Relive, mid story | **3.25%** | **3.06%** |
 | Game day | not built | not built |
 | Stadium guide (Food, Bathrooms, Seats) | not built | not built |
 | Profile | not built | not built |
 | Friends panel | not built | not built |
 
-Mean across what exists: **4.47%** over sixteen comparisons. Games came in at 3.12% on the
+Mean across what exists: **4.17%** over twenty comparisons. Games came in at 3.12% on the
 first attempt, which suggests the components built for the earlier screens are carrying
 their weight. All 32 reference shots render;
 22 of 32 app shots correctly report "not built" rather than being scored against something
