@@ -22,13 +22,19 @@ Run that in your own terminal, not through an agent: it prompts for your Apple I
 two-factor code. The `--empty-trash` flag deletes the ~10 GB archive once it has expanded, which
 matters because this disk is over 90% full.
 
+`xcodes` installs to `/Applications/Xcode-<version>.app`, not `Xcode.app`, and `--select`
+points the command line tools at it. Both are fine; nothing expects the plain name.
+
 Then:
 
 ```
+brew install cocoapods          # system Ruby is 2.6, too old for the gem
 bash scripts/setup-simulator.sh
 ```
 
-That selects the toolchain, accepts the licence, and downloads an iOS runtime if none is present.
+The script accepts the licence, runs first launch, and downloads an iOS runtime if none is
+present. Xcode ships the iOS SDK but not the simulator runtime, so that download is always
+needed on a fresh install.
 
 ## Run the app
 

@@ -4,10 +4,19 @@
 # licence need root. See docs/simulator.md.
 set -uo pipefail
 
-XCODE_APP="${XCODE_APP:-/Applications/Xcode.app}"
+# xcodes installs as Xcode-<version>.app, the App Store installs as Xcode.app, and an already
+# selected toolchain wins over both. Accept all three.
+if [ -n "${XCODE_APP:-}" ]; then
+  :
+elif SEL="$(xcode-select -p 2>/dev/null)" && [ -d "${SEL%/Contents/Developer}" ] \
+     && [ "$SEL" != "/Library/Developer/CommandLineTools" ]; then
+  XCODE_APP="${SEL%/Contents/Developer}"
+else
+  XCODE_APP="$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)"
+fi
 
-if [ ! -d "$XCODE_APP" ]; then
-  echo "Xcode is not installed at $XCODE_APP."
+if [ -z "${XCODE_APP:-}" ] || [ ! -d "$XCODE_APP" ]; then
+  echo "No Xcode found in /Applications."
   echo "Install it first:  xcodes install 26.6 --experimental-unxip --empty-trash --select"
   echo "(Xcode 27 needs macOS 26.6; 26.6 needs only macOS 26.2, so it works on this machine.)"
   exit 1
