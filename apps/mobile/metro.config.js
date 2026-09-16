@@ -12,7 +12,36 @@ const corePath = path.join(workspaceRoot, 'packages', 'core');
 
 const config = getSentryExpoConfig(projectRoot);
 
-config.watchFolders = Array.from(new Set([...(config.watchFolders ?? []), workspaceRoot]));
+// Watch only what the bundler actually resolves from. Watching the whole workspace root pulled in
+// apps/mobile/ios (34k files, 4 GB of Xcode derived data once a native build exists), which
+// overwhelms the file watcher and silently stops Fast Refresh from firing at all.
+config.watchFolders = Array.from(
+  new Set([
+    ...(config.watchFolders ?? []),
+    path.join(workspaceRoot, 'packages', 'core'),
+    path.join(workspaceRoot, 'node_modules'),
+  ]),
+);
+
+// The project root itself is always watched, and ios/ and android/ live inside it, so they have to
+// be excluded explicitly. They contain no JavaScript the bundler needs.
+const escape = (p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const nativeBuildDirs = [
+  new RegExp(`^${escape(path.join(projectRoot, 'ios'))}/.*$`),
+  new RegExp(`^${escape(path.join(projectRoot, 'android'))}/.*$`),
+];
+config.resolver.blockList = Array.isArray(config.resolver.blockList)
+  ? [...config.resolver.blockList, ...nativeBuildDirs]
+  : config.resolver.blockList
+    ? [config.resolver.blockList, ...nativeBuildDirs]
+    : nativeBuildDirs;
+
+// Do not delegate file watching to the watchman daemon. This repo lives under ~/Desktop, which
+// macOS restricts, and the daemon is not granted access there: `watchman since` reports zero
+// changes after a write, so Fast Refresh silently stops firing. Metro's own watcher runs inside
+// the node process started from your terminal, which does have access. Remove this only if the
+// project moves out of a protected folder, or watchman is granted Full Disk Access.
+config.resolver.useWatchman = false;
 
 const defaultResolveRequest = config.resolver.resolveRequest;
 config.resolver.resolveRequest = (context, moduleName, platform) => {

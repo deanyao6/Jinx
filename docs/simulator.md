@@ -66,6 +66,29 @@ and `SENTRY_PROJECT` are unset. The script sets `SENTRY_DISABLE_AUTO_UPLOAD=true
 Once you join the Apple Developer Program and Xcode holds a certificate, plain `expo run:ios`
 works and the script becomes unnecessary.
 
+### Fast Refresh and the file watcher
+
+Editing anything under `apps/mobile/src` updates the running app in about a second, with no
+rebuild and without losing screen state. Note that a Fast Refresh does **not** print an
+`iOS Bundled` line in the Metro output; only full bundles do. Watch the Simulator, not the log.
+
+Two settings in `apps/mobile/metro.config.js` keep this working on this machine.
+
+**`watchFolders` is narrowed to what the bundler resolves from.** It used to be the whole
+workspace root. Once a native build exists, that pulls in `apps/mobile/ios`, which is 34,000 files
+and 4 GB of Xcode derived data, for about 95,000 watched files in total. `ios/` and `android/` are
+also excluded through `resolver.blockList`, because the project root itself is always watched.
+
+**`resolver.useWatchman` is false.** This repo lives under `~/Desktop`, a folder macOS restricts.
+The watchman daemon is not granted access there, so it registers a watch and crawls the tree, but
+never receives change events. Verified directly: `watchman since` reports zero changed files after
+a write. Metro's built-in watcher runs inside the node process started from your terminal, which
+does have access, so it works. Installing watchman makes Metro prefer it and silently breaks Fast
+Refresh, which is why the flag is pinned off rather than left to autodetection.
+
+Remove that flag only if the project moves out of a protected folder, or watchman is granted Full
+Disk Access in System Settings.
+
 ### Expected noise in the simulator
 
 An `expo-notifications` error toast appears on launch: `ERR_NOTIFICATIONS_KEYCHAIN_ACCESS`. The
