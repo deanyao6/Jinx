@@ -201,7 +201,7 @@ in the repo.
 | Passport, Eagles pill | **3.79%** | **3.20%** |
 | Record game log, Phillies | **5.55%** | **5.45%** |
 | Record game log, As a neutral | **5.02%** | **4.95%** |
-| Pick a side | **5.42%** | **5.45%** |
+| Pick a side | **5.37%** | **5.45%** |
 | Pick a side, picked | **5.70%** | **5.78%** |
 | Games, History | **3.32%** | **2.92%** |
 | Relive, pregame and mid-story | not built | not built |
@@ -210,7 +210,7 @@ in the repo.
 | Profile | not built | not built |
 | Friends panel | not built | not built |
 
-Mean across what exists: **4.46%** over sixteen comparisons. Games came in at 3.12% on the
+Mean across what exists: **4.47%** over sixteen comparisons. Games came in at 3.12% on the
 first attempt, which suggests the components built for the earlier screens are carrying
 their weight. All 32 reference shots render;
 22 of 32 app shots correctly report "not built" rather than being scored against something
