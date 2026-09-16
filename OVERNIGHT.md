@@ -6,13 +6,20 @@ sections are appended at the bottom as work lands.
 ## Read this first
 
 1. **Look at the contact sheets before anything else:** `open design/parity/sheets/`.
-   Six of them, all Passport, each showing reference | app | diff side by side.
-2. **Every screen in the reference is rebuilt**, in both themes, at a **4.43% mean
-   mismatch**. Best 0.96%, worst 8.93%. The per-screen table is in section (g).
-3. Nothing remote was touched: no migrations pushed, no Apple certificates, nothing of
-   SalusLink's, and the Metro watcher settings are untouched.
-4. Every commit has the full check suite green: typecheck, lint, format, 395 unit tests
-   and 117 database assertions.
+   32 of them, one per screen and theme, each showing reference | app | diff side by side.
+2. **Every screen in the reference is rebuilt**, in both themes, interactive, at a
+   **4.37% mean mismatch**. Best 0.93% (Game day), worst 8.93% (Stadium guide, and that
+   one is a bug in the reference rather than the port). Per-screen table in section (g).
+3. **Passport, Games and Relive read real data**; the rest still render demo fixtures
+   behind the same repository interface. `SUPABASE_BACKED` says which is which, and a test
+   asserts it.
+4. Nothing remote was touched: no migrations pushed, no Apple certificates, nothing of
+   SalusLink's, and the Metro watcher settings are untouched. **The M1 ingestion
+   rearchitecture was deliberately not started** — it is the one piece that could damage
+   the 82,240 games loaded locally, and it needs someone awake.
+5. Every commit has the full check suite green: typecheck, lint, format, 263 mobile tests
+   plus 139 in core and ingest, and 117 database assertions. Verified again at the end,
+   and the app was launched in the simulator to confirm it still boots.
 
 ## Needs Dean (short list)
 
@@ -24,6 +31,9 @@ sections are appended at the bottom as work lands.
 | 4 | `eas credentials -p ios` is interactive, so the Apple team `625VS6JANJ` connection stays unverified | Blocks the first real device build. Not touched per the brief. |
 | 5 | The Expo slug is now `jinx` and no longer matches the EAS project `appname-monorepo` | EAS commands will refuse until the project is renamed or recreated under the Jinx org. |
 | 6 | The reference's own MLB Giants accent fails contrast (3.15:1 on white) | Left verbatim because the reference is authoritative. A design call, not a bug. |
+| 7 | **The Stadium guide's avatars are 88px because of a CSS collision in the reference** | The single biggest remaining parity gap, and one line either way. Detail below. |
+| 8 | **The Games row has no state for a tie or an unfinished game** | `.fx-res` has only `w` and `l`. NFL ties are real and SPEC.md 6.2 counts them. The circle is omitted rather than a tie being called a loss, which needs a design decision. |
+| 9 | Stamp metals (brass vs silver) are an inference, not data | Nothing in the schema says which a venue is. The rule used reproduces the reference's six exactly, but it is a guess at intent. |
 
 ## (a) Access check — run 2026-09-16, per `docs/ACCOUNTS.md`
 
@@ -603,11 +613,16 @@ Nothing below is blocked on you except items 1 and 6.
 
 ## State of the checks
 
-Green as of the last commit:
+Verified at the end of the night, not assumed. Everything below was re-run after the last
+code change:
 
 - `npm run typecheck`, `npm run lint`, `npm run format:check` — clean.
 - `npm test` — **395 tests** (256 mobile, 126 core, 13 ingest).
-- `npm run parity` — 32 of 32 screens captured and diffed.
+- `npm run parity` — 32 of 32 screens captured and diffed, mean 4.37%. Every figure in
+  the table in section (g) comes from that run.
+- The app was launched in the simulator and screenshotted, to confirm it still boots after
+  the night's changes rather than only that the tests pass:
+  `design/parity/final-launch-iphone17pro.png`.
 - `npm run db:test` — **117 assertions**, 6 files, PASS.
 
 Nothing was pushed to the hosted Supabase project, no migrations were applied remotely, no

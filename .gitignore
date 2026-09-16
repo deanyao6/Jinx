@@ -41,4 +41,10 @@ supabase/functions/_shared/core/
 
 # Visual parity harness output: reference shots, app shots, diffs and contact sheets.
 # Regenerated on every run and large (PNGs at device pixel ratio 3), so never committed.
-design/parity/
+# Note the trailing /* rather than /: git does not descend into an ignored directory, so
+# the negations below would never be considered if the directory itself were excluded.
+design/parity/*
+# ...except the launch screenshots, which are evidence the app boots rather than
+# regenerable harness output.
+!design/parity/rename-launch-iphone17pro.png
+!design/parity/final-launch-iphone17pro.png
