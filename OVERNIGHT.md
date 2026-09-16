@@ -400,35 +400,45 @@ Repeating the table at the top, with what landed overnight added:
 
 ## What I would do next, in order
 
-1. **Fix the two remaining offsets**, using `npm run parity:drift` after each change to
-   see which band moved. The stamp-caption one is already done and took the mean from
-   4.28% to 3.66%; the header and hero regions are left. Expect Passport near 1-2%. Do not
-   reach for a global line-height factor: the measurement above says there is none, and
-   two attempts at one made things worse.
-2. **Port the record game log slide-over.** It is the other half of Passport, the
-   fixtures and the log data already exist, and the panel motion is specified
-   (320ms, `cubic-bezier(.2,.8,.2,1)`).
-3. **Then Games, then Pick a side**, in the brief's order. Both reuse components that now
-   exist: the team badges, the result circles and the thumbnails are the only genuinely
-   new SVG work.
-4. **Wire `team_colors` into the app.** The 65 palettes are seeded but nothing reads them
-   yet; the app uses the 14 static fallbacks. A repository that loads them and falls back
-   to the static set is small and unblocks every non-Philadelphia team.
-5. Leave storylines (6.18) and Relive (6.19) until the screens are done. Storylines is
-   blocked on the Anthropic key anyway.
+Nothing below is blocked on you except items 1 and 6.
 
-## State of the checks
+1. **Decide the Stadium guide avatar question** above. It is the single largest remaining
+   parity gap and it is one line either way.
+2. **Interactions.** Every screen is currently a static render of one state, which is what
+   the parity harness needs but not what the app needs. The pills, the record cards, the
+   segments, the root buttons and the Relive play button all need their handlers, the two
+   slide-over panels need their 320ms `cubic-bezier(.2,.8,.2,1)` transition, and the live
+   dot needs its 1.6s pulse. All of it must respect Reduce Motion (SPEC.md 8.2). The
+   harness freezes motion, so a still frame is already a state each screen can render,
+   which is the hard half.
+3. **Wire `team_colors` into the app.** The 65 palettes are seeded but nothing reads them;
+   the app uses the 14 static fallbacks, so every team outside Philadelphia and the demo
+   set currently falls back to neutral. A repository that loads the table and falls back to
+   the static set is small, and the cross-check test already guarantees the two agree.
+4. **Replace the demo fixtures with the real queries.** The screens read through
+   `features/demo/fixtures.ts` today. SPEC.md 8.9 wants them behind a repository interface
+   so demo and Supabase are interchangeable; the fixtures are already shaped that way, so
+   this is mostly introducing the interface and a second implementation.
+5. **The last typography offsets.** Passport's header sits 2-3pt high and its hero 3pt low;
+   Pick a side and the game log have similar small ones. Worth roughly 2 points of parity
+   across the board. Read the warnings above first: four of my six attempts here made
+   things worse, and all four came from reasoning rather than measuring.
+6. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
+   key, and Relive (6.19) against real data rather than fixtures.
+
+## State of the checks## State of the checks
 
 Green as of the last commit:
 
 - `npm run typecheck`, `npm run lint`, `npm run format:check` — clean.
 - `npm test` — **353 tests** (214 mobile, 126 core, 13 ingest).
+- `npm run parity` — 32 of 32 screens captured and diffed.
 - `npm run db:test` — **117 assertions**, 6 files, PASS.
 
 Nothing was pushed to the hosted Supabase project, no migrations were applied remotely, no
 Apple certificates or provisioning profiles were touched, nothing belonging to SalusLink
 was touched, watchman is still uninstalled and the Metro watcher settings are unchanged.
-Disk finished at 65 GB free.
+Disk finished at about 64 GB free.
 
 ## New commands
 
