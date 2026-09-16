@@ -266,13 +266,16 @@ the vertical offset that best aligns each one. Accumulation would show as a stea
 growing number; the measured rate is 0.22pt per 100pt, which is noise. What it actually
 shows, identically on `passport-all.light` and `passport-phi.dark`:
 
+Re-measured after the TightText fix, on `passport-all.light`:
+
 | Region | Offset | Status |
 |---|---|---|
-| 0-45pt (wordmark, pills) | **-2 to -3pt** | app sits high. Open, three attempts failed. |
-| 45-135pt (hero) | **+1 to +3.7pt** | app sits low. Open. |
-| 195-315pt (record cards) | **+2.3 to +3.7pt** | carried from the hero. Open. |
-| 390-480pt (stamps) | ~0 | aligned |
-| 495-680pt (stamp captions, superlatives) | was **-7 to -11.7pt** | **fixed** |
+| 0-45pt (wordmark, pills) | **+0.33pt** | **fixed.** Was -2 to -3pt. |
+| 45-135pt (hero) | **+0.7 to +3.7pt** | app sits low. Open. |
+| 195-315pt (record cards) | **+2 to +5pt** | carried down from the hero. Open. |
+| 390-480pt (stamps) | **-0.67pt** | aligned |
+| 495-570pt (stamp captions) | **-2.7 to +1.3pt** | **fixed.** Was -7 to -11.7pt. |
+| 585-720pt (superlatives) | **+2.7 to +6.3pt** | carried down. Open. |
 
 So specific block heights are wrong at two boundaries, and everything between them is
 carried along. This is a handful of individual margins and line boxes, not a global
@@ -290,18 +293,18 @@ line height to CSS `normal` (1.17em) changed nothing, because the pill's height 
 the taller count badge, not the label. Setting the *badge's* line height to 1.17em made
 the pill taller, not shorter, and the mean went from 3.86% to 4.28%. React Native's
 `lineHeight` on small text does not simply shrink the box the way CSS `line-height` does.
-Third, I wrote a `TightText` wrapper for the two places the reference sets a line-height
-below 1 (`.fx-word` at `.85`, `.fx-rec b` at `.78`), where CSS lets glyphs overflow the
-line box and React Native compresses the line instead. Centring the natural text box
-inside a short wrapper overcorrected: the wordmark went from 2.5pt high to 4.3pt low, and
-the mean from 3.66% to 4.30%. CSS half-leading is measured against the content area
-(ascent + descent); centring uses the full natural line box including the line gap, so the
-two are not the same. All three reverted.
+Third, a first `TightText` wrapper for the two places the reference sets a line-height
+below 1 (`.fx-word` at `.85`, `.fx-rec b` at `.78`). Centring the natural text box inside a
+short wrapper overcorrected: the wordmark went from 2.5pt high to 4.3pt low, and the mean
+from 3.66% to 4.30%. All three reverted. `TightText` came back later and did work, but by
+computing the offset from the font's metrics rather than centring; that is the section
+below.
 
-The lesson for the remaining two regions: look for structural differences like the inline
-strut above, not for a metrics factor. `.fx-word` has `line-height:.85` and `.fx-rec b`
-has `.78`, both below 1, which in CSS lets glyphs overflow the line box; that is the most
-likely cause of the top region and is the same kind of structural difference.
+That guess about the top region turned out to be right in kind and wrong in execution.
+`.fx-word` at `.85` and `.fx-rec b` at `.78` really were the cause — the glyphs overflow
+their line box in CSS and React Native clips them instead — but centring was the wrong way
+to place them. **See "The typography problem, solved" below for what actually worked and
+the measurement that got there.** The top band is now within 0.33pt.
 
 ### Bugs the harness caught that reading the code would not have
 
@@ -534,7 +537,7 @@ Nothing below is blocked on you except items 1 and 6.
 4. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
    key, and Relive (6.19) against real data rather than fixtures.
 
-## State of the checks## State of the checks
+## State of the checks
 
 Green as of the last commit:
 
