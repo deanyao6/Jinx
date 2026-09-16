@@ -483,6 +483,14 @@ which then stacked on top of the half-leading offset. Margins belong to the bloc
 glyphs. `TightText` now splits them out. The two places that had worked first time were
 exactly the two whose styles carried no margin.
 
+**Pick a side did not yield to any of this.** Its records sit about 4.7pt too close to the
+team name, and `.fx-mu span` is inline in a block inheriting 16px, so the same strut
+reasoning that fixed the Passport stamp captions should apply. Setting that line height to
+the derived 17.41pt changed the mismatch by **nothing at all** — 5.37% before and after, to
+two decimal places. The likely explanation is that the matchup row's height is set by the
+62pt team badge rather than by the text column, so growing the record's line box moves
+nothing. Reverted: an inert change with a confident comment on it is worse than no change.
+
 It is applied wherever the reference sets a line-height below Archivo's 1.088em: the
 wordmark, the record hero, the win rate, the record cards, the game log header, the Relive
 scorebug and the ticket title. One exception: `.vs strong` on the Friends panel measured
@@ -569,8 +577,9 @@ Nothing below is blocked on you except items 1 and 6.
 2. **Finish the Supabase repository.** Passport's records are mapped (M3); Games is M2,
    imports M4, Relive M8.5. `SUPABASE_BACKED` lists what is real. Two things the passport
    mapping needs from elsewhere, both noted below.
-3. **The typography offsets that remain.** The big one is solved (see below). What is left
-   is Pick a side's records and the top band of a few screens, each a point or two.
+3. **The typography offsets that remain**, each worth a point or two. Pick a side's records
+   and the Passport hero are the two biggest. See the warning below before starting: the
+   obvious fix for Pick a side is measurably inert, and I do not know why.
 4. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
    key, and Relive (6.19) against real data rather than fixtures.
 
