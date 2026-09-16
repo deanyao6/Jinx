@@ -161,7 +161,7 @@ export function formatDuration(minutes: number | null, periods: number | null): 
     return h > 0 ? `${h}h ${String(m).padStart(2, '0')}m` : `${m}m`;
   }
   if (periods != null) return `${periods} periods`;
-  return '—';
+  return '–';
 }
 
 export function formatShortDate(iso: string): string {

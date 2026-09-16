@@ -56,6 +56,11 @@ anything is unbuilt.
 | [docs/elo-backtest.md](docs/elo-backtest.md) | Elo tuning evidence |
 | [docs/attribution.md](docs/attribution.md), [privacy.md](docs/privacy.md), [terms.md](docs/terms.md), [moderation.md](docs/moderation.md) | User-facing legal and policy copy |
 
+## Copy
+- **Never use an em dash in UI copy.** Dean's rule, 2026-09-16. En dashes in scores and
+  records (`31 – 17`, `24–15`) are correct and stay. `apps/mobile/src/features/games/__tests__/copy.test.ts`
+  scans `apps/mobile/src` and `packages/core/src` and fails on one, so the rule holds by itself.
+
 ## Ground rules (from the spec)
 - The app is **Jinx**. Bundle ID `com.deanyao.jinx`, URL scheme `jinx://`, workspace scope `@jinx/*`.
 - Hobby project: $0 data sources, Supabase free tier, minimal moving parts.

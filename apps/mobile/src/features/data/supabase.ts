@@ -403,7 +403,7 @@ export type ProfileAccount = {
 };
 
 function statValue(n: number | null | undefined): string {
-  return n == null ? '—' : String(n);
+  return n == null ? '–' : String(n);
 }
 
 export function profileFromAccount(
@@ -610,7 +610,7 @@ export function pickASideFromContext(
     const short = nickname(team.name, ref?.city);
     return {
       team: team.team_id,
-      badge: ref?.abbreviation ?? '—',
+      badge: ref?.abbreviation ?? '–',
       name: short,
       // The season record shown under each badge is not in the game context and there is
       // no standings query yet, so it is left empty rather than invented. See
@@ -780,12 +780,12 @@ export function reliveFromGame(
   return {
     away: {
       team: game.away?.id ?? 'none',
-      badge: game.away?.abbreviation ?? '—',
+      badge: game.away?.abbreviation ?? '–',
       name: nickname(game.away?.name ?? '', null),
     },
     home: {
       team: game.home?.id ?? 'none',
-      badge: game.home?.abbreviation ?? '—',
+      badge: game.home?.abbreviation ?? '–',
       name: nickname(game.home?.name ?? '', null),
     },
     note: parts.join(', '),

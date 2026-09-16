@@ -39,11 +39,11 @@ export function VenueSheet({ stamp, onClose, stampNumber = null }: Props) {
             <Fact label="Visits" value={String(stamp.visits)} />
             <Fact
               label="First visit"
-              value={stamp.first_visit ? formatShortDate(stamp.first_visit) : '—'}
+              value={stamp.first_visit ? formatShortDate(stamp.first_visit) : '–'}
             />
             <Fact
               label={stamp.closed ? 'Status' : 'Sports'}
-              value={stamp.closed ? 'Closed' : stamp.sports.map(sportLabel).join(', ') || '—'}
+              value={stamp.closed ? 'Closed' : stamp.sports.map(sportLabel).join(', ') || '–'}
             />
           </View>
           <Card label={`Your games here, ${visitsLabel(stamp.visits)}`}>

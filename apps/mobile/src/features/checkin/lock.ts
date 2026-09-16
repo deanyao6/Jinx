@@ -110,7 +110,7 @@ export function lockNoteCopy(sport: Sport): string {
 }
 
 export function pctLabel(prob: number | null | undefined): string {
-  if (prob == null || !Number.isFinite(prob)) return '—';
+  if (prob == null || !Number.isFinite(prob)) return '–';
   return `${Math.round(prob * 100)}%`;
 }
 

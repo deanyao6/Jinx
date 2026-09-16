@@ -16,6 +16,22 @@ export const reliveKeys = {
   steps: (gameId: string | undefined) => ['relive', 'steps', gameId] as const,
 };
 
+/**
+ * How long a Relive answer stays fresh, which depends entirely on WHAT the answer was.
+ *
+ * A story that exists is finished history and never changes, so it is cached for a day and
+ * the query client persists it across launches. An EMPTY result is not an answer, it is
+ * "the detail worker has not got to this game yet" (SPEC.md 4.7) — and caching that for a
+ * day is how a game stays permanently un-relivable: open it once before its story lands and
+ * the app keeps telling you there is nothing for the next 24 hours, across restarts,
+ * because the cache is persisted. That is exactly what happened to a real game here.
+ *
+ * So an empty result goes stale in half a minute and is asked again on the next visit.
+ */
+function reliveStaleTime(rows: readonly unknown[] | undefined): number {
+  return (rows?.length ?? 0) > 0 ? 24 * 60 * 60_000 : 30_000;
+}
+
 /** The home team's win probability at each point, ordered by `seq`. */
 export function useGameWinProbability(gameId: string | undefined) {
   return useQuery({
@@ -30,7 +46,7 @@ export function useGameWinProbability(gameId: string | undefined) {
       return (data as { seq: number; home_wp: number }[]).map((row) => Number(row.home_wp));
     },
     enabled: !!gameId,
-    staleTime: 24 * 60 * 60_000,
+    staleTime: (query) => reliveStaleTime(query.state.data),
   });
 }
 
@@ -66,6 +82,6 @@ export function useGameStorySteps(gameId: string | undefined) {
       }));
     },
     enabled: !!gameId,
-    staleTime: 24 * 60 * 60_000,
+    staleTime: (query) => reliveStaleTime(query.state.data),
   });
 }

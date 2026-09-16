@@ -182,3 +182,32 @@ links to it from the venue as well.
 
 Still open on this screen: photo upload (`attendance_photos` has no writer), the fan photo
 strip, and the per-game highlight URL, all unchanged from the table above.
+
+## Update, 2026-09-16: Favorites
+
+Favourite teams lived inside Edit profile, as a 62-row checklist beside your name and handle.
+They are not a profile field: they decide what the passport counts, which pills appear, and
+which games are yours. They now have their own place, with players beside them.
+
+`Settings > Favorites`, two tabs:
+
+| Screen | Route | What it does |
+|---|---|---|
+| Favorites | `/settings/favorites` | Teams and Players tabs. Lists what you have; a row removes |
+| League | `/settings/favorites/league?mode=` | Step one of both pickers |
+| Teams | `/settings/favorites/teams?sport=` | Step two for teams. Tapping favourites immediately |
+| Teams (for players) | `/settings/favorites/players?sport=` | Step two for players. Drills in, favourites nothing |
+| Roster | `/settings/favorites/roster?teamId=` | Step three. Tapping favourites the player |
+
+Three things worth knowing:
+
+- **The picker drills down rather than listing everything.** League, then team, then player.
+  The old one put all 62 teams behind a search box, which does not survive a third league.
+- **A team has no roster in the schema**, because a player moves and the truth is per game.
+  `team_roster` derives one from `game_appearances`, so the list is everyone who has ever
+  appeared for that team — the right set for an app about who you have SEEN.
+- **`seen_by_you` is the payoff.** The roster says "Seen 4 times" where it can, and only falls
+  back to a database-wide count when you have not seen that player. The first draft said
+  "5 games recorded", which reads as a claim about you and is not one.
+
+Edit profile keeps name, handle and home city, and links here.

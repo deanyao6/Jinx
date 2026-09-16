@@ -17,7 +17,8 @@ import { fontFamily } from '@/theme/fonts';
  * old design until they are restyled (docs/interactions.md).
  */
 const ROWS: { title: string; meta: string; href: Href }[] = [
-  { title: 'Edit profile', meta: 'Name, handle, photo, teams', href: '/you/edit-profile' },
+  { title: 'Edit profile', meta: 'Name, handle, photo', href: '/you/edit-profile' },
+  { title: 'Favorites', meta: 'Your teams and players', href: '/settings/favorites' },
   { title: 'Privacy', meta: 'Private account, seats, overlap', href: '/you/privacy' },
   { title: 'Notifications', meta: 'Your alerts', href: '/you/notifications' },
   {

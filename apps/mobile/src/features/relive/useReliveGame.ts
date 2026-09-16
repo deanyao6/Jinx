@@ -79,8 +79,8 @@ export function useReliveGame(gameId: string | undefined): ReliveGameData {
 
 /** Before the game read lands there is no scorebug to draw, only its shape. */
 const EMPTY_RELIVE: ReliveFixture = {
-  away: { team: 'none', badge: '—', name: '' },
-  home: { team: 'none', badge: '—', name: '' },
+  away: { team: 'none', badge: '–', name: '' },
+  home: { team: 'none', badge: '–', name: '' },
   note: '',
   idleHint: 'Tap play to relive it',
   chartLabels: { left: '', middle: '', right: '' },

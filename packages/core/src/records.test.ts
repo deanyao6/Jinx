@@ -123,7 +123,7 @@ describe('records', () => {
     expect(formatRecord({ wins: 31, losses: 17, ties: 1 })).toBe('31–17–1');
     expect(formatWinRate({ wins: 31, losses: 17, ties: 0 })).toBe('.646');
     expect(formatWinRate({ wins: 3, losses: 0, ties: 2 })).toBe('1.000');
-    expect(formatWinRate({ wins: 0, losses: 0, ties: 1 })).toBe('—');
+    expect(formatWinRate({ wins: 0, losses: 0, ties: 1 })).toBe('–');
     expect(formatVsExpected(2.36)).toBe('+2.4');
     expect(formatVsExpected(-0.62)).toBe('-0.6');
     expect(formatVsExpected(0.04)).toBe('0.0');

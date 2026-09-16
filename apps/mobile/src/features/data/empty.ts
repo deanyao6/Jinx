@@ -31,7 +31,7 @@ export function emptyPassport(): PassportFixture {
     badge: '0 GAMES ATTENDED',
     record: NO_RECORD,
     // The same em dash `formatWinRate` writes for a record with no decided games.
-    winRate: '—',
+    winRate: '–',
     streak: 'No active streak',
     lastGame: 'No games logged yet',
     lastGameId: '',
@@ -43,7 +43,7 @@ export function emptyPassport(): PassportFixture {
 
 /** No game, so no sides and no probabilities to draw. */
 export function emptyPickASide(): PickASideFixture {
-  const side = { team: 'none', badge: '—', name: '', record: '', winProb: 0.5, button: '' };
+  const side = { team: 'none', badge: '–', name: '', record: '', winProb: 0.5, button: '' };
   return {
     venue: '',
     lockCountdown: '',
@@ -57,8 +57,8 @@ export function emptyPickASide(): PickASideFixture {
 
 export function emptyRelive(): ReliveFixture {
   return {
-    away: { team: 'none', badge: '—', name: '' },
-    home: { team: 'none', badge: '—', name: '' },
+    away: { team: 'none', badge: '–', name: '' },
+    home: { team: 'none', badge: '–', name: '' },
     note: '',
     idleHint: '',
     chartLabels: { left: '', middle: '', right: '' },

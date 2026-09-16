@@ -440,7 +440,7 @@ export default function GameDetailScreen() {
               </Text>
               {group.notable.map((p) => (
                 <Text key={p.playerId} variant="sub">
-                  {p.name} — <Text color="muted">{p.did}</Text>
+                  {p.name} · <Text color="muted">{p.did}</Text>
                 </Text>
               ))}
               {group.notable.length === 0 ? (

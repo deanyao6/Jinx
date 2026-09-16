@@ -154,7 +154,7 @@ describe('Supabase passport mapping', () => {
     };
     const p = passportFromStats(empty, 'all');
     expect(p.record).toBe('0 – 0');
-    expect(p.winRate).toBe('—');
+    expect(p.winRate).toBe('–');
     expect(p.lastGame).toBe('No games logged yet');
   });
 
@@ -291,7 +291,7 @@ describe('Relive mapping', () => {
 
   it('survives a game with its team joins missing', () => {
     const r = reliveFromGame({ ...game, home: null, away: null, venue: null });
-    expect(r.home.badge).toBe('—');
+    expect(r.home.badge).toBe('–');
     expect(r.note).toBe('Aug 14, 2025');
   });
 });
@@ -648,7 +648,7 @@ describe('Profile mapping', () => {
 
   it('shows a dash for a count it does not know yet', () => {
     const p = profileFromAccount({ ...account, followers: null, following: null }, stats, []);
-    expect(p.stats.map((s) => s.value)).toEqual(['48', '14', '—', '—']);
+    expect(p.stats.map((s) => s.value)).toEqual(['48', '14', '–', '–']);
   });
 
   it('omits the Wrapped row until a snapshot exists', () => {
@@ -695,7 +695,7 @@ describe('Profile mapping', () => {
 
 describe('stadium shapes', () => {
   // The bug: venue_shapes shipped empty, every lookup missed, and the fallback was a flat
-  // 'ballparkA' — so Lincoln Financial Field was drawn as a baseball diamond.
+  // 'ballparkA' – so Lincoln Financial Field was drawn as a baseball diamond.
   it('falls back to the sport, not to a ballpark', () => {
     expect(defaultShapeKey(['nfl'])).toBe('bowl');
     expect(defaultShapeKey(['mlb'])).toBe('ballparkA');

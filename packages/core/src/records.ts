@@ -110,7 +110,8 @@ export function winRate(rec: WinLossRecord): number | null {
 /** Baseball-style three decimals: ".646". */
 export function formatWinRate(rec: WinLossRecord): string {
   const r = winRate(rec);
-  if (r === null) return '—';
+  // En dash, never an em dash: this string is rendered in the UI (SPEC.md 8.2).
+  if (r === null) return '–';
   if (r >= 1) return '1.000';
   return r.toFixed(3).replace(/^0/, '');
 }

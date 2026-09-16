@@ -1735,6 +1735,39 @@ export type Database = {
           },
         ]
       }
+      user_players: {
+        Row: {
+          created_at: string
+          player_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          player_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          player_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_players_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_players_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_stats_cache: {
         Row: {
           computed_at: string
@@ -2316,6 +2349,15 @@ export type Database = {
       team_elo_as_of: {
         Args: { p_date: string; p_team_id: string }
         Returns: number
+      }
+      team_roster: {
+        Args: { p_limit?: number; p_query?: string; p_team_id: string }
+        Returns: {
+          appearances: number
+          full_name: string
+          id: string
+          seen_by_you: number
+        }[]
       }
       team_season_games: {
         Args: {

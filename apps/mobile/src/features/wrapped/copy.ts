@@ -142,7 +142,7 @@ export function wrappedCardCopy(card: WrappedCard, sport: string, season: number
       if (card.km == null) {
         return {
           label: 'Miles traveled',
-          headline: '—',
+          headline: '–',
           body: 'Add a home city in the You tab to count the miles to every stadium.',
           lines: [],
           accent: 'gold',

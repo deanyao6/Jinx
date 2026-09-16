@@ -7,30 +7,25 @@ import { Card } from '@/components/Card';
 import { FormScreen } from '@/components/FormScreen';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
-import { TeamPicker } from '@/components/TeamPicker';
+import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import {
-  useFavoriteTeams,
   useHandleAvailable,
   useProfile,
-  useSetFavoriteTeams,
   useUpdateProfile,
   type Profile,
 } from '@/features/profile/queries';
-import type { Team } from '@/features/teams/queries';
 import { normalizeHandle, validateDisplayName, validateHandle } from '@/lib/handle';
 import { useTheme } from '@/theme/ThemeProvider';
 
-function EditProfileForm({ profile, favorites }: { profile: Profile; favorites: Team[] }) {
+function EditProfileForm({ profile }: { profile: Profile }) {
   const theme = useTheme();
   const router = useRouter();
   const update = useUpdateProfile();
-  const setFavorites = useSetFavoriteTeams();
 
   const [handle, setHandle] = useState(profile.handle);
   const [name, setName] = useState(profile.display_name);
   const [city, setCity] = useState(profile.home_city ?? '');
-  const [teams, setTeams] = useState<Team[]>(favorites);
 
   const handleError = validateHandle(handle);
   const nameError = validateDisplayName(name);
@@ -50,14 +45,13 @@ function EditProfileForm({ profile, favorites }: { profile: Profile; favorites: 
         // A changed city drops the old coordinates rather than keeping a stale map pin.
         ...(cityChanged ? { home_lat: null, home_lng: null } : {}),
       });
-      await setFavorites.mutateAsync(teams);
       router.back();
     } catch {
       // surfaced below
     }
   };
 
-  const error = update.error ?? setFavorites.error;
+  const error = update.error;
   const errorText = error
     ? (error as { code?: string }).code === '23505'
       ? 'That handle is taken. Try another.'
@@ -95,16 +89,25 @@ function EditProfileForm({ profile, favorites }: { profile: Profile; favorites: 
           containerStyle={{ marginBottom: 0 }}
         />
       </Card>
-      <Card label="Favorite teams">
-        <TeamPicker selected={teams} onChange={setTeams} />
+      {/*
+        Favourite teams used to be a 62-row checklist right here. They moved to
+        Settings > Favorites, which also holds favourite players: they are not profile
+        fields, they decide what the passport counts (SPEC.md 5.1).
+      */}
+      <Card label="Favorites">
+        <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.sm }}>
+          Your teams and players live in Settings, under Favorites.
+        </Text>
+        <Button
+          title="Open Favorites"
+          variant="secondary"
+          small
+          onPress={() => router.push('/settings/favorites')}
+          style={{ alignSelf: 'flex-start' }}
+        />
       </Card>
       <View style={{ marginBottom: theme.spacing.xl }}>
-        <Button
-          title="Save"
-          onPress={onSave}
-          disabled={!canSave}
-          loading={update.isPending || setFavorites.isPending}
-        />
+        <Button title="Save" onPress={onSave} disabled={!canSave} loading={update.isPending} />
       </View>
     </FormScreen>
   );
@@ -112,7 +115,6 @@ function EditProfileForm({ profile, favorites }: { profile: Profile; favorites: 
 
 export default function EditProfileScreen() {
   const profile = useProfile();
-  const favorites = useFavoriteTeams();
-  if (!profile.data || !favorites.data) return <Loading />;
-  return <EditProfileForm profile={profile.data} favorites={favorites.data} />;
+  if (!profile.data) return <Loading />;
+  return <EditProfileForm profile={profile.data} />;
 }
