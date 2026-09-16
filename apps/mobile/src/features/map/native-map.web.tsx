@@ -7,10 +7,8 @@ import { Text } from '@/components/Text';
 
 export type MapHandle = { fitToCoordinates: (...args: unknown[]) => void };
 
-type MapViewProps = { children?: React.ReactNode; style?: ViewProps['style'] } & Record<
-  string,
-  unknown
->;
+// Typed narrowly: TypeScript checks callers against the native file, Metro picks this one on web.
+type MapViewProps = { children?: React.ReactNode; style?: ViewProps['style'] };
 
 export const MapView = forwardRef<MapHandle, MapViewProps>(function MapView(
   { children, style },
