@@ -127,7 +127,7 @@ export function notificationRoute(n: { kind: string; data: unknown }): string | 
       return '/you/forwarding';
     case 'new_follower':
     case 'follow_request':
-      return '/(tabs)/friends';
+      return '/(tabs)/profile';
     case 'wrapped_ready': {
       const sport = typeof data.sport_id === 'string' ? data.sport_id : null;
       const season = typeof data.season === 'number' ? data.season : null;

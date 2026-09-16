@@ -13,6 +13,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, LogBox, useColorScheme, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/Button';
@@ -223,24 +224,29 @@ function RootLayout() {
     },
   };
   return (
-    <SafeAreaProvider>
-      <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
-        <ThemeProvider>
-          <NavThemeProvider value={navTheme}>
-            <StatusBar style={dark ? 'light' : 'dark'} />
-            <FontGate>
-              <TeamPalettes>
-                {/* Development only, and inert unless the visual parity harness is
+    // Outermost on purpose: react-native-gesture-handler only receives touches
+    // below this view, so the slide-over panels and any pan gesture are dead
+    // without it. It was missing entirely until the screens were wired up.
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
+          <ThemeProvider>
+            <NavThemeProvider value={navTheme}>
+              <StatusBar style={dark ? 'light' : 'dark'} />
+              <FontGate>
+                <TeamPalettes>
+                  {/* Development only, and inert unless the visual parity harness is
                     running. See scripts/parity/ and SPEC.md M0.5. */}
-                <ParityHost>
-                  <RootNavigator />
-                </ParityHost>
-              </TeamPalettes>
-            </FontGate>
-          </NavThemeProvider>
-        </ThemeProvider>
-      </PersistQueryClientProvider>
-    </SafeAreaProvider>
+                  <ParityHost>
+                    <RootNavigator />
+                  </ParityHost>
+                </TeamPalettes>
+              </FontGate>
+            </NavThemeProvider>
+          </ThemeProvider>
+        </PersistQueryClientProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 

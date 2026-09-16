@@ -1,51 +1,17 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { useTheme } from '@/theme/ThemeProvider';
-
+/**
+ * The four tabs from SPEC.md 8.7: Passport, Games, Plan, Profile.
+ *
+ * The native tab bar is hidden because every ported screen draws the reference's own
+ * <TabBar/> as part of its layout, and that bar is what navigates. Rendering both would
+ * show two. Tabs is still used rather than a Stack so each tab keeps its own state.
+ *
+ * The legacy-* routes are the pre-redesign screens. They stay reachable so their deep
+ * links (settings, delete account, imports) keep working until those move to the new
+ * Profile screen, but they are not in the bar.
+ */
 export default function TabLayout() {
-  const theme = useTheme();
-  return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: theme.colors.ink,
-        tabBarInactiveTintColor: theme.colors.muted,
-        tabBarStyle: { backgroundColor: theme.colors.screen, borderTopColor: theme.colors.line },
-        tabBarLabelStyle: { fontSize: 11.5, fontWeight: '600' },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Passport',
-          tabBarIcon: ({ color, size }) => <Ionicons name="book" color={color} size={size} />,
-        }}
-      />
-      <Tabs.Screen
-        name="games"
-        options={{
-          title: 'Games',
-          tabBarIcon: ({ color, size }) => <Ionicons name="ticket" color={color} size={size} />,
-        }}
-      />
-      <Tabs.Screen
-        name="friends"
-        options={{
-          title: 'Friends',
-          tabBarIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
-        }}
-      />
-      <Tabs.Screen
-        name="you"
-        options={{
-          title: 'You',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-circle" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+  return <Tabs screenOptions={{ headerShown: false }} tabBar={() => null} />;
 }

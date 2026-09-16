@@ -7,6 +7,8 @@
  * maps onto these, so the types stay the contract rather than a description of one
  * implementation.
  */
+import type { GAME_DAY, GUIDE, PICK_A_SIDE, PROFILE, RELIVE } from '@/features/demo/fixtures';
+
 export type {
   GameLogFixture,
   GameRowFixture,
@@ -22,8 +24,6 @@ export type {
 
 /** One photo on Relive. `kind` chooses the placeholder scene in demo mode. */
 export type PhotoRef = { kind: 'selfie' | 'field' | 'board'; seed: number };
-
-import type { GAME_DAY, GUIDE, PICK_A_SIDE, PROFILE, RELIVE } from '@/features/demo/fixtures';
 
 /**
  * Declared here rather than derived from the demo constant.

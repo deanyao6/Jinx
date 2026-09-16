@@ -93,7 +93,7 @@ export default function InviteScreen() {
           <Button
             title="Back to Friends"
             variant="secondary"
-            onPress={() => router.replace('/(tabs)/friends')}
+            onPress={() => router.replace('/(tabs)/profile')}
             style={{ marginTop: theme.spacing.md }}
           />
         </Card>
@@ -154,7 +154,7 @@ function Accepted({ owner, taggedGames }: { owner: string; taggedGames: number }
           <Button
             title="Back to Friends"
             variant="secondary"
-            onPress={() => router.replace('/(tabs)/friends')}
+            onPress={() => router.replace('/(tabs)/profile')}
             style={{ marginTop: theme.spacing.md }}
           />
         </Card>
@@ -210,7 +210,7 @@ function Accepted({ owner, taggedGames }: { owner: string; taggedGames: number }
             <Button
               title="Not now"
               variant="ghost"
-              onPress={() => router.replace('/(tabs)/friends')}
+              onPress={() => router.replace('/(tabs)/profile')}
             />
           </View>
         </Card>

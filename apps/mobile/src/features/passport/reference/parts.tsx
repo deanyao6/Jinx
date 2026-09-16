@@ -1,3 +1,4 @@
+import { useRouter, type Href } from 'expo-router';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Svg, { Defs, LinearGradient, RadialGradient, Rect, Stop } from 'react-native-svg';
@@ -396,9 +397,19 @@ export function SuperlativeList({ items }: { items: readonly Superlative[] }) {
 }
 
 /** `.tabs`. The active tab takes the screen's team accent. */
+/** Where each tab lives. The screens draw this bar themselves, so it navigates rather
+ *  than being driven by a navigator's own tab bar, which would render a second one. */
+const TAB_ROUTES = {
+  Passport: '/',
+  Games: '/games',
+  Plan: '/plan',
+  Profile: '/profile',
+} as const;
+
 export function TabBar({ active = 'Passport' }: { active?: string }) {
   const { base, team } = useReferenceTheme();
-  const tabs: [string, IconName][] = [
+  const router = useRouter();
+  const tabs: [keyof typeof TAB_ROUTES, IconName][] = [
     ['Passport', 'i-passport'],
     ['Games', 'i-ticket'],
     ['Plan', 'i-map'],
@@ -411,10 +422,19 @@ export function TabBar({ active = 'Passport' }: { active?: string }) {
         const on = label === active;
         const color = on ? team.accent : base.muted;
         return (
-          <View key={label} style={s.tab}>
+          <Pressable
+            key={label}
+            style={s.tab}
+            onPress={() => {
+              if (!on) router.replace(TAB_ROUTES[label] as Href);
+            }}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: on }}
+            accessibilityLabel={label}
+          >
             <Icon size={iconSize.tab} color={color} />
             <Text style={[on ? s.tabLabelOn : s.tabLabel, { color }]}>{label}</Text>
-          </View>
+          </Pressable>
         );
       })}
     </View>
