@@ -196,9 +196,9 @@ in the repo.
 
 | Screen | Light | Dark |
 |---|---|---|
-| Passport, All teams | **4.60%** | **3.97%** |
-| Passport, Phillies pill | **4.38%** | **3.84%** |
-| Passport, Eagles pill | **4.20%** | **3.61%** |
+| Passport, All teams | **4.17%** | **3.55%** |
+| Passport, Phillies pill | **3.89%** | **3.35%** |
+| Passport, Eagles pill | **3.79%** | **3.20%** |
 | Record game log (Phillies, As a neutral) | not built | not built |
 | Pick a side, and picked | not built | not built |
 | Games | not built | not built |
@@ -208,7 +208,7 @@ in the repo.
 | Profile | not built | not built |
 | Friends panel | not built | not built |
 
-Mean across what exists: **4.10%**. All 32 reference shots render; 26 of 32 app shots
+Mean across what exists: **3.66%**. All 32 reference shots render; 26 of 32 app shots
 correctly report "not built" rather than being scored against something they are not.
 
 ### What the remaining 4% is
@@ -232,20 +232,36 @@ the vertical offset that best aligns each one. Accumulation would show as a stea
 growing number; the measured rate is 0.22pt per 100pt, which is noise. What it actually
 shows, identically on `passport-all.light` and `passport-phi.dark`:
 
-| Region | Offset | Meaning |
+| Region | Offset | Status |
 |---|---|---|
-| 0-40pt (wordmark, pills) | **-3pt** | app sits 3pt HIGH |
-| 80-320pt (hero, record cards) | **+3pt** | app sits 3pt LOW |
-| 400-480pt (section header, stamps) | ~0 | aligned |
-| 520-680pt (stamp captions, superlatives) | **-4 to -8pt** | app sits up to 8pt HIGH |
+| 0-45pt (wordmark, pills) | **-2 to -3pt** | app sits high. Open. |
+| 45-135pt (hero) | **+1 to +3.7pt** | app sits low. Open. |
+| 195-315pt (record cards) | **+2.3 to +3.7pt** | carried from the hero. Open. |
+| 390-480pt (stamps) | ~0 | aligned |
+| 495-680pt (stamp captions, superlatives) | was **-7 to -11.7pt** | **fixed** |
 
-So specific block heights are wrong at two boundaries — between the pills and the hero,
-and again around the stamps row — and everything between them is simply carried along.
-This is a handful of individual margins and line boxes, not a global typography factor.
-The worst single band is 520-560pt at -8.33pt, which is the stamp caption block, so start
-there. `.fx-word` has `line-height:.85` and `.fx-rec b` has `.78`, both below 1, and React
-Native positions glyphs differently from CSS when the line box is shorter than the font
-size; that is the most likely source of the top two rows.
+So specific block heights are wrong at two boundaries, and everything between them is
+carried along. This is a handful of individual margins and line boxes, not a global
+typography factor.
+
+**I fixed the worst one, and the method is the point.** The stamp caption was 7pt high and
+everything below it 8.3pt high. The cause was structural rather than metric: in the
+reference, `.fx-stamp span` is an *inline* element, so its line box is sized by the
+enclosing block's 16px strut, not by the 8.5px span. React Native sizes a line box from
+the Text's own font. Setting that one line height explicitly aligned the following section
+to within 1pt and took the mean from 4.28% to 3.86%.
+
+**And two things that did not work, so you do not repeat them.** Setting the pill label's
+line height to CSS `normal` (1.17em) changed nothing, because the pill's height is set by
+the taller count badge, not the label. Setting the *badge's* line height to 1.17em made
+the pill taller, not shorter, and the mean went from 3.86% to 4.28%. React Native's
+`lineHeight` on small text does not simply shrink the box the way CSS `line-height` does.
+Both reverted.
+
+The lesson for the remaining two regions: look for structural differences like the inline
+strut above, not for a metrics factor. `.fx-word` has `line-height:.85` and `.fx-rec b`
+has `.78`, both below 1, which in CSS lets glyphs overflow the line box; that is the most
+likely cause of the top region and is the same kind of structural difference.
 
 ### Bugs the harness caught that reading the code would not have
 
@@ -298,11 +314,11 @@ Repeating the table at the top, with what landed overnight added:
 
 ## What I would do next, in order
 
-1. **Fix the three offsets above**, using `npm run parity:drift` after each change to see
-   which band moved. Start with the 520-560pt band (-8.33pt, the stamp captions), then the
-   pills-to-hero boundary. It affects every screen, so solving it on Passport pays for
-   itself immediately. Expect Passport to land near 1-2%. Do not reach for a global
-   line-height factor; the measurement above says there is no global factor to find.
+1. **Fix the two remaining offsets**, using `npm run parity:drift` after each change to
+   see which band moved. The stamp-caption one is already done and took the mean from
+   4.28% to 3.66%; the header and hero regions are left. Expect Passport near 1-2%. Do not
+   reach for a global line-height factor: the measurement above says there is none, and
+   two attempts at one made things worse.
 2. **Port the record game log slide-over.** It is the other half of Passport, the
    fixtures and the log data already exist, and the panel motion is specified
    (320ms, `cubic-bezier(.2,.8,.2,1)`).
@@ -333,6 +349,7 @@ Disk finished at 65 GB free.
 ```
 npm run parity              # reference shots, app shots, diff, contact sheets
 npm run parity:selftest     # prove the harness end to end and measure the safe-area inset
+npm run parity:drift        # where a screen is vertically offset, band by band (PARITY_BAND=15 for finer)
 npm run parity:ref          # reference shots only (no simulator needed)
 npm run build:design        # regenerate icons and stadium shapes from the reference
 npm run fonts               # regenerate the static Archivo instances

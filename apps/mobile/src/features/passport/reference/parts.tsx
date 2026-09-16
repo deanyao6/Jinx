@@ -451,7 +451,11 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 7,
   },
-  pillLabel: { fontSize: 13, lineHeight: 13 * 1.2, fontFamily: fontFamily({ weight: 700 }) },
+  pillLabel: {
+    fontSize: 13,
+    lineHeight: 13 * 1.2,
+    fontFamily: fontFamily({ weight: 700 }),
+  },
   pillCount: { borderRadius: radius.pill, paddingHorizontal: 7, paddingVertical: 2 },
   pillCountText: {
     fontSize: 10.5,
@@ -571,6 +575,11 @@ const s = StyleSheet.create({
   },
   stampCity: {
     fontSize: 8.5,
+    // `.fx-stamp span` is an inline element in a block whose font-size is the inherited
+    // 16px, so its line box is sized by that 16px strut rather than by the 8.5px span.
+    // React Native sizes a line box from the Text's own font, so without this the caption
+    // sits about 7pt too high and everything below it follows.
+    lineHeight: 16 * 1.15,
     letterSpacing: 8.5 * 0.05,
     fontFamily: fontFamily({ weight: 650 }),
     textAlign: 'center',

@@ -15,7 +15,9 @@ import { readPng } from './png.mjs';
 import { OUT_DIR, DEVICE } from './geometry.mjs';
 
 const [screen = 'passport-all', theme = 'light'] = process.argv.slice(2);
-const BAND = 40 * DEVICE.scale; // 40pt tall bands
+// Band height in points. Smaller bands localise an offset more precisely but get
+// noisier, because a short band may not contain enough ink to align confidently.
+const BAND = Number(process.env.PARITY_BAND ?? 40) * DEVICE.scale;
 const MAX_SHIFT = 24 * DEVICE.scale;
 
 const ref = await readPng(`${OUT_DIR}/reference/${screen}.${theme}.png`);
