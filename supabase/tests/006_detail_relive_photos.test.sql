@@ -1,3 +1,10 @@
+-- Every count below is scoped to this file's own fixture rows.
+--
+-- They used to count whole tables, which only worked while those tables were empty. They are
+-- not: supabase/seed.sql now loads 65 team palettes and 224 venue shapes, and any ingest run
+-- fills game_wp_timeline and game_story_steps. A test that says "authenticated reads
+-- venue_shapes" should assert exactly that, not that the database is otherwise bare.
+--
 -- RLS and behaviour for the tables added with spec revision 7:
 -- team_colors, venue_shapes, game_wp_timeline, game_story_steps, storylines,
 -- detail_queue, attendance_photos (SPEC.md 4.7, 5.1, 5.2, 6.18, 6.19).
@@ -58,12 +65,12 @@ reset role;
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"a1000000-0000-4000-8000-0000000000a1","role":"authenticated"}';
-select is((select count(*) from public.team_colors), 1::bigint, 'authenticated reads team_colors');
+select is((select count(*) from public.team_colors where team_id = '00000000-0000-0000-0000-00000000a001'), 1::bigint, 'authenticated reads team_colors');
 select is((select primary_dark_hex from public.team_colors where team_id = '00000000-0000-0000-0000-00000000a001'), '#FF6B7A', 'dark variant is stored, not derived');
-select is((select count(*) from public.venue_shapes), 1::bigint, 'authenticated reads venue_shapes');
-select is((select count(*) from public.game_wp_timeline), 2::bigint, 'authenticated reads game_wp_timeline');
-select is((select count(*) from public.game_story_steps), 2::bigint, 'authenticated reads game_story_steps');
-select is((select count(*) from public.storylines), 1::bigint, 'authenticated reads storylines');
+select is((select count(*) from public.venue_shapes where venue_id = '00000000-0000-0000-0000-00000000b001'), 1::bigint, 'authenticated reads venue_shapes');
+select is((select count(*) from public.game_wp_timeline where game_id = '00000000-0000-0000-0000-00000000c001'), 2::bigint, 'authenticated reads game_wp_timeline');
+select is((select count(*) from public.game_story_steps where game_id = '00000000-0000-0000-0000-00000000c001'), 2::bigint, 'authenticated reads game_story_steps');
+select is((select count(*) from public.storylines where game_id = '00000000-0000-0000-0000-00000000c001'), 1::bigint, 'authenticated reads storylines');
 
 select throws_ok($$insert into public.team_colors (team_id, fill_hex, on_fill_hex, primary_light_hex, secondary_light_hex, primary_dark_hex, secondary_dark_hex)
   values ('00000000-0000-0000-0000-00000000a002', '#002D72', '#FFFFFF', '#002D72', '#FF5910', '#5B8FD9', '#FF5910')$$,
@@ -96,8 +103,8 @@ select is((select reason from public.detail_queue where game_id = '00000000-0000
 
 -- A future game is queued but is not yet work for the detail worker (SPEC.md 4.7).
 select public.enqueue_game_detail('00000000-0000-0000-0000-00000000c002', 'going');
-select is((select count(*) from public.detail_queue), 2::bigint, 'a future game is queued');
-select is((select count(*) from public.detail_queue_pending('test')), 1::bigint, 'only final games are pending work');
+select is((select count(*) from public.detail_queue where game_id in ('00000000-0000-0000-0000-00000000c001', '00000000-0000-0000-0000-00000000c002')), 2::bigint, 'a future game is queued');
+select is((select count(*) from public.detail_queue_pending('test') where game_id in ('00000000-0000-0000-0000-00000000c001', '00000000-0000-0000-0000-00000000c002')), 1::bigint, 'only final games are pending work');
 
 -- An already-ingested game is not re-queued except by an explicit refresh.
 update public.games set detail_ingested_at = now() where id = '00000000-0000-0000-0000-00000000c001';
