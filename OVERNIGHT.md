@@ -17,7 +17,7 @@ sections are appended at the bottom as work lands.
    SalusLink's, and the Metro watcher settings are untouched. **The M1 ingestion
    rearchitecture was deliberately not started** — it is the one piece that could damage
    the 82,240 games loaded locally, and it needs someone awake.
-5. Every commit has the full check suite green: typecheck, lint, format, 263 mobile tests
+5. Every commit has the full check suite green: typecheck, lint, format, 276 mobile tests
    plus 139 in core and ingest, and 117 database assertions. Verified again at the end,
    and the app was launched in the simulator to confirm it still boots.
 
@@ -663,7 +663,7 @@ Verified at the end of the night, not assumed. Everything below was re-run after
 code change:
 
 - `npm run typecheck`, `npm run lint`, `npm run format:check` — clean.
-- `npm test` — **395 tests** (256 mobile, 126 core, 13 ingest).
+- `npm test` — **415 tests** (276 mobile, 126 core, 13 ingest).
 - `npm run parity` — 32 of 32 screens captured and diffed, mean 4.37%. Every figure in
   the table in section (g) comes from that run.
 - The app was launched in the simulator and screenshotted, to confirm it still boots after
