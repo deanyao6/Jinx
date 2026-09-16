@@ -18,6 +18,7 @@ import { Button } from '@/components/Button';
 import { Text } from '@/components/Text';
 import { useAuth, useAuthListener, useSignOut } from '@/features/auth/hooks';
 import { useNavStore } from '@/features/nav/store';
+import { ParityHost } from '@/features/parity/ParityHost';
 import { useNotificationRuntime } from '@/features/notifications/push';
 import { useProfile } from '@/features/profile/queries';
 import { initSentry, wrapRoot } from '@/lib/sentry';
@@ -181,7 +182,11 @@ function RootLayout() {
         <ThemeProvider>
           <NavThemeProvider value={navTheme}>
             <StatusBar style={dark ? 'light' : 'dark'} />
-            <RootNavigator />
+            {/* Development only, and inert unless the visual parity harness is
+                running. See scripts/parity/ and SPEC.md M0.5. */}
+            <ParityHost>
+              <RootNavigator />
+            </ParityHost>
           </NavThemeProvider>
         </ThemeProvider>
       </PersistQueryClientProvider>

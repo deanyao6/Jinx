@@ -23,11 +23,20 @@
     "functions:sync": "bash scripts/sync-core-to-functions.sh",
     "functions:serve": "npm run functions:sync && supabase functions serve --env-file supabase/functions/.env.local",
     "functions:deploy": "npm run functions:sync && supabase functions deploy",
-    "db:types": "supabase gen types typescript --local > apps/mobile/src/lib/database.types.ts"
+    "db:types": "supabase gen types typescript --local > apps/mobile/src/lib/database.types.ts",
+    "parity": "node scripts/parity/run.mjs",
+    "parity:ref": "node scripts/parity/capture-reference.mjs",
+    "parity:app": "node scripts/parity/capture-app.mjs",
+    "parity:diff": "node scripts/parity/diff.mjs",
+    "parity:inset": "node scripts/parity/measure-inset.mjs",
+    "parity:selftest": "node scripts/parity/selftest.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
     "eslint": "^9.39.0",
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
     "prettier": "^3.6.2",
     "supabase": "^2.117.0",
     "typescript": "~6.0.3",
