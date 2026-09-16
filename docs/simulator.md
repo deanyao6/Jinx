@@ -42,13 +42,40 @@ needed on a fresh install.
 npm run ios
 ```
 
-The first run generates the native iOS project, installs pods, compiles, and boots the
-Simulator. Expect 10 to 20 minutes. After that it starts in seconds and hot-reloads on save.
+That runs `scripts/ios-sim.sh`, which boots a simulator, builds, installs, starts Metro and
+launches. The first build takes 10 to 20 minutes. Later runs reuse the compiled output and take
+seconds. Editing anything under `apps/mobile/src` reloads live with no rebuild.
 
-`npm run ios` (which calls `expo run:ios`) is the right command for this project, not
-`expo start` with Expo Go. The app depends on native modules that Expo Go does not contain,
-including Sentry, so Expo Go would crash on launch the same way the web build did before the map
-was split by platform.
+Do not use Expo Go. The app depends on native modules Expo Go does not contain, including Sentry,
+so it would crash on launch the same way the web build did before the map was split by platform.
+
+### Why a script instead of `expo run:ios`
+
+Two things block the plain Expo command on a machine with no Apple developer certificate.
+
+**Sign in with Apple forces code signing.** Expo keeps a list of entitlements that require a
+development signing identity even for simulator builds, and `com.apple.developer.applesignin` is
+on it. The app declares that entitlement because the spec requires Apple sign-in, so every
+`expo run:ios` fails with `No code signing certificates are available to use`. Simulators do not
+actually need signing, so the script builds through `xcodebuild` with signing disabled.
+
+**Sentry uploads source maps during the build.** The config plugin adds an upload phase that
+calls `sentry-cli`, which fails with `An organization ID or slug is required` when `SENTRY_ORG`
+and `SENTRY_PROJECT` are unset. The script sets `SENTRY_DISABLE_AUTO_UPLOAD=true`.
+
+Once you join the Apple Developer Program and Xcode holds a certificate, plain `expo run:ios`
+works and the script becomes unnecessary.
+
+### Expected noise in the simulator
+
+An `expo-notifications` error toast appears on launch: `ERR_NOTIFICATIONS_KEYCHAIN_ACCESS`. The
+unsigned build has no keychain entitlement, so the native module cannot read its stored
+registration. Push notifications do not work in a simulator anyway. Auth is unaffected, because
+`src/lib/secureStorage.ts` already falls back to AsyncStorage when SecureStore is unavailable.
+
+Sign in with Apple will not work in the simulator either, since it needs the Services ID
+configured in Supabase. Use "Continue with email" and read the code from Mailpit at
+http://127.0.0.1:54424.
 
 ## Disk
 

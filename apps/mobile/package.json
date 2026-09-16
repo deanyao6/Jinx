@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "start": "expo start",
-    "ios": "expo start --ios",
+    "ios": "expo run:ios",
     "run:ios": "LANG=${LANG:-en_US.UTF-8} expo run:ios",
-    "android": "expo start --android",
+    "android": "expo run:android",
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",

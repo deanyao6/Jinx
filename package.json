@@ -13,7 +13,7 @@
     "lint": "npm run lint --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "ios": "npm run run:ios --workspace apps/mobile",
+    "ios": "bash scripts/ios-sim.sh",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
