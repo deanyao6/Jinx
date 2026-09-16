@@ -8,6 +8,7 @@ import { Card } from '@/components/Card';
 import { EmptyState } from '@/components/EmptyState';
 import { Loading } from '@/components/Loading';
 import { ErrorNotice, StaleNotice } from '@/components/ErrorNotice';
+import { LegacyBackButton } from '@/components/reference/BackHeader';
 import { Row } from '@/components/Row';
 import { Text } from '@/components/Text';
 import { useGhostVenues, useJoinedBucketLists } from '@/features/bucketlists/queries';
@@ -142,6 +143,7 @@ export default function PassportScreen() {
           />
         }
       >
+        <LegacyBackButton fallback="/" />
         <View
           style={{
             flexDirection: 'row',

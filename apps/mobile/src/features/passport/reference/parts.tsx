@@ -485,9 +485,14 @@ export function SuperlativeList({
               <Text style={[s.listLabel, { color: base.muted }]}>{item.label}</Text>
               <Text style={[s.listValue, { color: base.ink }]}>{item.value}</Text>
             </View>
-            <View style={[s.chip, { borderColor: base.line, backgroundColor: base.surface }]}>
-              <Text style={[s.chipText, { color: base.ink }]}>{item.chip}</Text>
-            </View>
+            {/* Real superlatives carry no context chip yet (see toSuperlatives). An empty
+                chip draws a blank pill, which reads as a broken control rather than an
+                absent one, so it is omitted instead. */}
+            {item.chip ? (
+              <View style={[s.chip, { borderColor: base.line, backgroundColor: base.surface }]}>
+                <Text style={[s.chipText, { color: base.ink }]}>{item.chip}</Text>
+              </View>
+            ) : null}
           </Row>
         );
       })}

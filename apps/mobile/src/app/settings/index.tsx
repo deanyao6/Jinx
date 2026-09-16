@@ -3,6 +3,7 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BackHeader } from '@/components/reference/BackHeader';
 import { ICONS } from '@/components/reference/icons';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { fontFamily } from '@/theme/fonts';
@@ -35,22 +36,10 @@ function SettingsBody() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const ChevR = ICONS['i-chev-r'];
-  const ChevL = ICONS['i-chev-l'];
   return (
     <View style={[s.screen, { backgroundColor: base.scr, paddingTop: insets.top }]}>
-      <View style={s.head}>
-        <Pressable
-          onPress={() => router.back()}
-          accessibilityRole="button"
-          accessibilityLabel="Back"
-          hitSlop={8}
-          style={[s.ib, { borderColor: base.line, backgroundColor: base.card }]}
-        >
-          <ChevL size={18} color={base.ink} />
-        </Pressable>
-        <Text style={[s.title, { color: base.ink }]}>Settings</Text>
-        <View style={s.ib} />
-      </View>
+      {/* Settings is reached from the Profile tab's gear, so Profile is the fallback. */}
+      <BackHeader title="Settings" fallback="/profile" />
       <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}>
         <View style={[s.card, { backgroundColor: base.card, borderColor: base.line }]}>
           {ROWS.map((row, i) => (
@@ -88,16 +77,6 @@ export default function SettingsRoute() {
 
 const s = StyleSheet.create({
   screen: { flex: 1, paddingHorizontal: 16 },
-  head: { flexDirection: 'row', alignItems: 'center', marginTop: 8, marginBottom: 16 },
-  ib: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: { flex: 1, textAlign: 'center', fontSize: 20, fontFamily: fontFamily({ weight: 800 }) },
   card: { borderRadius: 16, borderWidth: 1, overflow: 'hidden' },
   row: {
     flexDirection: 'row',

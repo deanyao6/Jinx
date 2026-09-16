@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ICONS } from '@/components/reference/icons';
 import { LiveDot } from '@/components/reference/LiveDot';
 import { useRepository } from '@/features/data/context';
+import { EmptyState } from '@/features/data/EmptyState';
 import { pickConfirmation } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
@@ -36,6 +37,38 @@ function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
   const Lock = ICONS['i-lock'];
   const d = useRepository().pickASide();
   const chosen = picked ? (picked === 'away' ? d.away : d.home) : null;
+
+  /**
+   * No game, no sides to pick between.
+   *
+   * Pick a side is per-game: it needs the `game_context` RPC for the game you just checked
+   * into, and this repository holds only the current user's aggregate data, so it cannot
+   * serve one (see the note on the Repository type). The mapping exists —
+   * `pickASideFromContext` in features/data/supabase.ts — and this screen shows real teams
+   * the day it is mounted with a game id instead. Until then it says there is no game
+   * rather than offering a pledge on the reference's Mets–Padres fixture.
+   */
+  if (!d.home.name && !d.away.name) {
+    return (
+      <View style={{ flex: 1, backgroundColor: base.canvas, paddingTop: insets.top }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            paddingTop: screenPadding.top,
+            paddingHorizontal: screenPadding.horizontal,
+            paddingBottom: screenPadding.bottom,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <Text style={[s.h1, { color: base.ink }]}>{d.title}</Text>
+          <EmptyState
+            text="No game to pick a side in. Check in at a game where you follow neither team and the pledge opens here."
+            loadingText="Loading this game…"
+          />
+        </ScrollView>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: base.canvas, paddingTop: insets.top }}>

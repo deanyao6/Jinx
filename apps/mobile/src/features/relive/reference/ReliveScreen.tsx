@@ -10,6 +10,7 @@ import { TightText } from '@/components/reference/TightText';
 import { PhotoScene } from '@/components/reference/PhotoScene';
 import { relivePoint } from '@/features/demo/fixtures';
 import { useRepository } from '@/features/data/context';
+import { EmptyState } from '@/features/data/EmptyState';
 import type { ReliveFixture, ReliveStep } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
 import { openShare } from '@/features/share/navigate';
@@ -93,7 +94,6 @@ function Body({ initialStep }: { initialStep: number }) {
 
   const index = Math.max(0, Math.min(step, steps.length - 1));
   const current = steps[index];
-  if (!current) throw new Error(`no Relive step ${index}`);
   // The parity harness mounts a mid-story step directly rather than pressing play, so the
   // icon follows "is there more to come", which is what the reference's icon means.
   const showPause = playing || (index > 0 && index < steps.length - 1);
@@ -108,6 +108,49 @@ function Body({ initialStep }: { initialStep: number }) {
     if (router.canGoBack()) router.back();
     else router.replace('/games');
   };
+
+  /**
+   * No story, no screen.
+   *
+   * Relive needs a game's scoring timeline and win probability, which this repository
+   * cannot serve: it holds the user's aggregate data and `relive()` gets no game id (see
+   * the note on the Repository type). Rather than replay someone else's Phillies game,
+   * the screen says there is nothing to relive and keeps its way out.
+   */
+  if (!current) {
+    return (
+      <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            paddingTop: screenPadding.top,
+            paddingHorizontal: screenPadding.horizontal,
+            paddingBottom: screenPadding.bottom,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={s.top}>
+            <View style={s.row}>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Back"
+                onPress={goBack}
+                style={[s.iconButton, { backgroundColor: base.surface }]}
+              >
+                <Back size={20} color={base.ink} />
+              </Pressable>
+              <Text style={[s.topTitle, { color: base.ink }]}>Relive</Text>
+            </View>
+          </View>
+          <EmptyState
+            text="Nothing to relive yet. A game gets a story once its play-by-play has been ingested for a game you attended."
+            loadingText="Loading this game…"
+          />
+        </ScrollView>
+        <TabBar active="Games" />
+      </View>
+    );
+  }
 
   /**
    * Adding a photo. The picker is real; the upload is not, and this is deliberately noisy

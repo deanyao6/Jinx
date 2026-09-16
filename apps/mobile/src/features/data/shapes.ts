@@ -7,8 +7,6 @@
  * maps onto these, so the types stay the contract rather than a description of one
  * implementation.
  */
-import type { GAME_DAY, GUIDE, PICK_A_SIDE, PROFILE, RELIVE } from '@/features/demo/fixtures';
-
 export type {
   GameLogFixture,
   GameRowFixture,
@@ -41,11 +39,81 @@ export type TeamPill = {
   /** The theme key, which is a team id, 'none', or one of the reference's short keys. */
   team: string;
 };
-export type PickASideFixture = typeof PICK_A_SIDE;
-export type ReliveFixture = typeof RELIVE;
-export type GameDayFixture = typeof GAME_DAY;
-export type GuideFixture = typeof GUIDE;
-export type ProfileFixture = typeof PROFILE;
+/**
+ * The remaining screens' shapes, declared rather than derived from the demo constants for
+ * the same reason as {@link TeamPill}.
+ *
+ * They were `typeof PICK_A_SIDE` and friends, which made the fixtures' literal strings the
+ * type — `venue: 'At Petco Park'`, `fanCount: '23'` — so the only value that satisfied the
+ * contract was the fixture itself. A real implementation, and an empty one, could not be
+ * written at all. Widening them is what lets a screen be served something other than the
+ * reference's sample data.
+ */
+export type PickASideSide = {
+  /** Theme key: a team id, or one of the reference's short keys. */
+  team: string;
+  badge: string;
+  name: string;
+  /** The season record under the badge. Empty when it is not known. */
+  record: string;
+  winProb: number;
+  button: string;
+};
+
+export type PickASideFixture = {
+  venue: string;
+  lockCountdown: string;
+  title: string;
+  explainer: string;
+  away: PickASideSide;
+  home: PickASideSide;
+  storylines: readonly { text: string; source: string }[];
+};
+
+export type ReliveTeam = { team: string; badge: string; name: string };
+
+export type ReliveFixture = {
+  away: ReliveTeam;
+  home: ReliveTeam;
+  note: string;
+  idleHint: string;
+  chartLabels: { left: string; middle: string; right: string };
+  fanCount: string;
+};
+
+export type GameDayFixture = {
+  team: string;
+  matchup: string;
+  when: string;
+  seat: readonly { label: string; value: string }[];
+  /** Avatar keys or person ids. */
+  companions: readonly string[];
+  companionsText: string;
+  timeline: readonly { icon: string; time: string; text: string; now: boolean }[];
+};
+
+export type GuideFixture = {
+  team: string;
+  shape: string;
+  venue: string;
+  subtitle: string;
+  visitors: readonly string[];
+  visitorsText: string;
+  tabs: readonly { key: string; label: string }[];
+};
+
+export type ProfileFixture = {
+  team: string;
+  handle: string;
+  /** Avatar key: a person id in real data, a fixture name in demo mode. */
+  avatar: string;
+  name: string;
+  tagline: string;
+  teamChips: readonly { team: string; label: string }[];
+  stats: readonly { value: string; label: string }[];
+  facepile: readonly string[];
+  rows: readonly { icon: string; title: string; meta: string; facepile: boolean }[];
+};
 /**
  * Declared rather than derived from the demo constant, for the same reason as
  * {@link TeamPill}: the fixture is `as const`, and a contract shaped by one of its

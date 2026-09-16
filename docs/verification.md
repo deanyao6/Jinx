@@ -65,3 +65,26 @@ All release assets at `https://github.com/nflverse/nflverse-data/releases/downlo
 - Node 25.9, npm 11.12, Supabase CLI 2.117 via npx, Docker 28.3 running, Deno 2.9.6 (installed 2026-09-15 via Homebrew), Python 3 with pandas 2.3.3 and pyarrow 20, EAS CLI present.
 - Expo SDK 57 (React Native 0.86, React 19.2, TypeScript 6.0).
 - No full Xcode installed (Command Line Tools only), so the iOS simulator is unavailable here. Simulator and device checks need Xcode from the App Store.
+
+## MLB per-play win probability (SPEC 4.3b) — VERIFIED 2026-09-16
+
+`GET https://statsapi.mlb.com/api/v1/game/{gamePk}/winProbability` returns one entry per
+plate appearance. Checked against gamePk 823191 (Tigers at Giants, 2026-08-08, final 5–2):
+74 entries, 896 KB.
+
+Per entry:
+- `homeTeamWinProbability` and `awayTeamWinProbability` are **percentages**, not fractions
+  (42.4, not 0.424). `game_wp_timeline.home_wp` is `numeric(6,5)` between 0 and 1, so divide
+  by 100 on the way in.
+- `about.inning` (integer), `about.halfInning` (`'top'` | `'bottom'`), `about.startTime` (ISO)
+  map to `period`, `half` and `occurred_at`.
+- `result.rbi > 0` identifies the scoring plays. For 823191 that is exactly 5, matching the
+  5 rows already in `game_scoring_timeline`.
+- The series ends at `100.0` for the winner, so the final point needs no special case.
+
+This settles the open question in SPEC 4.3b for MLB: **no state-based model is needed.** The
+spec's fallback ("build a state-based model, or scoring-play-only steps with no line") applies
+only if this endpoint is unavailable for a given game, which should be treated as a missing
+timeline rather than a reason to estimate one.
+
+NFL keeps using nflverse's own per-play `home_wp` column, as recorded above.

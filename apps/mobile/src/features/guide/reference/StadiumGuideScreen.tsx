@@ -8,6 +8,7 @@ import { Avatar } from '@/components/reference/Avatar';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { StadiumShape } from '@/components/reference/StadiumShape';
 import { useRepository } from '@/features/data/context';
+import { EmptyState } from '@/features/data/EmptyState';
 import type { GuideFixture, GuideRow } from '@/features/data/shapes';
 import { scoreClass } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
@@ -51,6 +52,44 @@ function Body({ initialTab }: { initialTab: string }) {
     if (router.canGoBack()) router.back();
     else router.replace('/');
   };
+
+  /**
+   * The guide is a demo shell in v1 (SPEC.md 2, FEATURE_GUIDE): nothing ranks a stadium's
+   * food, bathrooms or seats yet, and `guide()` gets no venue id. So a real user sees an
+   * empty guide with its way out, rather than Citizens Bank Park's cheesesteak stand
+   * wherever they happen to be.
+   */
+  if (!guide.venue) {
+    return (
+      <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            paddingTop: screenPadding.top,
+            paddingHorizontal: screenPadding.horizontal,
+            paddingBottom: screenPadding.bottom,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={s.top}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Back"
+              onPress={goBack}
+              style={[s.iconButton, { backgroundColor: base.surface }]}
+            >
+              <Back size={20} color={base.ink} />
+            </Pressable>
+          </View>
+          <EmptyState
+            text="No stadium guide yet. Ranked food, bathrooms and seats arrive after v1."
+            loadingText="Loading this stadium…"
+          />
+        </ScrollView>
+        <TabBar active="Plan" />
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>

@@ -291,7 +291,12 @@ export type LogRowFixture = {
   shape: ShapeKey;
   title: string;
   meta: string;
-  result: 'w' | 'l';
+  /**
+   * The W/L circle, or null when there is nothing to show — the same rule, and the same
+   * reason, as {@link GameRowFixture.result}. A real log can hold a game you had no side
+   * in, and a game with no side has no result.
+   */
+  result: 'w' | 'l' | null;
 };
 
 export type GameLogFixture = {

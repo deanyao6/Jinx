@@ -7,6 +7,7 @@ import { Avatar } from '@/components/reference/Avatar';
 import { TightText } from '@/components/reference/TightText';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
+import { EmptyState } from '@/features/data/EmptyState';
 import type { GameDayFixture } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
 import { openShare } from '@/features/share/navigate';
@@ -37,6 +38,36 @@ function Body() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const Share = ICONS['i-share'];
+
+  /**
+   * The planner has no backend in v1 (SPEC.md 2, FEATURE_PLAN), so for a real user there is
+   * no plan to show. The screen used to render the reference's Eagles-at-Rams ticket with
+   * someone else's seat and someone else's friends; an empty card is the truth.
+   */
+  if (!plan.matchup) {
+    return (
+      <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            paddingTop: screenPadding.top,
+            paddingHorizontal: screenPadding.horizontal,
+            paddingBottom: screenPadding.bottom,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={s.top}>
+            <Text style={[s.topTitle, { color: base.ink }]}>Game day</Text>
+          </View>
+          <EmptyState
+            text="No game-day plan yet. The planner arrives after v1; when it does, a game you are going to shows its ticket, your friends and the day's timeline here."
+            loadingText="Loading your plan…"
+          />
+        </ScrollView>
+        <TabBar active="Plan" />
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>

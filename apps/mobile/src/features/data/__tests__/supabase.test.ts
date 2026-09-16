@@ -1,7 +1,12 @@
 import type { StatsPayload } from '@/features/passport/types';
 
+import { emptyRepository } from '../empty';
 import {
   SUPABASE_BACKED,
+  gameLogFromAttendances,
+  profileFromAccount,
+  stampsFromStats,
+  type ProfileAccount,
   displayRecord,
   lastGameLine,
   nickname,
@@ -97,6 +102,15 @@ describe('Supabase passport mapping', () => {
     ]);
   });
 
+  it('gets the badge singular right for a user with one game', () => {
+    const one: PassportInputs = {
+      ...inputs,
+      stats: { ...stats, totals: { ...stats.totals, games: 1 } },
+    };
+    expect(passportFromStats(one, 'all').badge).toBe('1 GAME ATTENDED');
+    expect(passportFromStats(inputs, 'all').badge).toBe('48 GAMES ATTENDED');
+  });
+
   it('builds the All teams hero from the overall record', () => {
     const p = passportFromStats(inputs, 'all');
     expect(p.label).toBe('LIFETIME RECORD');
@@ -167,26 +181,78 @@ describe('Supabase passport mapping', () => {
     expect(lastGameLine({ home_score: 4, away_score: 2, home: null, away: null })).toBeNull();
   });
 
-  it('is explicit about which methods are real, and falls through for the rest', () => {
+  it('is explicit about which methods are real, and serves nothing for the rest', () => {
     const repo = supabaseRepository(inputs);
     // Backed by the database.
     expect(SUPABASE_BACKED.has('passport')).toBe(true);
     expect(SUPABASE_BACKED.has('games')).toBe(true);
+    expect(SUPABASE_BACKED.has('gameLog')).toBe(true);
+    expect(SUPABASE_BACKED.has('profile')).toBe(true);
+    expect(SUPABASE_BACKED.has('friends')).toBe(true);
     expect(repo.passport('all').record).toBe('31 – 17');
     // Backed, and this user has no attendances, so the list is genuinely empty rather
     // than quietly falling back to the fixtures.
     expect(repo.games()).toEqual([]);
-    // Not yet backed: these still return demo fixtures, which the Plan and Guide shells
-    // need in v1 anyway.
-    expect(SUPABASE_BACKED.has('friends')).toBe(true);
     // Per-game methods are deliberately absent: they need a game id, which this
     // repository has no way to supply. See the note on the Repository type.
     expect(SUPABASE_BACKED.has('pickASide')).toBe(false);
     expect(SUPABASE_BACKED.has('relive')).toBe(false);
     expect(SUPABASE_BACKED.has('guide')).toBe(false);
-    expect(repo.guideRows('food').length).toBeGreaterThan(0);
+  });
+
+  it('serves empty, not fixtures, for everything it cannot back', () => {
+    const repo = supabaseRepository(inputs);
+    // The screens showing these must show an empty state. Returning the reference's
+    // sample data here is what made a one-game user's app untestable.
+    expect(repo.pickASide()).toEqual(emptyRepository.pickASide());
+    expect(repo.relive()).toEqual(emptyRepository.relive());
+    expect(repo.reliveSteps()).toEqual([]);
+    expect(repo.reliveWinProb()).toEqual([]);
+    expect(repo.relivePhotos()).toEqual([]);
+    expect(repo.reliveFanPhotos()).toEqual([]);
+    expect(repo.gameDay()).toEqual(emptyRepository.gameDay());
+    expect(repo.guideRows('food')).toEqual([]);
+    expect(repo.guide().venue).toBe('');
+  });
+
+  it('keeps a team pill to that team sport when filtering stamps', () => {
+    const withStamps: PassportInputs = {
+      ...inputs,
+      stats: {
+        ...stats,
+        stamps: [
+          stamp('v-mlb', 'Oracle Park', ['mlb']),
+          stamp('v-nfl', 'Lincoln Financial Field', ['nfl']),
+        ],
+      },
+    };
+    expect(stampsFromStats(withStamps, 'all').map((s) => s.name)).toEqual([
+      'Oracle Park',
+      'Lincoln Financial Field',
+    ]);
+    // The Eagles pill is NFL, so a ballpark is not one of its stamps.
+    expect(stampsFromStats(withStamps, PHL).map((s) => s.name)).toEqual([
+      'Lincoln Financial Field',
+    ]);
+    expect(stampsFromStats(withStamps, PHI).map((s) => s.name)).toEqual(['Oracle Park']);
   });
 });
+
+function stamp(venueId: string, name: string, sports: string[]) {
+  return {
+    venue_id: venueId,
+    name,
+    city: 'Somewhere',
+    state: null,
+    country: 'USA',
+    visits: 1,
+    first_visit: null,
+    sports,
+    closed: false,
+    lat: null,
+    lng: null,
+  };
+}
 
 describe('Relive mapping', () => {
   const game = {
@@ -447,5 +513,178 @@ describe('Friends mapping', () => {
     expect(overlapLine({ ...o, section_gap: 11 })).toBe(
       'You and Maya were both at Phillies vs Mets in August 2019, 11 sections apart.',
     );
+  });
+});
+
+describe('Record game log mapping', () => {
+  const NYM = 'nym-id';
+  const shapes = new Map<string, 'ballparkA'>();
+  const teamRefs = new Map([
+    [PHI, { id: PHI, name: 'Philadelphia Phillies', city: 'Philadelphia', abbreviation: 'PHI' }],
+    [NYM, { id: NYM, name: 'New York Mets', city: 'New York', abbreviation: 'NYM' }],
+    ['sf', { id: 'sf', name: 'San Francisco Giants', city: 'San Francisco', abbreviation: 'SF' }],
+    ['det', { id: 'det', name: 'Detroit Tigers', city: 'Detroit', abbreviation: 'DET' }],
+  ]);
+
+  const phillies = {
+    rooting_team_id: PHI,
+    game: {
+      id: 'g-phi',
+      status: 'final',
+      scheduled_start: '2025-08-14T23:05:00Z',
+      home_team_id: PHI,
+      away_team_id: NYM,
+      home_score: 6,
+      away_score: 3,
+      home: { id: PHI, name: 'Philadelphia Phillies', abbreviation: 'PHI' },
+      away: { id: NYM, name: 'New York Mets', abbreviation: 'NYM' },
+      venue: { id: 'v-cbp', name: 'Citizens Bank Park', city: 'Philadelphia' },
+    },
+    companions: [],
+  };
+
+  // Dean's real one: a game neither of his teams played in, with no side picked.
+  const neutral = {
+    rooting_team_id: null,
+    game: {
+      id: 'g-sf',
+      status: 'final',
+      scheduled_start: '2026-08-08T02:15:00Z',
+      home_team_id: 'sf',
+      away_team_id: 'det',
+      home_score: 5,
+      away_score: 2,
+      home: { id: 'sf', name: 'San Francisco Giants', abbreviation: 'SF' },
+      away: { id: 'det', name: 'Detroit Tigers', abbreviation: 'DET' },
+      venue: { id: 'v-oracle', name: 'Oracle Park', city: 'San Francisco' },
+    },
+    companions: [],
+  };
+
+  const withGames: PassportInputs = {
+    ...inputs,
+    teams: teamRefs,
+    shapes,
+    attendances: [neutral, phillies],
+  };
+
+  it('lists a team log from the games that team played in', () => {
+    const log = gameLogFromAttendances(withGames, PHI);
+    expect(log?.sub).toBe('Phillies record at games');
+    expect(log?.meta).toBe('1 game, .706');
+    expect(log?.rows.map((r) => r.title)).toEqual(['Mets 3, Phillies 6']);
+    // The circle is the log team result, not whoever the user rooted for.
+    expect(log?.rows[0]?.result).toBe('w');
+    expect(log?.rows[0]?.gameId).toBe('g-phi');
+  });
+
+  it('puts a game where you follow neither team in the neutral log', () => {
+    const log = gameLogFromAttendances(withGames, 'neutral');
+    expect(log?.sub).toBe('Record as a neutral');
+    expect(log?.rows.map((r) => r.title)).toEqual(['Tigers 2, Giants 5']);
+    // No pick, so no result: the row shows no circle rather than a loss.
+    expect(log?.rows[0]?.result).toBeNull();
+  });
+
+  it('opens a record with no games rather than leaving the card dead', () => {
+    const log = gameLogFromAttendances({ ...inputs, attendances: [] }, PHI);
+    expect(log).not.toBeNull();
+    expect(log?.rows).toEqual([]);
+    // Nothing to page, so the footer link is omitted entirely.
+    expect(log?.more).toBe('');
+  });
+
+  it('returns null for a record that does not exist', () => {
+    expect(gameLogFromAttendances(withGames, 'not-a-record')).toBeNull();
+  });
+
+  it('pages beyond the six rows the reference shows', () => {
+    const many = Array.from({ length: 9 }, (_, i) => ({
+      ...phillies,
+      game: { ...phillies.game, id: `g${i}` },
+    }));
+    const log = gameLogFromAttendances({ ...withGames, attendances: many }, PHI);
+    expect(log?.rows).toHaveLength(6);
+    expect(log?.more).toBe('3 more games');
+  });
+});
+
+describe('Profile mapping', () => {
+  const account: ProfileAccount = {
+    handle: 'deanyao6',
+    displayName: 'Dean',
+    homeCity: 'Pasadena',
+    avatarKey: 'user-1',
+    favorites: [{ id: PHI, name: 'Philadelphia Phillies', city: 'Philadelphia' }],
+    followers: 0,
+    following: 0,
+    goals: { total: 3, done: 1 },
+    wrapped: null,
+  };
+
+  it('is the signed-in user, not the fixture account', () => {
+    const p = profileFromAccount(account, stats, []);
+    expect(p.handle).toBe('@deanyao6');
+    expect(p.name).toBe('Dean');
+    expect(p.tagline).toBe('Pasadena');
+    expect(p.teamChips).toEqual([{ team: PHI, label: 'Phillies' }]);
+    expect(p.team).toBe(PHI);
+    expect(p.avatar).toBe('user-1');
+  });
+
+  it('counts games and stadiums from the stats payload', () => {
+    const p = profileFromAccount(account, stats, []);
+    expect(p.stats).toEqual([
+      { value: '48', label: 'Games' },
+      { value: '14', label: 'Stadiums' },
+      { value: '0', label: 'Followers' },
+      { value: '0', label: 'Following' },
+    ]);
+  });
+
+  it('shows a dash for a count it does not know yet', () => {
+    const p = profileFromAccount({ ...account, followers: null, following: null }, stats, []);
+    expect(p.stats.map((s) => s.value)).toEqual(['48', '14', '—', '—']);
+  });
+
+  it('omits the Wrapped row until a snapshot exists', () => {
+    const none = profileFromAccount(account, stats, []);
+    expect(none.rows.map((r) => r.icon)).toEqual(['i-users', 'i-target', 'i-map']);
+    const some = profileFromAccount(
+      { ...account, wrapped: { sport_id: 'mlb', season: 2025 } },
+      stats,
+      [],
+    );
+    expect(some.rows.at(-1)).toEqual({
+      icon: 'i-spark',
+      title: '2025 Wrapped',
+      meta: 'MLB',
+      facepile: false,
+    });
+  });
+
+  it('describes goals and the map from real counts', () => {
+    const p = profileFromAccount(account, stats, []);
+    expect(p.rows[1]?.meta).toBe('1 of 3 done');
+    expect(p.rows[2]?.meta).toBe('14 stadiums, 1 country');
+    const fresh = profileFromAccount(
+      { ...account, goals: { total: 0, done: 0 } },
+      {
+        ...stats,
+        totals: { games: 0, venues: 0, states: 0, countries: 0 },
+      },
+      [],
+    );
+    expect(fresh.rows[1]?.meta).toBe('None set yet');
+    expect(fresh.rows[2]?.meta).toBe('No stadiums yet');
+  });
+
+  it('puts your companions on the Friends row', () => {
+    const companions = [
+      { person_id: 'p1', display_name: 'Dad', games: 11, wins: 7, losses: 1, ties: 0 },
+    ];
+    const p = profileFromAccount(account, stats, companions);
+    expect(p.rows[0]?.meta).toBe('1 companion');
+    expect(p.facepile).toEqual(['p1']);
   });
 });

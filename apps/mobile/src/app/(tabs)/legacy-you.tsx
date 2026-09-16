@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Alert, View } from 'react-native';
 
+import { LegacyBackButton } from '@/components/reference/BackHeader';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Chip } from '@/components/Chip';
@@ -34,6 +35,7 @@ export default function YouScreen() {
 
   return (
     <Screen>
+      <LegacyBackButton fallback="/profile" />
       <Text variant="h1" style={{ marginBottom: theme.spacing.md }}>
         You
       </Text>

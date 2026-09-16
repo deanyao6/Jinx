@@ -7,6 +7,7 @@ import { Avatar } from '@/components/reference/Avatar';
 import { SlideOver } from '@/components/reference/SlideOver';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
+import { EmptyState } from '@/features/data/EmptyState';
 import { TabBar } from '@/features/passport/reference/parts';
 
 import { FriendsPanel } from './FriendsPanel';
@@ -81,6 +82,45 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
   const router = useRouter();
   const Gear = ICONS['i-gear'];
   const Chevron = ICONS['i-chev-r'];
+
+  /**
+   * Your profile is the one screen that is entirely about you, so with no account row there
+   * is nothing to draw: a nameless avatar over four dashes is not a profile. Settings stays
+   * reachable, because this is also the state a user lands in when their profile will not
+   * load and signing out lives in there.
+   */
+  if (!profile.handle) {
+    return (
+      <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{
+            paddingTop: screenPadding.top,
+            paddingHorizontal: screenPadding.horizontal,
+            paddingBottom: screenPadding.bottom,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={s.top}>
+            <Text style={[s.handle, { color: base.ink }]} />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Settings"
+              onPress={() => router.push('/settings' as Href)}
+              style={[s.iconButton, { backgroundColor: base.surface }]}
+            >
+              <Gear size={20} color={base.ink} />
+            </Pressable>
+          </View>
+          <EmptyState
+            text="Your profile could not be loaded. Sign out and back in from Settings if it stays this way."
+            loadingText="Loading your profile…"
+          />
+        </ScrollView>
+        <TabBar active="Profile" />
+      </View>
+    );
+  }
 
   const rowPress = (row: (typeof profile.rows)[number]): (() => void) | undefined => {
     if (row.facepile) return () => onOpenPanel('friends');

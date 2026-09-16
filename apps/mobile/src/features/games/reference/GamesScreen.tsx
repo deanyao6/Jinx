@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar } from '@/components/reference/Avatar';
 import { GameThumb } from '@/components/reference/GameThumb';
 import { ICONS } from '@/components/reference/icons';
-import { useRepository } from '@/features/data/context';
+import { useRepository, useRepositoryStatus } from '@/features/data/context';
 import type { GameRowFixture } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
@@ -263,17 +263,22 @@ function EmptyPane({
 }) {
   const { base } = useReferenceTheme();
   const searching = query.trim() !== '';
-  const body = searching
-    ? `No games match "${query.trim()}".`
-    : segment === 'Upcoming'
-      ? 'Nothing coming up. Games you have said you are going to will show here once your passport tracks them; today it holds the games you have already attended.'
-      : segment === 'Imports'
-        ? 'Tickets you upload are confirmed on their own screen.'
-        : 'No games yet. Add one with the + button.';
+  // "You have logged no games" and "your games have not arrived yet" are different claims,
+  // and the History segment is where the difference is most visible.
+  const loading = useRepositoryStatus() === 'loading';
+  const body = loading
+    ? 'Loading your games…'
+    : searching
+      ? `No games match "${query.trim()}".`
+      : segment === 'Upcoming'
+        ? 'Nothing coming up. Games you have said you are going to will show here once your passport tracks them; today it holds the games you have already attended.'
+        : segment === 'Imports'
+          ? 'Tickets you upload are confirmed on their own screen.'
+          : 'No games yet. Add one with the + button.';
   return (
     <View style={[s.empty, { borderColor: base.line, backgroundColor: base.card }]}>
       <Text style={[s.emptyText, { color: base.muted }]}>{body}</Text>
-      {segment === 'Imports' && !searching ? (
+      {segment === 'Imports' && !searching && !loading ? (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Open imports"

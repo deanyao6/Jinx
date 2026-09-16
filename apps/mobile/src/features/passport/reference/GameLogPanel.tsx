@@ -8,6 +8,7 @@ import { ICONS } from '@/components/reference/icons';
 import { TightText } from '@/components/reference/TightText';
 import { StadiumShape } from '@/components/reference/StadiumShape';
 import { useRepository } from '@/features/data/context';
+import { EmptyState } from '@/features/data/EmptyState';
 import type { GameLogFixture, LogRowFixture } from '@/features/data/shapes';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -133,20 +134,33 @@ function PanelBody({
           ))}
         </View>
 
+        {/* A record you hold no games under still opens: "none yet" is an answer, and the
+            header above already shows the record it belongs to. */}
+        {data.rows.length === 0 ? (
+          <EmptyState
+            text="No games under this record yet."
+            loadingText="Loading this record's games…"
+          />
+        ) : null}
+
         {/* The reference pages the list here. There is no paged log query yet, so it
-            opens History instead, which is the other half of what the spec allows. */}
-        <Pressable
-          accessibilityRole="link"
-          accessibilityLabel={data.more}
-          onPress={() => router.push('/games')}
-          hitSlop={8}
-        >
-          {({ pressed }) => (
-            <Text style={[s.more, { color: base.muted, opacity: pressed ? 0.6 : 1 }]}>
-              {data.more}
-            </Text>
-          )}
-        </Pressable>
+            opens History instead, which is the other half of what the spec allows. A log
+            with nothing more to page has no footer rather than an empty one that takes a
+            press. */}
+        {data.more ? (
+          <Pressable
+            accessibilityRole="link"
+            accessibilityLabel={data.more}
+            onPress={() => router.push('/games')}
+            hitSlop={8}
+          >
+            {({ pressed }) => (
+              <Text style={[s.more, { color: base.muted, opacity: pressed ? 0.6 : 1 }]}>
+                {data.more}
+              </Text>
+            )}
+          </Pressable>
+        ) : null}
       </ScrollView>
       {/* Only `.loghead` carries the record's team class in the reference. The tab bar
           sits on `.scr`, which is `t-none`, so it stays neutral. */}
@@ -212,9 +226,16 @@ function Thumb({ shapeKey }: { shapeKey: string }) {
   );
 }
 
-/** `.circ` in its win/loss colour. Not team-tinted: `.circ.w` is --good, `.circ.l` is --bad. */
-function ResultCircle({ result }: { result: 'w' | 'l' }) {
+/**
+ * `.circ` in its win/loss colour. Not team-tinted: `.circ.w` is --good, `.circ.l` is --bad.
+ *
+ * A row with no result draws no circle. A real log holds games you had no side in — the
+ * neutral log without a pick, a tie, a game that is not final — and a hollow circle is
+ * better than calling one of them a loss.
+ */
+function ResultCircle({ result }: { result: 'w' | 'l' | null }) {
   const { base } = useReferenceTheme();
+  if (!result) return null;
   const color = result === 'w' ? base.good : base.bad;
   return (
     <View style={[s.circ, { borderColor: color }]}>

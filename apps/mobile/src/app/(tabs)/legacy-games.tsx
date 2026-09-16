@@ -1,6 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 
+import { LegacyBackButton } from '@/components/reference/BackHeader';
 import { Screen } from '@/components/Screen';
 import { Segmented } from '@/components/Segmented';
 import { Text } from '@/components/Text';
@@ -45,6 +46,8 @@ export default function GamesScreen() {
 
   return (
     <Screen>
+      {/* Reached from the Games tab's "+" menu, which is inside the tab bar's stack. */}
+      <LegacyBackButton fallback="/games" />
       <Text variant="h1" style={{ marginBottom: 12 }}>
         Games
       </Text>

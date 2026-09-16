@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { LegacyBackButton } from '@/components/reference/BackHeader';
 import { Segmented } from '@/components/Segmented';
 import { Text } from '@/components/Text';
 import { useFollowRequests } from '@/features/social/queries';
@@ -46,6 +47,7 @@ export default function FriendsScreen() {
 
   const header = (
     <View style={{ paddingTop: insets.top + theme.spacing.sm }}>
+      <LegacyBackButton fallback="/profile" />
       <View
         style={{
           flexDirection: 'row',

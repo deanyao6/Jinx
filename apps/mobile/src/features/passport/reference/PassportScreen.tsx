@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SlideOver } from '@/components/reference/SlideOver';
 import { useRepository } from '@/features/data/context';
+import { EmptyState } from '@/features/data/EmptyState';
 import type { PassportFixture } from '@/features/data/shapes';
 import type { Repository } from '@/features/data/types';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -99,6 +100,7 @@ function PassportBody({
   // The app uses the real status bar instead (SPEC.md 8.1), so the content begins at the
   // top safe-area inset and then takes `.body`'s own 4px padding.
   const insets = useSafeAreaInsets();
+  const stamps = repo.stamps(pill);
   return (
     <View style={{ flex: 1, backgroundColor: base.canvas, paddingTop: insets.top }}>
       <ScrollView
@@ -130,6 +132,15 @@ function PassportBody({
           onLastGamePress={() => router.push(`/games/${data.lastGameId}` as Href)}
         />
         <RecordCards cards={data.cards} onOpen={onOpenLog} />
+        {/* A passport with no records is a real state, and the commonest one: it is what
+            the app looks like the day you sign up. It says so rather than leaving the gap
+            under the hero unexplained. */}
+        {data.cards.length === 0 ? (
+          <EmptyState
+            text="No records yet. Log a game and your lifetime record starts here."
+            loadingText="Loading your records…"
+          />
+        ) : null}
         <SectionHeader
           title="Stadium stamps"
           action={data.stampCount}
@@ -138,7 +149,13 @@ function PassportBody({
         {/* The stamps screen has no per-venue route: it opens a venue in its own sheet.
             So a tile opens the screen, and selecting the venue there is still a step the
             user has to take. */}
-        <Stamps stamps={repo.stamps(pill)} onStampPress={() => router.push('/passport/stamps')} />
+        <Stamps stamps={stamps} onStampPress={() => router.push('/passport/stamps')} />
+        {stamps.length === 0 ? (
+          <EmptyState
+            text="No stamps yet. Each new stadium you log earns one."
+            loadingText="Loading your stamps…"
+          />
+        ) : null}
         <SectionHeader title="Fan superlatives" />
         {/* Each row could open the game, venue or player it names, but the fixture carries
             only display text for those. So every row opens the superlatives screen. */}
@@ -146,6 +163,12 @@ function PassportBody({
           items={data.superlatives}
           onItemPress={() => router.push('/passport/superlatives')}
         />
+        {data.superlatives.length === 0 ? (
+          <EmptyState
+            text="No superlatives yet. The coldest game, the longest one and the rest arrive once you have games to compare."
+            loadingText="Loading your superlatives…"
+          />
+        ) : null}
       </ScrollView>
       <TabBar active="Passport" />
     </View>

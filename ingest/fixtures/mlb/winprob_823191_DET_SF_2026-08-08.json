@@ -1,0 +1,1112 @@
+[
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:16:29.847Z"
+  },
+  "result": {
+   "description": "Kevin McGonigle singles on a fly ball to right fielder Jung Hoo Lee.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 0,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 46.400000000000006
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:17:33.817Z"
+  },
+  "result": {
+   "description": "Gleyber Torres singles on a sharp line drive to right fielder Jung Hoo Lee. Kevin McGonigle to 3rd.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 0,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 38.3
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:18:10.383Z"
+  },
+  "result": {
+   "description": "Dillon Dingler grounds into a force out, third baseman Christian Koss to second baseman Osleivis Basabe. Kevin McGonigle scores. Gleyber Torres out at 2nd. Dillon Dingler to 1st.",
+   "event": "Forceout",
+   "rbi": 1,
+   "awayScore": 1,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 40.2
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:19:41.214Z"
+  },
+  "result": {
+   "description": "Riley Greene lines out sharply to second baseman Osleivis Basabe.",
+   "event": "Lineout",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 41.8
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:20:51.580Z"
+  },
+  "result": {
+   "description": "Colt Keith called out on strikes.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 44.800000000000004
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:23:28.685Z"
+  },
+  "result": {
+   "description": "Bryce Eldridge pops out to third baseman Kevin McGonigle.",
+   "event": "Pop Out",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 42.4
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:25:32.292Z"
+  },
+  "result": {
+   "description": "Jung Hoo Lee walks.",
+   "event": "Walk",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 45.0
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:26:47.357Z"
+  },
+  "result": {
+   "description": "Willy Adames strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 0
+  },
+  "homeTeamWinProbability": 42.0
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:28:20.561Z"
+  },
+  "result": {
+   "description": "Rafael Devers homers (24) on a fly ball to center field. Jung Hoo Lee scores.",
+   "event": "Home Run",
+   "rbi": 2,
+   "awayScore": 1,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 61.199999999999996
+ },
+ {
+  "about": {
+   "inning": 1,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:30:12.322Z"
+  },
+  "result": {
+   "description": "Daniel Susac called out on strikes.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 60.3
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:33:55.506Z"
+  },
+  "result": {
+   "description": "Spencer Torkelson singles on a ground ball to right fielder Jung Hoo Lee.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 56.3
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:34:20.401Z"
+  },
+  "result": {
+   "description": "Max Clark strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 60.0
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:36:11.970Z"
+  },
+  "result": {
+   "description": "Javier B\u00e1ez grounds out, second baseman Osleivis Basabe to first baseman Rafael Devers. Spencer Torkelson to 2nd.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 1,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 62.1
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:36:45.860Z"
+  },
+  "result": {
+   "description": "Zach McKinstry singles on a line drive to right fielder Jung Hoo Lee. Spencer Torkelson scores.",
+   "event": "Single",
+   "rbi": 1,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 52.800000000000004
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:38:23.197Z"
+  },
+  "result": {
+   "description": "Kevin McGonigle walks. Zach McKinstry to 2nd.",
+   "event": "Walk",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 50.6
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:40:11.439Z"
+  },
+  "result": {
+   "description": "Gleyber Torres grounds into a force out, fielded by third baseman Christian Koss. Zach McKinstry out at 3rd.",
+   "event": "Forceout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 55.1
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:41:44.705Z"
+  },
+  "result": {
+   "description": "Drew Gilbert walks.",
+   "event": "Walk",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 58.9
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:44:10.031Z"
+  },
+  "result": {
+   "description": "Osleivis Basabe singles on a line drive to left fielder Riley Greene. Drew Gilbert to 2nd.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 64.4
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:44:43.555Z"
+  },
+  "result": {
+   "description": "Grant McCray out on a sacrifice bunt, catcher Dillon Dingler to first baseman Spencer Torkelson. Drew Gilbert to 3rd. Osleivis Basabe to 2nd.",
+   "event": "Sac Bunt",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 64.1
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:45:59.066Z"
+  },
+  "result": {
+   "description": "Christian Koss strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 56.00000000000001
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:47:54.135Z"
+  },
+  "result": {
+   "description": "Bryce Eldridge walks.",
+   "event": "Walk",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 2
+  },
+  "homeTeamWinProbability": 57.699999999999996
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:50:58.902Z"
+  },
+  "result": {
+   "description": "Jung Hoo Lee singles on a sharp line drive to center fielder Max Clark. Drew Gilbert scores. Osleivis Basabe scores. Bryce Eldridge to 2nd.",
+   "event": "Single",
+   "rbi": 2,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 74.3
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:51:54.872Z"
+  },
+  "result": {
+   "description": "Willy Adames reaches on a fielding error by third baseman Kevin McGonigle. Bryce Eldridge to 3rd. Jung Hoo Lee to 2nd.",
+   "event": "Field Error",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 76.3
+ },
+ {
+  "about": {
+   "inning": 2,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T02:52:43.223Z"
+  },
+  "result": {
+   "description": "Rafael Devers pops out to shortstop Javier B\u00e1ez.",
+   "event": "Pop Out",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 71.2
+ },
+ {
+  "about": {
+   "inning": 3,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:54:57.084Z"
+  },
+  "result": {
+   "description": "Dillon Dingler grounds out, shortstop Willy Adames to first baseman Rafael Devers.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 73.6
+ },
+ {
+  "about": {
+   "inning": 3,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:58:33.673Z"
+  },
+  "result": {
+   "description": "Riley Greene grounds out, catcher Daniel Susac to first baseman Rafael Devers.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 75.4
+ },
+ {
+  "about": {
+   "inning": 3,
+   "halfInning": "top",
+   "startTime": "2026-08-08T02:59:09.674Z"
+  },
+  "result": {
+   "description": "Colt Keith strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 76.4
+ },
+ {
+  "about": {
+   "inning": 3,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:01:03.866Z"
+  },
+  "result": {
+   "description": "Daniel Susac pops out to third baseman Kevin McGonigle.",
+   "event": "Pop Out",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 74.9
+ },
+ {
+  "about": {
+   "inning": 3,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:03:07.927Z"
+  },
+  "result": {
+   "description": "Drew Gilbert pops out to third baseman Kevin McGonigle in foul territory.",
+   "event": "Pop Out",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 73.7
+ },
+ {
+  "about": {
+   "inning": 3,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:04:16.693Z"
+  },
+  "result": {
+   "description": "Osleivis Basabe strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 72.89999999999999
+ },
+ {
+  "about": {
+   "inning": 4,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:06:50.365Z"
+  },
+  "result": {
+   "description": "Spencer Torkelson strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 75.6
+ },
+ {
+  "about": {
+   "inning": 4,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:09:02.792Z"
+  },
+  "result": {
+   "description": "Max Clark called out on strikes.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 77.4
+ },
+ {
+  "about": {
+   "inning": 4,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:11:18.241Z"
+  },
+  "result": {
+   "description": "Javier B\u00e1ez grounds out, shortstop Willy Adames to first baseman Rafael Devers.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 78.60000000000001
+ },
+ {
+  "about": {
+   "inning": 4,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:12:20.033Z"
+  },
+  "result": {
+   "description": "Grant McCray grounds out, first baseman Spencer Torkelson to pitcher Keider Montero.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 77.0
+ },
+ {
+  "about": {
+   "inning": 4,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:14:04.922Z"
+  },
+  "result": {
+   "description": "Christian Koss called out on strikes.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 75.9
+ },
+ {
+  "about": {
+   "inning": 4,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:15:33.469Z"
+  },
+  "result": {
+   "description": "Bryce Eldridge flies out to left fielder Riley Greene in foul territory.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 75.1
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:18:18.848Z"
+  },
+  "result": {
+   "description": "Zach McKinstry singles on a line drive to right fielder Jung Hoo Lee.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 70.19999999999999
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:19:35.931Z"
+  },
+  "result": {
+   "description": "Kevin McGonigle singles on a ground ball to right fielder Jung Hoo Lee. Zach McKinstry to 3rd.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 59.5
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:20:41.485Z"
+  },
+  "result": {
+   "description": "Gleyber Torres flies out to right fielder Jung Hoo Lee in foul territory.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 66.7
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:21:34.468Z"
+  },
+  "result": {
+   "description": "Dillon Dingler flies out to right fielder Jung Hoo Lee in foul territory.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 75.1
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:23:30.756Z"
+  },
+  "result": {
+   "description": "Riley Greene flies out to left fielder Grant McCray.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 81.2
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:25:43.291Z"
+  },
+  "result": {
+   "description": "Jung Hoo Lee flies out to center fielder Max Clark.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 4
+  },
+  "homeTeamWinProbability": 79.7
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:27:51.371Z"
+  },
+  "result": {
+   "description": "Willy Adames homers (19) on a fly ball to left field.",
+   "event": "Home Run",
+   "rbi": 1,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 87.5
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:28:52.247Z"
+  },
+  "result": {
+   "description": "Rafael Devers grounds out, second baseman Gleyber Torres to first baseman Spencer Torkelson.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 86.8
+ },
+ {
+  "about": {
+   "inning": 5,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:30:44.398Z"
+  },
+  "result": {
+   "description": "Daniel Susac pops out to first baseman Spencer Torkelson in foul territory.",
+   "event": "Pop Out",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 86.3
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:33:30.080Z"
+  },
+  "result": {
+   "description": "Colt Keith flies out to center fielder Drew Gilbert.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 88.7
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:34:31.662Z"
+  },
+  "result": {
+   "description": "Spencer Torkelson singles on a sharp line drive to center fielder Drew Gilbert.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 85.9
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:36:49.290Z"
+  },
+  "result": {
+   "description": "Max Clark singles on a ground ball to left fielder Grant McCray. Spencer Torkelson to 2nd.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 81.3
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:37:23.325Z"
+  },
+  "result": {
+   "description": "Javier B\u00e1ez flies out to shortstop Willy Adames.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 86.6
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:39:34.333Z"
+  },
+  "result": {
+   "description": "Zach McKinstry flies out to center fielder Drew Gilbert.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 91.10000000000001
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:46:05.289Z"
+  },
+  "result": {
+   "description": "Drew Gilbert grounds out, second baseman Gleyber Torres to first baseman Spencer Torkelson.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 90.4
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:48:02.139Z"
+  },
+  "result": {
+   "description": "Tigers challenged (play at 1st), call on the field was upheld: Osleivis Basabe singles on a ground ball to shortstop Javier B\u00e1ez.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 91.2
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:51:28.506Z"
+  },
+  "result": {
+   "description": "Grant McCray flies out to center fielder Max Clark.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 90.2
+ },
+ {
+  "about": {
+   "inning": 6,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T03:54:00.399Z"
+  },
+  "result": {
+   "description": "Christian Koss lines out to third baseman Kevin McGonigle.",
+   "event": "Lineout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 89.3
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:57:34.692Z"
+  },
+  "result": {
+   "description": "Kevin McGonigle singles on a line drive to right fielder Jung Hoo Lee.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 84.89999999999999
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:57:48.013Z"
+  },
+  "result": {
+   "description": "Gleyber Torres grounds into a double play, shortstop Willy Adames to second baseman Osleivis Basabe to first baseman Rafael Devers. Kevin McGonigle out at 2nd. Gleyber Torres out at 1st.",
+   "event": "Grounded Into DP",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 93.30000000000001
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "top",
+   "startTime": "2026-08-08T03:59:19.964Z"
+  },
+  "result": {
+   "description": "Dillon Dingler walks.",
+   "event": "Walk",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 92.10000000000001
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:04:14.479Z"
+  },
+  "result": {
+   "description": "Riley Greene singles on a line drive to center fielder Drew Gilbert. Dillon Dingler to 3rd. Riley Greene to 2nd.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 88.3
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:06:33.111Z"
+  },
+  "result": {
+   "description": "Eduardo Valencia called out on strikes.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 94.1
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T04:10:29.521Z"
+  },
+  "result": {
+   "description": "Bryce Eldridge strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 93.60000000000001
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T04:12:06.921Z"
+  },
+  "result": {
+   "description": "Jung Hoo Lee grounds out softly, pitcher Drew Sommers to first baseman Spencer Torkelson.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 93.10000000000001
+ },
+ {
+  "about": {
+   "inning": 7,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T04:12:40.901Z"
+  },
+  "result": {
+   "description": "Willy Adames strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 92.80000000000001
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:16:42.032Z"
+  },
+  "result": {
+   "description": "Spencer Torkelson singles on a ground ball to third baseman Christian Koss.",
+   "event": "Single",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 88.5
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:19:10.499Z"
+  },
+  "result": {
+   "description": "Max Clark called out on strikes.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 92.5
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:20:46.585Z"
+  },
+  "result": {
+   "description": "Javier B\u00e1ez flies out to left fielder Grant McCray.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 95.5
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:23:14.589Z"
+  },
+  "result": {
+   "description": "Hao-Yu Lee walks.",
+   "event": "Walk",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 93.0
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:25:42.349Z"
+  },
+  "result": {
+   "description": "Kevin McGonigle flies out to left fielder Grant McCray.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 97.2
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T04:28:48.603Z"
+  },
+  "result": {
+   "description": "Rafael Devers grounds out to first baseman Spencer Torkelson.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 97.0
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T04:30:07.256Z"
+  },
+  "result": {
+   "description": "Daniel Susac strikes out swinging.",
+   "event": "Strikeout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 96.7
+ },
+ {
+  "about": {
+   "inning": 8,
+   "halfInning": "bottom",
+   "startTime": "2026-08-08T04:31:43.726Z"
+  },
+  "result": {
+   "description": "Drew Gilbert pops out to third baseman Kevin McGonigle in foul territory.",
+   "event": "Pop Out",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 96.6
+ },
+ {
+  "about": {
+   "inning": 9,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:35:33.602Z"
+  },
+  "result": {
+   "description": "Gleyber Torres grounds out, first baseman Rafael Devers to pitcher Dylan Smith.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 98.5
+ },
+ {
+  "about": {
+   "inning": 9,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:36:02.779Z"
+  },
+  "result": {
+   "description": "Dillon Dingler grounds out, shortstop Willy Adames to first baseman Rafael Devers.",
+   "event": "Groundout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 99.6
+ },
+ {
+  "about": {
+   "inning": 9,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:37:37.348Z"
+  },
+  "result": {
+   "description": "Riley Greene walks.",
+   "event": "Walk",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 98.8
+ },
+ {
+  "about": {
+   "inning": 9,
+   "halfInning": "top",
+   "startTime": "2026-08-08T04:39:51.049Z"
+  },
+  "result": {
+   "description": "Eduardo Valencia flies out sharply to right fielder Jung Hoo Lee.",
+   "event": "Flyout",
+   "rbi": 0,
+   "awayScore": 2,
+   "homeScore": 5
+  },
+  "homeTeamWinProbability": 100.0
+ }
+]

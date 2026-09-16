@@ -9,10 +9,13 @@ import {
 import { superlativeRows } from '@/features/passport/format';
 import type { StatsPayload, StatsStamp, StatsTeam } from '@/features/passport/types';
 
-import { demoRepository } from './demo';
+import { emptyRepository } from './empty';
 import type {
+  GameLogFixture,
   GameRowFixture,
+  LogRowFixture,
   PassportFixture,
+  ProfileFixture,
   RecordCardFixture,
   ShapeKey,
   StampFixture,
@@ -24,9 +27,12 @@ import type { Repository } from './types';
 /**
  * The Supabase-backed repository (SPEC.md 8.9), built up milestone by milestone.
  *
- * {@link SUPABASE_BACKED} names exactly which methods are real. Everything else still
- * returns demo fixtures, so that state is legible rather than hidden behind a screen that
- * looks like it is showing your data and is not.
+ * {@link SUPABASE_BACKED} names exactly which methods are real. Everything else returns
+ * {@link emptyRepository}'s empty value, and the screen shows its empty state. It used to
+ * fall through to the demo fixtures, which meant a user who had logged one game was shown
+ * a 31–17 record, 48 games and four friends who do not exist — data they cannot act on and
+ * cannot test anything against. An empty screen is the honest answer to "we have not built
+ * this yet".
  *
  * The per-game mappings in this file — {@link pickASideFromContext} and
  * {@link reliveFromGame} — are written and tested but deliberately NOT in that set. They
@@ -37,7 +43,9 @@ export const SUPABASE_BACKED: ReadonlySet<keyof Repository> = new Set([
   'passportPills',
   'passport',
   'stamps',
+  'gameLog',
   'games',
+  'profile',
   'friends',
 ]);
 
@@ -87,6 +95,8 @@ export function lastGameLine(game: {
 
 export type PassportInputs = {
   stats: StatsPayload;
+  /** The signed-in account, for the Profile screen. Null until the profile row loads. */
+  account?: ProfileAccount | null;
   /** Companion records, rivalries and overlaps for the Friends panel. */
   companions?: readonly CompanionRow[];
   rivalries?: readonly RivalryRow[];
@@ -174,6 +184,11 @@ function toSuperlatives(stats: StatsPayload): SuperlativeFixture[] {
     }));
 }
 
+/** "48 GAMES ATTENDED", and the singular a user with one game actually sees. */
+export function gamesBadge(games: number): string {
+  return `${games} ${games === 1 ? 'GAME' : 'GAMES'} ATTENDED`;
+}
+
 /** The pills: All teams, then each favourite team, with their game counts. */
 export function passportPillsFromStats(inputs: PassportInputs): TeamPill[] {
   const { stats, teams } = inputs;
@@ -208,7 +223,7 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
     return {
       teamKey: 'none',
       label: 'LIFETIME RECORD',
-      badge: `${stats.totals.games} GAMES ATTENDED`,
+      badge: gamesBadge(stats.totals.games),
       record: displayRecord(stats.overall),
       winRate: formatWinRate(stats.overall),
       streak: streakLine(stats.streaks.current),
@@ -235,7 +250,7 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
   return {
     teamKey: team.team_id,
     label: `${short.toUpperCase()} RECORD`,
-    badge: `${played} GAMES ATTENDED`,
+    badge: gamesBadge(played),
     record: displayRecord(team.record),
     winRate: formatWinRate(team.record),
     streak: streakLine(stats.streaks.current),
@@ -250,12 +265,218 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
   };
 }
 
+/**
+ * The stamps for one pill.
+ *
+ * A team pill keeps the venues where that team's sport is played. The stats payload says
+ * which sports a venue has hosted and nothing about which team's games you saw there, so
+ * this is as narrow as the data allows — but it is narrower than "every stamp under every
+ * pill", which showed an NFL pill a ballpark. Filtering by the attended game's team needs
+ * the per-venue team breakdown; noted for the stats payload.
+ */
 export function stampsFromStats(inputs: PassportInputs, pill: string): StampFixture[] {
   const { stats, shapes } = inputs;
   const homeVenueIds = new Set<string>();
+  const sport = stats.teams.find((t) => t.team_id === pill)?.sport_id ?? null;
   return stats.stamps
-    .filter((stamp) => pill === 'all' || stamp.sports.length > 0)
+    .filter((stamp) => pill === 'all' || sport == null || stamp.sports.includes(sport))
     .map((stamp) => toStamp(stamp, shapes, homeVenueIds, ['all', pill]));
+}
+
+/**
+ * One record card's game log (SPEC.md 8.8.9), from the same attendances the Games list uses.
+ *
+ * A key names a record: a team id, or 'neutral'. An unknown key returns null and the card
+ * does not open, which is how Passport decides whether a card is tappable at all. A known
+ * record with no games returns a log with no rows rather than null, because "you have no
+ * Phillies games yet" is a true answer and a dead card is not.
+ */
+export function gameLogFromAttendances(inputs: PassportInputs, key: string): GameLogFixture | null {
+  const { stats, teams, shapes } = inputs;
+  const attendances = inputs.attendances ?? [];
+
+  if (key === 'neutral') {
+    const mine = new Set(stats.teams.map((t) => t.team_id));
+    const matching = attendances.filter(
+      (a) => !mine.has(a.game.home_team_id) && !mine.has(a.game.away_team_id),
+    );
+    return {
+      title: 'As a neutral',
+      teamKey: 'none',
+      sub: 'Record as a neutral',
+      meta: `${countLine(matching.length)}, ${formatVsExpected(stats.pledge.vs_expected)} vs expected`,
+      ...logRows(matching, null, shapes, teams),
+    };
+  }
+
+  const team = stats.teams.find((t) => t.team_id === key);
+  if (!team) return null;
+  const short = nickname(team.name, teams.get(team.team_id)?.city);
+  const matching = attendances.filter(
+    (a) => a.game.home_team_id === key || a.game.away_team_id === key,
+  );
+  return {
+    title: short,
+    teamKey: team.team_id,
+    sub: `${short} record at games`,
+    meta: `${countLine(matching.length)}, ${formatWinRate(team.record)}`,
+    ...logRows(matching, key, shapes, teams),
+  };
+}
+
+/** "17 games", and the singular for one. */
+function countLine(n: number): string {
+  return `${n} game${n === 1 ? '' : 's'}`;
+}
+
+/** The reference shows six rows and pages the rest behind a "+N more" footer. */
+const LOG_ROWS_SHOWN = 6;
+
+function logRows(
+  attendances: readonly AttendanceRow[],
+  /** Whose result the circle shows: the log's team, or the user's pick for a neutral log. */
+  teamId: string | null,
+  shapes: ReadonlyMap<string, ShapeKey>,
+  teams: ReadonlyMap<string, TeamRef>,
+): { rows: LogRowFixture[]; more: string } {
+  const rows = attendances
+    .slice(0, LOG_ROWS_SHOWN)
+    .map((a) => logRowFromAttendance(a, teamId, shapes, teams));
+  const extra = attendances.length - rows.length;
+  return { rows, more: extra > 0 ? `${extra} more games` : '' };
+}
+
+export function logRowFromAttendance(
+  attendance: AttendanceRow,
+  teamId: string | null,
+  shapes: ReadonlyMap<string, ShapeKey>,
+  teams: ReadonlyMap<string, TeamRef>,
+): LogRowFixture {
+  const g = attendance.game;
+  const row = gameRowFromAttendance(attendance, shapes, teams);
+  const when = new Date(g.scheduled_start).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
+  const result = gameResult(
+    {
+      status: g.status as 'final',
+      homeTeamId: g.home_team_id,
+      awayTeamId: g.away_team_id,
+      homeScore: g.home_score,
+      awayScore: g.away_score,
+    } as Parameters<typeof gameResult>[0],
+    teamId ?? attendance.rooting_team_id,
+  );
+  return {
+    gameId: g.id,
+    team: g.home?.id ?? 'none',
+    shape: (g.venue && shapes.get(g.venue.id)) || 'ballparkA',
+    title: row?.title ?? 'Game',
+    meta: g.venue?.name ? `${g.venue.name}, ${when}` : when,
+    // A game with no side to root for, a tie, or one that is not final has no result, and
+    // the circle is omitted rather than drawn as a loss. Same rule as the Games list.
+    result: result === 'win' ? 'w' : result === 'loss' ? 'l' : null,
+  };
+}
+
+/**
+ * The signed-in account, for the Profile screen (SPEC.md 8.8.7).
+ *
+ * Everything here is the user's own: their handle and name, their favourite teams, their
+ * counts. A field that has not loaded yet is null and is shown as a dash rather than a
+ * zero, because "0 followers" and "not known yet" are different claims.
+ */
+export type ProfileAccount = {
+  handle: string;
+  displayName: string;
+  homeCity: string | null;
+  /** Avatar key. The user's own id, so Avatar falls back to a generated portrait. */
+  avatarKey: string;
+  favorites: readonly { id: string; name: string; city: string | null }[];
+  followers: number | null;
+  following: number | null;
+  goals: { total: number; done: number } | null;
+  /** The newest Wrapped snapshot, or null when none has been generated. */
+  wrapped: { sport_id: string; season: number } | null;
+};
+
+function statValue(n: number | null | undefined): string {
+  return n == null ? '—' : String(n);
+}
+
+export function profileFromAccount(
+  account: ProfileAccount,
+  stats: StatsPayload,
+  companions: readonly CompanionRow[],
+): ProfileFixture {
+  const chips = account.favorites.map((t) => ({
+    team: t.id,
+    label: nickname(t.name, t.city),
+  }));
+
+  const rows: ProfileFixture['rows'][number][] = [
+    {
+      icon: 'i-users',
+      title: 'Friends',
+      meta: companions.length
+        ? `${companions.length} companion${companions.length === 1 ? '' : 's'}`
+        : 'Companions, rivals, overlaps',
+      facepile: true,
+    },
+    {
+      icon: 'i-target',
+      title: `${new Date().getFullYear()} goals`,
+      meta: goalsLine(account.goals),
+      facepile: false,
+    },
+    {
+      icon: 'i-map',
+      title: 'Map',
+      meta: mapLine(stats),
+      facepile: false,
+    },
+  ];
+  // The Wrapped row is only shown when a snapshot exists: its route needs a season, and a
+  // row that opens an empty Wrapped is worse than no row.
+  if (account.wrapped) {
+    rows.push({
+      icon: 'i-spark',
+      title: `${account.wrapped.season} Wrapped`,
+      meta: account.wrapped.sport_id.toUpperCase(),
+      facepile: false,
+    });
+  }
+
+  return {
+    team: chips[0]?.team ?? 'none',
+    handle: account.handle ? `@${account.handle}` : '',
+    avatar: account.avatarKey,
+    name: account.displayName || account.handle,
+    tagline: account.homeCity ?? '',
+    teamChips: chips,
+    stats: [
+      { value: String(stats.totals.games), label: 'Games' },
+      { value: String(stats.totals.venues), label: 'Stadiums' },
+      { value: statValue(account.followers), label: 'Followers' },
+      { value: statValue(account.following), label: 'Following' },
+    ],
+    facepile: companions.slice(0, 3).map((c) => c.person_id),
+    rows,
+  };
+}
+
+/** "1 of 3 done", or that there are none rather than a count of nothing. */
+function goalsLine(goals: ProfileAccount['goals']): string {
+  if (!goals || goals.total === 0) return 'None set yet';
+  return `${goals.done} of ${goals.total} done`;
+}
+
+function mapLine(stats: StatsPayload): string {
+  const { venues, countries } = stats.totals;
+  if (venues === 0) return 'No stadiums yet';
+  const country = `${countries} ${countries === 1 ? 'country' : 'countries'}`;
+  return `${venues} stadium${venues === 1 ? '' : 's'}, ${country}`;
 }
 
 export type AttendanceRow = {
@@ -575,19 +796,26 @@ export function listSentence(names: readonly string[]): string {
 }
 
 /**
- * Compose the repository. Methods outside {@link SUPABASE_BACKED} fall through to the demo
- * fixtures, which is what the Plan and Guide shells need in v1 anyway (SPEC.md 8.9).
+ * Compose the repository. Methods outside {@link SUPABASE_BACKED} keep
+ * {@link emptyRepository}'s empty value: Pick a side and Relive need a game id this
+ * repository does not hold, and the Plan and Guide screens have no backend at all in v1, so
+ * each of those screens says so rather than borrowing the reference's sample data.
  */
 export function supabaseRepository(inputs: PassportInputs): Repository {
   return {
-    ...demoRepository,
+    ...emptyRepository,
     passportPills: () => passportPillsFromStats(inputs),
     passport: (pill) => passportFromStats(inputs, pill),
     stamps: (pill) => stampsFromStats(inputs, pill),
+    gameLog: (key) => gameLogFromAttendances(inputs, key),
     games: () =>
       (inputs.attendances ?? [])
         .map((a) => gameRowFromAttendance(a, inputs.shapes, inputs.teams))
         .filter((row): row is GameRowFixture => row != null),
+    profile: () =>
+      inputs.account
+        ? profileFromAccount(inputs.account, inputs.stats, inputs.companions ?? [])
+        : emptyRepository.profile(),
     friends: () =>
       friendsFromRecords(inputs.companions ?? [], inputs.rivalries ?? [], inputs.overlaps ?? []),
   };
