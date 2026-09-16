@@ -216,18 +216,36 @@ correctly report "not built" rather than being scored against something they are
 I looked at the diff images rather than trusting the number. Structure, spacing, colour,
 copy and content all line up. What is left is:
 
-1. **Text baseline drift**, accumulating down the screen. Rows near the top align; by the
-   superlatives list the app sits a few points lower than the reference, so that text
-   shows doubled in the diff. This is React Native resolving line box height from the
-   font's own metrics where the CSS leaves `line-height: normal`.
+1. **Three localized vertical offsets**, and — importantly — *not* a steady accumulation.
 2. **Font antialiasing**, which no native renderer avoids and which the 0.15 pixelmatch
    threshold already tolerates most of.
 
-**A warning about (1), because it cost me time.** I assumed React Native's default line
-box is taller than CSS `normal` and set every unspecified line-height to 1.2em. The mean
-went from 5.13% to **5.76%** — worse. I reverted it. Do not repeat that guess; measure a
-single row's baseline in both images first and derive the factor, rather than reasoning
-about it. The one place the CSS does declare `line-height: 1.2` (`.fx-stamp b`) is kept.
+**I was wrong about (1) twice, so here is the measurement instead of a theory.**
+
+First I assumed React Native's line boxes are taller than CSS `normal` and set every
+unspecified line-height to 1.2em. The mean went from 5.13% to **5.76%** — worse. Reverted;
+only the one line-height the CSS actually declares (`.fx-stamp b`) is kept.
+
+Then I wrote in this file that the residue was drift accumulating down the screen. It is
+not. `npm run parity:drift passport-all light` slices the screen into 40pt bands and finds
+the vertical offset that best aligns each one. Accumulation would show as a steadily
+growing number; the measured rate is 0.22pt per 100pt, which is noise. What it actually
+shows, identically on `passport-all.light` and `passport-phi.dark`:
+
+| Region | Offset | Meaning |
+|---|---|---|
+| 0-40pt (wordmark, pills) | **-3pt** | app sits 3pt HIGH |
+| 80-320pt (hero, record cards) | **+3pt** | app sits 3pt LOW |
+| 400-480pt (section header, stamps) | ~0 | aligned |
+| 520-680pt (stamp captions, superlatives) | **-4 to -8pt** | app sits up to 8pt HIGH |
+
+So specific block heights are wrong at two boundaries — between the pills and the hero,
+and again around the stamps row — and everything between them is simply carried along.
+This is a handful of individual margins and line boxes, not a global typography factor.
+The worst single band is 520-560pt at -8.33pt, which is the stamp caption block, so start
+there. `.fx-word` has `line-height:.85` and `.fx-rec b` has `.78`, both below 1, and React
+Native positions glyphs differently from CSS when the line box is shorter than the font
+size; that is the most likely source of the top two rows.
 
 ### Bugs the harness caught that reading the code would not have
 
@@ -280,10 +298,11 @@ Repeating the table at the top, with what landed overnight added:
 
 ## What I would do next, in order
 
-1. **Nail the baseline drift once.** It affects every screen, so solving it on Passport
-   pays for itself immediately. Measure a known row's y-position in the reference and app
-   PNGs, derive the actual line box difference, and apply it as a typography helper rather
-   than per-style guesses. Expect Passport to land near 1-2%.
+1. **Fix the three offsets above**, using `npm run parity:drift` after each change to see
+   which band moved. Start with the 520-560pt band (-8.33pt, the stamp captions), then the
+   pills-to-hero boundary. It affects every screen, so solving it on Passport pays for
+   itself immediately. Expect Passport to land near 1-2%. Do not reach for a global
+   line-height factor; the measurement above says there is no global factor to find.
 2. **Port the record game log slide-over.** It is the other half of Passport, the
    fixtures and the log data already exist, and the panel motion is specified
    (320ms, `cubic-bezier(.2,.8,.2,1)`).

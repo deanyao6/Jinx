@@ -35,7 +35,8 @@
     "build:design": "npm run build:icons && npm run build:shapes",
     "fonts": "python3 scripts/fonts/build-archivo.py",
     "fonts:check": "python3 scripts/fonts/build-archivo.py --check",
-    "seed:colors:check": "python3 seed/scripts/check_team_colors.py"
+    "seed:colors:check": "python3 seed/scripts/check_team_colors.py",
+    "parity:drift": "node scripts/parity/drift.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
