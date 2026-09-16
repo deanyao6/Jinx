@@ -1,0 +1,3068 @@
+[
+  {
+    "key": "mlb-venue-1",
+    "provider_ids": {
+      "mlb_venue_id": 1
+    },
+    "name": "Angel Stadium",
+    "aliases": ["Angel Stadium", "Angel Stadium of Anaheim", "Edison International Field"],
+    "city": "Anaheim",
+    "state": "CA",
+    "country": "USA",
+    "lat": 33.80019044,
+    "lng": -117.8823996,
+    "tz": "America/Los_Angeles",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2",
+    "provider_ids": {
+      "mlb_venue_id": 2
+    },
+    "name": "Oriole Park at Camden Yards",
+    "aliases": ["Oriole Park at Camden Yards"],
+    "city": "Baltimore",
+    "state": "MD",
+    "country": "USA",
+    "lat": 39.283787,
+    "lng": -76.621689,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3",
+    "provider_ids": {
+      "mlb_venue_id": 3
+    },
+    "name": "Fenway Park",
+    "aliases": ["Fenway Park"],
+    "city": "Boston",
+    "state": "MA",
+    "country": "USA",
+    "lat": 42.346456,
+    "lng": -71.097441,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4",
+    "provider_ids": {
+      "mlb_venue_id": 4
+    },
+    "name": "Rate Field",
+    "aliases": ["Comiskey Park", "Guaranteed Rate Field", "Rate Field", "U.S. Cellular Field"],
+    "city": "Chicago",
+    "state": "IL",
+    "country": "USA",
+    "lat": 41.83,
+    "lng": -87.634167,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5",
+    "provider_ids": {
+      "mlb_venue_id": 5
+    },
+    "name": "Progressive Field",
+    "aliases": ["Jacobs Field", "Progressive Field"],
+    "city": "Cleveland",
+    "state": "OH",
+    "country": "USA",
+    "lat": 41.495861,
+    "lng": -81.685255,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-7",
+    "provider_ids": {
+      "mlb_venue_id": 7
+    },
+    "name": "Kauffman Stadium",
+    "aliases": ["Kauffman Stadium"],
+    "city": "Kansas City",
+    "state": "MO",
+    "country": "USA",
+    "lat": 39.051567,
+    "lng": -94.480483,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-8",
+    "provider_ids": {
+      "mlb_venue_id": 8
+    },
+    "name": "Hubert H. Humphrey Metrodome",
+    "aliases": ["Hubert H. Humphrey Metrodome"],
+    "city": "Minneapolis",
+    "state": "MN",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2009,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-9",
+    "provider_ids": {
+      "mlb_venue_id": 9
+    },
+    "name": "Yankee Stadium I",
+    "aliases": ["Yankee Stadium I"],
+    "city": "Bronx",
+    "state": "NY",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-10",
+    "provider_ids": {
+      "mlb_venue_id": 10
+    },
+    "name": "Oakland Coliseum",
+    "aliases": [
+      "McAfee Coliseum",
+      "Network Associates Coliseum",
+      "O.co Coliseum",
+      "Oakland Coliseum"
+    ],
+    "city": "Oakland",
+    "state": "CA",
+    "country": "USA",
+    "lat": 37.751511,
+    "lng": -122.200698,
+    "tz": "America/Los_Angeles",
+    "first_season": 2000,
+    "last_season": 2024,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-12",
+    "provider_ids": {
+      "mlb_venue_id": 12
+    },
+    "name": "Tropicana Field",
+    "aliases": ["Tropicana Field"],
+    "city": "St. Petersburg",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.767778,
+    "lng": -82.6525,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-13",
+    "provider_ids": {
+      "mlb_venue_id": 13
+    },
+    "name": "Globe Life Park in Arlington",
+    "aliases": [
+      "Ameriquest Field",
+      "Globe Life Park in Arlington",
+      "Rangers Ballpark in Arlington",
+      "The Ballpark at Arlington"
+    ],
+    "city": "Arlington",
+    "state": "TX",
+    "country": "USA",
+    "lat": 32.751321,
+    "lng": -97.082682,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2019,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-14",
+    "provider_ids": {
+      "mlb_venue_id": 14
+    },
+    "name": "Rogers Centre",
+    "aliases": ["Rogers Centre", "SkyDome"],
+    "city": "Toronto",
+    "state": "ON",
+    "country": "Canada",
+    "lat": 43.64155,
+    "lng": -79.38915,
+    "tz": "America/Toronto",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-15",
+    "provider_ids": {
+      "mlb_venue_id": 15
+    },
+    "name": "Chase Field",
+    "aliases": ["Bank One Ballpark", "Chase Field"],
+    "city": "Phoenix",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.445302,
+    "lng": -112.066687,
+    "tz": "America/Phoenix",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-16",
+    "provider_ids": {
+      "mlb_venue_id": 16
+    },
+    "name": "Turner Field",
+    "aliases": ["Turner Field"],
+    "city": "Atlanta",
+    "state": "GA",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-17",
+    "provider_ids": {
+      "mlb_venue_id": 17
+    },
+    "name": "Wrigley Field",
+    "aliases": ["Wrigley Field"],
+    "city": "Chicago",
+    "state": "IL",
+    "country": "USA",
+    "lat": 41.948171,
+    "lng": -87.655503,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-18",
+    "provider_ids": {
+      "mlb_venue_id": 18
+    },
+    "name": "Cinergy Field",
+    "aliases": ["Cinergy Field"],
+    "city": "Cincinnati",
+    "state": "OH",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2002,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-19",
+    "provider_ids": {
+      "mlb_venue_id": 19
+    },
+    "name": "Coors Field",
+    "aliases": ["Coors Field"],
+    "city": "Denver",
+    "state": "CO",
+    "country": "USA",
+    "lat": 39.756042,
+    "lng": -104.994136,
+    "tz": "America/Denver",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-20",
+    "provider_ids": {
+      "mlb_venue_id": 20
+    },
+    "name": "Sun Life Stadium",
+    "aliases": ["Dolphin Stadium", "Land Shark Stadium", "Pro Player Stadium", "Sun Life Stadium"],
+    "city": "Miami",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2011,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-22",
+    "provider_ids": {
+      "mlb_venue_id": 22
+    },
+    "name": "UNIQLO Field at Dodger Stadium",
+    "aliases": ["Dodger Stadium", "UNIQLO Field at Dodger Stadium"],
+    "city": "Los Angeles",
+    "state": "CA",
+    "country": "USA",
+    "lat": 34.07368,
+    "lng": -118.24053,
+    "tz": "America/Los_Angeles",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-23",
+    "provider_ids": {
+      "mlb_venue_id": 23
+    },
+    "name": "Milwaukee County Stadium",
+    "aliases": ["Milwaukee County Stadium"],
+    "city": "Milwaukee",
+    "state": "WI",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2000,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-24",
+    "provider_ids": {
+      "mlb_venue_id": 24
+    },
+    "name": "Olympic Stadium",
+    "aliases": ["Olympic Stadium"],
+    "city": "Montreal",
+    "state": "QC",
+    "country": "Canada",
+    "lat": 45.558,
+    "lng": -73.552,
+    "tz": "America/Toronto",
+    "first_season": 2000,
+    "last_season": 2019,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-25",
+    "provider_ids": {
+      "mlb_venue_id": 25
+    },
+    "name": "Shea Stadium",
+    "aliases": ["Shea Stadium"],
+    "city": "Flushing",
+    "state": "NY",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-26",
+    "provider_ids": {
+      "mlb_venue_id": 26
+    },
+    "name": "Veterans Stadium",
+    "aliases": ["Veterans Stadium"],
+    "city": "Philadelphia",
+    "state": "PA",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2003,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-27",
+    "provider_ids": {
+      "mlb_venue_id": 27
+    },
+    "name": "Three Rivers Stadium",
+    "aliases": ["Three Rivers Stadium"],
+    "city": "Pittsburgh",
+    "state": "PA",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2000,
+    "last_season": 2000,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-28",
+    "provider_ids": {
+      "mlb_venue_id": 28
+    },
+    "name": "Qualcomm Stadium",
+    "aliases": ["Qualcomm Stadium"],
+    "city": "San Diego",
+    "state": "CA",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Los_Angeles",
+    "first_season": 2000,
+    "last_season": 2003,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-30",
+    "provider_ids": {
+      "mlb_venue_id": 30
+    },
+    "name": "Busch Stadium I",
+    "aliases": ["Busch Stadium I"],
+    "city": "St. Louis",
+    "state": "MO",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2005,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-31",
+    "provider_ids": {
+      "mlb_venue_id": 31
+    },
+    "name": "PNC Park",
+    "aliases": ["PNC Park"],
+    "city": "Pittsburgh",
+    "state": "PA",
+    "country": "USA",
+    "lat": 40.446904,
+    "lng": -80.005753,
+    "tz": "America/New_York",
+    "first_season": 2001,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-32",
+    "provider_ids": {
+      "mlb_venue_id": 32
+    },
+    "name": "American Family Field",
+    "aliases": ["American Family Field", "Miller Park"],
+    "city": "Milwaukee",
+    "state": "WI",
+    "country": "USA",
+    "lat": 43.02838,
+    "lng": -87.97099,
+    "tz": "America/Chicago",
+    "first_season": 2001,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-401",
+    "provider_ids": {
+      "mlb_venue_id": 401
+    },
+    "name": "TBD",
+    "aliases": ["TBD"],
+    "city": "United States",
+    "state": null,
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2012,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-680",
+    "provider_ids": {
+      "mlb_venue_id": 680
+    },
+    "name": "T-Mobile Park",
+    "aliases": ["Safeco Field", "T-Mobile Park"],
+    "city": "Seattle",
+    "state": "WA",
+    "country": "USA",
+    "lat": 47.591333,
+    "lng": -122.33251,
+    "tz": "America/Los_Angeles",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2392",
+    "provider_ids": {
+      "mlb_venue_id": 2392
+    },
+    "name": "Daikin Park",
+    "aliases": ["Astros Field", "Daikin Park", "Enron Field", "Minute Maid Park"],
+    "city": "Houston",
+    "state": "TX",
+    "country": "USA",
+    "lat": 29.756967,
+    "lng": -95.355509,
+    "tz": "America/Chicago",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2394",
+    "provider_ids": {
+      "mlb_venue_id": 2394
+    },
+    "name": "Comerica Park",
+    "aliases": ["Comerica Park"],
+    "city": "Detroit",
+    "state": "MI",
+    "country": "USA",
+    "lat": 42.3391151,
+    "lng": -83.048695,
+    "tz": "America/Detroit",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2395",
+    "provider_ids": {
+      "mlb_venue_id": 2395
+    },
+    "name": "Oracle Park",
+    "aliases": ["AT&T Park", "Oracle Park", "PacBell Park", "SBC Park"],
+    "city": "San Francisco",
+    "state": "CA",
+    "country": "USA",
+    "lat": 37.778383,
+    "lng": -122.389448,
+    "tz": "America/Los_Angeles",
+    "first_season": 2000,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2397",
+    "provider_ids": {
+      "mlb_venue_id": 2397
+    },
+    "name": "Tokyo Dome",
+    "aliases": ["Tokyo Dome"],
+    "city": "Tokyo",
+    "state": null,
+    "country": "Japan",
+    "lat": 35.7056,
+    "lng": 139.7519,
+    "tz": "Asia/Tokyo",
+    "first_season": 2000,
+    "last_season": 2025,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2500",
+    "provider_ids": {
+      "mlb_venue_id": 2500
+    },
+    "name": "Tempe Diablo Stadium",
+    "aliases": ["Tempe Diablo Stadium"],
+    "city": "Tempe",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.40092,
+    "lng": -111.9707,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2501",
+    "provider_ids": {
+      "mlb_venue_id": 2501
+    },
+    "name": "Kino Veterans Memorial Stadium",
+    "aliases": ["Kino Veterans Memorial Stadium", "Tucson Electric Park"],
+    "city": "Tucson",
+    "state": "AZ",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2013,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2503",
+    "provider_ids": {
+      "mlb_venue_id": 2503
+    },
+    "name": "Cashman Field",
+    "aliases": ["Cashman Field"],
+    "city": "Las Vegas",
+    "state": "NV",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Los_Angeles",
+    "first_season": 2006,
+    "last_season": 2018,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2504",
+    "provider_ids": {
+      "mlb_venue_id": 2504
+    },
+    "name": "The Stadium at the ESPN Wide World of Sports",
+    "aliases": [
+      "Champion Stadium",
+      "Cracker Jack Stadium",
+      "The Ballpark at Disney's Wide World of Sports",
+      "The Stadium at the ESPN Wide World of Sports"
+    ],
+    "city": "Lake Buena Vista",
+    "state": "FL",
+    "country": "USA",
+    "lat": 28.33725,
+    "lng": -81.55613,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2023,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2505",
+    "provider_ids": {
+      "mlb_venue_id": 2505
+    },
+    "name": "Fort Lauderdale Stadium",
+    "aliases": ["Fort Lauderdale Stadium"],
+    "city": "Ft. Lauderdale",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2009,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2506",
+    "provider_ids": {
+      "mlb_venue_id": 2506
+    },
+    "name": "City of Palms Park",
+    "aliases": ["City of Palms Park"],
+    "city": "Ft. Myers",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2011,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2507",
+    "provider_ids": {
+      "mlb_venue_id": 2507
+    },
+    "name": "Hohokam Stadium",
+    "aliases": ["Hohokam Park", "Hohokam Stadium"],
+    "city": "Mesa",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.43831,
+    "lng": -111.82973,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2508",
+    "provider_ids": {
+      "mlb_venue_id": 2508
+    },
+    "name": "Ed Smith Stadium",
+    "aliases": ["Ed Smith Stadium"],
+    "city": "Sarasota",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.34795,
+    "lng": -82.5174,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2509",
+    "provider_ids": {
+      "mlb_venue_id": 2509
+    },
+    "name": "Chain of Lakes Park",
+    "aliases": ["Chain of Lakes Park"],
+    "city": "Winter Haven",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2511",
+    "provider_ids": {
+      "mlb_venue_id": 2511
+    },
+    "name": "Publix Field at Joker Marchant Stadium",
+    "aliases": ["Joker Marchant Stadium", "Publix Field at Joker Marchant Stadium"],
+    "city": "Lakeland",
+    "state": "FL",
+    "country": "USA",
+    "lat": 28.074822,
+    "lng": -81.9508415,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2513",
+    "provider_ids": {
+      "mlb_venue_id": 2513
+    },
+    "name": "Space Coast Stadium",
+    "aliases": ["Space Coast Stadium"],
+    "city": "Viera",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2514",
+    "provider_ids": {
+      "mlb_venue_id": 2514
+    },
+    "name": "Osceola County Stadium",
+    "aliases": ["Osceola County Stadium"],
+    "city": "Kissimmee",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2516",
+    "provider_ids": {
+      "mlb_venue_id": 2516
+    },
+    "name": "The Diamond",
+    "aliases": ["The Diamond"],
+    "city": "Lake Elsinore",
+    "state": "CA",
+    "country": "USA",
+    "lat": 33.654183,
+    "lng": -117.3010675,
+    "tz": "America/Los_Angeles",
+    "first_season": 2003,
+    "last_season": 2017,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2517",
+    "provider_ids": {
+      "mlb_venue_id": 2517
+    },
+    "name": "Holman Stadium",
+    "aliases": ["Holman Stadium"],
+    "city": "Vero Beach",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2518",
+    "provider_ids": {
+      "mlb_venue_id": 2518
+    },
+    "name": "American Family Fields of Phoenix",
+    "aliases": ["American Family Fields of Phoenix", "Maryvale Baseball Park"],
+    "city": "Phoenix",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.49202,
+    "lng": -112.1727,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2520",
+    "provider_ids": {
+      "mlb_venue_id": 2520
+    },
+    "name": "Roger Dean Chevrolet Stadium",
+    "aliases": ["Roger Dean Chevrolet Stadium", "Roger Dean Stadium"],
+    "city": "Jupiter",
+    "state": "FL",
+    "country": "USA",
+    "lat": 26.890957,
+    "lng": -80.116365,
+    "tz": "America/New_York",
+    "first_season": 2003,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2521",
+    "provider_ids": {
+      "mlb_venue_id": 2521
+    },
+    "name": "Knights Stadium",
+    "aliases": ["Knights Stadium"],
+    "city": "Charlotte",
+    "state": "NC",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2010,
+    "last_season": 2010,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2523",
+    "provider_ids": {
+      "mlb_venue_id": 2523
+    },
+    "name": "George M. Steinbrenner Field",
+    "aliases": ["George M. Steinbrenner Field", "Legends Field"],
+    "city": "Tampa",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.97997,
+    "lng": -82.50702,
+    "tz": "America/New_York",
+    "first_season": 2004,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2524",
+    "provider_ids": {
+      "mlb_venue_id": 2524
+    },
+    "name": "Phoenix Municipal Stadium",
+    "aliases": ["Phoenix Municipal Stadium"],
+    "city": "Phoenix",
+    "state": "AZ",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2014,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2525",
+    "provider_ids": {
+      "mlb_venue_id": 2525
+    },
+    "name": "Jack Russell Stadium",
+    "aliases": ["Jack Russell Stadium"],
+    "city": "Clearwater",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2002,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2526",
+    "provider_ids": {
+      "mlb_venue_id": 2526
+    },
+    "name": "LECOM Park",
+    "aliases": ["LECOM Park", "McKechnie Field"],
+    "city": "Bradenton",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.48553,
+    "lng": -82.57038,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2528",
+    "provider_ids": {
+      "mlb_venue_id": 2528
+    },
+    "name": "The Dell Diamond",
+    "aliases": ["The Dell Diamond"],
+    "city": "Round Rock",
+    "state": "TX",
+    "country": "USA",
+    "lat": 30.527463,
+    "lng": -97.630397,
+    "tz": "America/Chicago",
+    "first_season": 2007,
+    "last_season": 2012,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2529",
+    "provider_ids": {
+      "mlb_venue_id": 2529
+    },
+    "name": "Sutter Health Park",
+    "aliases": ["Raley Field", "Sutter Health Park"],
+    "city": "Sacramento",
+    "state": "CA",
+    "country": "USA",
+    "lat": 38.57994,
+    "lng": -121.51246,
+    "tz": "America/Los_Angeles",
+    "first_season": 2003,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2530",
+    "provider_ids": {
+      "mlb_venue_id": 2530
+    },
+    "name": "Peoria Stadium",
+    "aliases": ["Peoria Stadium"],
+    "city": "Peoria",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.63187,
+    "lng": -112.23359,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2531",
+    "provider_ids": {
+      "mlb_venue_id": 2531
+    },
+    "name": "Desert Sun Stadium",
+    "aliases": ["Desert Sun Stadium"],
+    "city": "Yuma",
+    "state": "AZ",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Phoenix",
+    "first_season": 2003,
+    "last_season": 2007,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2532",
+    "provider_ids": {
+      "mlb_venue_id": 2532
+    },
+    "name": "Scottsdale Stadium",
+    "aliases": ["Scottsdale Stadium"],
+    "city": "Scottsdale",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.48869,
+    "lng": -111.92099,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2533",
+    "provider_ids": {
+      "mlb_venue_id": 2533
+    },
+    "name": "Florida Power Park",
+    "aliases": ["Florida Power Park"],
+    "city": "St. Petersburg",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2003,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2534",
+    "provider_ids": {
+      "mlb_venue_id": 2534
+    },
+    "name": "Charlotte Sports Park",
+    "aliases": ["Charlotte County Stadium", "Charlotte Sports Park"],
+    "city": "Port Charlotte",
+    "state": "FL",
+    "country": "USA",
+    "lat": 26.99888,
+    "lng": -82.18212,
+    "tz": "America/New_York",
+    "first_season": 2009,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2535",
+    "provider_ids": {
+      "mlb_venue_id": 2535
+    },
+    "name": "Hiram Bithorn Stadium",
+    "aliases": ["Hiram Bithorn Stadium"],
+    "city": "San Juan",
+    "state": "PR",
+    "country": "Puerto Rico",
+    "lat": 18.41666,
+    "lng": -66.072817,
+    "tz": "America/Puerto_Rico",
+    "first_season": 2001,
+    "last_season": 2018,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2536",
+    "provider_ids": {
+      "mlb_venue_id": 2536
+    },
+    "name": "TD Ballpark",
+    "aliases": ["Dunedin Stadium", "Florida Auto Exchange Stadium", "Knology Park", "TD Ballpark"],
+    "city": "Dunedin",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.9745812,
+    "lng": -82.7913301,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2538",
+    "provider_ids": {
+      "mlb_venue_id": 2538
+    },
+    "name": "US West Sports Complex, Hi Corbett Field",
+    "aliases": ["US West Sports Complex, Hi Corbett Field"],
+    "city": "Tucson",
+    "state": "AZ",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Phoenix",
+    "first_season": 2002,
+    "last_season": 2010,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2540",
+    "provider_ids": {
+      "mlb_venue_id": 2540
+    },
+    "name": "Joseph P. Riley, Jr. Ballpark",
+    "aliases": ["Joseph P. Riley, Jr. Ballpark"],
+    "city": "Charleston",
+    "state": "SC",
+    "country": "USA",
+    "lat": 32.790421,
+    "lng": -79.961332,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2002,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2541",
+    "provider_ids": {
+      "mlb_venue_id": 2541
+    },
+    "name": "Durham Bulls Athletic Park",
+    "aliases": ["Durham Bulls Athletic Park"],
+    "city": "Durham",
+    "state": "NC",
+    "country": "USA",
+    "lat": 35.99158,
+    "lng": -78.90401,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2010,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2542",
+    "provider_ids": {
+      "mlb_venue_id": 2542
+    },
+    "name": "AutoZone Park",
+    "aliases": ["AutoZone Park"],
+    "city": "Memphis",
+    "state": "TN",
+    "country": "USA",
+    "lat": 35.14297,
+    "lng": -90.04924,
+    "tz": "America/Chicago",
+    "first_season": 2002,
+    "last_season": 2025,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2543",
+    "provider_ids": {
+      "mlb_venue_id": 2543
+    },
+    "name": "Mark Light Stadium",
+    "aliases": ["Mark Light Stadium"],
+    "city": "Coral Gables",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2002,
+    "last_season": 2002,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2545",
+    "provider_ids": {
+      "mlb_venue_id": 2545
+    },
+    "name": "Christensen Stadium",
+    "aliases": ["Christensen Stadium"],
+    "city": "Midland",
+    "state": "TX",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2002,
+    "last_season": 2004,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2602",
+    "provider_ids": {
+      "mlb_venue_id": 2602
+    },
+    "name": "Great American Ball Park",
+    "aliases": ["Great American Ball Park"],
+    "city": "Cincinnati",
+    "state": "OH",
+    "country": "USA",
+    "lat": 39.097389,
+    "lng": -84.506611,
+    "tz": "America/New_York",
+    "first_season": 2003,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2603",
+    "provider_ids": {
+      "mlb_venue_id": 2603
+    },
+    "name": "Surprise Stadium",
+    "aliases": ["Surprise Stadium"],
+    "city": "Surprise",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.62762,
+    "lng": -112.37849,
+    "tz": "America/Phoenix",
+    "first_season": 2003,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2620",
+    "provider_ids": {
+      "mlb_venue_id": 2620
+    },
+    "name": "El Paso",
+    "aliases": ["El Paso"],
+    "city": "Birmingham",
+    "state": "AL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Denver",
+    "first_season": 2003,
+    "last_season": 2003,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2623",
+    "provider_ids": {
+      "mlb_venue_id": 2623
+    },
+    "name": "Regions Park",
+    "aliases": ["Regions Park"],
+    "city": "Birmingham",
+    "state": "AL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2003,
+    "last_season": 2007,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2624",
+    "provider_ids": {
+      "mlb_venue_id": 2624
+    },
+    "name": "PGE Park",
+    "aliases": ["PGE Park"],
+    "city": "Portland",
+    "state": "OR",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Los_Angeles",
+    "first_season": 2003,
+    "last_season": 2006,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2625",
+    "provider_ids": {
+      "mlb_venue_id": 2625
+    },
+    "name": "Five County Stadium",
+    "aliases": ["Five County Stadium"],
+    "city": "Zebulon",
+    "state": "NC",
+    "country": "USA",
+    "lat": 35.81726,
+    "lng": -78.27122,
+    "tz": "America/New_York",
+    "first_season": 2003,
+    "last_season": 2012,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2640",
+    "provider_ids": {
+      "mlb_venue_id": 2640
+    },
+    "name": "Chukchansi Park",
+    "aliases": ["Chukchansi Park"],
+    "city": "Fresno",
+    "state": "CA",
+    "country": "USA",
+    "lat": 36.73256,
+    "lng": -119.79157,
+    "tz": "America/Los_Angeles",
+    "first_season": 2003,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2641",
+    "provider_ids": {
+      "mlb_venue_id": 2641
+    },
+    "name": "Drillers Stadium",
+    "aliases": ["Drillers Stadium"],
+    "city": "Tulsa",
+    "state": "OK",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2003,
+    "last_season": 2003,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2660",
+    "provider_ids": {
+      "mlb_venue_id": 2660
+    },
+    "name": "Doubleday Field",
+    "aliases": ["Doubleday Field"],
+    "city": "Cooperstown",
+    "state": "NY",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2007,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2680",
+    "provider_ids": {
+      "mlb_venue_id": 2680
+    },
+    "name": "Petco Park",
+    "aliases": ["PETCO Park", "Petco Park"],
+    "city": "San Diego",
+    "state": "CA",
+    "country": "USA",
+    "lat": 32.707861,
+    "lng": -117.157278,
+    "tz": "America/Los_Angeles",
+    "first_season": 2004,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2681",
+    "provider_ids": {
+      "mlb_venue_id": 2681
+    },
+    "name": "Citizens Bank Park",
+    "aliases": ["Citizens Bank Park"],
+    "city": "Philadelphia",
+    "state": "PA",
+    "country": "USA",
+    "lat": 39.90539086,
+    "lng": -75.16716957,
+    "tz": "America/New_York",
+    "first_season": 2004,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2683",
+    "provider_ids": {
+      "mlb_venue_id": 2683
+    },
+    "name": "Isotopes Park",
+    "aliases": ["Isotopes Park"],
+    "city": "Albuquerque",
+    "state": "NM",
+    "country": "USA",
+    "lat": 35.06985,
+    "lng": -106.62802,
+    "tz": "America/Denver",
+    "first_season": 2004,
+    "last_season": 2019,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2700",
+    "provider_ids": {
+      "mlb_venue_id": 2700
+    },
+    "name": "BayCare Ballpark",
+    "aliases": [
+      "BayCare Ballpark",
+      "Bright House Field",
+      "Bright House Networks Field",
+      "Spectrum Field"
+    ],
+    "city": "Clearwater",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.97159,
+    "lng": -82.731714,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2701",
+    "provider_ids": {
+      "mlb_venue_id": 2701
+    },
+    "name": "Walmart Park",
+    "aliases": ["Estadio de Beisbol Monterrey", "Walmart Park"],
+    "city": "Monterrey",
+    "state": "MX",
+    "country": "Mexico",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Monterrey",
+    "first_season": 2018,
+    "last_season": 2025,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2721",
+    "provider_ids": {
+      "mlb_venue_id": 2721
+    },
+    "name": "Robert F. Kennedy Memorial Stadium",
+    "aliases": ["Robert F. Kennedy Memorial Stadium"],
+    "city": "Washington",
+    "state": "DC",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2005,
+    "last_season": 2007,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2722",
+    "provider_ids": {
+      "mlb_venue_id": 2722
+    },
+    "name": "Route 66 Stadium",
+    "aliases": ["Hammons Field", "Route 66 Stadium"],
+    "city": "Springfield",
+    "state": "MO",
+    "country": "USA",
+    "lat": 37.21078,
+    "lng": -93.2797,
+    "tz": "America/Chicago",
+    "first_season": 2008,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2723",
+    "provider_ids": {
+      "mlb_venue_id": 2723
+    },
+    "name": "NewBridge Bank Park",
+    "aliases": ["NewBridge Bank Park"],
+    "city": "Greensboro",
+    "state": "NC",
+    "country": "USA",
+    "lat": 36.07667,
+    "lng": -79.79487,
+    "tz": "America/New_York",
+    "first_season": 2010,
+    "last_season": 2015,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2724",
+    "provider_ids": {
+      "mlb_venue_id": 2724
+    },
+    "name": "Louisville Slugger Field",
+    "aliases": ["Louisville Slugger Field"],
+    "city": "Louisville",
+    "state": "KY",
+    "country": "USA",
+    "lat": 38.2557199,
+    "lng": -85.74479,
+    "tz": "America/Kentucky/Louisville",
+    "first_season": 2014,
+    "last_season": 2017,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2733",
+    "provider_ids": {
+      "mlb_venue_id": 2733
+    },
+    "name": "Peoples Natural Gas Field",
+    "aliases": ["Peoples Natural Gas Field"],
+    "city": "Altoona",
+    "state": "PA",
+    "country": "USA",
+    "lat": 40.473826,
+    "lng": -78.394753,
+    "tz": "America/New_York",
+    "first_season": 2013,
+    "last_season": 2013,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2735",
+    "provider_ids": {
+      "mlb_venue_id": 2735
+    },
+    "name": "Journey Bank Ballpark",
+    "aliases": ["BB&T Ballpark", "Journey Bank Ballpark", "Muncy Bank Ballpark"],
+    "city": "Williamsport",
+    "state": "PA",
+    "country": "USA",
+    "lat": 41.2419845,
+    "lng": -77.0475104,
+    "tz": "America/New_York",
+    "first_season": 2017,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2745",
+    "provider_ids": {
+      "mlb_venue_id": 2745
+    },
+    "name": "Cheney Stadium",
+    "aliases": ["Cheney Stadium"],
+    "city": "Tacoma",
+    "state": "WA",
+    "country": "USA",
+    "lat": 47.237981,
+    "lng": -122.497643,
+    "tz": "America/Los_Angeles",
+    "first_season": 2006,
+    "last_season": 2006,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2747",
+    "provider_ids": {
+      "mlb_venue_id": 2747
+    },
+    "name": "(BB&T) Coastal Federal Field",
+    "aliases": ["(BB&T) Coastal Federal Field"],
+    "city": "Myrtle Beach",
+    "state": "SC",
+    "country": "USA",
+    "lat": 33.711404,
+    "lng": -78.88444,
+    "tz": "America/New_York",
+    "first_season": 2011,
+    "last_season": 2011,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2751",
+    "provider_ids": {
+      "mlb_venue_id": 2751
+    },
+    "name": "Cooper Stadium",
+    "aliases": ["Cooper Stadium"],
+    "city": "Columbus",
+    "state": "OH",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2007,
+    "last_season": 2007,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2755",
+    "provider_ids": {
+      "mlb_venue_id": 2755
+    },
+    "name": "Dr. Pepper Ballpark",
+    "aliases": ["Dr. Pepper Ballpark"],
+    "city": "Frisco",
+    "state": "TX",
+    "country": "USA",
+    "lat": 33.0984,
+    "lng": -96.8197,
+    "tz": "America/Chicago",
+    "first_season": 2006,
+    "last_season": 2012,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2756",
+    "provider_ids": {
+      "mlb_venue_id": 2756
+    },
+    "name": "Sahlen Field",
+    "aliases": ["Sahlen Field"],
+    "city": "Buffalo",
+    "state": "NY",
+    "country": "USA",
+    "lat": 42.880772,
+    "lng": -78.873955,
+    "tz": "America/New_York",
+    "first_season": 2020,
+    "last_season": 2021,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2766",
+    "provider_ids": {
+      "mlb_venue_id": 2766
+    },
+    "name": "Day Air Ballpark",
+    "aliases": ["Day Air Ballpark", "Fifth Third Field"],
+    "city": "Dayton",
+    "state": "OH",
+    "country": "USA",
+    "lat": 39.764172,
+    "lng": -84.185896,
+    "tz": "America/New_York",
+    "first_season": 2007,
+    "last_season": 2025,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2767",
+    "provider_ids": {
+      "mlb_venue_id": 2767
+    },
+    "name": "Fifth Third Field",
+    "aliases": ["Fifth Third Field"],
+    "city": "Toledo",
+    "state": "OH",
+    "country": "USA",
+    "lat": 41.64767,
+    "lng": -83.53838,
+    "tz": "America/New_York",
+    "first_season": 2012,
+    "last_season": 2012,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2769",
+    "provider_ids": {
+      "mlb_venue_id": 2769
+    },
+    "name": "FirstEnergy Stadium",
+    "aliases": ["FirstEnergy Stadium"],
+    "city": "Reading",
+    "state": "PA",
+    "country": "USA",
+    "lat": 40.365558,
+    "lng": -75.933816,
+    "tz": "America/New_York",
+    "first_season": 2016,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2772",
+    "provider_ids": {
+      "mlb_venue_id": 2772
+    },
+    "name": "Smith's Ballpark",
+    "aliases": ["Smith's Ballpark", "Spring Mobile Ballpark"],
+    "city": "Salt Lake City",
+    "state": "UT",
+    "country": "USA",
+    "lat": 40.74109,
+    "lng": -111.89256,
+    "tz": "America/Denver",
+    "first_season": 2013,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2781",
+    "provider_ids": {
+      "mlb_venue_id": 2781
+    },
+    "name": "Harbor Park",
+    "aliases": ["Harbor Park"],
+    "city": "Norfolk",
+    "state": "VA",
+    "country": "USA",
+    "lat": 36.84265,
+    "lng": -76.27803,
+    "tz": "America/New_York",
+    "first_season": 2007,
+    "last_season": 2018,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2805",
+    "provider_ids": {
+      "mlb_venue_id": 2805
+    },
+    "name": "Maryvale Baseball Complex",
+    "aliases": ["Maryvale Baseball Complex"],
+    "city": "Phoenix",
+    "state": "AZ",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Phoenix",
+    "first_season": 2006,
+    "last_season": 2006,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2813",
+    "provider_ids": {
+      "mlb_venue_id": 2813
+    },
+    "name": "Trustmark Park",
+    "aliases": ["Trustmark Park"],
+    "city": "Pearl",
+    "state": "MS",
+    "country": "USA",
+    "lat": 32.274168,
+    "lng": -90.147519,
+    "tz": "America/Chicago",
+    "first_season": 2013,
+    "last_season": 2013,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2814",
+    "provider_ids": {
+      "mlb_venue_id": 2814
+    },
+    "name": "Montgomery Riverwalk Stadium",
+    "aliases": ["Montgomery Riverwalk Stadium"],
+    "city": "Montgomery",
+    "state": "AL",
+    "country": "USA",
+    "lat": 32.382298,
+    "lng": -86.310592,
+    "tz": "America/Chicago",
+    "first_season": 2014,
+    "last_season": 2014,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2818",
+    "provider_ids": {
+      "mlb_venue_id": 2818
+    },
+    "name": "Nelson W. Wolff Municipal Stadium",
+    "aliases": ["Nelson W. Wolff Municipal Stadium"],
+    "city": "San Antonio",
+    "state": "TX",
+    "country": "USA",
+    "lat": 29.40978,
+    "lng": -98.60189,
+    "tz": "America/Chicago",
+    "first_season": 2009,
+    "last_season": 2009,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2843",
+    "provider_ids": {
+      "mlb_venue_id": 2843
+    },
+    "name": "RedHawks Field at Bricktown",
+    "aliases": ["AT&T Bricktown Ballpark", "RedHawks Field at Bricktown"],
+    "city": "Oklahoma City",
+    "state": "OK",
+    "country": "USA",
+    "lat": 35.46511,
+    "lng": -97.50762,
+    "tz": "America/Chicago",
+    "first_season": 2002,
+    "last_season": 2011,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2846",
+    "provider_ids": {
+      "mlb_venue_id": 2846
+    },
+    "name": "Security Service Field",
+    "aliases": ["Security Service Field"],
+    "city": "Colorado Springs",
+    "state": "CO",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Denver",
+    "first_season": 2007,
+    "last_season": 2007,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2852",
+    "provider_ids": {
+      "mlb_venue_id": 2852
+    },
+    "name": "The Baseball Grounds of Jacksonville",
+    "aliases": ["The Baseball Grounds of Jacksonville"],
+    "city": "Jacksonville",
+    "state": "FL",
+    "country": "USA",
+    "lat": 30.32533,
+    "lng": -81.64256,
+    "tz": "America/New_York",
+    "first_season": 2010,
+    "last_season": 2015,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2854",
+    "provider_ids": {
+      "mlb_venue_id": 2854
+    },
+    "name": "LoanMart Field",
+    "aliases": ["LoanMart Field"],
+    "city": "Rancho Cucamonga",
+    "state": "CA",
+    "country": "USA",
+    "lat": 34.102721,
+    "lng": -117.54792,
+    "tz": "America/Los_Angeles",
+    "first_season": 2013,
+    "last_season": 2013,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2856",
+    "provider_ids": {
+      "mlb_venue_id": 2856
+    },
+    "name": "Clover Park",
+    "aliases": ["Clover Park", "Digital Domain Park", "First Data Field", "Tradition Field"],
+    "city": "Port St. Lucie",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.3249268,
+    "lng": -80.4068854,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2858",
+    "provider_ids": {
+      "mlb_venue_id": 2858
+    },
+    "name": "Victory Field",
+    "aliases": ["Victory Field"],
+    "city": "Indianapolis",
+    "state": "IN",
+    "country": "USA",
+    "lat": 39.7657354,
+    "lng": -86.1682918,
+    "tz": "America/Indiana/Indianapolis",
+    "first_season": 2016,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2861",
+    "provider_ids": {
+      "mlb_venue_id": 2861
+    },
+    "name": "Whataburger Field",
+    "aliases": ["Whataburger Field"],
+    "city": "Corpus Christi",
+    "state": "TX",
+    "country": "USA",
+    "lat": 27.80995,
+    "lng": -97.39941,
+    "tz": "America/Chicago",
+    "first_season": 2009,
+    "last_season": 2015,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2862",
+    "provider_ids": {
+      "mlb_venue_id": 2862
+    },
+    "name": "Lee Health Sports Complex",
+    "aliases": ["CenturyLink Sports Complex", "Hammond Stadium", "Lee Health Sports Complex"],
+    "city": "Fort Myers",
+    "state": "FL",
+    "country": "USA",
+    "lat": 26.537803,
+    "lng": -81.841973,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2865",
+    "provider_ids": {
+      "mlb_venue_id": 2865
+    },
+    "name": "Zephyr Field",
+    "aliases": ["Zephyr Field"],
+    "city": "Metairie",
+    "state": "LA",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2013,
+    "last_season": 2013,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2889",
+    "provider_ids": {
+      "mlb_venue_id": 2889
+    },
+    "name": "Busch Stadium",
+    "aliases": ["Busch Stadium"],
+    "city": "St. Louis",
+    "state": "MO",
+    "country": "USA",
+    "lat": 38.62256667,
+    "lng": -90.19286667,
+    "tz": "America/Chicago",
+    "first_season": 2006,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-2909",
+    "provider_ids": {
+      "mlb_venue_id": 2909
+    },
+    "name": "Progress Energy Park, Home of Al Lang Field",
+    "aliases": ["Progress Energy Park, Home of Al Lang Field"],
+    "city": "St. Petersburg",
+    "state": "FL",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2006,
+    "last_season": 2011,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3049",
+    "provider_ids": {
+      "mlb_venue_id": 3049
+    },
+    "name": "Estadio Quisqueya Juan Marichal",
+    "aliases": ["Estadio Quisqueya Juan Marichal"],
+    "city": "Santo Domingo",
+    "state": null,
+    "country": "Dominican Republic",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Santo_Domingo",
+    "first_season": 2020,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3070",
+    "provider_ids": {
+      "mlb_venue_id": 3070
+    },
+    "name": "Hector Espino",
+    "aliases": ["Hector Espino"],
+    "city": "Hermosillo",
+    "state": "MX",
+    "country": "Mexico",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Hermosillo",
+    "first_season": 2008,
+    "last_season": 2010,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3133",
+    "provider_ids": {
+      "mlb_venue_id": 3133
+    },
+    "name": "Los Angeles Memorial Coliseum",
+    "aliases": ["Los Angeles Memorial Coliseum"],
+    "city": "Los Angeles",
+    "state": "CA",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Los_Angeles",
+    "first_season": 2008,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3230",
+    "provider_ids": {
+      "mlb_venue_id": 3230
+    },
+    "name": "Coca-Cola Park",
+    "aliases": ["Coca-Cola Park"],
+    "city": "Allentown",
+    "state": "PA",
+    "country": "USA",
+    "lat": 40.6253183,
+    "lng": -75.4516154,
+    "tz": "America/New_York",
+    "first_season": 2008,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3289",
+    "provider_ids": {
+      "mlb_venue_id": 3289
+    },
+    "name": "Citi Field",
+    "aliases": ["Citi Field"],
+    "city": "Flushing",
+    "state": "NY",
+    "country": "USA",
+    "lat": 40.75753012,
+    "lng": -73.84559155,
+    "tz": "America/New_York",
+    "first_season": 2009,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3309",
+    "provider_ids": {
+      "mlb_venue_id": 3309
+    },
+    "name": "Nationals Park",
+    "aliases": ["Nationals Park"],
+    "city": "Washington",
+    "state": "DC",
+    "country": "USA",
+    "lat": 38.872861,
+    "lng": -77.007501,
+    "tz": "America/New_York",
+    "first_season": 2008,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3312",
+    "provider_ids": {
+      "mlb_venue_id": 3312
+    },
+    "name": "Target Field",
+    "aliases": ["Target Field"],
+    "city": "Minneapolis",
+    "state": "MN",
+    "country": "USA",
+    "lat": 44.981829,
+    "lng": -93.277891,
+    "tz": "America/Chicago",
+    "first_season": 2010,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3313",
+    "provider_ids": {
+      "mlb_venue_id": 3313
+    },
+    "name": "Yankee Stadium",
+    "aliases": ["Yankee Stadium"],
+    "city": "Bronx",
+    "state": "NY",
+    "country": "USA",
+    "lat": 40.82919482,
+    "lng": -73.9264977,
+    "tz": "America/New_York",
+    "first_season": 2009,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3329",
+    "provider_ids": {
+      "mlb_venue_id": 3329
+    },
+    "name": "Arvest Ballpark",
+    "aliases": ["Arvest Ballpark"],
+    "city": "Springdale",
+    "state": "AR",
+    "country": "USA",
+    "lat": 36.15968,
+    "lng": -94.194624,
+    "tz": "America/Chicago",
+    "first_season": 2024,
+    "last_season": 2024,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3449",
+    "provider_ids": {
+      "mlb_venue_id": 3449
+    },
+    "name": "English Field",
+    "aliases": ["English Field"],
+    "city": "Blacksburg",
+    "state": "VA",
+    "country": "USA",
+    "lat": 37.2178,
+    "lng": -80.4233,
+    "tz": "America/New_York",
+    "first_season": 2008,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3512",
+    "provider_ids": {
+      "mlb_venue_id": 3512
+    },
+    "name": "Wukesong Baseball Stadium",
+    "aliases": ["Wukesong Baseball Stadium"],
+    "city": "Beijing",
+    "state": "CN",
+    "country": "China",
+    "lat": null,
+    "lng": null,
+    "tz": "Asia/Shanghai",
+    "first_season": 2008,
+    "last_season": 2008,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3809",
+    "provider_ids": {
+      "mlb_venue_id": 3809
+    },
+    "name": "Camelback Ranch",
+    "aliases": ["Camelback Ranch"],
+    "city": "Glendale",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.51434,
+    "lng": -112.29612,
+    "tz": "America/Phoenix",
+    "first_season": 2009,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3810",
+    "provider_ids": {
+      "mlb_venue_id": 3810
+    },
+    "name": "Coolray Field",
+    "aliases": ["Coolray Field"],
+    "city": "Lawrenceville",
+    "state": "GA",
+    "country": "USA",
+    "lat": 34.0409586,
+    "lng": -83.9937909,
+    "tz": "America/New_York",
+    "first_season": 2012,
+    "last_season": 2012,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3832",
+    "provider_ids": {
+      "mlb_venue_id": 3832
+    },
+    "name": "AL Stadium",
+    "aliases": ["AL Stadium"],
+    "city": "AL City",
+    "state": null,
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2026,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3833",
+    "provider_ids": {
+      "mlb_venue_id": 3833
+    },
+    "name": "NL Stadium",
+    "aliases": ["NL Stadium"],
+    "city": "NL City",
+    "state": null,
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2026,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3834",
+    "provider_ids": {
+      "mlb_venue_id": 3834
+    },
+    "name": "Goodyear Ballpark",
+    "aliases": ["Goodyear Ballpark"],
+    "city": "Goodyear",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.42892,
+    "lng": -112.39027,
+    "tz": "America/Phoenix",
+    "first_season": 2009,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3949",
+    "provider_ids": {
+      "mlb_venue_id": 3949
+    },
+    "name": "Rickwood Field",
+    "aliases": ["Rickwood Field"],
+    "city": "Birmingham",
+    "state": "AL",
+    "country": "USA",
+    "lat": 33.5023303,
+    "lng": -86.8563555,
+    "tz": "America/Chicago",
+    "first_season": 2024,
+    "last_season": 2024,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-3970",
+    "provider_ids": {
+      "mlb_venue_id": 3970
+    },
+    "name": "Huntington Park",
+    "aliases": ["Huntington Park"],
+    "city": "Columbus",
+    "state": "OH",
+    "country": "USA",
+    "lat": 39.96868,
+    "lng": -83.01102,
+    "tz": "America/New_York",
+    "first_season": 2011,
+    "last_season": 2011,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4149",
+    "provider_ids": {
+      "mlb_venue_id": 4149
+    },
+    "name": "ONEOK Field",
+    "aliases": ["ONEOK Field"],
+    "city": "Tulsa",
+    "state": "OK",
+    "country": "USA",
+    "lat": 36.1601215,
+    "lng": -95.9888782,
+    "tz": "America/Chicago",
+    "first_season": 2011,
+    "last_season": 2011,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4169",
+    "provider_ids": {
+      "mlb_venue_id": 4169
+    },
+    "name": "loanDepot park",
+    "aliases": ["Marlins Park", "loanDepot park"],
+    "city": "Miami",
+    "state": "FL",
+    "country": "USA",
+    "lat": 25.77796236,
+    "lng": -80.21951795,
+    "tz": "America/New_York",
+    "first_season": 2012,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4189",
+    "provider_ids": {
+      "mlb_venue_id": 4189
+    },
+    "name": "Tianmu Baseball Stadium",
+    "aliases": ["Tianmu Baseball Stadium"],
+    "city": "Taipei",
+    "state": "TI",
+    "country": "Taiwan",
+    "lat": null,
+    "lng": null,
+    "tz": "Asia/Taipei",
+    "first_season": 2010,
+    "last_season": 2010,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4190",
+    "provider_ids": {
+      "mlb_venue_id": 4190
+    },
+    "name": "Chengcing Lake Baseball Stadium",
+    "aliases": ["Chengcing Lake Baseball Stadium"],
+    "city": "Kaohsiung",
+    "state": "TI",
+    "country": "Taiwan",
+    "lat": null,
+    "lng": null,
+    "tz": "Asia/Taipei",
+    "first_season": 2010,
+    "last_season": 2010,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4249",
+    "provider_ids": {
+      "mlb_venue_id": 4249
+    },
+    "name": "Salt River Fields at Talking Stick",
+    "aliases": ["Salt River Fields at Talking Stick"],
+    "city": "Scottsdale",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.54523,
+    "lng": -111.88552,
+    "tz": "America/Phoenix",
+    "first_season": 2011,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4271",
+    "provider_ids": {
+      "mlb_venue_id": 4271
+    },
+    "name": "Werner Park",
+    "aliases": ["Werner Park"],
+    "city": "Papillion",
+    "state": "NE",
+    "country": "USA",
+    "lat": 41.1510945,
+    "lng": -96.1057988,
+    "tz": "America/Chicago",
+    "first_season": 2018,
+    "last_season": 2019,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4309",
+    "provider_ids": {
+      "mlb_venue_id": 4309
+    },
+    "name": "JetBlue Park",
+    "aliases": ["JetBlue Park"],
+    "city": "Ft. Myers",
+    "state": "FL",
+    "country": "USA",
+    "lat": 26.55092,
+    "lng": -81.76225,
+    "tz": "America/New_York",
+    "first_season": 2012,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4329",
+    "provider_ids": {
+      "mlb_venue_id": 4329
+    },
+    "name": "Pensacola Bayfront Stadium",
+    "aliases": ["Pensacola Bayfront Stadium"],
+    "city": "Pensacola",
+    "state": "FL",
+    "country": "USA",
+    "lat": 30.4048409,
+    "lng": -87.2188349,
+    "tz": "America/Chicago",
+    "first_season": 2014,
+    "last_season": 2014,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4389",
+    "provider_ids": {
+      "mlb_venue_id": 4389
+    },
+    "name": "Estadio Nacional Rod Carew",
+    "aliases": ["Estadio Nacional Rod Carew"],
+    "city": "Panama City",
+    "state": null,
+    "country": "Panama",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Panama",
+    "first_season": 2014,
+    "last_season": 2014,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4469",
+    "provider_ids": {
+      "mlb_venue_id": 4469
+    },
+    "name": "Alamodome",
+    "aliases": ["Alamodome"],
+    "city": "San Antonio",
+    "state": "TX",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Chicago",
+    "first_season": 2013,
+    "last_season": 2017,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4509",
+    "provider_ids": {
+      "mlb_venue_id": 4509
+    },
+    "name": "Johnson Stadium at Doubleday Field",
+    "aliases": ["Johnson Stadium at Doubleday Field"],
+    "city": "West Point",
+    "state": "NY",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2013,
+    "last_season": 2013,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4510",
+    "provider_ids": {
+      "mlb_venue_id": 4510
+    },
+    "name": "Estadio Sonora",
+    "aliases": ["Estadio Sonora"],
+    "city": "Hermosillo",
+    "state": "SO",
+    "country": "Mexico",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Hermosillo",
+    "first_season": 2015,
+    "last_season": 2015,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4529",
+    "provider_ids": {
+      "mlb_venue_id": 4529
+    },
+    "name": "Regions Field",
+    "aliases": ["Regions Field"],
+    "city": "Birmingham",
+    "state": "AL",
+    "country": "USA",
+    "lat": 33.5077928,
+    "lng": -86.8120366,
+    "tz": "America/Chicago",
+    "first_season": 2014,
+    "last_season": 2014,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4589",
+    "provider_ids": {
+      "mlb_venue_id": 4589
+    },
+    "name": "Sydney Cricket Ground",
+    "aliases": ["Sydney Cricket Ground"],
+    "city": "Sydney",
+    "state": null,
+    "country": "Australia",
+    "lat": null,
+    "lng": null,
+    "tz": "Australia/Sydney",
+    "first_season": 2014,
+    "last_season": 2014,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4629",
+    "provider_ids": {
+      "mlb_venue_id": 4629
+    },
+    "name": "Sloan Park",
+    "aliases": ["Cubs Park", "Sloan Park"],
+    "city": "Mesa",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.43081,
+    "lng": -111.882,
+    "tz": "America/Phoenix",
+    "first_season": 2014,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4669",
+    "provider_ids": {
+      "mlb_venue_id": 4669
+    },
+    "name": "Southwest University Park",
+    "aliases": ["Southwest University Park"],
+    "city": "El Paso",
+    "state": "TX",
+    "country": "USA",
+    "lat": 31.759277,
+    "lng": -106.492526,
+    "tz": "America/Denver",
+    "first_season": 2016,
+    "last_season": 2018,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4670",
+    "provider_ids": {
+      "mlb_venue_id": 4670
+    },
+    "name": "BB&T Ballpark",
+    "aliases": ["BB&T Ballpark"],
+    "city": "Charlotte",
+    "state": "NC",
+    "country": "USA",
+    "lat": 35.22781,
+    "lng": -80.84823,
+    "tz": "America/New_York",
+    "first_season": 2015,
+    "last_season": 2018,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4700",
+    "provider_ids": {
+      "mlb_venue_id": 4700
+    },
+    "name": "Fowler Park and Cunningham Field",
+    "aliases": ["Fowler Park and Cunningham Field"],
+    "city": "San Diego",
+    "state": "CA",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Los_Angeles",
+    "first_season": 2014,
+    "last_season": 2014,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4705",
+    "provider_ids": {
+      "mlb_venue_id": 4705
+    },
+    "name": "Truist Park",
+    "aliases": ["SunTrust Park", "Truist Park"],
+    "city": "Atlanta",
+    "state": "GA",
+    "country": "USA",
+    "lat": 33.890672,
+    "lng": -84.467641,
+    "tz": "America/New_York",
+    "first_season": 2017,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4715",
+    "provider_ids": {
+      "mlb_venue_id": 4715
+    },
+    "name": "First Tennessee Park",
+    "aliases": ["First Tennessee Park"],
+    "city": "Nashville",
+    "state": "TN",
+    "country": "USA",
+    "lat": 36.173218,
+    "lng": -86.785171,
+    "tz": "America/Chicago",
+    "first_season": 2019,
+    "last_season": 2019,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4824",
+    "provider_ids": {
+      "mlb_venue_id": 4824
+    },
+    "name": "Estadio Latinoamericano",
+    "aliases": ["Estadio Latinoamericano"],
+    "city": "Havana",
+    "state": null,
+    "country": "Cuba",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Havana",
+    "first_season": 2016,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4960",
+    "provider_ids": {
+      "mlb_venue_id": 4960
+    },
+    "name": "MGM Park",
+    "aliases": ["MGM Park"],
+    "city": "Biloxi",
+    "state": "MS",
+    "country": "USA",
+    "lat": 30.395421,
+    "lng": -88.893217,
+    "tz": "America/Chicago",
+    "first_season": 2016,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-4970",
+    "provider_ids": {
+      "mlb_venue_id": 4970
+    },
+    "name": "Estadio de Beisbol 'Fray Nano'",
+    "aliases": ["Estadio de Beisbol 'Fray Nano'"],
+    "city": "Mexico City",
+    "state": "MX",
+    "country": "Mexico",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Mexico_City",
+    "first_season": 2016,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5000",
+    "provider_ids": {
+      "mlb_venue_id": 5000
+    },
+    "name": "CACTI Park of the Palm Beaches",
+    "aliases": [
+      "CACTI Park of the Palm Beaches",
+      "FITTEAM Ballpark of the Palm Beaches",
+      "The Ballpark of the Palm Beaches"
+    ],
+    "city": "West Palm Beach",
+    "state": "FL",
+    "country": "USA",
+    "lat": 26.75475,
+    "lng": -80.11316,
+    "tz": "America/New_York",
+    "first_season": 2017,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5010",
+    "provider_ids": {
+      "mlb_venue_id": 5010
+    },
+    "name": "Fort Bragg Field",
+    "aliases": ["Fort Bragg Field"],
+    "city": "Fort Bragg",
+    "state": "NC",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2016,
+    "last_season": 2016,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5150",
+    "provider_ids": {
+      "mlb_venue_id": 5150
+    },
+    "name": "Gocheok Sky Dome",
+    "aliases": ["Gocheok Sky Dome"],
+    "city": "Seoul",
+    "state": null,
+    "country": "Republic of Korea",
+    "lat": 37.4982,
+    "lng": 126.867,
+    "tz": "Asia/Seoul",
+    "first_season": 2024,
+    "last_season": 2024,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5315",
+    "provider_ids": {
+      "mlb_venue_id": 5315
+    },
+    "name": "Max Bishop Stadium",
+    "aliases": ["Max Bishop Stadium"],
+    "city": "Annapolis",
+    "state": "MD",
+    "country": "USA",
+    "lat": null,
+    "lng": null,
+    "tz": "America/New_York",
+    "first_season": 2017,
+    "last_season": 2017,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5325",
+    "provider_ids": {
+      "mlb_venue_id": 5325
+    },
+    "name": "Globe Life Field",
+    "aliases": ["Globe Life Field"],
+    "city": "Arlington",
+    "state": "TX",
+    "country": "USA",
+    "lat": 32.747299,
+    "lng": -97.081818,
+    "tz": "America/Chicago",
+    "first_season": 2020,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5340",
+    "provider_ids": {
+      "mlb_venue_id": 5340
+    },
+    "name": "Estadio Alfredo Harp Helu",
+    "aliases": ["Estadio Alfredo Harp Helu"],
+    "city": "Mexico City",
+    "state": null,
+    "country": "Mexico",
+    "lat": null,
+    "lng": null,
+    "tz": "America/Mexico_City",
+    "first_season": 2023,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5355",
+    "provider_ids": {
+      "mlb_venue_id": 5355
+    },
+    "name": "Las Vegas Ballpark",
+    "aliases": ["Las Vegas Ballpark"],
+    "city": "Las Vegas",
+    "state": "NV",
+    "country": "USA",
+    "lat": 36.152607,
+    "lng": -115.329888,
+    "tz": "America/Los_Angeles",
+    "first_season": 2020,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5365",
+    "provider_ids": {
+      "mlb_venue_id": 5365
+    },
+    "name": "TD Ameritrade Park",
+    "aliases": ["TD Ameritrade Park"],
+    "city": "Omaha",
+    "state": "NE",
+    "country": "USA",
+    "lat": 41.25861,
+    "lng": -95.93779,
+    "tz": "America/Chicago",
+    "first_season": 2019,
+    "last_season": 2019,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5380",
+    "provider_ids": {
+      "mlb_venue_id": 5380
+    },
+    "name": "CoolToday Park",
+    "aliases": ["CoolToday Park"],
+    "city": "North Port",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.04422,
+    "lng": -82.23593,
+    "tz": "America/New_York",
+    "first_season": 2019,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5381",
+    "provider_ids": {
+      "mlb_venue_id": 5381
+    },
+    "name": "London Stadium",
+    "aliases": ["London Stadium"],
+    "city": "London",
+    "state": null,
+    "country": "United Kingdom",
+    "lat": 51.50853,
+    "lng": -0.12574,
+    "tz": "Europe/London",
+    "first_season": 2019,
+    "last_season": 2024,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5421",
+    "provider_ids": {
+      "mlb_venue_id": 5421
+    },
+    "name": "Constellation Field",
+    "aliases": ["Constellation Field"],
+    "city": "Sugar Land",
+    "state": "TX",
+    "country": "USA",
+    "lat": 29.62275645,
+    "lng": -95.64718344,
+    "tz": "America/Chicago",
+    "first_season": 2023,
+    "last_season": 2023,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-5445",
+    "provider_ids": {
+      "mlb_venue_id": 5445
+    },
+    "name": "Field of Dreams",
+    "aliases": ["Field of Dreams"],
+    "city": "Dyersville",
+    "state": "IA",
+    "country": "USA",
+    "lat": 42.498241,
+    "lng": -91.056486,
+    "tz": "America/Chicago",
+    "first_season": 2021,
+    "last_season": 2026,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  },
+  {
+    "key": "mlb-venue-6130",
+    "provider_ids": {
+      "mlb_venue_id": 6130
+    },
+    "name": "Bristol Motor Speedway",
+    "aliases": ["Bristol Motor Speedway"],
+    "city": "Bristol",
+    "state": "TN",
+    "country": "USA",
+    "lat": 31.5156,
+    "lng": -82.5269,
+    "tz": "America/New_York",
+    "first_season": 2025,
+    "last_season": 2025,
+    "sports": ["mlb"],
+    "geofence_m": 400
+  }
+]

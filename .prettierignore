@@ -1,0 +1,8 @@
+node_modules
+**/fixtures/**
+supabase/.temp
+apps/mobile/.expo
+*.md
+docs/turnstile-ui.html
+apps/mobile/app.json
+apps/mobile/src/lib/database.types.ts

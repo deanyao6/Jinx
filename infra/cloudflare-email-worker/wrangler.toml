@@ -1,0 +1,9 @@
+name = "appname-inbound-email"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+# Supabase project functions base URL, e.g. https://<ref>.supabase.co/functions/v1
+SUPABASE_FUNCTIONS_URL = "https://REPLACE.supabase.co/functions/v1"
+
+# Secrets (set with `wrangler secret put INBOUND_EMAIL_SECRET`), must equal the Edge Function secret.

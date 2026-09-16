@@ -1,0 +1,35 @@
+node_modules/
+.DS_Store
+*.log
+*.tsbuildinfo
+coverage/
+
+# env and secrets
+.env
+.env.*
+!.env.example
+
+# Expo
+apps/mobile/.expo/
+apps/mobile/dist/
+apps/mobile/web-build/
+apps/mobile/expo-env.d.ts
+apps/mobile/ios/
+apps/mobile/android/
+.metro-health-check*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+
+# ingest scratch
+ingest/.cache/
+ingest/data/
+__pycache__/
+.venv/
+supabase/functions/_shared/core/

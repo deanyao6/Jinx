@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turnstile, UI concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#DCE2E8; --screen:#F6F7F9; --card:#FFFFFF; --ink:#14213D; --muted:#5B6577; --line:#D3D8E0;
+  --red:#C8102E; --blue:#1F5FA8; --green:#2E7D4F; --gold:#A8740C; --frame:#1A2233; --tint:#EAF0F7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#0D131B; --screen:#141B25; --card:#1C2532; --ink:#E8ECF2; --muted:#98A2B3; --line:#2A3445;
+    --red:#F0506A; --blue:#6FA6E8; --green:#5FBF86; --gold:#E0AE4A; --frame:#000000; --tint:#1F2A3A;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#0D131B; --screen:#141B25; --card:#1C2532; --ink:#E8ECF2; --muted:#98A2B3; --line:#2A3445;
+  --red:#F0506A; --blue:#6FA6E8; --green:#5FBF86; --gold:#E0AE4A; --frame:#000000; --tint:#1F2A3A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;font-variation-settings:"wdth" 100;-webkit-font-smoothing:antialiased}
+.intro{max-width:1200px;margin:0 auto;padding:48px 24px 8px}
+.intro h1{font-size:clamp(56px,10vw,120px);line-height:.85;margin:0;font-weight:900;font-variation-settings:"wdth" 62;letter-spacing:-.01em}
+.intro p{max-width:56ch;color:var(--muted);font-size:17px;line-height:1.5;margin:14px 0 0}
+.rail{display:flex;gap:36px;overflow-x:auto;padding:36px 24px 56px;scroll-snap-type:x mandatory;max-width:100%}
+.rail::after{content:"";flex:0 0 1px}
+.shot{flex:0 0 auto;scroll-snap-align:center;width:340px}
+.shot figcaption{margin-top:16px;font-size:15px;line-height:1.45;color:var(--muted);max-width:32ch}
+.shot figcaption b{color:var(--ink);font-weight:700;display:block;font-size:17px;margin-bottom:2px}
+.phone{width:340px;height:700px;background:var(--frame);border-radius:48px;padding:11px;box-shadow:0 30px 60px -30px rgba(10,20,40,.45)}
+.scr{width:100%;height:100%;background:var(--screen);border-radius:38px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.status{display:flex;justify-content:space-between;padding:14px 26px 4px;font-size:13px;font-weight:600}
+.body{flex:1;overflow-y:auto;padding:6px 18px 18px}
+.body::-webkit-scrollbar{display:none}
+.nav{display:flex;justify-content:space-around;border-top:1px solid var(--line);padding:10px 8px 18px;font-size:11.5px;color:var(--muted);background:var(--screen)}
+.nav span{display:flex;flex-direction:column;align-items:center;gap:4px}
+.nav i{width:20px;height:20px;border-radius:6px;border:2px solid currentColor;display:block}
+.nav .on{color:var(--ink);font-weight:700}
+.nav .on i{background:var(--ink)}
+h2{font-size:30px;margin:8px 0 2px;font-weight:850;font-variation-settings:"wdth" 70;line-height:1}
+.sub{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.k{font-size:12.5px;color:var(--muted);margin:0 0 6px}
+
+/* passport record */
+.record{display:flex;align-items:flex-end;gap:10px}
+.record .num{font-size:78px;line-height:.8;font-weight:900;font-variation-settings:"wdth" 62;letter-spacing:-.02em}
+.record .dash{font-size:52px;line-height:.8;font-weight:300;color:var(--muted);font-variation-settings:"wdth" 62}
+.record small{font-size:13px;color:var(--muted);margin-left:auto;text-align:right;line-height:1.3}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.team{border-radius:12px;padding:8px 10px;background:var(--tint)}
+.team b{display:block;font-size:22px;font-variation-settings:"wdth" 70;font-weight:800}
+.team span{font-size:12px;color:var(--muted)}
+.team.pl b{color:var(--gold)}
+
+.stamps{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px 0}
+.stamp{aspect-ratio:1;border-radius:50%;border:2.5px solid currentColor;display:grid;place-items:center;text-align:center;font-size:10px;line-height:1.1;font-weight:800;padding:8px;font-variation-settings:"wdth" 75;position:relative}
+.stamp::before{content:"";position:absolute;inset:4px;border-radius:50%;border:1px dashed currentColor;opacity:.6}
+.stamp em{display:block;font-style:normal;font-weight:500;font-size:9px;opacity:.85;margin-top:2px}
+.r1{color:var(--red);transform:rotate(-8deg)} .r2{color:var(--blue);transform:rotate(6deg)} .r3{color:var(--green);transform:rotate(-3deg)}
+.r4{color:var(--gold);transform:rotate(9deg)} .ghost{color:var(--line);transform:rotate(-5deg)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.list li:first-child{border-top:0}
+.list li b{font-variation-settings:"wdth" 75;font-weight:800;font-size:16px;white-space:nowrap}
+
+/* pledge */
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--red)}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.clock{font-size:64px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.9;margin:6px 0 2px}
+.pick{display:grid;gap:10px;margin:14px 0}
+.side{appearance:none;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:18px;padding:14px 16px;text-align:left;font:inherit;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.side:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.side b{font-size:26px;font-variation-settings:"wdth" 70;font-weight:850}
+.side .p{text-align:right;font-size:12.5px;color:var(--muted)}
+.side .p strong{display:block;font-size:20px;color:var(--ink);font-variation-settings:"wdth" 70}
+.side.dog .p em{color:var(--gold);font-style:normal;font-weight:700}
+.side[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--screen)}
+.side[aria-pressed="true"] .p,.side[aria-pressed="true"] .p strong{color:var(--screen)}
+.note{font-size:13px;color:var(--muted);line-height:1.45}
+.confirm{display:none;background:var(--tint);border-radius:14px;padding:12px;font-size:14px;line-height:1.4}
+.confirm.show{display:block}
+
+/* plan */
+.ticket{background:var(--ink);color:var(--screen);border-radius:18px;padding:14px 16px;position:relative;margin-bottom:14px}
+.ticket::before,.ticket::after{content:"";position:absolute;top:62%;width:18px;height:18px;border-radius:50%;background:var(--screen)}
+.ticket::before{left:-9px}.ticket::after{right:-9px}
+.ticket b{font-size:28px;font-variation-settings:"wdth" 65;font-weight:900;display:block;line-height:1}
+.ticket .t{font-size:13px;opacity:.8;margin-top:4px}
+.ticket .seat{display:flex;gap:18px;border-top:1.5px dashed rgba(255,255,255,.35);margin-top:14px;padding-top:10px;font-size:12px;opacity:.95}
+.ticket .seat strong{display:block;font-size:19px;font-variation-settings:"wdth" 70}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.chip{font-size:12.5px;border:1.5px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--card)}
+.chip.on{border-color:var(--green);color:var(--green);font-weight:700}
+.tl{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 14px 8px}
+.tl li::before{content:"";position:absolute;left:-26px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--screen);border:2.5px solid var(--ink)}
+.tl li.now::before{background:var(--green);border-color:var(--green)}
+.tl time{font-weight:800;font-variation-settings:"wdth" 75;font-size:15px}
+.tl p{margin:1px 0 0;font-size:13.5px;color:var(--muted);line-height:1.4}
+
+/* guide */
+.seg{display:flex;background:var(--tint);border-radius:12px;padding:3px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:transparent;font:inherit;font-size:13.5px;padding:7px;border-radius:9px;color:var(--muted);cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.seg button:focus-visible{outline:2px solid var(--blue)}
+.rank{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.rank:first-of-type{border-top:0}
+.rank .n{font-size:24px;font-weight:900;font-variation-settings:"wdth" 62;color:var(--muted)}
+.rank div b{font-size:15px;display:block}
+.rank div span{font-size:12.5px;color:var(--muted)}
+.score{font-weight:900;font-size:20px;font-variation-settings:"wdth" 70;color:var(--green)}
+.mini{height:120px;border-radius:14px;background:var(--tint);margin-bottom:12px;position:relative;overflow:hidden}
+.mini svg{width:100%;height:100%}
+
+/* friends */
+.comp{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.comp:first-of-type{border-top:0}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;font-size:15px;flex:0 0 auto}
+.comp div{flex:1;font-size:13px;color:var(--muted)}
+.comp div b{display:block;color:var(--ink);font-size:15px}
+.comp .rec{font-size:24px;font-weight:900;font-variation-settings:"wdth" 62}
+.good{color:var(--green)} .bad{color:var(--red)}
+.vs{display:flex;justify-content:space-between;align-items:center;text-align:center}
+.vs strong{font-size:46px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.9;display:block}
+.vs span{font-size:12px;color:var(--muted)}
+.bar{height:8px;background:var(--tint);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;background:var(--blue);border-radius:99px}
+.goal{font-size:14px;margin-bottom:10px}
+.goal .row{display:flex;justify-content:space-between}
+.goal .row span{color:var(--muted);font-size:13px}
+.overlap{font-size:14px;line-height:1.45}
+@media (prefers-reduced-motion: reduce){.live::before{animation:none}}
+</style>
+</head>
+<body>
+<header class="intro">
+  <h1>Turnstile</h1>
+  <p>A working concept for a sports fan passport. Five screens from one fan's account, scroll sideways to see them all. On the pledge screen, tap a team to try it.</p>
+</header>
+
+<main class="rail" aria-label="App screens">
+
+<!-- 1 Passport -->
+<figure class="shot">
+ <div class="phone"><div class="scr">
+  <div class="status"><span>7:42</span><span>5G</span></div>
+  <div class="body">
+   <h2>Dean's passport</h2>
+   <p class="sub">48 games, 14 stadiums, 3 countries</p>
+   <div class="card">
+    <p class="k">All-time record at games</p>
+    <div class="record"><span class="num">31</span><span class="dash">–</span><span class="num">17</span><small>Win rate<br><b style="color:var(--ink);font-size:18px">.646</b></small></div>
+    <div class="teams">
+     <div class="team"><b>12–5</b><span>Phillies</span></div>
+     <div class="team"><b>6–2</b><span>Eagles</span></div>
+     <div class="team"><b>3–1</b><span>Real Madrid</span></div>
+     <div class="team pl"><b>10–9</b><span>Pledged, +2.4 vs expected</span></div>
+    </div>
+   </div>
+   <div class="card">
+    <p class="k">Stadium stamps</p>
+    <div class="stamps">
+     <div class="stamp r1">Citizens Bank Park<em>17 visits</em></div>
+     <div class="stamp r2">Santiago Bernabéu<em>Madrid</em></div>
+     <div class="stamp r3">Dodger Stadium<em>6 visits</em></div>
+     <div class="stamp r4">Lincoln Financial Field<em>5 visits</em></div>
+     <div class="stamp r2">SoFi Stadium<em>3 visits</em></div>
+     <div class="stamp ghost">Wrigley Field<em>On your list</em></div>
+    </div>
+   </div>
+   <div class="card">
+    <p class="k">Superlatives</p>
+    <ul class="list">
+     <li>Seen Bryce Harper play<b>14 times</b></li>
+     <li>Walk-offs witnessed<b>2</b></li>
+     <li>Coldest game<b>19°F</b></li>
+     <li>Biggest comeback<b>Down 17</b></li>
+    </ul>
+   </div>
+  </div>
+  <nav class="nav"><span class="on"><i></i>Passport</span><span><i></i>Games</span><span><i></i>Plan</span><span><i></i>Friends</span></nav>
+ </div></div>
+ <figcaption><b>The passport</b>Your records, stamps, and superlatives. The pledged record shows how well you pick sides at neutral games.</figcaption>
+</figure>
+
+<!-- 2 Pledge -->
+<figure class="shot">
+ <div class="phone"><div class="scr">
+  <div class="status"><span>1:08</span><span>5G</span></div>
+  <div class="body">
+   <p class="live" style="margin-top:10px">You're at Soldier Field</p>
+   <h2>Pick a side</h2>
+   <p class="sub">You're neutral at Packers at Bears. Your pledge locks at the first score or 10:00 left in Q1.</p>
+   <div class="card" style="text-align:center">
+    <p class="k" style="margin:0">Locks in</p>
+    <div class="clock" id="clock">4:12</div>
+    <p class="note" style="margin:0">or the moment anyone scores</p>
+   </div>
+   <div class="pick" role="group" aria-label="Choose a team">
+    <button class="side dog" aria-pressed="false" data-team="Bears" data-odds="38%"><b>Bears</b><span class="p"><strong>38%</strong><em>Underdog</em></span></button>
+    <button class="side" aria-pressed="false" data-team="Packers" data-odds="62%"><b>Packers</b><span class="p"><strong>62%</strong>Favorite</span></button>
+   </div>
+   <div class="confirm" id="confirm" role="status"></div>
+   <p class="note">Backing the underdog counts for more on your record vs expected. Win probability comes from the pregame line.</p>
+  </div>
+  <nav class="nav"><span><i></i>Passport</span><span class="on"><i></i>Games</span><span><i></i>Plan</span><span><i></i>Friends</span></nav>
+ </div></div>
+ <figcaption><b>The pledge</b>At a game where you don't have a team, you get a few minutes to pick one before it counts.</figcaption>
+</figure>
+
+<!-- 3 Plan -->
+<figure class="shot">
+ <div class="phone"><div class="scr">
+  <div class="status"><span>9:15</span><span>5G</span></div>
+  <div class="body">
+   <h2>Game day</h2>
+   <p class="sub">Built from the ticket you uploaded</p>
+   <div class="ticket">
+    <b>Eagles at Rams</b>
+    <div class="t">Sunday, 1:25 PM, SoFi Stadium</div>
+    <div class="seat"><span>Section<strong>121</strong></span><span>Row<strong>14</strong></span><span>Seat<strong>7</strong></span><span>Gate<strong>3</strong></span></div>
+   </div>
+   <div class="chips">
+    <span class="chip on">Tailgate</span><span class="chip on">Driving, 2 friends</span><span class="chip on">Post-game bar</span><span class="chip">Meetup</span>
+   </div>
+   <ol class="tl">
+    <li class="now"><time>9:45 AM</time><p>Leave home. 41 min with Sunday traffic.</p></li>
+    <li><time>10:30 AM</time><p>Park in Lot L, prepaid. Philly fans tailgate at the north end.</p></li>
+    <li><time>12:40 PM</time><p>Walk to Gate 3. It has the shortest line for Section 121.</p></li>
+    <li><time>4:45 PM</time><p>Leave at the final whistle to beat lot traffic, or wait 25 min.</p></li>
+    <li><time>5:30 PM</time><p>Eagles watch-bar crowd heads to a Philly bar in Santa Monica. 34 fans going.</p></li>
+   </ol>
+  </div>
+  <nav class="nav"><span><i></i>Passport</span><span><i></i>Games</span><span class="on"><i></i>Plan</span><span><i></i>Friends</span></nav>
+ </div></div>
+ <figcaption><b>Game day plan</b>Upload a ticket, answer three questions, and get a schedule from leaving home to the after-party.</figcaption>
+</figure>
+
+<!-- 4 Guide -->
+<figure class="shot">
+ <div class="phone"><div class="scr">
+  <div class="status"><span>6:20</span><span>5G</span></div>
+  <div class="body">
+   <h2>Citizens Bank Park</h2>
+   <p class="sub">Ranked by 2,140 fans who logged games here</p>
+   <div class="mini" aria-hidden="true">
+    <svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet">
+     <path d="M150 112 L40 40 A150 150 0 0 1 260 40 Z" fill="none" stroke="var(--line)" stroke-width="10" stroke-linejoin="round"/>
+     <path d="M150 104 L70 50 L150 22 L230 50 Z" fill="var(--green)" opacity=".25"/>
+     <circle cx="78" cy="52" r="7" fill="var(--red)"/><circle cx="150" cy="16" r="7" fill="var(--red)"/><circle cx="226" cy="54" r="7" fill="var(--blue)"/>
+     <text x="92" y="56" font-size="11" fill="var(--ink)" font-family="Archivo, sans-serif" font-weight="700">1</text>
+     <text x="162" y="20" font-size="11" fill="var(--ink)" font-family="Archivo, sans-serif" font-weight="700">2</text>
+     <text x="196" y="58" font-size="11" fill="var(--ink)" font-family="Archivo, sans-serif" font-weight="700">WC</text>
+    </svg>
+   </div>
+   <div class="seg" role="tablist" aria-label="Guide sections">
+    <button role="tab" aria-selected="true" data-tab="food">Food</button>
+    <button role="tab" aria-selected="false" data-tab="bath">Bathrooms</button>
+    <button role="tab" aria-selected="false" data-tab="seats">Seats</button>
+   </div>
+   <div class="card" data-panel="food">
+    <div class="rank"><span class="n">1</span><div><b>Cheesesteak</b><span>Stand near Section 104</span></div><span class="score">9.2</span></div>
+    <div class="rank"><span class="n">2</span><div><b>Crab fries</b><span>Outfield concourse, 7 min line</span></div><span class="score">8.7</span></div>
+    <div class="rank"><span class="n">3</span><div><b>Roast pork sandwich</b><span>Behind Section 141</span></div><span class="score">8.4</span></div>
+    <div class="rank"><span class="n">4</span><div><b>Soft pretzel</b><span>Carts everywhere</span></div><span class="score">7.1</span></div>
+   </div>
+   <div class="card" data-panel="bath" hidden>
+    <div class="rank"><span class="n">1</span><div><b>Near Section 132</b><span>Cleanest, usually 2 min wait</span></div><span class="score">9.0</span></div>
+    <div class="rank"><span class="n">2</span><div><b>Upper deck, 320s</b><span>Quiet after the 6th</span></div><span class="score">8.1</span></div>
+    <div class="rank"><span class="n">3</span><div><b>Main gate concourse</b><span>Avoid between innings</span></div><span class="score" style="color:var(--red)">4.3</span></div>
+   </div>
+   <div class="card" data-panel="seats" hidden>
+    <div class="rank"><span class="n">1</span><div><b>Section 321, rows 1–5</b><span>Skyline view, cheap, shaded late</span></div><span class="score">9.1</span></div>
+    <div class="rank"><span class="n">2</span><div><b>Section 104</b><span>Close to the bullpen</span></div><span class="score">8.6</span></div>
+    <div class="rank"><span class="n">3</span><div><b>Section 142</b><span>Full sun at day games</span></div><span class="score" style="color:var(--gold)">6.2</span></div>
+   </div>
+  </div>
+  <nav class="nav"><span><i></i>Passport</span><span class="on"><i></i>Games</span><span><i></i>Plan</span><span><i></i>Friends</span></nav>
+ </div></div>
+ <figcaption><b>Stadium guide</b>Food, bathrooms, and seats ranked by fans who were actually there. The tabs work.</figcaption>
+</figure>
+
+<!-- 5 Friends -->
+<figure class="shot">
+ <div class="phone"><div class="scr">
+  <div class="status"><span>11:02</span><span>5G</span></div>
+  <div class="body">
+   <h2>With friends</h2>
+   <p class="sub">Who's lucky, who's a jinx</p>
+   <div class="card">
+    <p class="k">Your record with</p>
+    <div class="comp"><span class="av" style="background:var(--green)">D</span><div><b>Dad</b>11 games, mostly Phillies</div><span class="rec good">7–1</span></div>
+    <div class="comp"><span class="av" style="background:var(--blue)">M</span><div><b>Maya</b>6 games</div><span class="rec">4–2</span></div>
+    <div class="comp"><span class="av" style="background:var(--red)">J</span><div><b>Jordan</b>Never bring him again</div><span class="rec bad">0–4</span></div>
+   </div>
+   <div class="card">
+    <p class="k">Rivalry with Jordan, Cowboys fan</p>
+    <div class="vs"><div><strong>5</strong><span>You</span></div><div class="note">Games attended<br>head to head</div><div><strong>3</strong><span>Jordan</span></div></div>
+   </div>
+   <div class="card overlap">
+    <p class="k">Before you met</p>
+    You and Maya were both at Phillies vs Mets in August 2019, eleven sections apart.
+   </div>
+   <div class="card">
+    <p class="k">2026 goals</p>
+    <div class="goal"><div class="row">Home runs in 5 ballparks<span>3 of 5</span></div><div class="bar"><i style="width:60%"></i></div></div>
+    <div class="goal"><div class="row">Watch a walk-off<span>Not yet</span></div><div class="bar"><i style="width:0"></i></div></div>
+    <div class="goal" style="margin:0"><div class="row">See Real Madrid in the US<span>Done</span></div><div class="bar"><i style="width:100%;background:var(--green)"></i></div></div>
+   </div>
+  </div>
+  <nav class="nav"><span><i></i>Passport</span><span><i></i>Games</span><span><i></i>Plan</span><span class="on"><i></i>Friends</span></nav>
+ </div></div>
+ <figcaption><b>With friends</b>Records by who you went with, rivalries against friends who root for other teams, overlaps, and yearly goals.</figcaption>
+</figure>
+
+</main>
+
+<script>
+(function(){
+  // Pledge countdown
+  var secs = 252, clock = document.getElementById('clock'), locked = false;
+  var confirm = document.getElementById('confirm');
+  var sides = document.querySelectorAll('.side');
+  var timer = setInterval(function(){
+    if (secs <= 0) { clearInterval(timer); clock.textContent = 'Locked'; locked = true; sides.forEach(function(s){ s.disabled = true; }); return; }
+    secs--; clock.textContent = Math.floor(secs/60) + ':' + String(secs%60).padStart(2,'0');
+  }, 1000);
+  sides.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if (locked) return;
+      sides.forEach(function(s){ s.setAttribute('aria-pressed','false'); });
+      btn.setAttribute('aria-pressed','true');
+      var dog = btn.classList.contains('dog');
+      confirm.textContent = 'Pledged to the ' + btn.dataset.team + ' (' + btn.dataset.odds + ' to win). You can switch until it locks.' + (dog ? ' A win here adds +0.62 to your record vs expected.' : ' A win here adds +0.38 to your record vs expected.');
+      confirm.classList.add('show');
+    });
+  });
+  // Guide tabs
+  var tabs = document.querySelectorAll('.seg button');
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.setAttribute('aria-selected','false'); });
+      t.setAttribute('aria-selected','true');
+      document.querySelectorAll('[data-panel]').forEach(function(p){ p.hidden = p.dataset.panel !== t.dataset.tab; });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1356 @@
+[
+  {
+    "key": "acrisure-stadium",
+    "name": "Acrisure Stadium",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "country": "USA",
+    "lat": 40.44667,
+    "lng": -80.01583,
+    "geofence_m": 400,
+    "opened_year": 2001,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["PIT00"]
+    },
+    "aliases": ["Heinz Field", "Acrisure Stadium"],
+    "home_teams": ["PIT"]
+  },
+  {
+    "key": "alamodome",
+    "name": "Alamodome",
+    "city": "San Antonio",
+    "state": "TX",
+    "country": "USA",
+    "lat": 29.41694,
+    "lng": -98.47889,
+    "geofence_m": 400,
+    "opened_year": 1993,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["SAN00"]
+    },
+    "aliases": ["Alamodome", "Alamo Dome"],
+    "home_teams": ["NO"],
+    "notes": "Temporary home of the Saints for three 2005 games after Hurricane Katrina."
+  },
+  {
+    "key": "allegiant-stadium",
+    "name": "Allegiant Stadium",
+    "city": "Paradise",
+    "state": "NV",
+    "country": "USA",
+    "lat": 36.09056,
+    "lng": -115.18389,
+    "geofence_m": 400,
+    "opened_year": 2020,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["VEG00"]
+    },
+    "aliases": ["Allegiant Stadium", "Las Vegas Stadium", "The Death Star"],
+    "home_teams": ["LV", "KC"]
+  },
+  {
+    "key": "allianz-arena",
+    "name": "Allianz Arena",
+    "city": "Munich",
+    "state": null,
+    "country": "DEU",
+    "lat": 48.21878,
+    "lng": 11.62475,
+    "geofence_m": 400,
+    "opened_year": 2005,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["GER00", "MUN01"]
+    },
+    "aliases": ["Allianz Arena", "FC Bayern Munich Stadium", "Munich Football Arena"],
+    "home_teams": ["TB", "CAR", "DET"],
+    "notes": "nflverse used GER00 for the 2022 and 2024 Munich games and MUN01 for the 2026 game; same building."
+  },
+  {
+    "key": "arena-corinthians",
+    "name": "Neo Química Arena",
+    "city": "São Paulo",
+    "state": null,
+    "country": "BRA",
+    "lat": -23.54528,
+    "lng": -46.47417,
+    "geofence_m": 400,
+    "opened_year": 2014,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["SAO00"]
+    },
+    "aliases": [
+      "Arena Corinthians",
+      "Neo Química Arena",
+      "Neo Quimica Arena",
+      "Arena de São Paulo"
+    ],
+    "home_teams": ["PHI"]
+  },
+  {
+    "key": "arrowhead-stadium",
+    "name": "Arrowhead Stadium",
+    "city": "Kansas City",
+    "state": "MO",
+    "country": "USA",
+    "lat": 39.04889,
+    "lng": -94.48389,
+    "geofence_m": 400,
+    "opened_year": 1972,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["KAN00"]
+    },
+    "aliases": [
+      "Arrowhead Stadium",
+      "GEHA Field at Arrowhead Stadium",
+      "Kansas City Stadium",
+      "Arrowhead"
+    ],
+    "home_teams": ["KC"]
+  },
+  {
+    "key": "att-stadium",
+    "name": "AT&T Stadium",
+    "city": "Arlington",
+    "state": "TX",
+    "country": "USA",
+    "lat": 32.74778,
+    "lng": -97.09278,
+    "geofence_m": 500,
+    "opened_year": 2009,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["DAL00"]
+    },
+    "aliases": ["AT&T Stadium", "Cowboys Stadium", "Jerry World", "Dallas Stadium"],
+    "home_teams": ["DAL", "GB"]
+  },
+  {
+    "key": "bank-of-america-stadium",
+    "name": "Bank of America Stadium",
+    "city": "Charlotte",
+    "state": "NC",
+    "country": "USA",
+    "lat": 35.22583,
+    "lng": -80.85278,
+    "geofence_m": 400,
+    "opened_year": 1996,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["CAR00"]
+    },
+    "aliases": ["Ericsson Stadium", "Bank of America Stadium", "The Bank"],
+    "home_teams": ["CAR"]
+  },
+  {
+    "key": "caesars-superdome",
+    "name": "Caesars Superdome",
+    "city": "New Orleans",
+    "state": "LA",
+    "country": "USA",
+    "lat": 29.95083,
+    "lng": -90.08111,
+    "geofence_m": 400,
+    "opened_year": 1975,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["NOR00"]
+    },
+    "aliases": [
+      "Louisiana Superdome",
+      "Mercedes-Benz Superdome",
+      "Caesars Superdome",
+      "The Superdome",
+      "Superdome"
+    ],
+    "home_teams": ["NO", "NE", "PHI", "SF"]
+  },
+  {
+    "key": "candlestick-park",
+    "name": "Candlestick Park",
+    "city": "San Francisco",
+    "state": "CA",
+    "country": "USA",
+    "lat": 37.71361,
+    "lng": -122.38611,
+    "geofence_m": 400,
+    "opened_year": 1960,
+    "closed_year": 2014,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["SFO00"]
+    },
+    "aliases": [
+      "3Com Park",
+      "3Com Park at Candlestick Point",
+      "San Francisco Stadium at Candlestick Point",
+      "Monster Park",
+      "Candlestick Park",
+      "The Stick"
+    ],
+    "home_teams": ["SF"]
+  },
+  {
+    "key": "deutsche-bank-park",
+    "name": "Deutsche Bank Park",
+    "city": "Frankfurt",
+    "state": null,
+    "country": "DEU",
+    "lat": 50.06806,
+    "lng": 8.64581,
+    "geofence_m": 400,
+    "opened_year": 1925,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["FRA00"]
+    },
+    "aliases": ["Deutsche Bank Park", "Waldstadion", "Commerzbank-Arena", "Frankfurt Stadium"],
+    "home_teams": ["KC", "NE"]
+  },
+  {
+    "key": "dignity-health-sports-park",
+    "name": "Dignity Health Sports Park",
+    "city": "Carson",
+    "state": "CA",
+    "country": "USA",
+    "lat": 33.864,
+    "lng": -118.261,
+    "geofence_m": 400,
+    "opened_year": 2003,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["LAX97"]
+    },
+    "aliases": ["Home Depot Center", "StubHub Center", "Dignity Health Sports Park"],
+    "home_teams": ["LAC"]
+  },
+  {
+    "key": "dome-at-americas-center",
+    "name": "The Dome at America's Center",
+    "city": "St. Louis",
+    "state": "MO",
+    "country": "USA",
+    "lat": 38.63278,
+    "lng": -90.18861,
+    "geofence_m": 400,
+    "opened_year": 1995,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["STL00"]
+    },
+    "aliases": [
+      "TWA Dome",
+      "Trans World Dome",
+      "Dome at America's Center",
+      "The Dome at America's Center",
+      "Edward Jones Dome",
+      "The Dome"
+    ],
+    "home_teams": ["STL"]
+  },
+  {
+    "key": "empower-field-at-mile-high",
+    "name": "Empower Field at Mile High",
+    "city": "Denver",
+    "state": "CO",
+    "country": "USA",
+    "lat": 39.74389,
+    "lng": -105.02,
+    "geofence_m": 400,
+    "opened_year": 2001,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["DEN00"]
+    },
+    "aliases": [
+      "Invesco Field at Mile High",
+      "Sports Authority Field at Mile High",
+      "Broncos Stadium at Mile High",
+      "Empower Field at Mile High",
+      "Mile High",
+      "New Mile High"
+    ],
+    "home_teams": ["DEN"]
+  },
+  {
+    "key": "estadio-azteca",
+    "name": "Estadio Banorte",
+    "city": "Mexico City",
+    "state": null,
+    "country": "MEX",
+    "lat": 19.303,
+    "lng": -99.1505,
+    "geofence_m": 400,
+    "opened_year": 1966,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["MEX00"]
+    },
+    "aliases": [
+      "Estadio Azteca",
+      "Azteca Stadium",
+      "Estadio Banorte",
+      "Estadio Ciudad de México",
+      "Aztec Stadium"
+    ],
+    "home_teams": ["ARI", "OAK", "LAC", "SF"]
+  },
+  {
+    "key": "everbank-stadium",
+    "name": "EverBank Stadium",
+    "city": "Jacksonville",
+    "state": "FL",
+    "country": "USA",
+    "lat": 30.32389,
+    "lng": -81.6375,
+    "geofence_m": 400,
+    "opened_year": 1995,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["JAX00"]
+    },
+    "aliases": [
+      "Alltel Stadium",
+      "ALLTEL Stadium",
+      "Jacksonville Municipal Stadium",
+      "EverBank Field",
+      "TIAA Bank Field",
+      "TIAA Bank Stadium",
+      "EverBank Stadium",
+      "The Bank"
+    ],
+    "home_teams": ["JAX", "PHI", "NO"],
+    "notes": "nflverse tags game 2026_05_PHI_JAX (played at Tottenham Hotspur Stadium, London) with JAX00 and stadium 'Tottenham Hotspur Stadium'; that game belongs to key tottenham-hotspur-stadium."
+  },
+  {
+    "key": "ford-field",
+    "name": "Ford Field",
+    "city": "Detroit",
+    "state": "MI",
+    "country": "USA",
+    "lat": 42.34,
+    "lng": -83.04556,
+    "geofence_m": 400,
+    "opened_year": 2002,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["DET00"]
+    },
+    "aliases": ["Ford Field"],
+    "home_teams": ["DET", "BUF", "MIN", "PIT"]
+  },
+  {
+    "key": "foxboro-stadium",
+    "name": "Foxboro Stadium",
+    "city": "Foxborough",
+    "state": "MA",
+    "country": "USA",
+    "lat": 42.09278,
+    "lng": -71.2675,
+    "geofence_m": 400,
+    "opened_year": 1971,
+    "closed_year": 2002,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["BOS99"]
+    },
+    "aliases": ["Foxboro Stadium", "Schaefer Stadium", "Sullivan Stadium"],
+    "home_teams": ["NE"]
+  },
+  {
+    "key": "georgia-dome",
+    "name": "Georgia Dome",
+    "city": "Atlanta",
+    "state": "GA",
+    "country": "USA",
+    "lat": 33.758,
+    "lng": -84.401,
+    "geofence_m": 400,
+    "opened_year": 1992,
+    "closed_year": 2017,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["ATL00"]
+    },
+    "aliases": ["Georgia Dome"],
+    "home_teams": ["ATL"]
+  },
+  {
+    "key": "giants-stadium",
+    "name": "Giants Stadium",
+    "city": "East Rutherford",
+    "state": "NJ",
+    "country": "USA",
+    "lat": 40.81222,
+    "lng": -74.07694,
+    "geofence_m": 400,
+    "opened_year": 1976,
+    "closed_year": 2010,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["NYC00"]
+    },
+    "aliases": ["Giants Stadium", "Giants Stadium at the Meadowlands", "The Meadowlands"],
+    "home_teams": ["NYG", "NYJ", "NO"]
+  },
+  {
+    "key": "gies-memorial-stadium",
+    "name": "Gies Memorial Stadium",
+    "city": "Champaign",
+    "state": "IL",
+    "country": "USA",
+    "lat": 40.09917,
+    "lng": -88.23583,
+    "geofence_m": 400,
+    "opened_year": 1923,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["CHI99"]
+    },
+    "aliases": [
+      "Memorial Stadium (Champaign)",
+      "Memorial Stadium",
+      "Gies Memorial Stadium",
+      "Zuppke Field"
+    ],
+    "home_teams": ["CHI"],
+    "notes": "Bears' temporary home for the 2002 season during the Soldier Field rebuild."
+  },
+  {
+    "key": "gillette-stadium",
+    "name": "Gillette Stadium",
+    "city": "Foxborough",
+    "state": "MA",
+    "country": "USA",
+    "lat": 42.091,
+    "lng": -71.264,
+    "geofence_m": 400,
+    "opened_year": 2002,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["BOS00"]
+    },
+    "aliases": ["Gillette Stadium", "CMGI Field", "Boston Stadium"],
+    "home_teams": ["NE"]
+  },
+  {
+    "key": "hard-rock-stadium",
+    "name": "Hard Rock Stadium",
+    "city": "Miami Gardens",
+    "state": "FL",
+    "country": "USA",
+    "lat": 25.95806,
+    "lng": -80.23889,
+    "geofence_m": 400,
+    "opened_year": 1987,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["MIA00"]
+    },
+    "aliases": [
+      "Joe Robbie Stadium",
+      "Pro Player Stadium",
+      "Dolphins Stadium",
+      "Dolphin Stadium",
+      "Land Shark Stadium",
+      "Sun Life Stadium",
+      "New Miami Stadium",
+      "Hard Rock Stadium",
+      "Miami Stadium"
+    ],
+    "home_teams": ["MIA", "CHI", "IND", "KC"]
+  },
+  {
+    "key": "highmark-stadium",
+    "name": "Highmark Stadium",
+    "city": "Orchard Park",
+    "state": "NY",
+    "country": "USA",
+    "lat": 42.77306,
+    "lng": -78.79222,
+    "geofence_m": 400,
+    "opened_year": 2026,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": []
+    },
+    "aliases": [
+      "Highmark Stadium",
+      "New Highmark Stadium",
+      "Highmark BlueCross BlueShield Stadium",
+      "The Pit"
+    ],
+    "home_teams": ["BUF"],
+    "notes": "New Bills stadium (opened June 2026) built across Abbott Road from the 1973 stadium. nflverse has no new stadium_id: 2026 Bills home games carry BUF00 with stadium 'Highmark Stadium'. BUF00 is assigned to key ralph-wilson-stadium; treat BUF00 games with season >= 2026 as this venue."
+  },
+  {
+    "key": "hubert-h-humphrey-metrodome",
+    "name": "Hubert H. Humphrey Metrodome",
+    "city": "Minneapolis",
+    "state": "MN",
+    "country": "USA",
+    "lat": 44.97389,
+    "lng": -93.25806,
+    "geofence_m": 400,
+    "opened_year": 1982,
+    "closed_year": 2013,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["MIN00"]
+    },
+    "aliases": [
+      "Hubert H. Humphrey Metrodome",
+      "Mall of America Field",
+      "Mall of America Field at Hubert H. Humphrey Metrodome",
+      "Metrodome",
+      "The Dome"
+    ],
+    "home_teams": ["MIN"]
+  },
+  {
+    "key": "huntington-bank-field",
+    "name": "Huntington Bank Field",
+    "city": "Cleveland",
+    "state": "OH",
+    "country": "USA",
+    "lat": 41.50611,
+    "lng": -81.69944,
+    "geofence_m": 400,
+    "opened_year": 1999,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["CLE00"]
+    },
+    "aliases": [
+      "Cleveland Browns Stadium",
+      "FirstEnergy Stadium",
+      "Huntington Bank Field",
+      "The Dawg Pound"
+    ],
+    "home_teams": ["CLE"]
+  },
+  {
+    "key": "huntington-bank-stadium",
+    "name": "Huntington Bank Stadium",
+    "city": "Minneapolis",
+    "state": "MN",
+    "country": "USA",
+    "lat": 44.976,
+    "lng": -93.225,
+    "geofence_m": 400,
+    "opened_year": 2009,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["MIN98"]
+    },
+    "aliases": ["TCF Bank Stadium", "Huntington Bank Stadium", "The Bank"],
+    "home_teams": ["MIN"],
+    "notes": "Vikings' temporary home 2014-2015 during U.S. Bank Stadium construction; also one Dec 2010 game after the Metrodome roof collapse."
+  },
+  {
+    "key": "husky-stadium",
+    "name": "Husky Stadium",
+    "city": "Seattle",
+    "state": "WA",
+    "country": "USA",
+    "lat": 47.6503,
+    "lng": -122.3016,
+    "geofence_m": 400,
+    "opened_year": 1920,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["SEA99"]
+    },
+    "aliases": ["Husky Stadium"],
+    "home_teams": ["SEA"]
+  },
+  {
+    "key": "lambeau-field",
+    "name": "Lambeau Field",
+    "city": "Green Bay",
+    "state": "WI",
+    "country": "USA",
+    "lat": 44.50139,
+    "lng": -88.06222,
+    "geofence_m": 400,
+    "opened_year": 1957,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["GNB00"]
+    },
+    "aliases": ["Lambeau Field", "The Frozen Tundra", "City Stadium"],
+    "home_teams": ["GB"]
+  },
+  {
+    "key": "levis-stadium",
+    "name": "Levi's Stadium",
+    "city": "Santa Clara",
+    "state": "CA",
+    "country": "USA",
+    "lat": 37.403,
+    "lng": -121.97,
+    "geofence_m": 400,
+    "opened_year": 2014,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["SFO01"]
+    },
+    "aliases": ["Levi's Stadium", "Levis Stadium", "San Francisco Bay Area Stadium"],
+    "home_teams": ["SF", "DEN", "NE"]
+  },
+  {
+    "key": "lincoln-financial-field",
+    "name": "Lincoln Financial Field",
+    "city": "Philadelphia",
+    "state": "PA",
+    "country": "USA",
+    "lat": 39.90083,
+    "lng": -75.1675,
+    "geofence_m": 400,
+    "opened_year": 2003,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["PHI00"]
+    },
+    "aliases": ["Lincoln Financial Field", "The Linc", "Philadelphia Stadium"],
+    "home_teams": ["PHI"]
+  },
+  {
+    "key": "los-angeles-memorial-coliseum",
+    "name": "Los Angeles Memorial Coliseum",
+    "city": "Los Angeles",
+    "state": "CA",
+    "country": "USA",
+    "lat": 34.01417,
+    "lng": -118.28778,
+    "geofence_m": 400,
+    "opened_year": 1923,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["LAX99"]
+    },
+    "aliases": [
+      "Los Angeles Memorial Coliseum",
+      "L.A. Coliseum",
+      "LA Memorial Coliseum",
+      "The Coliseum",
+      "United Airlines Field at the Los Angeles Memorial Coliseum"
+    ],
+    "home_teams": ["LA"]
+  },
+  {
+    "key": "lucas-oil-stadium",
+    "name": "Lucas Oil Stadium",
+    "city": "Indianapolis",
+    "state": "IN",
+    "country": "USA",
+    "lat": 39.76006,
+    "lng": -86.16381,
+    "geofence_m": 400,
+    "opened_year": 2008,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["IND00"]
+    },
+    "aliases": ["Lucas Oil Stadium", "The Luke"],
+    "home_teams": ["IND", "NE"]
+  },
+  {
+    "key": "lumen-field",
+    "name": "Lumen Field",
+    "city": "Seattle",
+    "state": "WA",
+    "country": "USA",
+    "lat": 47.5952,
+    "lng": -122.3316,
+    "geofence_m": 400,
+    "opened_year": 2002,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["SEA00"]
+    },
+    "aliases": [
+      "Seahawks Stadium",
+      "Qwest Field",
+      "CenturyLink Field",
+      "Lumen Field",
+      "Seattle Stadium",
+      "The Clink"
+    ],
+    "home_teams": ["SEA"]
+  },
+  {
+    "key": "maracana",
+    "name": "Estádio do Maracanã",
+    "city": "Rio de Janeiro",
+    "state": null,
+    "country": "BRA",
+    "lat": -22.9122,
+    "lng": -43.2303,
+    "geofence_m": 400,
+    "opened_year": 1950,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["RIO00"]
+    },
+    "aliases": [
+      "Maracana Stadium",
+      "Maracanã Stadium",
+      "Maracanã",
+      "Maracana",
+      "Estádio Jornalista Mário Filho"
+    ],
+    "home_teams": ["DAL"]
+  },
+  {
+    "key": "melbourne-cricket-ground",
+    "name": "Melbourne Cricket Ground",
+    "city": "Melbourne",
+    "state": null,
+    "country": "AUS",
+    "lat": -37.82,
+    "lng": 144.98333,
+    "geofence_m": 400,
+    "opened_year": 1853,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["MEL00"]
+    },
+    "aliases": ["Melbourne Cricket Ground", "MCG", "The G"],
+    "home_teams": ["LA"]
+  },
+  {
+    "key": "mercedes-benz-stadium",
+    "name": "Mercedes-Benz Stadium",
+    "city": "Atlanta",
+    "state": "GA",
+    "country": "USA",
+    "lat": 33.75556,
+    "lng": -84.4,
+    "geofence_m": 400,
+    "opened_year": 2017,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["ATL97"]
+    },
+    "aliases": ["Mercedes-Benz Stadium", "The Benz", "Atlanta Stadium"],
+    "home_teams": ["ATL", "LA"]
+  },
+  {
+    "key": "metlife-stadium",
+    "name": "MetLife Stadium",
+    "city": "East Rutherford",
+    "state": "NJ",
+    "country": "USA",
+    "lat": 40.81353,
+    "lng": -74.07436,
+    "geofence_m": 500,
+    "opened_year": 2010,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["NYC01"]
+    },
+    "aliases": [
+      "New Meadowlands Stadium",
+      "MetLife Stadium",
+      "The Meadowlands",
+      "The New Meadowlands",
+      "New York New Jersey Stadium"
+    ],
+    "home_teams": ["NYG", "NYJ", "DEN"]
+  },
+  {
+    "key": "mile-high-stadium",
+    "name": "Mile High Stadium",
+    "city": "Denver",
+    "state": "CO",
+    "country": "USA",
+    "lat": 39.74611,
+    "lng": -105.02167,
+    "geofence_m": 400,
+    "opened_year": 1948,
+    "closed_year": 2001,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["DEN99"]
+    },
+    "aliases": ["Mile High Stadium", "Bears Stadium"],
+    "home_teams": ["DEN"]
+  },
+  {
+    "key": "mountain-america-stadium",
+    "name": "Mountain America Stadium",
+    "city": "Tempe",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.42639,
+    "lng": -111.9325,
+    "geofence_m": 400,
+    "opened_year": 1958,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["PHO99"]
+    },
+    "aliases": ["Sun Devil Stadium", "Mountain America Stadium"],
+    "home_teams": ["ARI", "SD"]
+  },
+  {
+    "key": "mt-bank-stadium",
+    "name": "M&T Bank Stadium",
+    "city": "Baltimore",
+    "state": "MD",
+    "country": "USA",
+    "lat": 39.27806,
+    "lng": -76.62278,
+    "geofence_m": 400,
+    "opened_year": 1998,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["BAL00"]
+    },
+    "aliases": [
+      "Ravens Stadium at Camden Yards",
+      "PSINet Stadium",
+      "Ravens Stadium",
+      "M&T Bank Stadium",
+      "The Bank"
+    ],
+    "home_teams": ["BAL"]
+  },
+  {
+    "key": "nissan-stadium",
+    "name": "Nissan Stadium",
+    "city": "Nashville",
+    "state": "TN",
+    "country": "USA",
+    "lat": 36.16639,
+    "lng": -86.77139,
+    "geofence_m": 400,
+    "opened_year": 1999,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["NAS00"]
+    },
+    "aliases": ["Adelphia Coliseum", "The Coliseum", "LP Field", "Nissan Stadium"],
+    "home_teams": ["TEN"],
+    "notes": "The replacement Nissan Stadium (indoor, adjacent, planned 2027) is not included because no games exist yet."
+  },
+  {
+    "key": "northwest-stadium",
+    "name": "Northwest Stadium",
+    "city": "Landover",
+    "state": "MD",
+    "country": "USA",
+    "lat": 38.90778,
+    "lng": -76.86444,
+    "geofence_m": 400,
+    "opened_year": 1997,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["WAS00"]
+    },
+    "aliases": [
+      "Jack Kent Cooke Stadium",
+      "Redskins Stadium",
+      "FedExField",
+      "FedEx Field",
+      "Commanders Field",
+      "Northwest Stadium"
+    ],
+    "home_teams": ["WAS"]
+  },
+  {
+    "key": "oakland-coliseum",
+    "name": "Oakland-Alameda County Coliseum",
+    "city": "Oakland",
+    "state": "CA",
+    "country": "USA",
+    "lat": 37.75167,
+    "lng": -122.20056,
+    "geofence_m": 400,
+    "opened_year": 1966,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["OAK00"]
+    },
+    "aliases": [
+      "Network Associates Coliseum",
+      "McAfee Coliseum",
+      "Oakland-Alameda County Coliseum",
+      "Oakland–Alameda County Coliseum",
+      "Overstock.com Coliseum",
+      "O.co Coliseum",
+      "Ring Central Coliseum",
+      "RingCentral Coliseum",
+      "Oakland Coliseum",
+      "The Coliseum",
+      "The Black Hole"
+    ],
+    "home_teams": ["OAK"]
+  },
+  {
+    "key": "paycor-stadium",
+    "name": "Paycor Stadium",
+    "city": "Cincinnati",
+    "state": "OH",
+    "country": "USA",
+    "lat": 39.095,
+    "lng": -84.516,
+    "geofence_m": 400,
+    "opened_year": 2000,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["CIN00"]
+    },
+    "aliases": ["Paul Brown Stadium", "Paycor Stadium", "The Jungle"],
+    "home_teams": ["CIN"]
+  },
+  {
+    "key": "pontiac-silverdome",
+    "name": "Pontiac Silverdome",
+    "city": "Pontiac",
+    "state": "MI",
+    "country": "USA",
+    "lat": 42.64583,
+    "lng": -83.255,
+    "geofence_m": 400,
+    "opened_year": 1975,
+    "closed_year": 2013,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["DET99"]
+    },
+    "aliases": ["Pontiac Silverdome", "The Silverdome", "Pontiac Metropolitan Stadium"],
+    "home_teams": ["DET"],
+    "notes": "Lions left after the 2001 season; building closed in 2013 and was demolished 2017-2018."
+  },
+  {
+    "key": "ralph-wilson-stadium",
+    "name": "Ralph Wilson Stadium",
+    "city": "Orchard Park",
+    "state": "NY",
+    "country": "USA",
+    "lat": 42.774,
+    "lng": -78.787,
+    "geofence_m": 400,
+    "opened_year": 1973,
+    "closed_year": 2026,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["BUF00"]
+    },
+    "aliases": [
+      "Rich Stadium",
+      "Ralph Wilson Stadium",
+      "New Era Field",
+      "Bills Stadium",
+      "Highmark Stadium",
+      "The Ralph"
+    ],
+    "home_teams": ["BUF"],
+    "notes": "Bills home 1973-2025 (final game Jan 4, 2026); demolition began 2026. Named Highmark Stadium 2021-2025. nflverse keeps using BUF00 for 2026 games at the new adjacent Highmark Stadium (key highmark-stadium)."
+  },
+  {
+    "key": "raymond-james-stadium",
+    "name": "Raymond James Stadium",
+    "city": "Tampa",
+    "state": "FL",
+    "country": "USA",
+    "lat": 27.97583,
+    "lng": -82.50333,
+    "geofence_m": 400,
+    "opened_year": 1998,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["TAM00"]
+    },
+    "aliases": ["Raymond James Stadium", "Ray Jay", "The New Sombrero"],
+    "home_teams": ["TB", "ARI", "NYG"]
+  },
+  {
+    "key": "rca-dome",
+    "name": "RCA Dome",
+    "city": "Indianapolis",
+    "state": "IN",
+    "country": "USA",
+    "lat": 39.76361,
+    "lng": -86.16333,
+    "geofence_m": 400,
+    "opened_year": 1984,
+    "closed_year": 2008,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["IND99"]
+    },
+    "aliases": ["RCA Dome", "Hoosier Dome"],
+    "home_teams": ["IND"]
+  },
+  {
+    "key": "reliant-stadium",
+    "name": "Reliant Stadium",
+    "city": "Houston",
+    "state": "TX",
+    "country": "USA",
+    "lat": 29.68472,
+    "lng": -95.41083,
+    "geofence_m": 400,
+    "opened_year": 2002,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["HOU00"]
+    },
+    "aliases": ["Reliant Stadium", "NRG Stadium"],
+    "home_teams": ["HOU", "NE", "ATL"],
+    "notes": "Named NRG Stadium 2014-2026; Wikipedia lists the name reverting to Reliant Stadium in 2026, matching the nflverse 2026 rows."
+  },
+  {
+    "key": "rogers-centre",
+    "name": "Rogers Centre",
+    "city": "Toronto",
+    "state": null,
+    "country": "CAN",
+    "lat": 43.64139,
+    "lng": -79.38917,
+    "geofence_m": 400,
+    "opened_year": 1989,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["BUF01"]
+    },
+    "aliases": ["Rogers Centre", "SkyDome"],
+    "home_teams": ["BUF"]
+  },
+  {
+    "key": "san-diego-stadium",
+    "name": "San Diego Stadium",
+    "city": "San Diego",
+    "state": "CA",
+    "country": "USA",
+    "lat": 32.78306,
+    "lng": -117.11944,
+    "geofence_m": 400,
+    "opened_year": 1967,
+    "closed_year": 2020,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["SDG00"]
+    },
+    "aliases": [
+      "Qualcomm Stadium",
+      "SDCCU Stadium",
+      "Jack Murphy Stadium",
+      "San Diego Stadium",
+      "The Q",
+      "The Murph"
+    ],
+    "home_teams": ["SD", "TB"]
+  },
+  {
+    "key": "santiago-bernabeu",
+    "name": "Bernabéu",
+    "city": "Madrid",
+    "state": null,
+    "country": "ESP",
+    "lat": 40.45306,
+    "lng": -3.68835,
+    "geofence_m": 400,
+    "opened_year": 1947,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["MAD01"]
+    },
+    "aliases": [
+      "Bernabeu",
+      "Bernabéu",
+      "Estadio Santiago Bernabéu",
+      "Santiago Bernabéu Stadium",
+      "Santiago Bernabeu Stadium"
+    ],
+    "home_teams": ["ATL"]
+  },
+  {
+    "key": "sofi-stadium",
+    "name": "SoFi Stadium",
+    "city": "Inglewood",
+    "state": "CA",
+    "country": "USA",
+    "lat": 33.953,
+    "lng": -118.339,
+    "geofence_m": 500,
+    "opened_year": 2020,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["LAX01"]
+    },
+    "aliases": ["SoFi Stadium", "Los Angeles Stadium at Hollywood Park", "Los Angeles Stadium"],
+    "home_teams": ["LA", "LAC", "CIN"]
+  },
+  {
+    "key": "soldier-field",
+    "name": "Soldier Field",
+    "city": "Chicago",
+    "state": "IL",
+    "country": "USA",
+    "lat": 41.8623,
+    "lng": -87.6167,
+    "geofence_m": 400,
+    "opened_year": 1924,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["CHI98"]
+    },
+    "aliases": ["Soldier Field", "Soldiers' Field"],
+    "home_teams": ["CHI"]
+  },
+  {
+    "key": "stade-de-france",
+    "name": "Stade de France",
+    "city": "Saint-Denis",
+    "state": null,
+    "country": "FRA",
+    "lat": 48.9245,
+    "lng": 2.3602,
+    "geofence_m": 400,
+    "opened_year": 1998,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["PAR00"]
+    },
+    "aliases": ["Stade de France"],
+    "home_teams": ["NO"]
+  },
+  {
+    "key": "state-farm-stadium",
+    "name": "State Farm Stadium",
+    "city": "Glendale",
+    "state": "AZ",
+    "country": "USA",
+    "lat": 33.528,
+    "lng": -112.263,
+    "geofence_m": 400,
+    "opened_year": 2006,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["PHO00"]
+    },
+    "aliases": [
+      "Cardinals Stadium",
+      "University of Phoenix Stadium",
+      "State Farm Stadium",
+      "The Big Toaster"
+    ],
+    "home_teams": ["ARI", "NE", "SEA", "LA", "PHI", "SF"]
+  },
+  {
+    "key": "texas-stadium",
+    "name": "Texas Stadium",
+    "city": "Irving",
+    "state": "TX",
+    "country": "USA",
+    "lat": 32.83972,
+    "lng": -96.91083,
+    "geofence_m": 400,
+    "opened_year": 1971,
+    "closed_year": 2008,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["DAL99"]
+    },
+    "aliases": ["Texas Stadium"],
+    "home_teams": ["DAL"]
+  },
+  {
+    "key": "three-rivers-stadium",
+    "name": "Three Rivers Stadium",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "country": "USA",
+    "lat": 40.44667,
+    "lng": -80.01278,
+    "geofence_m": 400,
+    "opened_year": 1970,
+    "closed_year": 2000,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["PIT99"]
+    },
+    "aliases": ["Three Rivers Stadium"],
+    "home_teams": ["PIT"]
+  },
+  {
+    "key": "tiger-stadium-lsu",
+    "name": "Tiger Stadium",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "country": "USA",
+    "lat": 30.41222,
+    "lng": -91.18389,
+    "geofence_m": 400,
+    "opened_year": 1924,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["BRG00"]
+    },
+    "aliases": ["Tiger Stadium (LSU)", "Tiger Stadium", "Death Valley"],
+    "home_teams": ["NO"],
+    "notes": "Temporary home of the Saints for four 2005 games after Hurricane Katrina."
+  },
+  {
+    "key": "tottenham-hotspur-stadium",
+    "name": "Tottenham Hotspur Stadium",
+    "city": "London",
+    "state": null,
+    "country": "GBR",
+    "lat": 51.6044,
+    "lng": -0.0664,
+    "geofence_m": 400,
+    "opened_year": 2019,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["LON02"]
+    },
+    "aliases": ["Tottenham Stadium", "Tottenham Hotspur Stadium", "Spurs Stadium"],
+    "home_teams": ["ATL", "BUF", "CHI", "GB", "JAX", "MIN", "NO", "OAK", "TB", "TEN", "WAS"],
+    "notes": "nflverse also tags game 2026_05_PHI_JAX here with stadium_id JAX00 (see everbank-stadium)."
+  },
+  {
+    "key": "twickenham-stadium",
+    "name": "Twickenham Stadium",
+    "city": "London",
+    "state": null,
+    "country": "GBR",
+    "lat": 51.45583,
+    "lng": -0.34139,
+    "geofence_m": 400,
+    "opened_year": 1909,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["LON01"]
+    },
+    "aliases": ["Twickenham Stadium", "Twickenham", "Allianz Stadium Twickenham"],
+    "home_teams": ["CLE", "LA"]
+  },
+  {
+    "key": "us-bank-stadium",
+    "name": "U.S. Bank Stadium",
+    "city": "Minneapolis",
+    "state": "MN",
+    "country": "USA",
+    "lat": 44.974,
+    "lng": -93.258,
+    "geofence_m": 400,
+    "opened_year": 2016,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["MIN01"]
+    },
+    "aliases": ["U.S. Bank Stadium", "US Bank Stadium", "The Bank", "The Ship"],
+    "home_teams": ["MIN", "NE"]
+  },
+  {
+    "key": "veterans-stadium",
+    "name": "Veterans Stadium",
+    "city": "Philadelphia",
+    "state": "PA",
+    "country": "USA",
+    "lat": 39.90667,
+    "lng": -75.17111,
+    "geofence_m": 400,
+    "opened_year": 1971,
+    "closed_year": 2003,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["PHI99"]
+    },
+    "aliases": ["Veterans Stadium", "The Vet"],
+    "home_teams": ["PHI"]
+  },
+  {
+    "key": "wembley-stadium",
+    "name": "Wembley Stadium",
+    "city": "London",
+    "state": null,
+    "country": "GBR",
+    "lat": 51.5556,
+    "lng": -0.2794,
+    "geofence_m": 400,
+    "opened_year": 2007,
+    "closed_year": null,
+    "sports": ["nfl"],
+    "provider_ids": {
+      "nflverse_stadium_ids": ["LON00"]
+    },
+    "aliases": ["Wembley Stadium", "Wembley", "Wembley Stadium connected by EE"],
+    "home_teams": [
+      "ATL",
+      "CIN",
+      "JAX",
+      "KC",
+      "LA",
+      "LAC",
+      "MIA",
+      "MIN",
+      "NO",
+      "OAK",
+      "SF",
+      "STL",
+      "TB"
+    ]
+  }
+]

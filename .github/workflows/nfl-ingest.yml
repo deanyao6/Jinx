@@ -1,0 +1,67 @@
+name: NFL ingest (nflverse)
+
+on:
+  schedule:
+    # Daily at 09:00 UTC; nflverse publishes play-by-play overnight after game days.
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: 'Comma-separated seasons to ingest (default: current season)'
+        required: false
+        default: ''
+      force:
+        description: 'Re-process seasons already marked done'
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: nfl-ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    name: Schedule, play-by-play, appearances, moments
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Resolve seasons
+        id: seasons
+        env:
+          INPUT_SEASONS: ${{ github.event.inputs.seasons }}
+        run: |
+          if [ -n "$INPUT_SEASONS" ]; then
+            echo "seasons=$INPUT_SEASONS" >> "$GITHUB_OUTPUT"
+          else
+            year=$(date -u +%Y); month=$(date -u +%-m)
+            if [ "$month" -ge 8 ]; then echo "seasons=$year" >> "$GITHUB_OUTPUT"; else echo "seasons=$((year - 1))" >> "$GITHUB_OUTPUT"; fi
+          fi
+
+      - name: Cache nflverse assets
+        uses: actions/cache@v4
+        with:
+          path: ingest/.cache
+          key: nflverse-${{ steps.seasons.outputs.seasons }}-${{ github.run_id }}
+          restore-keys: |
+            nflverse-${{ steps.seasons.outputs.seasons }}-
+            nflverse-
+
+      - name: Run NFL ingest
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          FORCE: ${{ github.event.inputs.force }}
+        run: |
+          extra=""
+          if [ "$FORCE" = "true" ]; then extra="--force"; fi
+          npx tsx ingest/src/nfl/run.ts --seasons "${{ steps.seasons.outputs.seasons }}" $extra

@@ -1,0 +1,29 @@
+name: Daily data jobs
+
+on:
+  schedule:
+    - cron: '30 8 * * *' # 08:30 UTC, after nflverse and MLB overnight updates
+  workflow_dispatch:
+
+jobs:
+  mlb-and-elo:
+    name: MLB pending details and Elo
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Current MLB season schedule refresh
+        run: npx tsx ingest/src/mlb/backfill.ts --from $(date +%Y) --to $(date +%Y) --force
+      - name: MLB details for attended games lacking detail
+        run: npx tsx ingest/src/mlb/detail.ts --pending --limit 300
+      - name: Elo (MLB)
+        run: npx tsx ingest/src/elo/run.ts --sport mlb
+      - name: Elo (NFL)
+        run: npx tsx ingest/src/elo/run.ts --sport nfl

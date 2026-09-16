@@ -1,0 +1,31 @@
+import { Stack } from 'expo-router';
+import React from 'react';
+
+import { useTheme } from '@/theme/ThemeProvider';
+
+export default function YouStackLayout() {
+  const theme = useTheme();
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: true,
+        headerBackButtonDisplayMode: 'minimal',
+        headerTintColor: theme.colors.ink,
+        headerStyle: { backgroundColor: theme.colors.screen },
+        headerShadowVisible: false,
+        headerTitleStyle: { fontWeight: '700' },
+      }}
+    >
+      <Stack.Screen name="edit-profile" options={{ title: 'Edit profile' }} />
+      <Stack.Screen name="privacy" options={{ title: 'Privacy' }} />
+      <Stack.Screen name="forwarding" options={{ title: 'Forwarding address' }} />
+      <Stack.Screen name="notifications" options={{ title: 'Notifications' }} />
+      <Stack.Screen name="notification-settings" options={{ title: 'Notification settings' }} />
+      <Stack.Screen name="blocked" options={{ title: 'Blocked users' }} />
+      <Stack.Screen name="about" options={{ title: 'About' }} />
+      <Stack.Screen name="terms" options={{ title: 'Terms of use' }} />
+      <Stack.Screen name="privacy-policy" options={{ title: 'Privacy policy' }} />
+      <Stack.Screen name="delete-account" options={{ title: 'Delete account' }} />
+    </Stack>
+  );
+}
