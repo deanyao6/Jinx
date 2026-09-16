@@ -11,7 +11,7 @@ sections are appended at the bottom as work lands.
    mismatch**. Best 0.96%, worst 8.93%. The per-screen table is in section (g).
 3. Nothing remote was touched: no migrations pushed, no Apple certificates, nothing of
    SalusLink's, and the Metro watcher settings are untouched.
-4. Every commit has the full check suite green: typecheck, lint, format, 353 unit tests
+4. Every commit has the full check suite green: typecheck, lint, format, 395 unit tests
    and 117 database assertions.
 
 ## Needs Dean (short list)
@@ -606,7 +606,7 @@ Nothing below is blocked on you except items 1 and 6.
 Green as of the last commit:
 
 - `npm run typecheck`, `npm run lint`, `npm run format:check` — clean.
-- `npm test` — **353 tests** (214 mobile, 126 core, 13 ingest).
+- `npm test` — **395 tests** (256 mobile, 126 core, 13 ingest).
 - `npm run parity` — 32 of 32 screens captured and diffed.
 - `npm run db:test` — **117 assertions**, 6 files, PASS.
 
