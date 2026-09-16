@@ -7,6 +7,8 @@ import {
   nickname,
   passportFromStats,
   passportPillsFromStats,
+  listSentence,
+  reliveFromGame,
   streakLine,
   supabaseRepository,
   type PassportInputs,
@@ -165,5 +167,46 @@ describe('Supabase passport mapping', () => {
     expect(SUPABASE_BACKED.has('games')).toBe(false);
     expect(SUPABASE_BACKED.has('relive')).toBe(false);
     expect(repo.games().length).toBeGreaterThan(0);
+  });
+});
+
+describe('Relive mapping', () => {
+  const game = {
+    scheduled_start: '2025-08-14T23:05:00Z',
+    home: { abbreviation: 'PHI', name: 'Philadelphia Phillies', id: PHI },
+    away: { abbreviation: 'NYM', name: 'New York Mets', id: 'nym-id' },
+    venue: { name: 'Citizens Bank Park' },
+  };
+
+  it('builds the scorebug from the game', () => {
+    const r = reliveFromGame(game);
+    expect(r.away.badge).toBe('NYM');
+    expect(r.home.badge).toBe('PHI');
+    // The theme key is the team id, so the badges take that team's real palette.
+    expect(r.home.team).toBe(PHI);
+  });
+
+  it('builds the note from what it actually has', () => {
+    expect(reliveFromGame(game, { seat: '321', companions: ['Dad', 'Maya'] }).note).toBe(
+      'Aug 14, 2025, Citizens Bank Park, Section 321 with Dad and Maya',
+    );
+    // No seat and no companions: the clause is left out, not rendered empty.
+    expect(reliveFromGame(game).note).toBe('Aug 14, 2025, Citizens Bank Park');
+    expect(reliveFromGame(game, { companions: ['Dad'] }).note).toBe(
+      'Aug 14, 2025, Citizens Bank Park, With Dad',
+    );
+  });
+
+  it('joins names the way the reference writes them', () => {
+    expect(listSentence([])).toBe('');
+    expect(listSentence(['Dad'])).toBe('Dad');
+    expect(listSentence(['Dad', 'Maya'])).toBe('Dad and Maya');
+    expect(listSentence(['Dad', 'Maya', 'Sam'])).toBe('Dad, Maya and Sam');
+  });
+
+  it('survives a game with its team joins missing', () => {
+    const r = reliveFromGame({ ...game, home: null, away: null, venue: null });
+    expect(r.home.badge).toBe('—');
+    expect(r.note).toBe('Aug 14, 2025');
   });
 });

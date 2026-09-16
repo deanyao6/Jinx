@@ -236,6 +236,60 @@ export function stampsFromStats(inputs: PassportInputs, pill: string): StampFixt
     .map((stamp) => toStamp(stamp, shapes, homeVenueIds, ['all', pill]));
 }
 
+export type ReliveGame = {
+  scheduled_start: string;
+  home: { abbreviation: string; name: string; id: string } | null;
+  away: { abbreviation: string; name: string; id: string } | null;
+  venue: { name: string } | null;
+};
+
+/**
+ * Relive's scorebug and the line beneath it (SPEC.md 6.19).
+ *
+ * The note reads "Aug 14, 2025, Citizens Bank Park, Section 321 with Dad and Maya" in the
+ * reference. Seat and companions are per-attendance, so they are passed in; the parts that
+ * are missing are simply left out rather than rendered as empty clauses.
+ */
+export function reliveFromGame(
+  game: ReliveGame,
+  opts: { seat?: string | null; companions?: readonly string[] } = {},
+) {
+  const parts: string[] = [
+    new Date(game.scheduled_start).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }),
+  ];
+  if (game.venue?.name) parts.push(game.venue.name);
+  const people = opts.companions ?? [];
+  const seat = opts.seat ? `Section ${opts.seat}` : null;
+  const withWhom = people.length ? `with ${listSentence(people)}` : null;
+  if (seat && withWhom) parts.push(`${seat} ${withWhom}`);
+  else if (seat) parts.push(seat);
+  else if (withWhom) parts.push(withWhom.replace(/^with /, 'With '));
+
+  return {
+    away: {
+      team: game.away?.id ?? 'none',
+      badge: game.away?.abbreviation ?? '—',
+      name: nickname(game.away?.name ?? '', null),
+    },
+    home: {
+      team: game.home?.id ?? 'none',
+      badge: game.home?.abbreviation ?? '—',
+      name: nickname(game.home?.name ?? '', null),
+    },
+    note: parts.join(', '),
+  };
+}
+
+/** "Dad", "Dad and Maya", "Dad, Maya and Sam" — the reference uses "and", not an ampersand. */
+export function listSentence(names: readonly string[]): string {
+  if (names.length <= 1) return names[0] ?? '';
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+}
+
 /**
  * Compose the repository. Methods outside {@link SUPABASE_BACKED} fall through to the demo
  * fixtures, which is what the Plan and Guide shells need in v1 anyway (SPEC.md 8.9).

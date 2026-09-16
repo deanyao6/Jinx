@@ -530,7 +530,25 @@ Two small things the mapping had to decide, both worth your eye:
 - The superlative context chips ("Linc, Jan 2024", "11 Games") are not in the payload
   either, so they render empty against real data. Demo mode still shows them.
 
-One thing this refactor caught: the contract types were derived from the demo fixtures,
+### Relive against real data, M8.5
+
+The win probability series and the story steps read from `game_wp_timeline` and
+`game_story_steps`, the tables added earlier tonight. A game whose detail has not been
+ingested yet returns empty arrays rather than an error, which is what the screen's
+"details arrive overnight" state exists for (SPEC.md 4.7).
+
+The scorebug and the line under it map from the game and the user's own attendance. That
+note is assembled from what it actually has: no venue, no seat or no companions means the
+clause is left out rather than rendered as an empty one. Tested, including a game whose
+team joins are missing.
+
+**Photos are not wired up.** They need signed Storage URLs, and the repository's `PhotoRef`
+is currently shaped for the reference's generated placeholder scenes. Widening it to carry
+either a placeholder or a real storage path is the next piece, along with the
+`game_fan_photos()` function that already exists in the schema with its privacy rules and
+tests.
+
+One thing the repository refactor caught: the contract types were derived from the demo fixtures,
 which are `as const`, so `TeamPill.count` was typed `'48' | '17' | '8'` — a type only the
 demo implementation could ever satisfy. A contract shaped by one of its implementations is
 not a contract. They are declared properly now.
@@ -574,9 +592,9 @@ Nothing below is blocked on you except items 1 and 6.
 
 1. **Decide the Stadium guide avatar question** above. It is the single largest remaining
    parity gap and it is one line either way.
-2. **Finish the Supabase repository.** Passport's records are mapped (M3); Games is M2,
-   imports M4, Relive M8.5. `SUPABASE_BACKED` lists what is real. Two things the passport
-   mapping needs from elsewhere, both noted below.
+2. **Finish the Supabase repository.** Passport's records (M3) and Relive's steps, series
+   and scorebug (M8.5) are mapped; Games is M2 and imports M4. `SUPABASE_BACKED` lists what
+   is real. The gaps in each are noted below.
 3. **The typography offsets that remain**, each worth a point or two. Pick a side's records
    and the Passport hero are the two biggest. See the warning below before starting: the
    obvious fix for Pick a side is measurably inert, and I do not know why.
