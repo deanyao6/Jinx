@@ -7,12 +7,10 @@ import { useTheme } from '@/theme/ThemeProvider';
 
 import { PickASideScreen } from '@/features/checkin/reference/PickASideScreen';
 import { StadiumGuideScreen } from '@/features/guide/reference/StadiumGuideScreen';
-import { FriendsPanel } from '@/features/profile/reference/FriendsPanel';
 import { ProfileScreen } from '@/features/profile/reference/ProfileScreen';
 import { GameDayScreen } from '@/features/plan/reference/GameDayScreen';
 import { ReliveScreen } from '@/features/relive/reference/ReliveScreen';
 import { GamesScreen } from '@/features/games/reference/GamesScreen';
-import { GameLogPanel } from '@/features/passport/reference/GameLogPanel';
 import { PassportScreen } from '@/features/passport/reference/PassportScreen';
 
 import { ParityMarker } from './ParityMarker';
@@ -35,10 +33,10 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   'passport-all': () => <PassportScreen initialPill="all" />,
   'passport-phi': () => <PassportScreen initialPill="phi" />,
   'passport-phl': () => <PassportScreen initialPill="phl" />,
-  // The record cards that open these carry the record and the label, so the panel is
-  // given the same values the reference passes from `data-rec` and `data-name`.
-  'passport-log-phillies': () => <GameLogPanel log="phi" title="Phillies" record="12 – 5" />,
-  'passport-log-neutral': () => <GameLogPanel log="neutral" title="As a neutral" record="10 – 9" />,
+  // Opened through Passport rather than mounted standalone, so the parity shot exercises
+  // the same path a tap does. `initialLog` skips the slide so the frame is settled.
+  'passport-log-phillies': () => <PassportScreen initialPill="all" initialLog="phi" />,
+  'passport-log-neutral': () => <PassportScreen initialPill="all" initialLog="neutral" />,
   games: () => <GamesScreen />,
   'pick-a-side': () => <PickASideScreen />,
   'pick-a-side-picked': () => <PickASideScreen picked="away" />,
@@ -49,7 +47,7 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   'guide-bathrooms': () => <StadiumGuideScreen tab="bath" />,
   'guide-seats': () => <StadiumGuideScreen tab="seats" />,
   profile: () => <ProfileScreen />,
-  friends: () => <FriendsPanel />,
+  friends: () => <ProfileScreen initialPanel="friends" />,
 };
 
 function SelfTest() {

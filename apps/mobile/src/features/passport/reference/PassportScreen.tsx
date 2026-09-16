@@ -2,10 +2,12 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { PASSPORT, PASSPORT_PILLS, stampsFor } from '@/features/demo/fixtures';
+import { SlideOver } from '@/components/reference/SlideOver';
+import { GAME_LOGS, PASSPORT, PASSPORT_PILLS, stampsFor } from '@/features/demo/fixtures';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { screenPadding } from '@/theme/reference/tokens';
 
+import { GameLogPanel } from './GameLogPanel';
 import {
   Head,
   Hero,
@@ -28,25 +30,53 @@ import {
  */
 export function PassportScreen({
   initialPill = 'all',
-  onOpenLog,
+  initialLog,
 }: {
   initialPill?: string;
-  onOpenLog?: (log: string) => void;
+  /** Opens with that record's game log already showing, and no slide animation. */
+  initialLog?: string;
 }) {
   const [pill, setPill] = React.useState(initialPill);
+  // The card that opened the log is kept, not just its key, because the panel's header
+  // shows that card's own label and record rather than the log's.
+  const [openLog, setOpenLog] = React.useState<{
+    log: string;
+    name: string;
+    record: string;
+  } | null>(() => initialCard(initialPill, initialLog));
+
   const data = PASSPORT[pill] ?? PASSPORT.all;
   if (!data) throw new Error(`no passport fixture for "${pill}"`);
 
+  const open = (log: string) => {
+    const card = data.cards.find((c) => c.log === log);
+    if (card && GAME_LOGS[log]) setOpenLog({ log, name: card.name, record: card.record });
+  };
+
   return (
     <ReferenceThemeProvider team={data.teamKey}>
-      <PassportBody
-        pill={pill}
-        onSelect={setPill}
-        data={data}
-        onOpenLog={onOpenLog ?? (() => {})}
-      />
+      <PassportBody pill={pill} onSelect={setPill} data={data} onOpenLog={open} />
+      {openLog ? (
+        <SlideOver open initiallyOpen={initialLog != null}>
+          <GameLogPanel
+            log={openLog.log}
+            // The reference titles the neutral card's log "As a neutral", not "Neutral".
+            title={openLog.name === 'Neutral' ? 'As a neutral' : openLog.name}
+            record={openLog.record}
+            onClose={() => setOpenLog(null)}
+          />
+        </SlideOver>
+      ) : null}
     </ReferenceThemeProvider>
   );
+}
+
+/** Resolve the card a deep-linked log belongs to, so the panel header matches. */
+function initialCard(pill: string, log?: string) {
+  if (!log) return null;
+  const data = PASSPORT[pill] ?? PASSPORT.all;
+  const card = data?.cards.find((c) => c.log === log);
+  return card ? { log, name: card.name, record: card.record } : null;
 }
 
 function PassportBody({

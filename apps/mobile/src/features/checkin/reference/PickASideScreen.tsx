@@ -1,8 +1,9 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ICONS } from '@/components/reference/icons';
+import { LiveDot } from '@/components/reference/LiveDot';
 import { PICK_A_SIDE, pickConfirmation } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
@@ -19,12 +20,15 @@ import { border, radius, screenPadding } from '@/theme/reference/tokens';
 export function PickASideScreen({ picked }: { picked?: 'away' | 'home' }) {
   return (
     <ReferenceThemeProvider team="none">
-      <Body picked={picked} />
+      <Body initialPicked={picked} />
     </ReferenceThemeProvider>
   );
 }
 
-function Body({ picked }: { picked?: 'away' | 'home' }) {
+function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
+  // The reference lets you switch sides freely until the countdown locks, so this is a
+  // plain toggle rather than a one-way commit.
+  const [picked, setPicked] = React.useState<'away' | 'home' | undefined>(initialPicked);
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const Book = ICONS['i-book'];
@@ -47,7 +51,7 @@ function Body({ picked }: { picked?: 'away' | 'home' }) {
           <View style={[s.live, { borderColor: base.good }]}>
             {/* `.fx-live i` pulses at 1.6s. The harness freezes animation, and SPEC.md 8.2
                 requires honouring Reduce Motion, so the still state is a real state. */}
-            <View style={[s.liveDot, { backgroundColor: base.good }]} />
+            <LiveDot color={base.good} size={6} />
             <Text style={[s.liveText, { color: base.good }]}>LIVE</Text>
           </View>
           <Text style={[s.at, { color: base.muted }]} numberOfLines={1}>
@@ -94,6 +98,7 @@ function Body({ picked }: { picked?: 'away' | 'home' }) {
             label={d.away.button}
             pressed={picked === 'away'}
             dimmed={picked === 'home'}
+            onPress={() => setPicked('away')}
           />
         </TeamTheme>
         <TeamTheme team={d.home.team}>
@@ -101,6 +106,7 @@ function Body({ picked }: { picked?: 'away' | 'home' }) {
             label={d.home.button}
             pressed={picked === 'home'}
             dimmed={picked === 'away'}
+            onPress={() => setPicked('home')}
           />
         </TeamTheme>
 
@@ -159,15 +165,20 @@ function RootButton({
   label,
   pressed,
   dimmed,
+  onPress,
 }: {
   label: string;
   pressed: boolean;
   dimmed: boolean;
+  onPress: () => void;
 }) {
   const { base, team } = useReferenceTheme();
   const Check = ICONS['i-check-c'];
   return (
-    <View
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected: pressed }}
+      onPress={onPress}
       style={[
         s.root,
         { backgroundColor: team.fill, borderColor: team.second },
@@ -181,7 +192,7 @@ function RootButton({
     >
       {pressed ? <Check size={17} color="#FFFFFF" /> : null}
       <Text style={s.rootText}>{label}</Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -197,7 +208,6 @@ const s = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 7,
   },
-  liveDot: { width: 6, height: 6, borderRadius: 3 },
   liveText: { fontSize: 9.5, fontFamily: fontFamily({ weight: 850 }), letterSpacing: 9.5 * 0.05 },
   at: { flex: 1, fontSize: 11, fontFamily: fontFamily({ weight: 650 }) },
   lock: { borderWidth: border.pill, borderRadius: 6, paddingVertical: 3, paddingHorizontal: 7 },

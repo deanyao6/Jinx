@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg from 'react-native-svg';
 
@@ -19,12 +19,13 @@ import { border, screenPadding } from '@/theme/reference/tokens';
 export function StadiumGuideScreen({ tab = 'food' }: { tab?: string }) {
   return (
     <ReferenceThemeProvider team={GUIDE.team}>
-      <Body tab={tab} />
+      <Body initialTab={tab} />
     </ReferenceThemeProvider>
   );
 }
 
-function Body({ tab }: { tab: string }) {
+function Body({ initialTab }: { initialTab: string }) {
+  const [tab, setTab] = React.useState(initialTab);
   const { base, team } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
@@ -99,11 +100,17 @@ function Body({ tab }: { tab: string }) {
           {GUIDE.tabs.map((t) => {
             const on = t.key === tab;
             return (
-              <View key={t.key} style={[s.segItem, on ? { backgroundColor: base.scr } : null]}>
+              <Pressable
+                key={t.key}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: on }}
+                onPress={() => setTab(t.key)}
+                style={[s.segItem, on ? { backgroundColor: base.scr } : null]}
+              >
                 <Text style={[on ? s.segTextOn : s.segText, { color: on ? base.ink : base.muted }]}>
                   {t.label}
                 </Text>
-              </View>
+              </Pressable>
             );
           })}
         </View>

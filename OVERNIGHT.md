@@ -365,6 +365,46 @@ and the ~8% is almost entirely that one difference. Two one-line options:
 Everything else on that screen — the segments, the ranked rows, the score circles and
 their green/amber/red thresholds — matches.
 
+## Interactions — done
+
+Every screen was a static render of one state, which is what the parity harness needs and
+not what the app needs. They are now interactive:
+
+- **Passport** pills filter the whole screen — hero, badge, record cards, stamps and
+  superlatives — and each record card opens its game log.
+- **Pick a side** buttons select and switch freely, dimming the other and showing the
+  confirmation with the gain recomputed from that side's probability.
+- **Relive** plays, pauses and restarts, advancing one step immediately and then every
+  1.7s, exactly as the reference's handler does.
+- **Games**, **Stadium guide** and **Friends** segments switch.
+- **Profile** opens the Friends panel, and both slide-overs close again.
+
+The two panels slide in over 320ms on `cubic-bezier(.2,.8,.2,1)` and the live dot pulses
+at 1.6s, both from the reference. **Reduce Motion** is honoured: the panels still open,
+they just arrive rather than travel, and the dot holds at full opacity. The Relive player
+is deliberately *not* disabled under Reduce Motion — stepping through the story is the
+feature, not decoration, and the steps are discrete rather than animated.
+
+**Parity is unchanged at 4.44%**, which is the point: the interactions did not disturb any
+rendering.
+
+### How the interactions are verified
+
+Not by the parity harness. It drives the app over a control channel rather than by
+touching it, so it can prove a screen *renders* a state and never that a tap *reaches*
+one. **15 new tests** fire real press events and assert the result, including the two
+things most likely to rot: that the neutral record card's log is titled "As a neutral"
+rather than "Neutral", and that Relive's gain and restart arithmetic match the reference's
+handler rather than being hard-coded.
+
+Two pieces of test infrastructure were needed. `react-native-reanimated` reaches for a
+native worklets runtime that does not exist under Jest, and its own shipped mock
+re-exports the real module, so it does not help; `jest.setup.ts` now has a small mock
+covering only the surface these screens use, resolving animations to their final value.
+It reports Reduce Motion as **off**, so the tests exercise the animated path rather than
+the shortcut. `jest.resolver.js` also delegates to the resolver react-native-worklets
+ships, which steers it away from its native-only entry points.
+
 ### One open design question, for you
 
 The reference's tab bar has `padding-bottom: 20px`, which is its stand-in for the home
@@ -404,26 +444,19 @@ Nothing below is blocked on you except items 1 and 6.
 
 1. **Decide the Stadium guide avatar question** above. It is the single largest remaining
    parity gap and it is one line either way.
-2. **Interactions.** Every screen is currently a static render of one state, which is what
-   the parity harness needs but not what the app needs. The pills, the record cards, the
-   segments, the root buttons and the Relive play button all need their handlers, the two
-   slide-over panels need their 320ms `cubic-bezier(.2,.8,.2,1)` transition, and the live
-   dot needs its 1.6s pulse. All of it must respect Reduce Motion (SPEC.md 8.2). The
-   harness freezes motion, so a still frame is already a state each screen can render,
-   which is the hard half.
-3. **Wire `team_colors` into the app.** The 65 palettes are seeded but nothing reads them;
+2. **Wire `team_colors` into the app.** The 65 palettes are seeded but nothing reads them;
    the app uses the 14 static fallbacks, so every team outside Philadelphia and the demo
    set currently falls back to neutral. A repository that loads the table and falls back to
    the static set is small, and the cross-check test already guarantees the two agree.
-4. **Replace the demo fixtures with the real queries.** The screens read through
+3. **Replace the demo fixtures with the real queries.** The screens read through
    `features/demo/fixtures.ts` today. SPEC.md 8.9 wants them behind a repository interface
    so demo and Supabase are interchangeable; the fixtures are already shaped that way, so
    this is mostly introducing the interface and a second implementation.
-5. **The last typography offsets.** Passport's header sits 2-3pt high and its hero 3pt low;
+4. **The last typography offsets.** Passport's header sits 2-3pt high and its hero 3pt low;
    Pick a side and the game log have similar small ones. Worth roughly 2 points of parity
    across the board. Read the warnings above first: four of my six attempts here made
    things worse, and all four came from reasoning rather than measuring.
-6. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
+5. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
    key, and Relive (6.19) against real data rather than fixtures.
 
 ## State of the checks## State of the checks

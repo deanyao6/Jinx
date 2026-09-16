@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Line, Path, Polyline } from 'react-native-svg';
 
@@ -15,7 +15,7 @@ import {
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
-import { screenPadding } from '@/theme/reference/tokens';
+import { motion, screenPadding } from '@/theme/reference/tokens';
 
 /**
  * Relive, ported from the fourth phone in `design/reference.html` (SPEC.md 6.19, 8.8.4).
@@ -30,13 +30,54 @@ import { screenPadding } from '@/theme/reference/tokens';
 export function ReliveScreen({ step = 0 }: { step?: number }) {
   return (
     <ReferenceThemeProvider team={RELIVE.home.team}>
-      <Body step={step} />
+      <Body initialStep={step} />
     </ReferenceThemeProvider>
   );
 }
 
-function Body({ step }: { step: number }) {
+/**
+ * Drives the story player. Play advances one step immediately and then every 1.7s, pause
+ * stops where it is, and pressing play after the final step restarts from the beginning,
+ * matching the reference's handler exactly.
+ *
+ * Reduce Motion does not disable this: stepping through the story is the feature, not
+ * decoration, and the reference's own steps are already discrete rather than animated.
+ */
+function useStoryPlayer(initialStep: number) {
+  const [step, setStep] = React.useState(initialStep);
+  const [playing, setPlaying] = React.useState(false);
+  const last = RELIVE_STEPS.length - 1;
+
+  React.useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(() => {
+      setStep((current) => {
+        if (current >= last) {
+          setPlaying(false);
+          return current;
+        }
+        return current + 1;
+      });
+    }, motion.reliveStepMs);
+    return () => clearInterval(id);
+  }, [playing, last]);
+
+  const toggle = () => {
+    if (playing) {
+      setPlaying(false);
+      return;
+    }
+    // Restart from the top once the story has finished.
+    setStep((current) => (current >= last ? 0 : Math.min(current + 1, last)));
+    setPlaying(true);
+  };
+
+  return { step, playing, toggle };
+}
+
+function Body({ initialStep }: { initialStep: number }) {
   const { base, team } = useReferenceTheme();
+  const { step, playing, toggle } = useStoryPlayer(initialStep);
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
   const Share = ICONS['i-share'];
@@ -47,7 +88,9 @@ function Body({ step }: { step: number }) {
   const index = Math.max(0, Math.min(step, RELIVE_STEPS.length - 1));
   const current = RELIVE_STEPS[index];
   if (!current) throw new Error(`no Relive step ${index}`);
-  const playing = index > 0 && index < RELIVE_STEPS.length - 1;
+  // The parity harness mounts a mid-story step directly rather than pressing play, so the
+  // icon follows "is there more to come", which is what the reference's icon means.
+  const showPause = playing || (index > 0 && index < RELIVE_STEPS.length - 1);
 
   return (
     <View style={{ flex: 1, backgroundColor: base.scr, paddingTop: insets.top }}>
@@ -89,15 +132,20 @@ function Body({ step }: { step: number }) {
         <Text style={[s.note, { color: base.muted }]}>{RELIVE.note}</Text>
 
         <View style={s.player}>
-          <View style={[s.playButton, { backgroundColor: team.accent }]}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={showPause ? 'Pause the game story' : 'Play the game story'}
+            onPress={toggle}
+            style={[s.playButton, { backgroundColor: team.accent }]}
+          >
             {/* The reference swaps one path between a triangle and two bars. */}
             <Svg width={18} height={18} viewBox="0 0 24 24">
               <Path
-                d={playing ? 'M7 5.5h3.5v13H7zM13.5 5.5H17v13h-3.5z' : 'M8 5.5v13l10.5-6.5z'}
+                d={showPause ? 'M7 5.5h3.5v13H7zM13.5 5.5H17v13h-3.5z' : 'M8 5.5v13l10.5-6.5z'}
                 fill={team.onFill}
               />
             </Svg>
-          </View>
+          </Pressable>
           <View style={[s.storyCard, { backgroundColor: base.surface }]}>
             <Text style={[s.storyLabel, { color: base.muted }]}>
               {index === 0 ? RELIVE.idleHint : current.label}

@@ -1,11 +1,14 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/reference/Avatar';
+import { SlideOver } from '@/components/reference/SlideOver';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { PROFILE } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
+
+import { FriendsPanel } from './FriendsPanel';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, screenPadding } from '@/theme/reference/tokens';
@@ -14,15 +17,21 @@ import { border, screenPadding } from '@/theme/reference/tokens';
  * Profile, ported from the seventh phone in `design/reference.html` (SPEC.md 8.8.7).
  * The Friends row opens the Friends panel; see FriendsPanel.
  */
-export function ProfileScreen() {
+export function ProfileScreen({ initialPanel }: { initialPanel?: 'friends' }) {
+  const [panel, setPanel] = React.useState<'friends' | null>(initialPanel ?? null);
   return (
     <ReferenceThemeProvider team={PROFILE.team}>
-      <Body />
+      <Body onOpenPanel={setPanel} />
+      {panel === 'friends' ? (
+        <SlideOver open initiallyOpen={initialPanel != null}>
+          <FriendsPanel onClose={() => setPanel(null)} />
+        </SlideOver>
+      ) : null}
     </ReferenceThemeProvider>
   );
 }
 
-function Body() {
+function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
   const { base, team } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const Gear = ICONS['i-gear'];
@@ -77,8 +86,11 @@ function Body() {
           {PROFILE.rows.map((row, i) => {
             const Icon = ICONS[row.icon as IconName];
             return (
-              <View
+              <Pressable
                 key={row.title}
+                accessibilityRole="button"
+                // Only the Friends row has a destination so far; the rest are M8 and M9.
+                onPress={row.facepile ? () => onOpenPanel('friends') : undefined}
                 style={[
                   s.navrow,
                   i > 0 ? { borderTopWidth: border.hairline, borderTopColor: base.line } : null,
@@ -101,7 +113,7 @@ function Body() {
                   </View>
                 ) : null}
                 <Chevron size={20} color={base.muted} />
-              </View>
+              </Pressable>
             );
           })}
         </View>

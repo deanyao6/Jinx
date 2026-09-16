@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/reference/Avatar';
@@ -16,15 +16,17 @@ import { border, screenPadding } from '@/theme/reference/tokens';
  * Opens from Profile's Friends row. The companion records, the rivalry card and the
  * "before you connected" card, with every person ringed in their own team's colour.
  */
-export function FriendsPanel() {
+export function FriendsPanel({ onClose }: { onClose?: () => void }) {
   return (
     <ReferenceThemeProvider team={PROFILE.team}>
-      <Body />
+      <Body onClose={onClose ?? (() => {})} />
     </ReferenceThemeProvider>
   );
 }
 
-function Body() {
+function Body({ onClose }: { onClose: () => void }) {
+  // `FRIENDS.tabs` is `as const`, so without widening this infers the literal 'With'.
+  const [tab, setTab] = React.useState<string>(FRIENDS.tabs[0]);
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const Back = ICONS['i-chev-l'];
@@ -44,9 +46,14 @@ function Body() {
       >
         <View style={s.top}>
           <View style={s.row}>
-            <View style={[s.iconButton, { backgroundColor: base.surface }]}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Back to profile"
+              onPress={onClose}
+              style={[s.iconButton, { backgroundColor: base.surface }]}
+            >
               <Back size={20} color={base.ink} />
-            </View>
+            </Pressable>
             <Text style={[s.topTitle, { color: base.ink }]}>Friends</Text>
           </View>
           <View style={[s.iconButton, { backgroundColor: base.surface }]}>
@@ -55,14 +62,20 @@ function Body() {
         </View>
 
         <View style={[s.seg, { backgroundColor: base.surface }]}>
-          {FRIENDS.tabs.map((tab, i) => {
-            const on = i === 0;
+          {FRIENDS.tabs.map((option) => {
+            const on = option === tab;
             return (
-              <View key={tab} style={[s.segItem, on ? { backgroundColor: base.scr } : null]}>
+              <Pressable
+                key={option}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: on }}
+                onPress={() => setTab(option)}
+                style={[s.segItem, on ? { backgroundColor: base.scr } : null]}
+              >
                 <Text style={[on ? s.segTextOn : s.segText, { color: on ? base.ink : base.muted }]}>
-                  {tab}
+                  {option}
                 </Text>
-              </View>
+              </Pressable>
             );
           })}
         </View>

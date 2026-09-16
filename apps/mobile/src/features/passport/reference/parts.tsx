@@ -107,6 +107,7 @@ function PillButton({
 
   return (
     <Pressable
+      testID={`pill-${pill.key}`}
       accessibilityRole="button"
       accessibilityState={{ selected: pressed }}
       onPress={onPress}
@@ -284,6 +285,7 @@ function RecordCardView({ card, onPress }: { card: RecordCard; onPress: () => vo
   const accent = card.team === 'neutral' ? base.muted : team.accent;
   return (
     <Pressable
+      testID={`record-card-${card.log}`}
       accessibilityRole="button"
       onPress={onPress}
       style={[s.recordCard, { backgroundColor: base.card, borderColor: base.line }]}

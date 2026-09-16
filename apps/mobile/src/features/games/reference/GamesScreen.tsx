@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Avatar } from '@/components/reference/Avatar';
@@ -19,16 +19,17 @@ import { border, radius, screenPadding } from '@/theme/reference/tokens';
  * Each row carries its own team theme, because the thumbnail's gradient ends in that
  * team's fill, exactly as `.fx-row` nests a `.t-*` class in the reference.
  */
-export function GamesScreen() {
+export function GamesScreen({ initialSegment = 'History' }: { initialSegment?: string }) {
   return (
     <ReferenceThemeProvider team="none">
-      <Body />
+      <Body initialSegment={initialSegment} />
     </ReferenceThemeProvider>
   );
 }
 
-function Body() {
+function Body({ initialSegment }: { initialSegment: string }) {
   const { base } = useReferenceTheme();
+  const [segment, setSegment] = React.useState(initialSegment);
   const insets = useSafeAreaInsets();
   const Plus = ICONS['i-plus'];
   const Search = ICONS['i-search'];
@@ -59,7 +60,11 @@ function Body() {
           </Text>
         </View>
 
-        <Segmented options={['History', 'Upcoming', 'Imports']} selected="History" />
+        <Segmented
+          options={['History', 'Upcoming', 'Imports']}
+          selected={segment}
+          onSelect={setSegment}
+        />
 
         {GAMES.map((game, i) => (
           <TeamTheme key={`${game.title}-${i}`} team={game.team}>
@@ -73,18 +78,32 @@ function Body() {
 }
 
 /** `.fx-seg`. */
-function Segmented({ options, selected }: { options: readonly string[]; selected: string }) {
+function Segmented({
+  options,
+  selected,
+  onSelect,
+}: {
+  options: readonly string[];
+  selected: string;
+  onSelect: (option: string) => void;
+}) {
   const { base } = useReferenceTheme();
   return (
     <View style={[s.seg, { borderColor: base.line, backgroundColor: base.card }]}>
       {options.map((option) => {
         const on = option === selected;
         return (
-          <View key={option} style={[s.segItem, on ? { backgroundColor: base.surface } : null]}>
+          <Pressable
+            key={option}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: on }}
+            onPress={() => onSelect(option)}
+            style={[s.segItem, on ? { backgroundColor: base.surface } : null]}
+          >
             <Text style={[on ? s.segTextOn : s.segText, { color: on ? base.ink : base.muted }]}>
               {option}
             </Text>
-          </View>
+          </Pressable>
         );
       })}
     </View>
