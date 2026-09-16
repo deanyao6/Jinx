@@ -578,3 +578,92 @@ export const RELIVE_FAN_PHOTOS = [
   { kind: 'field', seed: 2 },
   { kind: 'selfie', seed: 2 },
 ] as const;
+
+/** Game day plan (SPEC.md 8.8.5). A demo shell in v1, behind FEATURE_PLAN. */
+export const GAME_DAY = {
+  team: 'phl',
+  matchup: 'Eagles at Rams',
+  when: 'Sunday, 1:25 PM, SoFi Stadium',
+  seat: [
+    { label: 'Section', value: '121' },
+    { label: 'Row', value: '14' },
+    { label: 'Seat', value: '7' },
+    { label: 'Gate', value: '3' },
+  ],
+  companions: ['dean', 'maya', 'jordan'],
+  companionsText: 'Going with Maya and Jordan',
+  timeline: [
+    { icon: 'i-car', time: '9:45 AM', text: 'Leave home. 41 min with Sunday traffic.', now: true },
+    {
+      icon: 'i-grill',
+      time: '10:30 AM',
+      text: 'Park in Lot L. Eagles fans tailgate at the north end.',
+      now: false,
+    },
+    {
+      icon: 'i-gate',
+      time: '12:40 PM',
+      text: 'Enter at Gate 3, the shortest line for Section 121.',
+      now: false,
+    },
+    {
+      icon: 'i-flag',
+      time: '5:30 PM',
+      text: 'Post-game at an Eagles bar in Santa Monica. 34 fans going.',
+      now: false,
+    },
+  ],
+} as const;
+
+/** Stadium guide (SPEC.md 8.8.6). A demo shell in v1, behind FEATURE_GUIDE. */
+export const GUIDE = {
+  team: 'phi',
+  shape: 'ballparkA',
+  venue: 'Citizens Bank Park',
+  subtitle: 'Philadelphia, home of the Phillies',
+  visitors: ['maya', 'dad', 'priya'],
+  visitorsText: 'You and 12 friends visited',
+  tabs: [
+    { key: 'food', label: 'Food' },
+    { key: 'bath', label: 'Bathrooms' },
+    { key: 'seats', label: 'Seats' },
+  ],
+} as const;
+
+export type GuideRow = { icon: string; title: string; meta: string; score: string };
+
+export const GUIDE_ROWS: Record<string, readonly GuideRow[]> = {
+  food: [
+    {
+      icon: 'i-food',
+      title: 'Cheesesteak',
+      meta: 'Stand near Section 104, 6 min line',
+      score: '9.2',
+    },
+    { icon: 'i-food', title: 'Crab fries', meta: 'Outfield concourse', score: '8.7' },
+    { icon: 'i-food', title: 'Roast pork sandwich', meta: 'Behind Section 141', score: '8.4' },
+    { icon: 'i-food', title: 'Soft pretzel', meta: 'Carts on every level', score: '7.1' },
+    { icon: 'i-food', title: 'Nachos helmet', meta: 'Section 120', score: '5.8' },
+  ],
+  bath: [
+    { icon: 'i-door', title: 'Near Section 132', meta: 'Cleanest, about 2 min wait', score: '9.0' },
+    { icon: 'i-door', title: 'Upper deck, 320s', meta: 'Quiet after the 6th', score: '8.1' },
+    { icon: 'i-door', title: 'Main gate concourse', meta: 'Avoid between innings', score: '4.3' },
+  ],
+  seats: [
+    {
+      icon: 'i-seat',
+      title: 'Section 321, rows 1–5',
+      meta: 'Skyline view, shaded late',
+      score: '9.1',
+    },
+    { icon: 'i-seat', title: 'Section 104', meta: 'Close to the bullpen', score: '8.6' },
+    { icon: 'i-seat', title: 'Section 142', meta: 'Full sun at day games', score: '6.2' },
+  ],
+};
+
+/** `circCls()` in the reference: green at 8 and above, amber at 6, red below. */
+export function scoreClass(score: string): 's-hi' | 's-mid' | 's-lo' {
+  const n = parseFloat(score);
+  return n >= 8 ? 's-hi' : n >= 6 ? 's-mid' : 's-lo';
+}

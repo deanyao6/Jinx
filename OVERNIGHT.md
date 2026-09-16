@@ -206,12 +206,15 @@ in the repo.
 | Games, History | **3.32%** | **2.92%** |
 | Relive, pregame | **2.90%** | **2.71%** |
 | Relive, mid story | **3.25%** | **3.06%** |
-| Game day | not built | not built |
-| Stadium guide (Food, Bathrooms, Seats) | not built | not built |
+| Game day | **0.96%** | **0.96%** |
+| Stadium guide, Food | **8.93%** | **8.48%** |
+| Stadium guide, Bathrooms | **8.15%** | **7.70%** |
+| Stadium guide, Seats | **7.93%** | **7.48%** |
 | Profile | not built | not built |
 | Friends panel | not built | not built |
 
-Mean across what exists: **4.17%** over twenty comparisons. Games came in at 3.12% on the
+Mean across what exists: **4.78%** over twenty-eight comparisons. Game day at 0.96% is the
+closest; the Stadium guide is the outlier and the reason is a bug in the reference, below. Games came in at 3.12% on the
 first attempt, which suggests the components built for the earlier screens are carrying
 their weight. All 32 reference shots render;
 22 of 32 app shots correctly report "not built" rather than being scored against something
@@ -327,6 +330,36 @@ line genuinely needed about 4.7pt more space, but everything below it was alread
 The lesson is the method rather than the rule. Measure the ink rows in both PNGs, work out
 what each block actually needs, and only then change something. Four of my six typography
 changes made parity worse, and every one of them came from reasoning rather than measuring.
+
+### A bug in the reference, which needs your call
+
+**This is why the Stadium guide sits at 8% while every other screen is under 6%.**
+
+In `design/reference.html`:
+
+```
+.avs svg   { width:20px; height:20px; ... }   /* line 148 */
+.vhero svg { width:88px; height:88px }        /* line 200 */
+```
+
+Both selectors have identical specificity, so for the friends' avatars inside `.vhero` the
+later rule wins and they render at **88x88 instead of 20x20** — four times the size of
+every other avatar stack in the app. They then overflow the row, squeeze the caption onto
+four lines, and make the venue hero about 100pt taller than it looks in any other screen.
+
+That is a cascade collision, not a design decision: `.vhero svg` is clearly meant for the
+stadium shape beside the venue name.
+
+**I did not reproduce it.** The brief says the reference wins on anything visual, but it
+also says to stop and ask rather than deviate when something looks like a mistake, and
+this one is unambiguous. So the app draws those avatars at 20px like every other stack,
+and the ~8% is almost entirely that one difference. Two one-line options:
+
+- **Fix the reference** (add `.vhero > svg` or reorder), and the guide should drop to ~2%.
+- **Match the reference** and I will make the app draw them at 88px instead.
+
+Everything else on that screen — the segments, the ranked rows, the score circles and
+their green/amber/red thresholds — matches.
 
 ### One open design question, for you
 

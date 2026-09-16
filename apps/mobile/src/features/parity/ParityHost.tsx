@@ -1,11 +1,13 @@
 import React from 'react';
-import { View } from 'react-native';
+import { LogBox, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
 
 import { PickASideScreen } from '@/features/checkin/reference/PickASideScreen';
+import { StadiumGuideScreen } from '@/features/guide/reference/StadiumGuideScreen';
+import { GameDayScreen } from '@/features/plan/reference/GameDayScreen';
 import { ReliveScreen } from '@/features/relive/reference/ReliveScreen';
 import { GamesScreen } from '@/features/games/reference/GamesScreen';
 import { GameLogPanel } from '@/features/passport/reference/GameLogPanel';
@@ -40,6 +42,10 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   'pick-a-side-picked': () => <PickASideScreen picked="away" />,
   'relive-start': () => <ReliveScreen step={0} />,
   'relive-mid': () => <ReliveScreen step={5} />,
+  'game-day': () => <GameDayScreen />,
+  'guide-food': () => <StadiumGuideScreen tab="food" />,
+  'guide-bathrooms': () => <StadiumGuideScreen tab="bath" />,
+  'guide-seats': () => <StadiumGuideScreen tab="seats" />,
 };
 
 function SelfTest() {
@@ -64,6 +70,14 @@ function SelfTest() {
 export function ParityHost({ children }: { children: React.ReactNode }) {
   const control = useParityControl();
   const theme = useTheme();
+
+  // A development warning toast draws over the screen and is perfectly stable, so the
+  // capture script's two-identical-frames check accepts it. One covered the tab bar on the
+  // Stadium guide and scored it at 13.92% instead of about 5%. Parity shots must contain
+  // the app and nothing else, so LogBox is silenced while the harness is driving.
+  React.useEffect(() => {
+    if (control.active) LogBox.ignoreAllLogs(true);
+  }, [control.active]);
 
   if (!control.active) return <>{children}</>;
 
