@@ -96,8 +96,9 @@ enabled = true
 port = 54423
 # External URL of the API server that frontend connects to.
 api_url = "http://127.0.0.1:54421"
-# OpenAI API Key to use for Supabase AI in the Supabase Studio.
-openai_api_key = "env(OPENAI_API_KEY)"
+# OpenAI API Key for the SQL assistant in local Studio. This project uses no OpenAI service; the
+# line is left commented so a stray OPENAI_API_KEY in the shell is not silently picked up.
+# openai_api_key = "env(OPENAI_API_KEY)"
 
 # Email testing server. Emails sent with the local dev setup are not actually sent - rather, they
 # are monitored, and you can view the emails that would have been sent from the web interface.
@@ -232,15 +233,20 @@ otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
 
-# Use a production-ready SMTP server
+# Production SMTP. Local dev deliberately leaves this off so mail goes to Mailpit (see [local_smtp]).
+# Supabase's built-in sender allows only 2 messages per hour and has no delivery SLA, which is not
+# enough for sign-in codes once more than one person uses the app. Resend's free tier covers a
+# TestFlight group (3,000/month, 100/day). Set this on the hosted project, either in the dashboard
+# under Authentication > Emails, or by running `supabase config push` against a linked project with
+# RESEND_API_KEY exported. The sender domain must be verified in Resend first.
 # [auth.email.smtp]
 # enabled = true
-# host = "smtp.sendgrid.net"
+# host = "smtp.resend.com"
 # port = 587
-# user = "apikey"
-# pass = "env(SENDGRID_API_KEY)"
-# admin_email = "admin@email.com"
-# sender_name = "Admin"
+# user = "resend"
+# pass = "env(RESEND_API_KEY)"
+# admin_email = "noreply@<your-domain>"
+# sender_name = "APPNAME"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]
