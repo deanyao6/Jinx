@@ -154,6 +154,15 @@ export interface NflPlay {
   posSide: Side | null;
   /** Side that scored a touchdown on this play, if any. */
   tdSide: Side | null;
+  /**
+   * Who put the points on the board: the touchdown scorer, or the kicker on a field goal.
+   * `providerPlayerId` is the gsis id, which is what `game_appearances` is keyed by, so a
+   * moment resolves to the same `players` row the lineup does.
+   *
+   * Null on any play that has no single scorer — a safety, a marker row, a defensive stop.
+   */
+  scorerProviderId: string | null;
+  scorerName: string | null;
   touchdown: boolean;
   returnTouchdown: boolean;
   interception: boolean;

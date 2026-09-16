@@ -569,6 +569,16 @@ export type ReliveStep = {
   score: string;
   label: string;
   text: string;
+  /**
+   * Who put the points on the board, when the provider names one (SPEC.md 6.7).
+   *
+   * Relive itself does not draw this — the play description already says the name. It is
+   * here because "Players seen" on game detail needs a per-game source of "this person
+   * scored", and the scoring plays are exactly these steps. Null for MLB, whose feed
+   * carries no id on a scoring play, and for the pregame and final steps.
+   */
+  scorerId?: string | null;
+  scorerName?: string | null;
 };
 
 /** `STEPS` in the reference. */

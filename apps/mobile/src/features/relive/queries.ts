@@ -41,7 +41,7 @@ export function useGameStorySteps(gameId: string | undefined) {
     queryFn: async (): Promise<ReliveStep[]> => {
       const { data, error } = await supabase
         .from('game_story_steps')
-        .select('seq, wp_seq, away_score, home_score, label, text')
+        .select('seq, wp_seq, away_score, home_score, label, text, scorer_player_id, scorer_name')
         .eq('game_id', gameId as string)
         .order('seq');
       if (error) throw error;
@@ -52,6 +52,8 @@ export function useGameStorySteps(gameId: string | undefined) {
           home_score: number;
           label: string;
           text: string;
+          scorer_player_id: string | null;
+          scorer_name: string | null;
         }[]
       ).map((row) => ({
         wp: row.wp_seq,
@@ -59,6 +61,8 @@ export function useGameStorySteps(gameId: string | undefined) {
         score: `${row.away_score} – ${row.home_score}`,
         label: row.label,
         text: row.text,
+        scorerId: row.scorer_player_id,
+        scorerName: row.scorer_name,
       }));
     },
     enabled: !!gameId,

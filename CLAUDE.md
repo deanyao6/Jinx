@@ -100,6 +100,8 @@ python3 seed/scripts/check_team_colors.py # audit team_colors.json: coverage, ve
 npx tsx ingest/src/mlb/backfill.ts --from 2000 --to 2026   # MLB schedules + finals (needs SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)
 npx tsx ingest/src/mlb/detail.ts --pending                 # MLB details for attended games
 npx tsx ingest/src/nfl/run.ts --from 2000 --to 2026        # NFL schedules, play-by-play, appearances
+npx tsx ingest/src/mlb/relive.ts --attended                 # MLB win probability + story steps
+npx tsx ingest/src/nfl/relive.ts --attended                # NFL ditto, from the nflverse play-by-play
 npx tsx ingest/src/elo/run.ts --sport mlb                  # Elo ratings + frozen win probabilities
 ```
 

@@ -127,6 +127,11 @@ export function parseNflGame(game: NflverseGameRow, plays: NflversePbpRow[]): Ca
       awayScore: totalAway,
       posSide,
       tdSide: teamSide(row.td_team, homeTeam, awayTeam),
+      // The touchdown scorer first: it is set for a rushing, receiving, pick six, fumble
+      // return and kick return alike, so one column covers every returning-for-six case.
+      // The kicker only matters when nobody reached the end zone.
+      scorerProviderId: row.td_player_id || row.kicker_player_id || null,
+      scorerName: row.td_player_name || row.kicker_player_name || null,
       touchdown: flag(row.touchdown),
       returnTouchdown: flag(row.return_touchdown),
       interception: flag(row.interception),

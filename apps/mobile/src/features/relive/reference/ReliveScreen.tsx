@@ -59,6 +59,27 @@ export function ReliveScreen({ step = 0, gameId }: { step?: number; gameId?: str
  * Reduce Motion does not disable this: stepping through the story is the feature, not
  * decoration, and the reference's own steps are already discrete rather than animated.
  */
+/**
+ * The photo strip is a fixed four-column row, as the reference draws it.
+ *
+ * Every tile is `flex: 1, aspectRatio: 1`, so a row with fewer than four children stretches
+ * them: a user with no photos got a single full-width square where the reference has a small
+ * dashed tile. The spacers keep the columns honest without hard-coding a width against the
+ * screen, which would have to know about the screen padding and the gap.
+ */
+const PHOTO_COLUMNS = 4;
+
+function RowSpacers({ count }: { count: number }) {
+  if (count <= 0) return null;
+  return (
+    <>
+      {Array.from({ length: count }, (_, i) => (
+        <View key={i} style={s.photoSpacer} />
+      ))}
+    </>
+  );
+}
+
 function useStoryPlayer(initialStep: number, stepCount: number) {
   const [step, setStep] = React.useState(initialStep);
   const [playing, setPlaying] = React.useState(false);
@@ -114,6 +135,9 @@ function Body({
   const Camera = ICONS['i-camera'];
   const Eye = ICONS['i-eye'];
   const Ext = ICONS['i-ext'];
+
+  const myPhotos = repo.relivePhotos();
+  const fanPhotos = repo.reliveFanPhotos();
 
   const index = Math.max(0, Math.min(step, steps.length - 1));
   const current = steps[index];
@@ -307,7 +331,7 @@ function Body({
               photo, and the app has no full-screen viewer to open one in, so there is nothing
               to show and nothing to set visibility on or delete. Wire the tap, and the two
               actions docs/interactions.md asks for, when the viewer and real photos land. */}
-          {repo.relivePhotos().map((photo, i) => (
+          {myPhotos.map((photo, i) => (
             <View key={`${photo.kind}-${i}`} style={s.photo}>
               <PhotoScene kind={photo.kind} seed={photo.seed} />
             </View>
@@ -320,19 +344,27 @@ function Body({
           >
             <Camera size={20} color={base.muted} />
           </Pressable>
+          <RowSpacers count={PHOTO_COLUMNS - myPhotos.length - 1} />
         </View>
 
-        {/* The count is a count, not a link, so this header has no action. */}
-        <SectionRow title="From fans at this game" action={relive.fanCount} />
-        <View style={s.photos}>
-          {/* Inert for the same reason as your own photos, plus report and block have no
-              backend yet. */}
-          {repo.reliveFanPhotos().map((photo, i) => (
-            <View key={`${photo.kind}-${i}`} style={s.photo}>
-              <PhotoScene kind={photo.kind} seed={photo.seed} />
+        {/* The whole section is omitted when nobody has posted, rather than drawn as an
+            empty strip under a header with no count. */}
+        {fanPhotos.length > 0 ? (
+          <>
+            {/* The count is a count, not a link, so this header has no action. */}
+            <SectionRow title="From fans at this game" action={relive.fanCount} />
+            <View style={s.photos}>
+              {/* Inert for the same reason as your own photos, plus report and block have no
+                  backend yet. */}
+              {fanPhotos.map((photo, i) => (
+                <View key={`${photo.kind}-${i}`} style={s.photo}>
+                  <PhotoScene kind={photo.kind} seed={photo.seed} />
+                </View>
+              ))}
+              <RowSpacers count={PHOTO_COLUMNS - fanPhotos.length} />
             </View>
-          ))}
-        </View>
+          </>
+        ) : null}
 
         <View style={s.highlights}>
           <Pressable
@@ -591,6 +623,8 @@ const s = StyleSheet.create({
 
   // `.photos{grid-template-columns:repeat(3,1fr);gap:6px}` with square cells.
   photos: { flexDirection: 'row', gap: 6 },
+  // Holds a column open without drawing anything. See RowSpacers.
+  photoSpacer: { flex: 1, aspectRatio: 1 },
   photo: { flex: 1, aspectRatio: 1, borderRadius: 12, overflow: 'hidden' },
   photoAdd: {
     flex: 1,

@@ -1,4 +1,6 @@
 import { momentDetail, momentLabel } from '@/features/attendances/moments';
+import type { ReliveStep } from '@/features/data/shapes';
+
 import type { AppearanceRow, GameEventRow } from './queries';
 
 /**
@@ -6,14 +8,21 @@ import type { AppearanceRow, GameEventRow } from './queries';
  *
  * The card used to print every player who appeared — both full rosters, 50-odd names in a
  * grey run-on line that nobody reads. What a fan remembers is who *did* something, so the
- * named players are the ones with a moment in this game: a home run, a pick six, a
- * walk-off. The rest become a count, and stay one tap away.
+ * named players are the ones who did. The rest become a count, and stay one tap away.
  *
- * "Star player" in the wider sense — an all-star, a franchise great — is deliberately not
- * attempted. Nothing in this database ranks players: `game_appearances` is (game, player,
- * team) and nothing else, and `players` carries no stature. Inferring it from a name would
- * be a guess dressed as a fact. So notability here means "did something in the game you
- * were at", which the data does know.
+ * Two sources, because neither covers both sports:
+ *
+ * - `game_events` holds the RARE moments (SPEC.md 6.7) — a pick six, a 50-yard field goal,
+ *   a home run, a no-hitter. MLB's carry their player; NFL's now do too.
+ * - `game_story_steps` holds every SCORING PLAY, and nflverse names the scorer on each, so
+ *   an ordinary touchdown or field goal is named. MLB's feed describes a scoring play in
+ *   prose with no player id, which is why its home runs come from the first source.
+ *
+ * Together they answer what was actually asked for: who scored a touchdown or hit a home
+ * run. "Star player" in the wider sense — an all-star, a franchise great — is deliberately
+ * not attempted. Nothing in this database ranks players: `game_appearances` is (game,
+ * player, team) and nothing else, and `players` carries no stature. Inferring it from a
+ * name would be a guess dressed as a fact.
  */
 export type NotablePlayer = {
   playerId: string;
@@ -38,18 +47,28 @@ export type TeamPlayers = {
 export function notablePlayers(
   appearances: readonly AppearanceRow[],
   events: readonly GameEventRow[],
+  steps: readonly ReliveStep[] = [],
 ): TeamPlayers[] {
-  // playerId -> the things they did, in the order the moments happened.
+  // playerId -> the things they did, in the order they happened.
   const didByPlayer = new Map<string, string[]>();
+  const add = (id: string, label: string) => {
+    const list = didByPlayer.get(id) ?? [];
+    // The same thing can be recorded twice for one player — a moment that is also a scoring
+    // play, or two identical plays. Say it once.
+    if (!list.includes(label)) list.push(label);
+    didByPlayer.set(id, list);
+  };
+
+  // Scoring plays first, so an ordinary touchdown reads before the rarer moment that may
+  // also describe it.
+  for (const step of steps) {
+    if (step.scorerId) add(step.scorerId, 'Scored');
+  }
   for (const e of events) {
     const id = e.player?.id;
     if (!id) continue;
     const detail = momentDetail(e.type, e.detail ?? {});
-    const label = detail ? `${momentLabel(e.type)} · ${detail}` : momentLabel(e.type);
-    const list = didByPlayer.get(id) ?? [];
-    // A game can record the same moment type twice for one player; say it once.
-    if (!list.includes(label)) list.push(label);
-    didByPlayer.set(id, list);
+    add(id, detail ? `${momentLabel(e.type)} · ${detail}` : momentLabel(e.type));
   }
 
   const byTeam = new Map<string, TeamPlayers>();

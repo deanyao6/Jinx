@@ -83,17 +83,34 @@ function playDetail(play: NflPlay, extra: Record<string, unknown> = {}): Record<
   };
 }
 
+/**
+ * Moments that belong to one player, and moments that belong to the game.
+ *
+ * Every NFL moment used to be written with a null player, so "Players seen" had nothing to
+ * name and the Moments list could not say who did it — 8,406 of 8,597 rows in the database
+ * carried no player, all of them NFL. A pick six is somebody's pick six; a comeback from 14
+ * down is the team's, and stays unattributed rather than being pinned on whoever happened
+ * to score last.
+ */
+const ATTRIBUTED: ReadonlySet<GameEvent['type']> = new Set([
+  'pick_six',
+  'fumble_return_td',
+  'kick_return_td',
+  'long_field_goal',
+]);
+
 function playEvent(
   type: GameEvent['type'],
   side: Side | null,
   play: NflPlay,
   extra: Record<string, unknown> = {},
 ): GameEvent {
+  const attributed = ATTRIBUTED.has(type);
   return {
     type,
     side,
-    providerPlayerId: null,
-    playerName: null,
+    providerPlayerId: attributed ? play.scorerProviderId : null,
+    playerName: attributed ? play.scorerName : null,
     occurredAt: play.timeOfDay,
     detail: playDetail(play, extra),
   };

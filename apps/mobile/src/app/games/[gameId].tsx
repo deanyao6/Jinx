@@ -56,9 +56,9 @@ export default function GameDetailScreen() {
   // Who to name and who to count. See features/games/notable.ts for why "star player" is
   // "did something in this game" rather than a reputation the database does not hold.
   const playersByTeam = useMemo(() => {
-    const groups = notablePlayers(appearances.data ?? [], events.data ?? []);
+    const groups = notablePlayers(appearances.data ?? [], events.data ?? [], story.data ?? []);
     return new Map(groups.map((g) => [g.teamId, g]));
-  }, [appearances.data, events.data]);
+  }, [appearances.data, events.data, story.data]);
   const [showAllPlayers, setShowAllPlayers] = useState(false);
 
   const onDelete = () => {

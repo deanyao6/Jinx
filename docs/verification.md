@@ -129,3 +129,34 @@ MetLife `bowl`, SoFi `canopy`, Soldier Field `colonnade`.
 
 These remain stylized placeholders, not traced footprints; `source` is `'placeholder'` and
 SPEC 8.5's OSM tracing pass still applies.
+
+## Scoring-play attribution (SPEC 6.7) — added 2026-09-16
+
+"Players seen" names who did something and counts the rest, which needs a per-game source of
+"this person scored". One source did not cover both sports:
+
+- **MLB**: `game_events` already carries the batter on a `home_run`, and every one of Dean's
+  five MLB games has them (Ohtani, Devers, Marsh…). The win-probability feed's scoring
+  entries carry only prose — "Rafael Devers homers (24) on a fly ball to center field" — with
+  no player id anywhere on the entry, so nothing is parsed out of it.
+- **NFL**: `game_events` holds only the RARE moments, and an ordinary touchdown is not one.
+  Before this, **8,406 of 8,597 `game_events` rows had a null player, and every one of them
+  was NFL** — `playEvent` in `providers/nfl/moments.ts` hardcoded `providerPlayerId: null`.
+
+Two changes:
+
+1. `NflPlay` now carries `scorerProviderId` / `scorerName`, from the pbp's `td_player_id`
+   falling back to `kicker_player_id`. `td_player_id` is set for rushing, receiving, pick
+   six, fumble return and kick return touchdowns alike, so one column covers every case.
+   The four moment types that belong to one player (`pick_six`, `fumble_return_td`,
+   `kick_return_td`, `long_field_goal`) are attributed; `safety`, `overtime` and
+   `comeback_14` stay unattributed, because they are the team's and not a person's.
+2. `game_story_steps` gained `scorer_player_id` / `scorer_name` (migration
+   `20260916000200`). Every NFL scoring play fills them; MLB leaves them null.
+
+The ids are gsis ids, the same key `game_appearances` uses, so a scorer resolves to the same
+`players` row as the lineup. Verified on 2025_13_CHI_PHI: 10 of 12 story steps carry a
+scorer and all 10 resolved — Swift, Santos, Elliott, Brown, Monangai, Kmet.
+
+Existing `game_events` rows are NOT backfilled. Attribution applies as games are ingested;
+re-running `ingest/src/nfl/run.ts` for a season rewrites that season's moments with players.

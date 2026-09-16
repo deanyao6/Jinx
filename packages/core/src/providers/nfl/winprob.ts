@@ -25,6 +25,16 @@ export type PbpWpRow = {
   total_home_score: number | null;
   total_away_score: number | null;
   time_of_day: string | null;
+  /** gsis id and name of whoever put the points on the board, when there is one. */
+  scorer_player_id?: string | null;
+  scorer_name?: string | null;
+};
+
+/** A story step, plus the scorer for the steps that have one (SPEC 6.7). */
+export type PbpStoryStep = StoryStep & {
+  /** gsis id, resolved to a `players` row by the caller. Null when nobody is named. */
+  scorerProviderId: string | null;
+  scorerName: string | null;
 };
 
 /**
@@ -79,8 +89,8 @@ export function buildPbpStorySteps(
   rows: readonly PbpWpRow[],
   points: readonly WpPoint[],
   final: { awayScore: number; homeScore: number; awayName: string; homeName: string },
-): StoryStep[] {
-  const steps: StoryStep[] = [];
+): PbpStoryStep[] {
+  const steps: PbpStoryStep[] = [];
   const first = points[0];
   steps.push({
     seq: 1,
@@ -91,6 +101,8 @@ export function buildPbpStorySteps(
     text: first
       ? `${final.homeName} were ${Math.round(first.homeWp * 100)}% to win at kickoff.`
       : `${final.awayName} at ${final.homeName}.`,
+    scorerProviderId: null,
+    scorerName: null,
   });
 
   // Walk rows and points together: parsePbpWinProbability keeps their order but drops rows
@@ -110,6 +122,8 @@ export function buildPbpStorySteps(
       homeScore: r.total_home_score ?? 0,
       label: quarterLabel(point.period),
       text,
+      scorerProviderId: r.scorer_player_id ?? null,
+      scorerName: r.scorer_name ?? null,
     });
   }
 
@@ -125,6 +139,8 @@ export function buildPbpStorySteps(
       final.homeScore === final.awayScore
         ? `Tied ${final.homeScore}–${final.awayScore}.`
         : `${winner} win ${Math.max(final.homeScore, final.awayScore)}–${Math.min(final.homeScore, final.awayScore)}.`,
+    scorerProviderId: null,
+    scorerName: null,
   });
   return steps;
 }

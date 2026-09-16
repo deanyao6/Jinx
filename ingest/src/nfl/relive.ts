@@ -76,6 +76,33 @@ async function targets(db: Db): Promise<GameRow[]> {
   return (data ?? []) as unknown as GameRow[];
 }
 
+/**
+ * gsis id -> our `players.id`, for the scorers in a batch of steps.
+ *
+ * nflverse names a scorer by gsis id, which is what `game_appearances` is keyed by, so a
+ * scorer resolves to the same row the lineup does. An id we have never seen — a player who
+ * scored but recorded no snap, which the older stats-based seasons can produce — maps to
+ * null and the step keeps only the name.
+ */
+async function resolvePlayers(db: Db, gsisIds: readonly string[]): Promise<Map<string, string>> {
+  const unique = [...new Set(gsisIds)];
+  const out = new Map<string, string>();
+  // PostgREST caps a response at 1000 rows; a game has at most a dozen scorers, but chunk
+  // anyway so this stays correct if it is ever pointed at a whole season.
+  for (let i = 0; i < unique.length; i += 500) {
+    const { data, error } = await db
+      .from('players')
+      .select('id, provider_player_id')
+      .eq('provider', 'nflverse')
+      .in('provider_player_id', unique.slice(i, i + 500));
+    if (error) throw error;
+    for (const row of (data ?? []) as { id: string; provider_player_id: string }[]) {
+      out.set(row.provider_player_id, row.id);
+    }
+  }
+  return out;
+}
+
 /** One season's plays, keyed by nflverse game id, keeping only the columns Relive reads. */
 async function loadSeason(season: number, force: boolean): Promise<Map<string, PbpWpRow[]>> {
   const byGame = new Map<string, PbpWpRow[]>();
@@ -92,6 +119,11 @@ async function loadSeason(season: number, force: boolean): Promise<Map<string, P
       total_home_score: row.total_home_score,
       total_away_score: row.total_away_score,
       time_of_day: row.time_of_day,
+      // The touchdown scorer first: it is set for a rushing, receiving, pick six, fumble
+      // return and kick return alike. The kicker only matters when nobody reached the end
+      // zone, which is a field goal or an extra point.
+      scorer_player_id: row.td_player_id || row.kicker_player_id || null,
+      scorer_name: row.td_player_name || row.kicker_player_name || null,
     });
     byGame.set(row.game_id, list);
   }
@@ -172,6 +204,10 @@ async function main() {
         })),
       );
       if (wpError) throw wpError;
+      const players = await resolvePlayers(
+        db,
+        steps.map((s) => s.scorerProviderId).filter((id): id is string => !!id),
+      );
       const { error: stepError } = await db.from('game_story_steps').insert(
         steps.map((s) => ({
           game_id: g.id,
@@ -181,12 +217,15 @@ async function main() {
           home_score: s.homeScore,
           label: s.label,
           text: s.text,
+          scorer_player_id: s.scorerProviderId ? (players.get(s.scorerProviderId) ?? null) : null,
+          scorer_name: s.scorerName,
         })),
       );
       if (stepError) throw stepError;
       done += 1;
+      const named = steps.filter((s) => s.scorerName).length;
       console.log(
-        `  ${g.provider_game_id}: ${points.length} probability points, ${steps.length} story steps`,
+        `  ${g.provider_game_id}: ${points.length} probability points, ${steps.length} story steps, ${named} with a scorer`,
       );
     }
   }

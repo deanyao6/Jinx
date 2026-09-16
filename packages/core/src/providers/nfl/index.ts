@@ -7,4 +7,5 @@ export {
   parsePbpWinProbability,
   quarterLabel,
   type PbpWpRow,
+  type PbpStoryStep,
 } from './winprob.js';

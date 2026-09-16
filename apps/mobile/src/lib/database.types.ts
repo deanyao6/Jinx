@@ -661,6 +661,8 @@ export type Database = {
           game_id: string
           home_score: number
           label: string
+          scorer_name: string | null
+          scorer_player_id: string | null
           seq: number
           text: string
           wp_seq: number
@@ -670,6 +672,8 @@ export type Database = {
           game_id: string
           home_score: number
           label: string
+          scorer_name?: string | null
+          scorer_player_id?: string | null
           seq: number
           text: string
           wp_seq: number
@@ -679,6 +683,8 @@ export type Database = {
           game_id?: string
           home_score?: number
           label?: string
+          scorer_name?: string | null
+          scorer_player_id?: string | null
           seq?: number
           text?: string
           wp_seq?: number
@@ -697,6 +703,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "game_wp_timeline"
             referencedColumns: ["game_id", "seq"]
+          },
+          {
+            foreignKeyName: "game_story_steps_scorer_player_id_fkey"
+            columns: ["scorer_player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
           },
         ]
       }

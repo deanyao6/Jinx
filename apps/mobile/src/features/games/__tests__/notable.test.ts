@@ -1,3 +1,5 @@
+import type { ReliveStep } from '@/features/data/shapes';
+
 import type { AppearanceRow, GameEventRow } from '../queries';
 import { notablePlayers, othersLine } from '../notable';
 
@@ -84,5 +86,55 @@ describe('othersLine', () => {
     expect(othersLine(0)).toBeNull();
     expect(othersLine(1)).toBe('and 1 other player');
     expect(othersLine(23)).toBe('and 23 other players');
+  });
+});
+
+describe('scoring plays as a source of notable players', () => {
+  // The gap this closes: game_events holds only RARE moments, so an ordinary touchdown was
+  // nowhere and every NFL game named nobody. Dean asked for "the players who like scored a
+  // td or a home run"; the touchdown half lives on the story steps.
+  const step = (scorerId: string | null): ReliveStep => ({
+    wp: 1,
+    score: '7 – 0',
+    label: '1st quarter',
+    text: 'D.Swift right guard for 3 yards, TOUCHDOWN.',
+    scorerId,
+    scorerName: 'D.Swift',
+  });
+
+  it('names a player who scored, with no moment recorded at all', () => {
+    const groups = notablePlayers(
+      [appearance(PHI, 'p-swift', 'David Montgomery'), appearance(PHI, 'p-bench', 'A Benchwarmer')],
+      [],
+      [step('p-swift')],
+    );
+    expect(groups[0]?.notable.map((n) => [n.name, n.did])).toEqual([
+      ['David Montgomery', 'Scored'],
+    ]);
+    expect(groups[0]?.others).toEqual(['A Benchwarmer']);
+  });
+
+  it('says a scorer scored once, however many times they did it', () => {
+    const groups = notablePlayers(
+      [appearance(PHI, 'p-swift', 'David Montgomery')],
+      [],
+      [step('p-swift'), step('p-swift')],
+    );
+    expect(groups[0]?.notable[0]?.did).toBe('Scored');
+  });
+
+  it('combines a score with the rarer moment that describes it', () => {
+    const groups = notablePlayers(
+      [appearance(PHI, 'p-swift', 'David Montgomery')],
+      [event('pick_six', 'p-swift', 'David Montgomery', { yards: 42 })],
+      [step('p-swift')],
+    );
+    expect(groups[0]?.notable[0]?.did).toBe('Scored, Pick six · 42 yards');
+  });
+
+  it('ignores a step with no scorer, which is every MLB step and every pregame one', () => {
+    const groups = notablePlayers([appearance(PHI, 'p-a', 'Someone')], [], [step(null)]);
+    expect(groups[0]?.notable).toEqual([]);
+    expect(groups[0]?.others).toEqual(['Someone']);
   });
 });

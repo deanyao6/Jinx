@@ -65,6 +65,12 @@ export interface NflversePbpRow {
   total_home_score: number | null;
   total_away_score: number | null;
   td_team: string | null;
+  /** gsis id and name of the player who scored the touchdown, when there was one. */
+  td_player_id?: string | null;
+  td_player_name?: string | null;
+  /** gsis id and name of the kicker, for field goals. */
+  kicker_player_id?: string | null;
+  kicker_player_name?: string | null;
   touchdown: number | null;
   pass_touchdown?: number | null;
   rush_touchdown?: number | null;
