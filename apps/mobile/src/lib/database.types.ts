@@ -64,6 +64,51 @@ export type Database = {
           },
         ]
       }
+      attendance_photos: {
+        Row: {
+          attendance_id: string
+          created_at: string
+          id: string
+          kind: string
+          storage_path: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          attendance_id: string
+          created_at?: string
+          id?: string
+          kind: string
+          storage_path: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          attendance_id?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          storage_path?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_photos_attendance_id_fkey"
+            columns: ["attendance_id"]
+            isOneToOne: false
+            referencedRelation: "attendances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_photos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       attendance_seats: {
         Row: {
           attendance_id: string
@@ -275,6 +320,41 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      detail_queue: {
+        Row: {
+          attempts: number
+          done_at: string | null
+          game_id: string
+          last_error: string | null
+          reason: string
+          requested_at: string
+        }
+        Insert: {
+          attempts?: number
+          done_at?: string | null
+          game_id: string
+          last_error?: string | null
+          reason: string
+          requested_at?: string
+        }
+        Update: {
+          attempts?: number
+          done_at?: string | null
+          game_id?: string
+          last_error?: string | null
+          reason?: string
+          requested_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "detail_queue_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: true
+            referencedRelation: "games"
             referencedColumns: ["id"]
           },
         ]
@@ -575,6 +655,51 @@ export type Database = {
           },
         ]
       }
+      game_story_steps: {
+        Row: {
+          away_score: number
+          game_id: string
+          home_score: number
+          label: string
+          seq: number
+          text: string
+          wp_seq: number
+        }
+        Insert: {
+          away_score: number
+          game_id: string
+          home_score: number
+          label: string
+          seq: number
+          text: string
+          wp_seq: number
+        }
+        Update: {
+          away_score?: number
+          game_id?: string
+          home_score?: number
+          label?: string
+          seq?: number
+          text?: string
+          wp_seq?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_story_steps_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_story_steps_game_id_wp_seq_fkey"
+            columns: ["game_id", "wp_seq"]
+            isOneToOne: false
+            referencedRelation: "game_wp_timeline"
+            referencedColumns: ["game_id", "seq"]
+          },
+        ]
+      }
       game_win_prob: {
         Row: {
           computed_at: string
@@ -599,6 +724,41 @@ export type Database = {
             foreignKeyName: "game_win_prob_game_id_fkey"
             columns: ["game_id"]
             isOneToOne: true
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_wp_timeline: {
+        Row: {
+          game_id: string
+          half: string | null
+          home_wp: number
+          occurred_at: string | null
+          period: number
+          seq: number
+        }
+        Insert: {
+          game_id: string
+          half?: string | null
+          home_wp: number
+          occurred_at?: string | null
+          period: number
+          seq: number
+        }
+        Update: {
+          game_id?: string
+          half?: string | null
+          home_wp?: number
+          occurred_at?: string | null
+          period?: number
+          seq?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_wp_timeline_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
             referencedRelation: "games"
             referencedColumns: ["id"]
           },
@@ -1224,6 +1384,51 @@ export type Database = {
         }
         Relationships: []
       }
+      storylines: {
+        Row: {
+          facts: Json
+          game_id: string
+          generated_at: string
+          id: string
+          source: string
+          team_id: string
+          text: string
+        }
+        Insert: {
+          facts?: Json
+          game_id: string
+          generated_at?: string
+          id?: string
+          source: string
+          team_id: string
+          text: string
+        }
+        Update: {
+          facts?: Json
+          game_id?: string
+          generated_at?: string
+          id?: string
+          source?: string
+          team_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "storylines_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "storylines_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_aliases: {
         Row: {
           alias: string
@@ -1242,6 +1447,50 @@ export type Database = {
             foreignKeyName: "team_aliases_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_colors: {
+        Row: {
+          fill_hex: string
+          on_fill_hex: string
+          primary_dark_hex: string
+          primary_light_hex: string
+          secondary_dark_hex: string
+          secondary_light_hex: string
+          source: string
+          team_id: string
+          updated_at: string
+        }
+        Insert: {
+          fill_hex: string
+          on_fill_hex: string
+          primary_dark_hex: string
+          primary_light_hex: string
+          secondary_dark_hex: string
+          secondary_light_hex: string
+          source?: string
+          team_id: string
+          updated_at?: string
+        }
+        Update: {
+          fill_hex?: string
+          on_fill_hex?: string
+          primary_dark_hex?: string
+          primary_light_hex?: string
+          secondary_dark_hex?: string
+          secondary_light_hex?: string
+          source?: string
+          team_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_colors_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: true
             referencedRelation: "teams"
             referencedColumns: ["id"]
           },
@@ -1555,6 +1804,38 @@ export type Database = {
           },
         ]
       }
+      venue_shapes: {
+        Row: {
+          shape_key: string
+          simplified_at: string | null
+          source: string
+          svg_path: string | null
+          venue_id: string
+        }
+        Insert: {
+          shape_key: string
+          simplified_at?: string | null
+          source?: string
+          svg_path?: string | null
+          venue_id: string
+        }
+        Update: {
+          shape_key?: string
+          simplified_at?: string | null
+          source?: string
+          svg_path?: string | null
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "venue_shapes_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: true
+            referencedRelation: "venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       venues: {
         Row: {
           city: string | null
@@ -1668,6 +1949,10 @@ export type Database = {
         Args: { p_body?: Json; p_name: string }
         Returns: number
       }
+      can_view_attendance_photo: {
+        Args: { p_photo_id: string }
+        Returns: boolean
+      }
       can_view_profile: { Args: { target: string }; Returns: boolean }
       can_view_seats: { Args: { p_attendance_id: string }; Returns: boolean }
       can_view_user: { Args: { target: string }; Returns: boolean }
@@ -1724,6 +2009,15 @@ export type Database = {
         Returns: Json
       }
       create_person_invite: { Args: { p_person_id: string }; Returns: string }
+      detail_queue_pending: {
+        Args: { p_limit?: number; p_provider: string }
+        Returns: {
+          attempts: number
+          game_id: string
+          provider_game_id: string
+          reason: string
+        }[]
+      }
       discard_ticket_import: {
         Args: { p_import_id: string }
         Returns: undefined
@@ -1731,6 +2025,10 @@ export type Database = {
       distance_km: {
         Args: { lat1: number; lat2: number; lng1: number; lng2: number }
         Returns: number
+      }
+      enqueue_game_detail: {
+        Args: { p_game_id: string; p_reason: string }
+        Returns: undefined
       }
       estimated_pledge_lock: {
         Args: { p_sport: string; p_start: string }
@@ -1763,6 +2061,16 @@ export type Database = {
       }
       game_context: { Args: { p_game_id: string }; Returns: Json }
       game_day_reminders: { Args: never; Returns: number }
+      game_fan_photos: {
+        Args: { p_game_id: string; p_limit?: number }
+        Returns: {
+          created_at: string
+          id: string
+          kind: string
+          storage_path: string
+          user_id: string
+        }[]
+      }
       games_in_year: { Args: { p_year: number }; Returns: number }
       games_needing_detail: {
         Args: { p_limit?: number; p_provider: string }
