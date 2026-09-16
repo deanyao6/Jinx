@@ -18,7 +18,7 @@ export type StampFixture = {
   ring: string;
   shape: ShapeKey;
   metal: 'brass' | 'silver';
-  teams: string[];
+  teams: readonly string[];
 };
 
 export type ShapeKey =
@@ -55,11 +55,16 @@ export type PassportFixture = {
 };
 
 /** The team filter pills, with their game counts. */
-export const PASSPORT_PILLS = [
+export const PASSPORT_PILLS: readonly {
+  key: string;
+  label: string;
+  count: string;
+  team: string;
+}[] = [
   { key: 'all', label: 'All Teams', count: '48', team: 'none' },
   { key: 'phi', label: 'Phillies', count: '17', team: 'phi' },
   { key: 'phl', label: 'Eagles', count: '8', team: 'phl' },
-] as const;
+];
 
 /**
  * Per-pill passport content. Keyed the way the reference's `P` object is.

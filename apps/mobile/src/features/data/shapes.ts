@@ -30,10 +30,24 @@ import type {
   PICK_A_SIDE,
   PROFILE,
   RELIVE,
-  PASSPORT_PILLS,
 } from '@/features/demo/fixtures';
 
-export type TeamPill = (typeof PASSPORT_PILLS)[number];
+/**
+ * Declared here rather than derived from the demo constant.
+ *
+ * The fixtures are `as const`, so deriving from them gave the contract literal types —
+ * `count: '48' | '17' | '8'` — which the demo implementation satisfied and no real one
+ * ever could. A contract shaped by one of its implementations is not a contract.
+ */
+export type TeamPill = {
+  /** Identifies the pill. A team id from the database, or 'all'. */
+  key: string;
+  label: string;
+  /** Rendered as-is, so the caller decides how a count is formatted. */
+  count: string;
+  /** The theme key, which is a team id, 'none', or one of the reference's short keys. */
+  team: string;
+};
 export type PickASideFixture = typeof PICK_A_SIDE;
 export type ReliveFixture = typeof RELIVE;
 export type GameDayFixture = typeof GAME_DAY;

@@ -489,6 +489,44 @@ scorebug and the ticket title. One exception: `.vs strong` on the Friends panel 
 *worse* with it than with a plain line height, so it is left alone with a comment saying
 so. I do not know why, and guessing is what cost me the first four attempts.
 
+## The Supabase repository, M3
+
+Passport's records now map from the real `user_stats_cache` payload rather than fixtures:
+the pills and their game counts, the lifetime and per-team heroes, win rate, streak, the
+Last Game line, the neutral record with its vs-expected, and the stamps.
+
+`supabaseRepository` is composed over the demo one and **`SUPABASE_BACKED` names exactly
+which methods are real**. Everything else still returns fixtures, which is what the Plan
+and Guide shells need in v1 anyway. That set is asserted in a test, so the partial state is
+legible rather than hidden behind a screen that looks like it is showing your data and is
+not. `useSupabaseRepository` also returns the demo repository until the stats query
+resolves, because an empty passport and a loading one should not look the same.
+
+Two small things the mapping had to decide, both worth your eye:
+
+- **Records are spaced differently.** `packages/core` writes `31–17`, because that form is
+  also produced server-side and on share cards. The reference writes `31 – 17`. The spacing
+  is a display concern of this design, so it is applied in the mapping rather than changed
+  in the domain layer, where it would alter the server output too.
+- **Stamp metals are an inference.** The reference draws Philadelphia's two venues in brass
+  and the four away venues in silver, and nothing in the schema says which a venue is. The
+  rule implemented is "a venue one of your favourite teams calls home is brass", which
+  reproduces the reference's six exactly. It is a guess at intent. If it is wrong, it is one
+  function.
+
+**Two gaps the stats cache cannot fill yet**, both left honest rather than faked:
+
+- The team view's Home / Road / Playoffs cards need per-game splits the payload does not
+  carry, so a team pill currently shows the one card it can compute correctly rather than
+  three plausible-looking ones.
+- The superlative context chips ("Linc, Jan 2024", "11 Games") are not in the payload
+  either, so they render empty against real data. Demo mode still shows them.
+
+One thing this refactor caught: the contract types were derived from the demo fixtures,
+which are `as const`, so `TeamPill.count` was typed `'48' | '17' | '8'` — a type only the
+demo implementation could ever satisfy. A contract shaped by one of its implementations is
+not a contract. They are declared properly now.
+
 ### One open design question, for you
 
 The reference's tab bar has `padding-bottom: 20px`, which is its stand-in for the home
@@ -528,10 +566,9 @@ Nothing below is blocked on you except items 1 and 6.
 
 1. **Decide the Stadium guide avatar question** above. It is the single largest remaining
    parity gap and it is one line either way.
-2. **Write the Supabase implementation of the repository.** The interface exists and the
-   demo implementation is behind it; what is missing is the second implementation, and that
-   is genuinely per-milestone work — Passport's records are M3, imports are M4, and so on.
-   No screen changes when it lands.
+2. **Finish the Supabase repository.** Passport's records are mapped (M3); Games is M2,
+   imports M4, Relive M8.5. `SUPABASE_BACKED` lists what is real. Two things the passport
+   mapping needs from elsewhere, both noted below.
 3. **The typography offsets that remain.** The big one is solved (see below). What is left
    is Pick a side's records and the top band of a few screens, each a point or two.
 4. **Then the real feature work**: storylines (6.18), which is blocked on the Anthropic
