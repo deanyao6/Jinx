@@ -11,7 +11,7 @@ import Constants from 'expo-constants';
 import { Stack, useRouter, type Href } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, useColorScheme, View } from 'react-native';
+import { ActivityIndicator, LogBox, useColorScheme, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/Button';
@@ -25,6 +25,14 @@ import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 import { darkColors, lightColors } from '@/theme/tokens';
 
 initSentry();
+
+// Simulator only: the build is unsigned (no Apple developer certificate yet), so the app has no
+// keychain entitlement and expo-notifications cannot read its stored registration. Push does not
+// work in a simulator regardless. Silencing it keeps the dev overlay clear; on a signed device
+// build the message does not occur. See docs/simulator.md.
+if (__DEV__) {
+  LogBox.ignoreLogs([/\[expo-notifications\] Error reading persisted server registration info/]);
+}
 
 /** How long persisted queries stay usable offline. gcTime must cover it or they are dropped. */
 const CACHE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
