@@ -4,5 +4,8 @@ supabase/.temp
 apps/mobile/.expo
 *.md
 docs/turnstile-ui.html
+# design/ is the vendored visual source of truth. Reformatting it would change rendering,
+# and every ported pixel is measured against it. Never let a formatter touch it.
+design/
 apps/mobile/app.json
 apps/mobile/src/lib/database.types.ts
