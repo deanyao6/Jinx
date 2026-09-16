@@ -39,6 +39,39 @@ const SETTLE_MS = Number(process.env.PARITY_SETTLE_MS ?? 450);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+const METRO = process.env.PARITY_METRO ?? 'http://127.0.0.1:8081';
+// Expo's virtual entry. `/index.bundle` is a bare-React-Native path and 404s here.
+const BUNDLE = `${METRO}/.expo/.virtual-metro-entry.bundle?platform=ios&dev=true`;
+
+/**
+ * Make Metro finish transforming the current source before the app asks for it.
+ *
+ * Without this the first run after an edit can capture the PREVIOUS bundle: `simctl
+ * launch` returns as soon as the process starts, and if Metro is still rebuilding, the app
+ * renders the last good bundle. The shots look plausible and the mismatch percentage is
+ * simply wrong for the code on disk. It bit me once, reporting 5.65% for a tree that
+ * actually measured 3.86%, which is precisely the kind of confident-but-wrong number this
+ * harness exists to prevent.
+ *
+ * Requesting the bundle blocks until the transform completes, so afterwards a launch gets
+ * current code. If Metro is not running the app is using a bundled build, so this is
+ * skipped rather than treated as an error.
+ */
+async function waitForMetro() {
+  try {
+    const status = await fetch(`${METRO}/status`, { signal: AbortSignal.timeout(2000) });
+    if (!status.ok) return;
+  } catch {
+    return; // Not a dev build, or Metro is down. Nothing to wait for.
+  }
+  process.stdout.write('  waiting for Metro to finish bundling... ');
+  const started = Date.now();
+  const res = await fetch(BUNDLE, { signal: AbortSignal.timeout(300_000) });
+  // Drain it: the transform is not finished until the body has been produced.
+  await res.arrayBuffer();
+  console.log(`${((Date.now() - started) / 1000).toFixed(1)}s`);
+}
+
 /**
  * Which control-channel path and params produce a given screen id.
  *
@@ -70,6 +103,8 @@ async function main() {
     process.exitCode = 1;
     return;
   }
+
+  await waitForMetro();
 
   const control = await startControlServer();
   const captured = [];

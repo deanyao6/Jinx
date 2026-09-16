@@ -234,7 +234,7 @@ shows, identically on `passport-all.light` and `passport-phi.dark`:
 
 | Region | Offset | Status |
 |---|---|---|
-| 0-45pt (wordmark, pills) | **-2 to -3pt** | app sits high. Open. |
+| 0-45pt (wordmark, pills) | **-2 to -3pt** | app sits high. Open, three attempts failed. |
 | 45-135pt (hero) | **+1 to +3.7pt** | app sits low. Open. |
 | 195-315pt (record cards) | **+2.3 to +3.7pt** | carried from the hero. Open. |
 | 390-480pt (stamps) | ~0 | aligned |
@@ -251,12 +251,18 @@ enclosing block's 16px strut, not by the 8.5px span. React Native sizes a line b
 the Text's own font. Setting that one line height explicitly aligned the following section
 to within 1pt and took the mean from 4.28% to 3.86%.
 
-**And two things that did not work, so you do not repeat them.** Setting the pill label's
+**And three things that did not work, so you do not repeat them.** Setting the pill label's
 line height to CSS `normal` (1.17em) changed nothing, because the pill's height is set by
 the taller count badge, not the label. Setting the *badge's* line height to 1.17em made
 the pill taller, not shorter, and the mean went from 3.86% to 4.28%. React Native's
 `lineHeight` on small text does not simply shrink the box the way CSS `line-height` does.
-Both reverted.
+Third, I wrote a `TightText` wrapper for the two places the reference sets a line-height
+below 1 (`.fx-word` at `.85`, `.fx-rec b` at `.78`), where CSS lets glyphs overflow the
+line box and React Native compresses the line instead. Centring the natural text box
+inside a short wrapper overcorrected: the wordmark went from 2.5pt high to 4.3pt low, and
+the mean from 3.66% to 4.30%. CSS half-leading is measured against the content area
+(ascent + descent); centring uses the full natural line box including the line gap, so the
+two are not the same. All three reverted.
 
 The lesson for the remaining two regions: look for structural differences like the inline
 strut above, not for a metrics factor. `.fx-word` has `line-height:.85` and `.fx-rec b`
