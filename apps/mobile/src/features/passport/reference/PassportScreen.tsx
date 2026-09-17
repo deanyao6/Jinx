@@ -8,6 +8,10 @@ import { useRepository } from '@/features/data/context';
 import { EmptyState } from '@/features/data/EmptyState';
 import type { PassportFixture } from '@/features/data/shapes';
 import type { Repository } from '@/features/data/types';
+import { favoritePlayerItems } from '@/features/players/passport';
+import { useFavoritePlayersSeen } from '@/features/players/queries';
+import { env } from '@/lib/env';
+import { formatGameDate } from '@/lib/format';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { screenPadding } from '@/theme/reference/tokens';
 
@@ -156,6 +160,7 @@ function PassportBody({
             loadingText="Loading your stamps…"
           />
         ) : null}
+        <FavoritePlayers pill={pill} />
         <SectionHeader title="Fan superlatives" />
         {/* Each row could open the game, venue or player it names, but the fixture carries
             only display text for those. So every row opens the superlatives screen. */}
@@ -171,6 +176,50 @@ function PassportBody({
         ) : null}
       </ScrollView>
       <TabBar active="Passport" />
+    </View>
+  );
+}
+
+/**
+ * Favourite players, between the stamps and the superlatives: how often you have seen each one,
+ * filtered by the team pill like everything else on the screen.
+ *
+ * Not in `design/reference.html`; Dean added favourite players on 2026-09-17. It reuses the
+ * superlatives list so it looks native, and reads its own query rather than the repository,
+ * which serves the reference's fixtures in demo mode: demo mode has no section to show, so the
+ * parity screenshots are unchanged. It is absent until you have a favourite, and under a team
+ * pill until you have seen one of them play for that team.
+ */
+function FavoritePlayers({ pill }: { pill: string }) {
+  const router = useRouter();
+  const seen = useFavoritePlayersSeen();
+  if (env.demo || !seen.data) return null;
+  const items = favoritePlayerItems(seen.data, pill, (iso) =>
+    formatGameDate(iso, { withYear: true }),
+  );
+  if (items.length === 0) return null;
+  const byName = new Map(items.map((i) => [i.name, i]));
+  return (
+    // The stamps rail's 18px bottom margin, so the gap before the next header matches the one above.
+    <View style={{ marginBottom: 18 }}>
+      <SectionHeader
+        title="Favorite players"
+        action="Edit"
+        onActionPress={() => router.push('/settings/favorites?tab=players' as Href)}
+      />
+      <SuperlativeList
+        items={items.map((i) => ({
+          icon: 'i-eye',
+          label: i.seenLine,
+          value: i.name,
+          chip: i.chip,
+        }))}
+        onItemPress={(item) => {
+          const player = byName.get(item.value);
+          if (player?.lastGameId) router.push(`/games/${player.lastGameId}` as Href);
+          else router.push('/settings/favorites?tab=players' as Href);
+        }}
+      />
     </View>
   );
 }

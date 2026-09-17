@@ -2089,6 +2089,18 @@ export type Database = {
         Returns: undefined
       }
       export_my_data: { Args: never; Returns: Json }
+      favorite_players_seen: {
+        Args: never
+        Returns: {
+          full_name: string
+          last_game_id: string
+          last_seen: string
+          player_id: string
+          seen: number
+          sport_id: string
+          team_id: string
+        }[]
+      }
       feed: {
         Args: { p_before?: string; p_limit?: number }
         Returns: {

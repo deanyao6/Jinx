@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/features/auth/store';
 import { supabase } from '@/lib/supabase';
 
+import type { FavoritePlayerSeenRow } from './passport';
+
 /**
  * Favourite players, and the rosters the picker drills into (SPEC.md 5.1, 6.9).
  *
@@ -22,6 +24,7 @@ export type RosterPlayer = Player & {
 
 export const playerKeys = {
   favorites: (userId: string | null) => ['players', 'favorites', userId] as const,
+  seen: (userId: string | null) => ['players', 'favorites-seen', userId] as const,
   roster: (teamId: string | undefined, query: string) =>
     ['players', 'roster', teamId, query] as const,
 };
@@ -43,6 +46,24 @@ export function useFavoritePlayers() {
     },
     enabled: !!userId,
     staleTime: 5 * 60_000,
+  });
+}
+
+/**
+ * Your favourite players with how often you have seen each, per team, for the Passport.
+ * See `passport.ts` for how the rows become list items.
+ */
+export function useFavoritePlayersSeen() {
+  const userId = useAuthStore((s) => s.userId);
+  return useQuery({
+    queryKey: playerKeys.seen(userId),
+    queryFn: async (): Promise<FavoritePlayerSeenRow[]> => {
+      const { data, error } = await supabase.rpc('favorite_players_seen');
+      if (error) throw error;
+      return (data ?? []) as FavoritePlayerSeenRow[];
+    },
+    enabled: !!userId,
+    staleTime: 60_000,
   });
 }
 
@@ -92,6 +113,7 @@ export function useToggleFavoritePlayer() {
     },
     onSettled: () => {
       void queryClient.invalidateQueries({ queryKey: key });
+      void queryClient.invalidateQueries({ queryKey: playerKeys.seen(userId) });
     },
   });
 }

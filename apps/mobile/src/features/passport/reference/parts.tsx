@@ -467,7 +467,7 @@ export function SuperlativeList({
         const Row = onItemPress ? Pressable : View;
         return (
           <Row
-            key={item.label}
+            key={`${item.label}:${item.value}`}
             style={[
               s.listItem,
               i > 0 ? { borderTopWidth: border.hairline, borderTopColor: base.line } : null,

@@ -211,3 +211,17 @@ Three things worth knowing:
   "5 games recorded", which reads as a claim about you and is not one.
 
 Edit profile keeps name, handle and home city, and links here.
+
+### Favorite players on the Passport (2026-09-17)
+
+A section between Stadium stamps and Fan superlatives, not in the reference. It follows the team
+pill like the rest of the screen:
+
+- **All teams** lists every favourite: "Seen 9 times" with a "Last" date chip, and "Not seen yet"
+  for one you have never seen. A traded player's games add up across teams.
+- **A team pill** lists only favourites you have seen play *for that team*, counted for that team.
+  The section disappears when there are none.
+- A row opens the last game you saw that player in; an unseen one opens Settings > Favorites.
+  "Edit" opens the Players tab there.
+- Data: `favorite_players_seen()` (scoped to the caller), shaped by `features/players/passport.ts`.
+  Demo mode draws no section, so the parity screenshots are unchanged.
