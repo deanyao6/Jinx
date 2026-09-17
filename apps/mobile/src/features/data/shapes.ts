@@ -83,6 +83,11 @@ export type ReliveFixture = {
 
 export type GameDayFixture = {
   team: string;
+  /**
+   * The real game behind the plan, for the share card. Absent on the reference fixture,
+   * which is prose with no game behind it.
+   */
+  game?: { id: string; sport: string; scheduledStart: string; venue: string | null };
   matchup: string;
   when: string;
   seat: readonly { label: string; value: string }[];

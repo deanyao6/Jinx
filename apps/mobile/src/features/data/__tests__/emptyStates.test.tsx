@@ -90,12 +90,16 @@ describe('empty states', () => {
     assertNoFixtures(queryByText);
   });
 
-  it('Game day says the planner is not built yet', async () => {
-    const { getByText, queryByText } = await renderScreen(<GameDayScreen />, empty);
+  it('Game day says how to get a plan, and offers the way to', async () => {
+    // It used to say the planner arrived after v1. It is built now, so the empty state is
+    // "nothing coming up" and points at logging a game you are going to.
+    const { getByText, getByLabelText, queryByText } = await renderScreen(<GameDayScreen />, empty);
     getByText('Game day');
     getByText(
-      "No game-day plan yet. The planner arrives after v1; when it does, a game you are going to shows its ticket, your friends and the day's timeline here.",
+      "Nothing on the calendar. Log a game you are going to and its ticket, who you are going with and the day's timeline show up here.",
     );
+    expect(getByLabelText('Log a game you are going to')).toBeTruthy();
+    expect(queryByText(/arrives after v1/)).toBeNull();
     assertNoFixtures(queryByText);
   });
 

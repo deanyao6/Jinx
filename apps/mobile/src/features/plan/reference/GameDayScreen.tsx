@@ -18,7 +18,10 @@ import { screenPadding } from '@/theme/reference/tokens';
 
 /**
  * Game day, ported from the fifth phone in `design/reference.html` (SPEC.md 8.8.5).
- * A demo shell in v1, behind FEATURE_PLAN.
+ *
+ * Built from the soonest game you have marked as going; see features/plan/gameDay.ts for
+ * why the timeline holds only schedule facts and rules the app enforces, and nothing the
+ * reference's own sample invents.
  *
  * The screen takes the team the user is rooting for, not the home team, which is why an
  * away game at SoFi is still in Eagles colours.
@@ -40,9 +43,8 @@ function Body() {
   const Share = ICONS['i-share'];
 
   /**
-   * The planner has no backend in v1 (SPEC.md 2, FEATURE_PLAN), so for a real user there is
-   * no plan to show. The screen used to render the reference's Eagles-at-Rams ticket with
-   * someone else's seat and someone else's friends; an empty card is the truth.
+   * Nothing coming up. The screen used to render the reference's Eagles-at-Rams ticket with
+   * someone else's seat and someone else's friends; now it says how to get a real one.
    */
   if (!plan.matchup) {
     return (
@@ -60,9 +62,18 @@ function Body() {
             <Text style={[s.topTitle, { color: base.ink }]}>Game day</Text>
           </View>
           <EmptyState
-            text="No game-day plan yet. The planner arrives after v1; when it does, a game you are going to shows its ticket, your friends and the day's timeline here."
+            text="Nothing on the calendar. Log a game you are going to and its ticket, who you are going with and the day's timeline show up here."
             loadingText="Loading your plan…"
-          />
+          >
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Log a game you are going to"
+              onPress={() => router.push('/legacy-games?segment=log')}
+              style={({ pressed }) => [s.emptyAction, pressed && { opacity: 0.6 }]}
+            >
+              <Text style={[s.emptyActionText, { color: team.accent }]}>Log a game</Text>
+            </Pressable>
+          </EmptyState>
         </ScrollView>
         <TabBar active="Plan" />
       </View>
@@ -91,11 +102,6 @@ function Body() {
             <Share size={20} color={base.ink} />
           </Pressable>
         </View>
-
-        {/* Everything below stays inert. The planner is a demo shell in v1 (SPEC.md 2): the
-            ticket, the companions and the timeline are all fixture prose with no ticket, no
-            attendance row and no route behind them. docs/interactions.md sets the minimum for
-            this screen at the share icon, which is above. */}
 
         {/* `.ticket` with its `::before`/`::after` notches and the `.stripe` down the right. */}
         <View style={[s.ticket, { backgroundColor: team.accent }]}>
@@ -164,32 +170,45 @@ function Body() {
  * The share card for the game being planned.
  *
  * There is no "game day" share template. The sheet's templates are record, game, pledge,
- * stamp, companion, goal and wrapped (features/share/types.ts), and `/share/[template]`
- * needs a payload as well as a name, so a bare `/share/game-day` would land on the sheet's
- * "This card could not be opened" state. The game itself is the closest existing template.
+ * stamp, companion, goal and wrapped (features/share/types.ts), so the game itself is the
+ * closest one.
  *
- * The fixture is prose — "Eagles at Rams", "Sunday, 1:25 PM, SoFi Stadium" — so the matchup
- * and the venue are read back out of it and the kickoff is left empty, because a weekday and
- * a time are not a date and the card omits one it cannot parse. TODO: build this from the
- * real upcoming game once the planner has one.
+ * With a real plan every field comes from the game. It used to hardcode `sport: 'nfl'` and
+ * parse the venue back out of prose, because the screen only ever showed the reference's
+ * Eagles-at-Rams sample; on a baseball game that would have labelled the card NFL. The
+ * fixture branch keeps that parsing for demo mode, where there is no game to read.
  */
 function gameDayShareGame(plan: GameDayFixture): ShareGame {
   const [away, home] = plan.matchup.split(' at ');
+  if (plan.game) {
+    return {
+      kind: 'game',
+      sport: plan.game.sport,
+      away: away ?? plan.matchup,
+      home: home ?? '',
+      // Not played yet, so the card draws a dash for each score rather than a number.
+      awayScore: null,
+      homeScore: null,
+      status: 'scheduled',
+      venue: plan.game.venue,
+      date: plan.game.scheduledStart,
+      side: null,
+      result: null,
+      verified: false,
+    };
+  }
   const parts = plan.when.split(', ');
   return {
     kind: 'game',
-    // The demo plan is an NFL game. TODO: take this from the game once there is one.
+    // Demo mode only: the reference fixture is an NFL game with no game record behind it.
     sport: 'nfl',
     away: away ?? plan.matchup,
     home: home ?? '',
-    // Not played yet, so the card draws a dash for each score rather than a number.
     awayScore: null,
     homeScore: null,
     status: 'scheduled',
     venue: parts.length > 1 ? (parts[parts.length - 1] ?? null) : null,
     date: '',
-    // The screen is themed for the team the user roots for, which in the fixture is the away
-    // side (see the note on GameDayScreen), not the home team.
     side: away ?? null,
     result: null,
     verified: false,
@@ -218,6 +237,8 @@ const s = StyleSheet.create({
     marginBottom: 10,
   },
   topTitle: { fontSize: 28, fontFamily: fontFamily({ weight: 850 }), letterSpacing: -28 * 0.01 },
+  emptyAction: { marginTop: 10, alignSelf: 'flex-start' },
+  emptyActionText: { fontSize: 14, fontFamily: fontFamily({ weight: 700 }) },
   iconButton: {
     width: 36,
     height: 36,

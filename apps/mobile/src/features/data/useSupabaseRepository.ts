@@ -111,6 +111,7 @@ export function useSupabaseRepository(): { repository: Repository; status: Repos
         lastGame: latest ? lastGameLine(latest.game) : null,
         lastGameId: latest?.game.id ?? null,
         attendances: (attendances.data ?? []).filter((a) => a.status === 'attended'),
+        upcoming: (attendances.data ?? []).filter((a) => a.status === 'going'),
         companions: companions.data ?? [],
         rivalries: rivalries.data ?? [],
         overlaps: overlaps.data ?? [],

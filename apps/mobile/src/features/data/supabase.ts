@@ -7,10 +7,12 @@ import {
 } from '@jinx/core';
 
 import { superlativeRows } from '@/features/passport/format';
-import { defaultShapeKey } from '@/features/venues/shapes';
 import type { StatsPayload, StatsStamp, StatsTeam } from '@/features/passport/types';
+import { gameDayFromUpcoming, type UpcomingGame } from '@/features/plan/gameDay';
+import { defaultShapeKey } from '@/features/venues/shapes';
 
 import { emptyRepository } from './empty';
+import { listSentence, nickname, type TeamRef } from './names';
 import type {
   GameLogFixture,
   GameRowFixture,
@@ -24,6 +26,10 @@ import type {
   TeamPill,
 } from './shapes';
 import type { Repository } from './types';
+
+// Re-exported: these moved to ./names to break an import cycle with the Plan tab, and
+// everything that already imports them from here keeps working.
+export { listSentence, nickname, type TeamRef } from './names';
 
 /**
  * The Supabase-backed repository (SPEC.md 8.9), built up milestone by milestone.
@@ -48,6 +54,7 @@ export const SUPABASE_BACKED: ReadonlySet<keyof Repository> = new Set([
   'games',
   'profile',
   'friends',
+  'gameDay',
 ]);
 
 /**
@@ -60,12 +67,6 @@ export function displayRecord(rec: WinLossRecord): string {
   return formatRecord(rec).replace(/–/g, ' – ');
 }
 
-/** "Philadelphia Phillies" in "Philadelphia" is shown as "Phillies" on a pill. */
-export function nickname(name: string, city: string | null | undefined): string {
-  if (!city) return name;
-  return name.startsWith(city) ? name.slice(city.length).trim() || name : name;
-}
-
 /** `+3 game win streak`, `-2 game losing streak`, or nothing at all when there is none. */
 export function streakLine(current: number): string {
   if (current === 0) return 'No active streak';
@@ -73,8 +74,6 @@ export function streakLine(current: number): string {
   const kind = current > 0 ? 'win' : 'losing';
   return `${current > 0 ? '+' : '-'}${n} game ${kind} streak`;
 }
-
-export type TeamRef = { id: string; name: string; city: string | null; abbreviation: string };
 
 /**
  * The hero's Last Game row: `Last Game: PHI 4 – 2 NYM`.
@@ -108,6 +107,11 @@ export type PassportInputs = {
   teams: ReadonlyMap<string, TeamRef>;
   /** Stadium shape per venue, from `venue_shapes`. */
   shapes: ReadonlyMap<string, ShapeKey>;
+  /**
+   * Games marked as going, with their seats, for the Plan tab. Separate from `attendances`,
+   * which is filtered to games already attended.
+   */
+  upcoming?: readonly UpcomingGame[];
   /** "PHI 4 – 2 NYM" for the hero's Last Game row, or null when there are no games yet. */
   lastGame: string | null;
   lastGameId: string | null;
@@ -792,12 +796,6 @@ export function reliveFromGame(
   };
 }
 
-/** "Dad", "Dad and Maya", "Dad, Maya and Sam" — the reference uses "and", not an ampersand. */
-export function listSentence(names: readonly string[]): string {
-  if (names.length <= 1) return names[0] ?? '';
-  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
-}
-
 /**
  * Compose the repository. Methods outside {@link SUPABASE_BACKED} keep
  * {@link emptyRepository}'s empty value: Pick a side and Relive need a game id this
@@ -821,5 +819,10 @@ export function supabaseRepository(inputs: PassportInputs): Repository {
         : emptyRepository.profile(),
     friends: () =>
       friendsFromRecords(inputs.companions ?? [], inputs.rivalries ?? [], inputs.overlaps ?? []),
+    // Read at render rather than when the repository is built, so "today" and the lit step
+    // in the timeline stay right on a screen left open.
+    gameDay: () =>
+      gameDayFromUpcoming(inputs.upcoming ?? [], inputs.teams, Date.now()) ??
+      emptyRepository.gameDay(),
   };
 }
