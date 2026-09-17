@@ -6,6 +6,7 @@ import {
   type WinLossRecord,
 } from '@jinx/core';
 
+import { companionLuck, talliesFromRecords } from '@/features/eggs/jinx';
 import {
   superlativeLabel,
   superlativeRows,
@@ -754,12 +755,15 @@ export function friendsFromRecords(
   const rival = rivalries[0];
   // The card is literally titled "Before you connected", so prefer one that was.
   const overlap = overlaps.find((o) => o.before_connected) ?? overlaps[0];
+  // The certified jinx egg. An empty map when `eggs.certifiedJinx` is off.
+  const luck = companionLuck(talliesFromRecords(companions));
 
   return {
     tabs: ['With', 'Following', 'Rivals'] as const,
     note: 'Your record when you go together',
     people: companions.map((c) => {
       const rec = { wins: c.wins, losses: c.losses, ties: c.ties };
+      const mark = luck.get(c.person_id);
       return {
         key: c.person_id,
         name: c.display_name,
@@ -768,6 +772,9 @@ export function friendsFromRecords(
         sub: togetherLine(c.games),
         record: formatRecord(rec),
         tone: companionTone(rec),
+        // Absent, not undefined, when the egg has nothing to say: the row is then the same
+        // object it was before the egg existed.
+        ...(mark ? { luck: mark } : null),
       };
     }),
     rivalry: rival

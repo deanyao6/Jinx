@@ -3,7 +3,16 @@ import React from 'react';
 
 import { parseStats } from '@/features/passport/format';
 import { ShareCard } from '../ShareCard';
-import { parseShareTemplate, type ShareGame, type ShareRecord } from '../types';
+import { templateTitle } from '../templates';
+import {
+  parseShareTemplate,
+  type ShareGame,
+  type ShareHandshake,
+  type ShareRecord,
+} from '../types';
+
+// The handshake card draws two real people, and a PersonAvatar imports the client.
+jest.mock('@/lib/supabase', () => ({ supabase: {} }));
 
 const stats = parseStats({
   totals: { games: 48, venues: 14, states: 3, countries: 1 },
@@ -72,6 +81,29 @@ describe('ShareCard', () => {
     expect(getByText('Rooting for the Philadelphia Phillies, win')).toBeTruthy();
     expect(getByText('Verified there')).toBeTruthy();
     expect(getByText('@dean')).toBeTruthy();
+  });
+
+  it('renders the secret handshake card: both people, the matchup, the stadium', async () => {
+    const handshake: ShareHandshake = {
+      kind: 'handshake',
+      team: null,
+      me: { id: 'u1', name: 'Dean Yao', handle: 'dean', avatarPath: null },
+      them: { id: 'u2', name: 'Maya Chen', handle: 'maya', avatarPath: null },
+      away: 'New York Mets',
+      home: 'Philadelphia Phillies',
+      venue: 'Citizens Bank Park',
+      date: '2026-08-14T23:05:00Z',
+    };
+    const { getByText, getByTestId } = await render(
+      <ShareCard template={handshake} handle="dean" scheme="light" />,
+    );
+    expect(getByTestId('we-were-there-card')).toBeTruthy();
+    expect(getByText('We were there')).toBeTruthy();
+    expect(getByText('Dean & Maya')).toBeTruthy();
+    expect(getByText('New York Mets at Philadelphia Phillies')).toBeTruthy();
+    expect(getByText(/Citizens Bank Park/)).toBeTruthy();
+    expect(templateTitle(handshake)).toBe('We were there, New York Mets at Philadelphia Phillies');
+    expect(parseShareTemplate('handshake', JSON.stringify(handshake))).toEqual(handshake);
   });
 
   it('round-trips a template through the route params', () => {

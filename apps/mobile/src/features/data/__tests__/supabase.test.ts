@@ -554,6 +554,13 @@ describe('Friends mapping', () => {
     expect(f.people[0]?.sub).toBe('11 games together');
   });
 
+  it('marks the one certified jinx and the one good luck charm, and leaves the rest alone', () => {
+    // Dad 7-1 beats Priya 3-1 for the charm; Jordan 0-4 is the only jinx candidate.
+    const f = friendsFromRecords(companions, [], []);
+    expect(f.people.map((p) => p.luck)).toEqual(['charm', undefined, undefined, 'jinx']);
+    expect(f.people[1]).not.toHaveProperty('luck');
+  });
+
   it('gets the singular right for one game', () => {
     expect(togetherLine(1)).toBe('1 game together');
     expect(togetherLine(11)).toBe('11 games together');

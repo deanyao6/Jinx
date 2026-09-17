@@ -2,6 +2,8 @@
 import { formatRecord, formatVsExpected } from '@jinx/core';
 
 import { momentLabel } from '@/features/attendances/moments';
+import { eggs } from '@/features/eggs/flags';
+import { CHARM_LABEL, isCharmCandidate, isJinxCandidate, JINX_LABEL } from '@/features/eggs/jinx';
 import { formatDuration, formatMiles } from '@/features/passport/format';
 import { sportLabel } from '@/lib/format';
 import type { WrappedCard } from './types';
@@ -116,10 +118,24 @@ export function wrappedCardCopy(card: WrappedCard, sport: string, season: number
       };
     case 'companions': {
       const lines: string[] = [];
-      if (card.best)
-        lines.push(`Lucky charm: ${card.best.name}, ${formatRecord(card.best.record)}`);
+      // The certified jinx egg (`features/eggs/jinx`). The server already sends the season's
+      // one best and one worst companion, so asking whether each clears the bar is the whole
+      // rule. One that does not keeps the wording this card always had.
+      const tally = (c: NonNullable<typeof card.best>) => ({
+        id: c.person_id,
+        name: c.name,
+        wins: c.record.wins,
+        losses: c.record.losses,
+      });
+      if (card.best) {
+        const label =
+          eggs.certifiedJinx && isCharmCandidate(tally(card.best)) ? CHARM_LABEL : 'Lucky charm';
+        lines.push(`${label}: ${card.best.name}, ${formatRecord(card.best.record)}`);
+      }
       if (card.worst && card.worst.person_id !== card.best?.person_id) {
-        lines.push(`Jinx: ${card.worst.name}, ${formatRecord(card.worst.record)}`);
+        const label =
+          eggs.certifiedJinx && isJinxCandidate(tally(card.worst)) ? JINX_LABEL : 'Jinx';
+        lines.push(`${label}: ${card.worst.name}, ${formatRecord(card.worst.record)}`);
       }
       if (!card.best) {
         return {

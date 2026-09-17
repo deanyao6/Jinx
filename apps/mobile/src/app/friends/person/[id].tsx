@@ -6,6 +6,7 @@ import { ActivityIndicator, Alert, View } from 'react-native';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { EmptyState } from '@/components/EmptyState';
+import { IconTile } from '@/components/IconTile';
 import { GameRow } from '@/components/GameRow';
 import { Loading } from '@/components/Loading';
 import { ErrorNotice } from '@/components/ErrorNotice';
@@ -16,6 +17,8 @@ import { Screen } from '@/components/Screen';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
+import { companionLuck, luckSentence, talliesFromRecords } from '@/features/eggs/jinx';
+import { JinxBadge, JinxCat } from '@/features/eggs/JinxBadge';
 import { shareInvite } from '@/features/people/invite';
 import {
   useCompanionGames,
@@ -43,6 +46,11 @@ export default function PersonScreen() {
 
   const person = useMemo(
     () => records.data?.find((p) => p.person_id === id) ?? null,
+    [records.data, id],
+  );
+  // The certified jinx egg: this page is only ever about your own record with someone.
+  const luck = useMemo(
+    () => companionLuck(talliesFromRecords(records.data ?? [])).get(id) ?? null,
     [records.data, id],
   );
 
@@ -114,14 +122,19 @@ export default function PersonScreen() {
       {error ? <Notice tone="error">{errorMessage(error)}</Notice> : null}
 
       <View style={{ alignItems: 'center', marginBottom: theme.spacing.lg }}>
-        <PersonAvatar
-          userId={person.linked_user_id ?? person.person_id}
-          name={person.display_name}
-          handle={person.linked_handle}
-          path={person.linked_avatar_path}
-          size={72}
-          ring
-        />
+        <View>
+          <PersonAvatar
+            userId={person.linked_user_id ?? person.person_id}
+            name={person.display_name}
+            handle={person.linked_handle}
+            path={person.linked_avatar_path}
+            size={72}
+            ring
+          />
+          {luck === 'jinx' ? (
+            <JinxBadge size={24} ringColor={theme.colors.screen} inset={0} />
+          ) : null}
+        </View>
         <Text
           variant="kicker"
           color="accent"
@@ -170,6 +183,32 @@ export default function PersonScreen() {
           {person.games === 1 ? 'game' : 'games'} together
         </Text>
       </Card>
+
+      {luck ? (
+        <Card testID={`luck-${luck}`}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            {luck === 'jinx' ? (
+              <View
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 38 * 0.3,
+                  backgroundColor: theme.accent.wash,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <JinxCat size={22} color={theme.colors.ink} />
+              </View>
+            ) : (
+              <IconTile icon="i-spark" />
+            )}
+            <Text variant="bodyStrong" style={{ flex: 1, fontVariant: ['tabular-nums'] }}>
+              {luckSentence(luck, person.wins, person.losses)}
+            </Text>
+          </View>
+        </Card>
+      ) : null}
 
       <Card>
         {linked && person.linked_handle ? (

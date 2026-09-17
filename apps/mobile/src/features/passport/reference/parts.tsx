@@ -27,21 +27,27 @@ export function Head({
   subtitle,
   onBellPress,
   onProfilePress,
+  renderTitle,
 }: {
   title: string;
   subtitle: string;
   onBellPress?: () => void;
   onProfilePress?: () => void;
+  /** An easter egg's way in (features/eggs). Given the wordmark, returns what to draw. */
+  renderTitle?: (wordmark: React.ReactElement) => React.ReactNode;
 }) {
   const { base } = useReferenceTheme();
   const Bell = ICONS['i-bell'];
   const User = ICONS['i-user'];
+  const wordmark = (
+    <TightText fontSize={32} lineHeight={0.85} style={[s.word, { color: base.ink }]}>
+      {title}
+    </TightText>
+  );
   return (
     <View style={s.head}>
       <View>
-        <TightText fontSize={32} lineHeight={0.85} style={[s.word, { color: base.ink }]}>
-          {title}
-        </TightText>
+        {renderTitle ? renderTitle(wordmark) : wordmark}
         <Text style={[s.sub, { color: base.muted }]}>{subtitle}</Text>
       </View>
       <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -169,6 +175,8 @@ export function Hero({
   streak,
   lastGame,
   onLastGamePress,
+  renderRecord,
+  overlay,
 }: {
   label: string;
   badge: string;
@@ -177,10 +185,22 @@ export function Hero({
   streak: string;
   lastGame: string;
   onLastGamePress?: () => void;
+  /**
+   * An easter egg's way in (features/eggs). Given the record and the hero's own way of drawing
+   * one, returns what to draw. Left out, the hero draws the record itself, as it always has.
+   */
+  renderRecord?: (record: string, draw: (text: string) => React.ReactElement) => React.ReactNode;
+  /** Drawn over everything in the hero and clipped to it. Must not take touches. */
+  overlay?: React.ReactNode;
 }) {
   const { team, teamKey } = useReferenceTheme();
   const Chevron = ICONS['i-chev-r'];
   const [width, setWidth] = React.useState(0);
+  const drawRecord = (text: string) => (
+    <TightText fontSize={64} lineHeight={0.78} style={s.heroRecord}>
+      {text}
+    </TightText>
+  );
 
   return (
     <View style={s.hero} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
@@ -201,9 +221,7 @@ export function Hero({
       </View>
 
       <View style={s.heroRec}>
-        <TightText fontSize={64} lineHeight={0.78} style={s.heroRecord}>
-          {record}
-        </TightText>
+        {renderRecord ? renderRecord(record, drawRecord) : drawRecord(record)}
         <View>
           <TightText fontSize={19} lineHeight={1} style={s.heroWinRate}>
             {`WIN RATE ${winRate}`}
@@ -230,6 +248,7 @@ export function Hero({
           <Chevron size={16} color="#FFFFFF" />
         </View>
       )}
+      {overlay}
     </View>
   );
 }

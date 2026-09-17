@@ -18,6 +18,8 @@ export default function YouStackLayout() {
         <Stack.Screen name="terms" options={{ title: 'Terms of use' }} />
         <Stack.Screen name="privacy-policy" options={{ title: 'Privacy policy' }} />
         <Stack.Screen name="delete-account" options={{ title: 'Delete account' }} />
+        {/* Development only: linked from About when __DEV__, an empty page otherwise. */}
+        <Stack.Screen name="eggs" options={{ title: 'Easter eggs' }} />
       </Stack>
     </UnderHeader>
   );

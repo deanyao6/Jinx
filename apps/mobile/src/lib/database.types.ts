@@ -973,6 +973,49 @@ export type Database = {
           },
         ]
       }
+      handshakes: {
+        Row: {
+          created_at: string
+          from_user: string
+          game_id: string
+          to_user: string
+        }
+        Insert: {
+          created_at?: string
+          from_user: string
+          game_id: string
+          to_user: string
+        }
+        Update: {
+          created_at?: string
+          from_user?: string
+          game_id?: string
+          to_user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "handshakes_from_user_fkey"
+            columns: ["from_user"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "handshakes_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "handshakes_to_user_fkey"
+            columns: ["to_user"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inbound_addresses: {
         Row: {
           created_at: string
@@ -2176,6 +2219,13 @@ export type Database = {
         Args: { p_from: string; p_to: string }
         Returns: boolean
       }
+      handshake_candidates: {
+        Args: { p_game_id: string }
+        Returns: {
+          avatar_path: string
+          user_id: string
+        }[]
+      }
       import_tagged_games: {
         Args: { p_game_ids: string[]; p_owner: string }
         Returns: number
@@ -2199,6 +2249,18 @@ export type Database = {
           user_id: string
         }[]
       }
+      my_handshakes: {
+        Args: { p_game_id: string }
+        Returns: {
+          avatar_path: string
+          completed_at: string
+          display_name: string
+          handle: string
+          offered_at: string
+          state: string
+          user_id: string
+        }[]
+      }
       my_storage_paths: { Args: never; Returns: string[] }
       my_tags_at_game: {
         Args: { p_game_id: string }
@@ -2217,6 +2279,10 @@ export type Database = {
       notification_enabled: {
         Args: { p_kind: string; p_user: string }
         Returns: boolean
+      }
+      offer_handshake: {
+        Args: { p_game_id: string; p_to_user: string }
+        Returns: Json
       }
       overlaps: {
         Args: never

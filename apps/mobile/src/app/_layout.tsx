@@ -19,6 +19,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button } from '@/components/Button';
 import { Text } from '@/components/Text';
 import { useAuth, useAuthListener, useSignOut } from '@/features/auth/hooks';
+import { StretchConfetti } from '@/features/eggs/StretchConfetti';
 import { useNavStore } from '@/features/nav/store';
 import { ParityHost } from '@/features/parity/ParityHost';
 import { useTeamPalettes } from '@/features/teams/queries';
@@ -243,6 +244,8 @@ function RootLayout() {
                   <ParityHost>
                     <AccentRoot>
                       <RootNavigator />
+                      {/* An easter egg. Renders nothing at rest, and never takes a touch. */}
+                      <StretchConfetti />
                     </AccentRoot>
                   </ParityHost>
                 </TeamPalettes>

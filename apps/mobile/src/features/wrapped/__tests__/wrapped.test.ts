@@ -77,10 +77,37 @@ describe('wrappedCardCopy', () => {
     expect(copy(3).lines).toEqual(['Wrigley Field']);
     expect(copy(4).headline).toBe('Bryce Harper');
     expect(copy(5).headline).toBe('Walk-off home run');
-    expect(copy(6).lines).toEqual(['Lucky charm: Dad, 4–1', 'Jinx: Sam, 1–3']);
+    // Both clear the certified jinx egg's bar (4 decided games; .750 or better, .250 or worse).
+    expect(copy(6).lines).toEqual(['Good luck charm: Dad, 4–1', 'Certified jinx: Sam, 1–3']);
     expect(copy(7).headline).toBe('994 mi');
     expect(copy(8)).toMatchObject({ label: 'Coldest game', headline: '38°F' });
     expect(copy(9).headline).toBe('0');
+  });
+});
+
+describe('the companions card and the certified jinx egg', () => {
+  const card = (best: [number, number], worst: [number, number]) =>
+    wrappedCardCopy(
+      {
+        kind: 'companions',
+        best: { person_id: 'a', name: 'Dad', record: { wins: best[0], losses: best[1], ties: 0 } },
+        worst: {
+          person_id: 'b',
+          name: 'Sam',
+          record: { wins: worst[0], losses: worst[1], ties: 0 },
+        },
+      },
+      'mlb',
+      2026,
+    ).lines;
+
+  it('keeps the plain wording for a pair that does not clear the bar', () => {
+    // 2–1 is a best record but only three games; 2–4 is .333.
+    expect(card([2, 1], [2, 4])).toEqual(['Lucky charm: Dad, 2–1', 'Jinx: Sam, 2–4']);
+  });
+
+  it('certifies the ones that do', () => {
+    expect(card([3, 1], [0, 4])).toEqual(['Good luck charm: Dad, 3–1', 'Certified jinx: Sam, 0–4']);
   });
 });
 

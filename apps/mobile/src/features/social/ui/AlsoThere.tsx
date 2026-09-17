@@ -7,6 +7,9 @@ import { Card } from '@/components/Card';
 import { Notice, errorMessage } from '@/components/Notice';
 import { Row } from '@/components/Row';
 import { Text } from '@/components/Text';
+import { eggs } from '@/features/eggs/flags';
+import { HandshakeRows } from '@/features/eggs/HandshakeRows';
+import { useEggsLive } from '@/features/eggs/runtime';
 import { useMyTagsAtGame, useRemoveMyTag } from '@/features/people/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useMutualsAtGame } from '../queries';
@@ -20,6 +23,10 @@ export function AlsoThere({ gameId }: { gameId: string }) {
   const mutuals = useMutualsAtGame(gameId);
   const tags = useMyTagsAtGame(gameId);
   const remove = useRemoveMyTag();
+  // The secret handshake egg. Off, or in demo mode, the rows below are the ones this card has
+  // always drawn and nothing about handshakes is asked of the server.
+  const eggsLive = useEggsLive();
+  const handshakes = eggs.secretHandshake && eggsLive;
 
   const list = mutuals.data ?? [];
   const myTags = tags.data ?? [];
@@ -28,7 +35,8 @@ export function AlsoThere({ gameId }: { gameId: string }) {
   return (
     <Card label="Also there">
       {remove.error ? <Notice tone="error">{errorMessage(remove.error)}</Notice> : null}
-      {list.map((m, i) => (
+      {handshakes ? <HandshakeRows gameId={gameId} mutuals={list} /> : null}
+      {(handshakes ? [] : list).map((m, i) => (
         <Row
           key={m.user_id}
           first={i === 0}

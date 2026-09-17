@@ -1,4 +1,5 @@
 /** Share card templates (SPEC.md 6.17). Every template carries plain-text team names only. */
+import type { WeWereThereData } from '@/features/eggs/WeWereThere';
 import type { StatsPledge, StatsTotals, WinLossRecord } from '@/features/passport/types';
 import type { WrappedCard } from '@/features/wrapped/types';
 
@@ -60,8 +61,21 @@ export type ShareGoal = { kind: 'goal'; title: string; year: number; label: stri
 
 export type ShareWrapped = { kind: 'wrapped'; sport: string; season: number; card: WrappedCard };
 
+/**
+ * The secret handshake's "We were there" card (`features/eggs/handshake`). `team` is the side the
+ * sharer was on, or null for a neutral: the card is drawn in that team's colours.
+ */
+export type ShareHandshake = { kind: 'handshake'; team: string | null } & WeWereThereData;
+
 export type ShareTemplate =
-  ShareRecord | ShareGame | SharePledge | ShareStamp | ShareCompanion | ShareGoal | ShareWrapped;
+  | ShareRecord
+  | ShareGame
+  | SharePledge
+  | ShareStamp
+  | ShareCompanion
+  | ShareGoal
+  | ShareWrapped
+  | ShareHandshake;
 
 export type ShareKind = ShareTemplate['kind'];
 
@@ -73,6 +87,7 @@ export const SHARE_KINDS: ShareKind[] = [
   'companion',
   'goal',
   'wrapped',
+  'handshake',
 ];
 
 export function isShareKind(s: string | undefined): s is ShareKind {

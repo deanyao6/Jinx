@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Card } from '@/components/Card';
 import { EmptyState } from '@/components/EmptyState';
 import { Loading } from '@/components/Loading';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Text } from '@/components/Text';
+import { companionLuck, talliesFromRecords } from '@/features/eggs/jinx';
 import { useCompanionRecords } from '@/features/people/queries';
 import { openShare } from '@/features/share/navigate';
 import { formatGameDate } from '@/lib/format';
@@ -16,6 +17,8 @@ import { CompanionRow } from './CompanionRow';
 export function WithSegment({ onLog }: { onLog: () => void }) {
   const router = useRouter();
   const records = useCompanionRecords();
+  // The certified jinx egg. Your own records only, and an empty map when it is switched off.
+  const luck = useMemo(() => companionLuck(talliesFromRecords(records.data ?? [])), [records.data]);
 
   if (records.isPending) return <Loading label="Loading companions" />;
   if (records.isError) return <ErrorNotice error={records.error} onRetry={records.refetch} />;
@@ -52,6 +55,7 @@ export function WithSegment({ onLog }: { onLog: () => void }) {
             ties={p.ties}
             games={p.games}
             linked={!!p.linked_user_id}
+            luck={luck.get(p.person_id)}
             onPress={() => router.push(`/friends/person/${p.person_id}`)}
             onShare={
               p.games

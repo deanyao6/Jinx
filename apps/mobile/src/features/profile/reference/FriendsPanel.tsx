@@ -7,6 +7,10 @@ import { ICONS } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
 import { RepositoryAvatar } from '@/features/data/RepositoryAvatar';
 import type { FriendsFixture, PersonRef } from '@/features/data/shapes';
+import { eggs } from '@/features/eggs/flags';
+import { CHARM_LABEL, JINX_LABEL } from '@/features/eggs/jinx';
+import { JinxBadge } from '@/features/eggs/JinxBadge';
+import { useEggsLive } from '@/features/eggs/runtime';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -54,6 +58,10 @@ function Body({ onClose }: { onClose: () => void }) {
   // `friends.tabs` is `as const`, so without widening this infers the literal 'With'.
   const repository = useRepository();
   const friends = repository.friends();
+  // The certified jinx egg is about your own records, so it is inert on the demo account:
+  // the reference's Jordan is 0–4 and `npm run parity` must not grow a cat.
+  const eggsLive = useEggsLive();
+  const showLuck = eggs.certifiedJinx && eggsLive;
   const [tab, setTab] = React.useState<string>(friends.tabs[0] ?? 'With');
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
@@ -142,6 +150,7 @@ function Body({ onClose }: { onClose: () => void }) {
               <FriendRow
                 person={person}
                 who={repository.person(person.key)}
+                luck={showLuck && tab === 'With' ? person.luck : undefined}
                 first={i === 0}
                 onPress={() => openPerson(person)}
               />
@@ -182,21 +191,30 @@ function Body({ onClose }: { onClose: () => void }) {
 function FriendRow({
   person,
   who,
+  luck,
   first,
   onPress,
 }: {
   person: Person;
   /** The real person behind the row, or null for the demo's drawn faces. */
   who: PersonRef | null;
+  /** The certified jinx egg: a cat on the avatar, or the quieter spark. Undefined draws neither. */
+  luck?: Person['luck'];
   first: boolean;
   onPress: () => void;
 }) {
   const { base, team } = useReferenceTheme();
   const tone = person.tone === 'good' ? base.good : person.tone === 'bad' ? base.bad : base.ink;
+  const luckLabel = luck === 'jinx' ? JINX_LABEL : luck === 'charm' ? CHARM_LABEL : null;
+  const Spark = ICONS['i-spark'];
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${person.name}, ${person.teamName}, ${person.sub}`}
+      accessibilityLabel={
+        luckLabel
+          ? `${person.name}, ${luckLabel}, ${person.sub}`
+          : [person.name, person.teamName, person.sub].filter(Boolean).join(', ')
+      }
       onPress={onPress}
       style={[s.fr, first ? null : { borderTopWidth: border.hairline, borderTopColor: base.line }]}
     >
@@ -204,15 +222,27 @@ function FriendRow({
         <View style={s.frPfpInner}>
           <RepositoryAvatar who={person.key} person={who} size={38} />
         </View>
+        {luck === 'jinx' ? <JinxBadge size={16} ringColor={base.scr} inset={-4} /> : null}
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
         <Text style={[s.frName, { color: base.ink }]}>{person.name}</Text>
-        <View style={s.frMetaRow}>
-          <View style={[s.frDot, { backgroundColor: team.accent }]} />
-          <Text style={[s.frMeta, { color: base.muted }]} numberOfLines={1}>
-            {`${person.teamName}, ${person.sub}`}
-          </Text>
-        </View>
+        {luckLabel ? (
+          <View style={s.frMetaRow}>
+            {luck === 'charm' ? <Spark size={13} color={team.accent} /> : null}
+            <Text style={[s.frMeta, { color: base.muted }]} numberOfLines={1}>
+              <Text style={[s.frLuck, { color: base.ink }]}>{luckLabel}</Text>
+              {` · ${person.sub}`}
+            </Text>
+          </View>
+        ) : (
+          <View style={s.frMetaRow}>
+            <View style={[s.frDot, { backgroundColor: team.accent }]} />
+            <Text style={[s.frMeta, { color: base.muted }]} numberOfLines={1}>
+              {/* A companion with no team (a placeholder like Dad) has only the count. */}
+              {[person.teamName, person.sub].filter(Boolean).join(', ')}
+            </Text>
+          </View>
+        )}
       </View>
       <Text style={[s.frRecord, { color: tone }]}>{person.record}</Text>
     </Pressable>
@@ -343,6 +373,7 @@ const s = StyleSheet.create({
   frMetaRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   frDot: { width: 9, height: 9, borderRadius: 4.5 },
   frMeta: { fontSize: 12.5, fontFamily: fontFamily(), flex: 1 },
+  frLuck: { fontSize: 12.5, fontFamily: fontFamily({ weight: 700 }) },
   frRecord: { fontSize: 19, fontFamily: fontFamily({ width: 64, weight: 900 }) },
 
   // `.card{border-radius:18px;padding:13px;margin-top:10px}`

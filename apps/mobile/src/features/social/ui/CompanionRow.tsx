@@ -3,7 +3,10 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 
 import { PersonAvatar } from '@/components/PersonAvatar';
+import { ICONS } from '@/components/reference/icons';
 import { Text } from '@/components/Text';
+import { CHARM_LABEL, JINX_LABEL, type CompanionLuck } from '@/features/eggs/jinx';
+import { JinxBadge } from '@/features/eggs/JinxBadge';
 import { ShareButton } from '@/features/share/ShareButton';
 import { useTheme } from '@/theme/ThemeProvider';
 import { gamesLabel, recordText, recordTone } from '../copy';
@@ -20,6 +23,11 @@ type Props = {
   ties: number;
   games: number;
   linked?: boolean;
+  /**
+   * The certified jinx egg (`features/eggs/jinx`): a cat on the avatar, or the quieter spark.
+   * Only ever passed for the signed-in person's own records. Absent draws the row as it was.
+   */
+  luck?: CompanionLuck | null;
   first?: boolean;
   onPress?: () => void;
   /** Share icon after the record (companion record card). */
@@ -37,6 +45,7 @@ export function CompanionRow({
   ties,
   games,
   linked,
+  luck,
   first,
   onPress,
   onShare,
@@ -45,10 +54,12 @@ export function CompanionRow({
   const c = theme.colors;
   const tone = recordTone(wins, losses);
   const color = tone === 'good' ? 'green' : tone === 'bad' ? 'red' : 'ink';
+  const luckLabel = luck === 'jinx' ? JINX_LABEL : luck === 'charm' ? CHARM_LABEL : null;
+  const Spark = ICONS['i-spark'];
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${name}, ${gamesLabel(games)}, record ${recordText(wins, losses, ties)}`}
+      accessibilityLabel={`${name}, ${luckLabel ? `${luckLabel}, ` : ''}${gamesLabel(games)}, record ${recordText(wins, losses, ties)}`}
       onPress={onPress}
       disabled={!onPress}
       style={({ pressed }) => ({
@@ -61,7 +72,10 @@ export function CompanionRow({
         opacity: pressed ? 0.6 : 1,
       })}
     >
-      <PersonAvatar userId={personId} name={name} path={avatarPath} size={38} />
+      <View>
+        <PersonAvatar userId={personId} name={name} path={avatarPath} size={38} />
+        {luck === 'jinx' ? <JinxBadge size={16} ringColor={c.card} /> : null}
+      </View>
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
           <Text variant="bodyStrong" numberOfLines={1}>
@@ -69,6 +83,14 @@ export function CompanionRow({
           </Text>
           {linked ? <Ionicons name="link" size={13} color={c.muted} /> : null}
         </View>
+        {luckLabel ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            {luck === 'charm' ? <Spark size={13} color={theme.accent.text} /> : null}
+            <Text variant="caption" weight={750} numberOfLines={1}>
+              {luckLabel}
+            </Text>
+          </View>
+        ) : null}
         <Text variant="caption" color="muted" numberOfLines={1}>
           {subtitle ?? gamesLabel(games)}
         </Text>

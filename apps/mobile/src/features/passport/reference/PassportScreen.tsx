@@ -8,6 +8,7 @@ import { useRepository } from '@/features/data/context';
 import { EmptyState } from '@/features/data/EmptyState';
 import type { PassportFixture } from '@/features/data/shapes';
 import type { Repository } from '@/features/data/types';
+import { usePassportEggs } from '@/features/eggs/passport';
 import { favoritePlayerItems } from '@/features/players/passport';
 import { useFavoritePlayersSeen } from '@/features/players/queries';
 import { env } from '@/lib/env';
@@ -105,6 +106,8 @@ function PassportBody({
   // top safe-area inset and then takes `.body`'s own 4px padding.
   const insets = useSafeAreaInsets();
   const stamps = repo.stamps(pill);
+  // Easter eggs. Empty in demo mode and for any egg that is switched off.
+  const egg = usePassportEggs(pill);
   return (
     <View style={{ flex: 1, backgroundColor: base.canvas, paddingTop: insets.top }}>
       <ScrollView
@@ -123,6 +126,7 @@ function PassportBody({
           // Profile is a tab, so it replaces rather than pushing: pushing would stack a
           // second copy of a tab screen on top of this one.
           onProfilePress={() => router.replace('/profile')}
+          {...egg.head}
         />
         <Pills pills={repo.passportPills()} selected={pill} onSelect={onSelect} />
         <Hero
@@ -134,6 +138,7 @@ function PassportBody({
           lastGame={data.lastGame}
           // The fixture has no game id for the last game, only its display line. See
           onLastGamePress={() => router.push(`/games/${data.lastGameId}` as Href)}
+          {...egg.hero}
         />
         <RecordCards cards={data.cards} onOpen={onOpenLog} />
         {/* A passport with no records is a real state, and the commonest one: it is what

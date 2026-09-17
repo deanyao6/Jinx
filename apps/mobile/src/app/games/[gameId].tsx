@@ -19,6 +19,7 @@ import { useDeleteAttendance, useMyAttendanceForGame } from '@/features/attendan
 import { isWithinCheckInWindow, pctLabel } from '@/features/checkin/lock';
 import { usePledgeForGame } from '@/features/checkin/queries';
 import { shortTeamName } from '@/features/data/names';
+import { RallyCapWorked } from '@/features/eggs/RallyCapWorked';
 import { notablePlayers, othersLine, type TeamPlayers } from '@/features/games/notable';
 import {
   useGame,
@@ -366,6 +367,17 @@ export default function GameDetailScreen() {
                   Neutral, no side counted
                 </Fact>
               )}
+              {/* An easter egg: nothing unless a rally cap was flipped here and it worked. */}
+              <RallyCapWorked
+                gameId={g.id}
+                winnerTeamId={
+                  winnerHome
+                    ? (g.home?.id ?? g.home_team_id)
+                    : winnerAway
+                      ? (g.away?.id ?? g.away_team_id)
+                      : null
+                }
+              />
               {companions.length ? <Fact icon="i-users">With {companions.join(', ')}</Fact> : null}
               {seatParts.length || priceLabel ? (
                 <Fact icon="i-seat">

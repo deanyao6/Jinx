@@ -157,6 +157,11 @@ export type FriendsFixture = {
     sub: string;
     record: string;
     tone: string;
+    /**
+     * The certified jinx egg (`features/eggs/jinx`): at most one 'jinx' and one 'charm' on the
+     * list. Only the signed-in person's own records set it; the demo fixture never does.
+     */
+    luck?: 'jinx' | 'charm';
   }[];
   rivalry: {
     team: string;

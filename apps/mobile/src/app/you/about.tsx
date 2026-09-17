@@ -72,6 +72,23 @@ export default function AboutScreen() {
 
       <SectionHeader title="Data attributions" />
       <LegalText md={ATTRIBUTION_MD} />
+
+      {/* Development builds only. In a production build this row does not exist, and the page
+          it opens is empty. */}
+      {__DEV__ ? (
+        <>
+          <SectionHeader title="Development" />
+          <Card>
+            <Row
+              icon="i-spark"
+              title="Easter eggs"
+              subtitle="See each one play on sample data"
+              chevron
+              onPress={() => router.push('/you/eggs')}
+            />
+          </Card>
+        </>
+      ) : null}
     </Screen>
   );
 }

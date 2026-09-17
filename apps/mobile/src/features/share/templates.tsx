@@ -8,6 +8,8 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Text } from '@/components/Text';
+import { WeWereThereCard } from '@/features/eggs/WeWereThere';
+import { SideTheme } from '@/features/games/ui/SideTheme';
 import { formatShortDate, totalsLine } from '@/features/passport/format';
 import { Stamp } from '@/features/passport/ui/Stamp';
 import { gamesLabel, recordText, recordTone } from '@/features/social/copy';
@@ -18,6 +20,7 @@ import type {
   ShareCompanion,
   ShareGame,
   ShareGoal,
+  ShareHandshake,
   SharePledge,
   ShareRecord,
   ShareStamp,
@@ -343,6 +346,15 @@ export function WrappedTemplate({ t }: { t: ShareWrapped }) {
   );
 }
 
+/** The secret handshake's card, as it was on the sheet, in the colours of the sharer's side. */
+export function HandshakeTemplate({ t }: { t: ShareHandshake }) {
+  return (
+    <SideTheme team={t.team}>
+      <WeWereThereCard data={t} compact />
+    </SideTheme>
+  );
+}
+
 export function TemplateBody({ template }: { template: ShareTemplate }) {
   switch (template.kind) {
     case 'record':
@@ -359,6 +371,8 @@ export function TemplateBody({ template }: { template: ShareTemplate }) {
       return <GoalTemplate t={template} />;
     case 'wrapped':
       return <WrappedTemplate t={template} />;
+    case 'handshake':
+      return <HandshakeTemplate t={template} />;
   }
 }
 
@@ -379,5 +393,7 @@ export function templateTitle(template: ShareTemplate): string {
       return template.title;
     case 'wrapped':
       return wrappedTitle(template.sport, template.season);
+    case 'handshake':
+      return `We were there, ${template.away} at ${template.home}`;
   }
 }
