@@ -254,6 +254,12 @@ machine, and there is no local certificate to manage.
 `eas.json`'s `production` profile has `autoIncrement: true`, so the build number rises on its own
 and `app.json`'s `version` (0.1.0) is the one humans see.
 
+The `channel` fields are deliberately absent from both profiles. A channel routes EAS Update
+over-the-air builds, and `expo-updates` is not installed here, so naming one only gives the build
+something to fail on. Add the package and the channels together when OTA updates are actually
+wanted; until then a new build is the only way to ship a change, which is what we want anyway
+while the UI is moving this fast.
+
 ## 4. Submit  (Dean)
 
 ```
