@@ -1,5 +1,9 @@
 # Jinx
 
+> **Finishing v1 is the current job. Read [FINISH_V1.md](FINISH_V1.md) before anything else.** It
+> has the verified state as of 2026-09-17, the ordered work list, what is blocked on Dean, and the
+> traps that cost the last session hours.
+
 A passport for sports fans: every game you attend becomes part of a living record. iOS first, MLB + NFL in v1.
 
 **The full product and engineering spec is [SPEC.md](SPEC.md). Read it before changing anything.** The UI reference mockup is [docs/turnstile-ui.html](docs/turnstile-ui.html) (styling is placeholder; structure and hierarchy are the reference).
