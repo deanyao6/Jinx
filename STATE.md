@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 14:30 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 15:40 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -137,15 +137,23 @@ last open question and shipped on 2026-09-17.
   another person's profile. **Not yet looked at on a device or simulator:** light mode, the
   signed-out screens (welcome, email, code, onboarding), and the screens that need data the local
   account lacks (a bucket list with progress, notifications, companions, imports with matches).
-- **Hosted is three migrations behind local: `20260917000500`, `000600`, `000700`.** An agent's
-  permission guard refuses a hosted `db push`, so this needs Dean, in this order:
+- **Hosted is four migrations behind local: `20260917000500`, `000600`, `000700`, `000800`.** An
+  agent's permission guard refuses a hosted `db push`, so this needs Dean, in this order:
   1. `npx supabase db push --linked --yes` (NFL list titles; superlatives v2 with
-     `venues.elevation_ft`; the `avatars` bucket and its policies).
+     `venues.elevation_ft`; the `avatars` bucket and its policies; the `handshakes` table and RPCs).
   2. `npm run functions:sync && npx supabase functions deploy delete-account --project-ref vekdufflzklfxljqufbq`
      so account deletion also removes the avatar. Do it AFTER step 1: the function walks the
      `avatars` bucket, which must exist first.
   Until then the TestFlight build keeps working as it does today, because the old payload keys
   are still written and nothing in a shipped build reads the new ones.
+- **Easter eggs are built and unseen by Dean.** Eight, each behind a flag in
+  `apps/mobile/src/features/eggs/flags.ts`: worn stamps, golden stamps, record rewind, curse
+  breaker, rally cap, stretch confetti, certified jinx, secret handshake. Settings > About has a
+  dev-only "Easter eggs" row that plays each one. The NFL halves of rally cap and stretch
+  confetti are written and cannot fire until live NFL data exists (`EGG_SPORTS.nfl.liveFeed`).
+  `export_my_data()` does not include handshakes yet.
+- **Build 5 needs a fresh native build**, not an update: `expo-sensors` was added for the rally
+  cap's shake, and the camera and photo permission strings changed for profile pictures.
 - **`support@example.com` is the support address in the app**, and the privacy text still carries
   a "Replace Jinx with the final name" line and "(draft)" titles. Fix before external TestFlight.
 - **`games.final_at` is never filled** on hosted (0 of 2,734 finals this season). Check-in falls
@@ -205,6 +213,9 @@ last open question and shipped on 2026-09-17.
 13. **Renaming or moving the repo folder breaks the iOS build.** `ios/Pods` and `ios/build` bake
     in absolute paths. Fix: `rm -rf apps/mobile/ios/build`, then `pod install` in `apps/mobile/ios`
     with `LANG=en_US.UTF-8` set (CocoaPods crashes without a UTF-8 locale), then `npm run ios`.
+14. **`npm run ios` does not run `pod install`.** After adding a package with native code, run
+    `LANG=en_US.UTF-8 pod install` in `apps/mobile/ios` first, or the app builds without the module.
+    And never run two `npm run ios` at once: they fight over the build database and one fails.
 
 ---
 
