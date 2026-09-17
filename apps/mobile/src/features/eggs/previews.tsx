@@ -47,7 +47,9 @@ export type PreviewProps = { autoPlay?: boolean; sport?: string };
 
 function useAutoPlay(autoPlay: boolean | undefined, start: () => void) {
   const startRef = React.useRef(start);
-  startRef.current = start;
+  React.useEffect(() => {
+    startRef.current = start;
+  });
   React.useEffect(() => {
     if (!autoPlay) return undefined;
     const timer = setTimeout(() => startRef.current(), 900);

@@ -7,9 +7,11 @@ import { EGG_CATALOG } from '@/features/eggs/catalog';
 import { eggs } from '@/features/eggs/flags';
 import { useEggPreview } from '@/features/eggs/store';
 
+const mockParams: { play?: string; sport?: string } = {};
 jest.mock('expo-router', () => ({
   Stack: { Screen: () => null },
   useIsFocused: () => true,
+  useLocalSearchParams: () => mockParams,
 }));
 
 jest.mock('expo-haptics', () => ({
@@ -36,6 +38,8 @@ const dev = globalThis as unknown as { __DEV__: boolean };
 
 afterEach(() => {
   dev.__DEV__ = true;
+  delete mockParams.play;
+  delete mockParams.sport;
   jest.useRealTimers();
 });
 
@@ -55,6 +59,20 @@ describe('the egg catalog', () => {
 });
 
 describe('the dev page', () => {
+  it('shows one egg and starts it by itself for ?play=<key>', async () => {
+    // Nothing can tap Play in the simulator, so the deep link is how an egg gets looked at.
+    jest.useFakeTimers();
+    mockParams.play = 'rallyCap';
+    const screen = await renderPage();
+    expect(screen.getByText('Rally cap')).toBeTruthy();
+    expect(screen.queryByText('Record rewind')).toBeNull();
+    expect(screen.getByText('Play')).toBeTruthy();
+    await act(async () => {
+      jest.advanceTimersByTime(1_000);
+    });
+    expect(screen.getByText('Flip back')).toBeTruthy();
+  });
+
   it('lists every egg with its switch, and plays them on sample data', async () => {
     jest.useFakeTimers();
     const screen = await renderPage();
