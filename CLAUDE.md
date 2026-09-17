@@ -50,8 +50,8 @@ anything is unbuilt.
 - **The app is named Jinx.** The rename landed on 2026-09-16: workspace scope `@jinx/*`, bundle ID
   `com.deanyao.jinx`, URL scheme `jinx://`, Xcode scheme `Jinx`. The Expo slug is now `jinx`, which
   no longer matches the EAS project `appname-monorepo`; see `OVERNIGHT.md` for what Dean needs to do
-  on EAS before the next `eas build`. `supabase/config.toml` keeps `project_id = "name_tbd"` on
-  purpose: it names the local Docker volumes, and changing it would orphan the loaded database.
+  on EAS before the next `eas build`. The repo folder is `~/Desktop/Jinx`, renamed from `name_tbd` on
+  2026-09-17, but `supabase/config.toml` keeps `project_id = "name_tbd"` on purpose: it names the local Docker volumes, and changing it would orphan the loaded database.
 - **Local backend is the one to develop against.** Supabase on ports 54421-54427, loaded with
   74,951 MLB and 7,289 NFL games. Sign in with "Continue with email", any address, and read the
   code from Mailpit at http://127.0.0.1:54424. Nothing is emailed anywhere.
