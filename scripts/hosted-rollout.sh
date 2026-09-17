@@ -24,7 +24,9 @@ chmod 700 "$WORK"
 trap 'rm -rf "$WORK"' EXIT
 
 say() { printf '\n== %s\n' "$*"; }
-sql() { npx supabase db query --linked -o json "$1"; }
+# The CLI prints a bare array in a terminal and {"rows": [...]} when it detects an agent. Normalise
+# to the second so every caller can read .rows either way.
+sql() { npx supabase db query --linked -o json "$1" | jq '{rows: (if type == "array" then . else .rows end)}'; }
 
 # ---------------------------------------------------------------------------------------------
 # Keys. The gateway wants the LEGACY service role JWT; the new sb_secret_ format is refused by it.
