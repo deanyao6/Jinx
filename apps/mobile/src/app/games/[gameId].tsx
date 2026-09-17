@@ -419,7 +419,10 @@ export default function GameDetailScreen() {
             </View>
             <Button
               title={g.status === 'final' ? 'I was there' : 'I’m going'}
-              variant={hasStory || canCheckIn ? 'secondary' : 'primary'}
+              // Until the game is on the passport, putting it there is the point of the page, so
+              // this is the solid button and Relive waits. Checking in is the one thing that
+              // outranks it, because at the stadium that is how the game gets logged.
+              variant={canCheckIn ? 'secondary' : 'primary'}
               onPress={() => router.push(`/games/log/${gameId}`)}
             />
           </Card>
@@ -470,7 +473,11 @@ export default function GameDetailScreen() {
                 </Text>
               </View>
             </View>
-            <Button title="Relive this game" onPress={() => router.push(`/relive/${gameId}`)} />
+            <Button
+              title="Relive this game"
+              variant={a ? 'primary' : 'secondary'}
+              onPress={() => router.push(`/relive/${gameId}`)}
+            />
           </Card>
         ) : null}
 
