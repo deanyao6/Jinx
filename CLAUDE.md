@@ -1,70 +1,42 @@
 # Jinx
 
-> **Finishing v1 is the current job. Read [FINISH_V1.md](FINISH_V1.md) before anything else.** It
-> has the verified state as of 2026-09-17, the ordered work list, what is blocked on Dean, and the
-> traps that cost the last session hours.
+> **Read [STATE.md](STATE.md) before anything else.** It says what is true right now: what works,
+> what is half done, what is switched off on purpose, what only Dean can do, and the traps that
+> cost previous sessions hours. This file is layout, commands and conventions.
 
 A passport for sports fans: every game you attend becomes part of a living record. iOS first, MLB + NFL in v1.
 
-**The full product and engineering spec is [SPEC.md](SPEC.md). Read it before changing anything.** The UI reference mockup is [docs/turnstile-ui.html](docs/turnstile-ui.html) (styling is placeholder; structure and hierarchy are the reference).
-
-> **This spec revision has landed.** `SPEC.md` is now revision 7 of the Jinx spec (the file formerly
-> at `docs/SPEC.new.md`). `CLAUDE_CODE_PROMPT.md` at the repo root is the kickoff brief; read its
-> "Handoff corrections" section, which lists what the brief itself gets wrong. The revision renames
-> the app to Jinx, makes `design/reference.html` the single visual source of truth, adds milestones
-> M0.5 (design system and UI parity) and M8.5 (Relive), narrows sign-in to Apple only, and replaces
-> bulk detail ingestion with an on-demand `detail_queue`. The domain layer, ingestion and database
-> are ~90% intact; the presentation layer is a rebuild. Overnight progress is in `OVERNIGHT.md`.
+**The full product and engineering spec is [SPEC.md](SPEC.md). Read it before changing anything.**
+`design/reference.html` is the single visual source of truth; `docs/turnstile-ui.html` is the older
+concept mockup, kept for structure only. `CLAUDE_CODE_PROMPT.md` was the kickoff brief and is
+history now: where it disagrees with STATE.md, STATE.md is right.
 
 ## Where things stand (2026-09-17)
 
-**Everything in FINISH_V1.md that can be done without touching the hosted project is done and
-proven on the local stack. The hosted half has NOT been applied.** The session that did the work
-ran in a permission mode that refused every operation against hosted, reads included. Run
-`bash scripts/hosted-rollout.sh` (it verifies itself; see docs/deploy.md). Until then, on hosted:
-`cleanup-imports` and `delete-account` are not deployed, no scheduled job does anything, and
-nothing builds a Relive story. [docs/progress.md](docs/progress.md) has every milestone against its
-"Done when" with the command that proves it, and says plainly which are not met (M0.5 needs
-Dean's approval, M4 needs a domain, M9 needs eyes on a device, M10 needs a friend).
-
-The rest of this section is the 2026-09-16 state and is still true.
-
-## Where things stood (2026-09-16)
-
-**The presentation-layer rebuild has started.** `OVERNIGHT.md` is the log. The design
-system is ported (tokens, 19 static Archivo instances, 36 generated icons, 7 stadium
-shapes, 65 team palettes, a `TeamTheme` provider), the visual parity harness works
-(`npm run parity`), and Passport is the first screen rebuilt, at a 4.10% mean mismatch
-against `design/reference.html`. Every other screen in the reference is still to do.
-The new design system lives under `src/theme/reference/` and `src/components/reference/`;
-the old placeholder `src/theme/tokens.ts` still serves the screens not yet rebuilt.
-
-
-All ten milestones in SPEC.md Section 12 are implemented. Per-milestone detail and every decision
-that refines the spec are in [docs/progress.md](docs/progress.md). Read that before assuming
-anything is unbuilt.
+**Jinx is on TestFlight with a live backend.** Build 4 was submitted on 2026-09-17. All ten
+milestones in SPEC.md Section 12 are implemented; [docs/progress.md](docs/progress.md) checks each
+against its own "Done when" and names the evidence. [STATE.md](STATE.md) has the current picture
+of all three environments. Highlights that change how you work:
 
 - **The app runs in the iOS Simulator.** `npm run ios`. Read [docs/simulator.md](docs/simulator.md)
   first: this machine has no Apple developer certificate, so the plain `expo run:ios` cannot work,
   and two Metro settings are pinned for reasons that are not guessable.
-- **The app is named Jinx.** The rename landed on 2026-09-16: workspace scope `@jinx/*`, bundle ID
-  `com.deanyao.jinx`, URL scheme `jinx://`, Xcode scheme `Jinx`. The Expo slug is now `jinx`, which
-  no longer matches the EAS project `appname-monorepo`; see `OVERNIGHT.md` for what Dean needs to do
-  on EAS before the next `eas build`. The repo folder is `~/Desktop/Jinx`, renamed from `name_tbd` on
-  2026-09-17, but `supabase/config.toml` keeps `project_id = "name_tbd"` on purpose: it names the local Docker volumes, and changing it would orphan the loaded database.
-- **Local backend is the one to develop against.** Supabase on ports 54421-54427, loaded with
-  74,951 MLB and 7,289 NFL games. Sign in with "Continue with email", any address, and read the
-  code from Mailpit at http://127.0.0.1:54424. Nothing is emailed anywhere.
-- **The hosted Supabase project now carries real data.** All 18 migrations applied to
-  `vekdufflzklfxljqufbq`, the seed reference data loaded (65 teams, 224 venues and shapes, 65
-  palettes), and MLB + NFL games for 2016-2026. Function secrets are still unset, so ticket
-  parsing and email import stay dark. The TestFlight runbook is at the bottom of
-  [docs/deploy.md](docs/deploy.md); three of its steps need an Apple login and are Dean's.
-- **The EAS project is `@deanyao/jinx`** (`ea474a72-1186-4600-90e1-8dffcdbcafa2`). The old
-  `appname-monorepo` project had no builds and is superseded; an Expo slug cannot be renamed,
-  which is why a new one exists. Note `jinx-fan-passport` also exists as an Expo org, unused.
-- **Sign in with Apple and ticket parsing cannot be tested here.** The first needs an Apple Services
-  ID in Supabase, the second needs `ANTHROPIC_API_KEY`. Neither is set.
+- **Develop against local Supabase**, ports 54421-54427, loaded with 82,240 games from 2000 on.
+  Sign in with "Continue with email", any address, and read the code from Mailpit at
+  http://127.0.0.1:54424. Nothing is emailed anywhere from local.
+- **The repo folder is `~/Desktop/Jinx`**, renamed from `name_tbd` on 2026-09-17, but
+  `supabase/config.toml` keeps `project_id = "name_tbd"` on purpose: it names the local Docker
+  volumes, and changing it would orphan the loaded database.
+- **The presentation layer is the reference design system.** Tokens, 19 static Archivo instances,
+  36 generated icons, 7 stadium shapes, 65 team palettes and a `TeamTheme` provider live under
+  `src/theme/reference/` and `src/components/reference/`. `npm run parity` compares screens against
+  `design/reference.html`. The older `src/theme/tokens.ts` still serves screens outside the
+  reference and derives its colours from it.
+- **The hosted project is `vekdufflzklfxljqufbq`**, holding every migration, the seed data, games
+  from 2016 on, and eight of nine Edge Functions. `bash scripts/hosted-rollout.sh` deploys and
+  verifies it. Ticket parsing and storylines work; inbound email waits on a domain.
+- **The EAS project is `@deanyao/jinx`** (`ea474a72-1186-4600-90e1-8dffcdbcafa2`). Never run
+  `eas init`: it rewrites the slug and injects Android permissions.
 - **The repo is public** at `deanyao6/Jinx`. No secrets are tracked; keep it that way.
 
 ## Docs

@@ -2,6 +2,7 @@
 
 A passport for sports fans. Every game you attend adds to your record: wins and losses at games, the stadiums you have collected, the players and moments you witnessed, the people you were there with, and a pledged record at neutral games.
 
+**[STATE.md](STATE.md) says where the project stands right now**, and is the place to start.
 The full spec is [SPEC.md](SPEC.md). Contributor notes are in [CLAUDE.md](CLAUDE.md). Facts verified against external APIs are in [docs/verification.md](docs/verification.md).
 
 ## Getting started

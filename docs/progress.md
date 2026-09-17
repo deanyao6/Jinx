@@ -9,9 +9,14 @@ be checked, the row says which.
 
 **Two environments.** `local` is the Supabase stack on this machine (ports 54421-54427), loaded
 with 82,240 games. `hosted` is `vekdufflzklfxljqufbq`, which Dean's phone uses. The session that
-wrote this could not touch hosted at all, reads included: its permission mode refused every
-operation against it. So everything below was proven on local, and the hosted half is
-`bash scripts/hosted-rollout.sh`, which has **not been run**. Rows that depend on it say so.
+wrote this table could not touch hosted at all, so everything below was proven on local.
+
+**The hosted rollout has since run** (`bash scripts/hosted-rollout.sh`, by Dean on 2026-09-17, and
+checked afterwards). Eight of nine Edge Functions are deployed, `inbound-email` deliberately not;
+vault carries `project_url`, `service_role_key` and `cron_secret`; `net._http_response` shows nine
+200s in the six hours after it; no Relive stories are owed for either sport. So every row below
+that says "until the rollout runs" has happened, with two exceptions that are about a person or a
+domain rather than a deploy: M0.5 and the forwarded email half of M4.
 
 | Milestone | Status | Done when | Evidence |
 |---|---|---|---|

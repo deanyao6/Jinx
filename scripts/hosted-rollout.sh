@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Rolls the backend half of FINISH_V1.md out to the hosted Supabase project, and proves each step
+# Rolls the backend out to the hosted Supabase project, and proves each step
 # by reading what actually happened rather than trusting an exit code.
 #
 #   bash scripts/hosted-rollout.sh            # everything, in order
@@ -95,7 +95,7 @@ SQL
 
   say "3. Edge Functions"
   npm run --silent functions:sync
-  # inbound-email stays undeployed until a domain exists (FINISH_V1.md section 3).
+  # inbound-email stays undeployed until a domain exists (STATE.md section 5).
   npx supabase functions deploy cleanup-imports delete-account mlb-sync mlb-live send-push \
     evaluate-goals storylines parse-ticket --project-ref "$REF"
 }

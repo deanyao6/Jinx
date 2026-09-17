@@ -1,4 +1,7 @@
-# Overnight log — night of 2026-09-16
+# Overnight log, night of 2026-09-16
+
+> Historical. This is what one night's work did, kept for the reasoning behind it.
+> For what is true now, read [STATE.md](STATE.md).
 
 Working unattended from `CLAUDE_CODE_PROMPT.md` plus Dean's overnight brief. Newest
 sections are appended at the bottom as work lands.
