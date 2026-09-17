@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 11:30 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 12:40 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -52,13 +52,22 @@ orphan a loaded database.
 
 - **Eight of nine Edge Functions are deployed**: `storylines`, `parse-ticket`, `cleanup-imports`,
   `delete-account`, `mlb-sync`, `mlb-live`, `send-push`, `evaluate-goals`. `inbound-email` stays
-  undeployed on purpose until a domain exists.
+  undeployed until ticket forwarding is set up on `jinxsports.fans` (section 5).
 - **Scheduled jobs really run.** Nine `cron.job` rows, and `net._http_response` shows nine 200s in
   the last six hours. The one 404 is from before the deploy finished.
   **Judge a scheduled call by `net._http_response`, never by `cron.job_run_details`**: it reported
   success for weeks while calling nothing.
 - Vault holds `project_url`, `service_role_key` (the legacy JWT) and `cron_secret`.
 - Queues are empty: no Relive stories owed for either sport, one open `detail_queue` row.
+- **MLB detail is fetched only for logged games** (SPEC 4.7). `detail_queue` is the one way in:
+  `mlb-sync` drains it every 15 minutes, and the daily GitHub job is the net under it. A final
+  nobody logged keeps its score and nothing else: game 824464 went final on hosted after the
+  deploy, and the scheduled runs at 19:15 and 19:30 UTC left it with a score and no detail. The
+  40 recent finals detailed before this was fixed on 2026-09-17 still carry theirs; nothing
+  removes it. **The daily GitHub job's half of the fix runs from `main`**, so it only holds once
+  the change is pushed.
+- **A storyline refresh replaces each sentence in place** and keeps the old one when the model
+  fails, unless today's facts no longer support it. `docs/progress.md` has the evidence for both.
 
 `bash scripts/hosted-rollout.sh` does the whole hosted sequence and verifies each step; `verify`
 as its argument runs only the read-only half. It is safe to rerun.
@@ -97,8 +106,16 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 
 **Needs Dean, and only Dean:**
 
-1. **A domain and Resend.** Blocks M4's "real forwarded confirmation" and email sign-in. Both
-   features are built and hidden behind flags.
+1. **Ticket forwarding on the domain.** Email sign-in is done: the domain is `jinxsports.fans`
+   (Cloudflare), verified in Resend with SPF, DKIM and DMARC, and hosted auth sends through
+   `smtp.resend.com` as `noreply@jinxsports.fans`. On 2026-09-17 Dean received a 6-digit code in
+   his inbox from the hosted project. `EXPO_PUBLIC_EMAIL_SIGN_IN=1` is set in the EAS production
+   environment, so "Continue with email" appears from build 5 on. The Resend API key lives only
+   in the Supabase dashboard.
+   **Ticket forwarding still waits**: Cloudflare Email Routing, the worker in
+   `infra/cloudflare-email-worker/`, deploying `inbound-email`, and
+   `EXPO_PUBLIC_INBOUND_EMAIL_DOMAIN=in.jinxsports.fans`. That is what blocks M4's "real
+   forwarded confirmation".
 2. **Sentry account and DSN** for crash reporting (M10). Until then keep
    `SENTRY_DISABLE_AUTO_UPLOAD=true` on EAS, or builds fail.
 3. **App Store Connect:** privacy details, and the external TestFlight group.
@@ -110,11 +127,6 @@ last open question and shipped on 2026-09-17.
 
 **Known wrong, not yet fixed:**
 
-- **`mlb-sync` fetches detail for every recent final**, not only games someone logged, which
-  SPEC 4.7 says not to do. Costs API calls and rows, harmless otherwise.
-- **Storylines can vanish on a refresh.** The half-hourly refresh deletes a game's storylines
-  before generating new ones, so a failed model call leaves none.
-- **Going games cap at 1,000.** `storylines` reads all "going" attendances in one request.
 - **The local database is 226 MB** against M1's 150 MB bar, because NFL detail is stored for every
   game rather than logged ones. Under the 300 MB target and the 500 MB free-tier cap.
 - **Restyling the non-reference screens** is unasked and unspec'd. SPEC 8.8 names the reference
@@ -169,6 +181,14 @@ last open question and shipped on 2026-09-17.
 11. **"Accepted" is not "correct".** The storylines validator accepted "105-73" for the 2025
     Dodgers: every digit real, added across regular season and postseason. Read model and data
     output against the database, every time.
+12. **Hosted auth settings are not in the repo.** `supabase/config.toml` only configures local. A
+    fresh hosted project emails an 8-digit code inside a "Sign in" link template, and the app's
+    code screen takes exactly 6 digits, so sign-in is impossible until the dashboard matches local:
+    OTP length 6, and the body of `supabase/templates/magic_link.html` pasted into both the Magic
+    link and Confirm sign up templates. The templates cannot be edited until custom SMTP is saved.
+13. **Renaming or moving the repo folder breaks the iOS build.** `ios/Pods` and `ios/build` bake
+    in absolute paths. Fix: `rm -rf apps/mobile/ios/build`, then `pod install` in `apps/mobile/ios`
+    with `LANG=en_US.UTF-8` set (CocoaPods crashes without a UTF-8 locale), then `npm run ios`.
 
 ---
 

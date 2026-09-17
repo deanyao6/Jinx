@@ -122,6 +122,15 @@ soon as more than one person uses the app. Set up a real sender before TestFligh
    your verified domain.
 4. Raise the auth rate limit from its default. Supabase applies a cautious 30/hour once custom
    SMTP is on; adjust it under Authentication > Rate Limits.
+5. Make hosted match local, or nobody can sign in. A hosted project starts with an 8-digit code
+   and a template that sends a link; the app's code screen takes exactly 6 digits. Under
+   Authentication > Sign In / Providers > Email set the OTP length to 6, and under Emails >
+   Templates paste the subject and body of `supabase/templates/magic_link.html` into both
+   "Magic link or OTP" and "Confirm sign up". Templates unlock only after custom SMTP is saved.
+6. Set `EXPO_PUBLIC_EMAIL_SIGN_IN=1` in the EAS production environment and build.
+
+Done for `jinxsports.fans` on 2026-09-17: sender `noreply@jinxsports.fans`, SPF, DKIM and DMARC
+in Cloudflare DNS, a 6-digit code received from the hosted project, and the EAS flag set.
 
 The equivalent settings are recorded, commented out, in `supabase/config.toml` under
 `[auth.email.smtp]` if you would rather run `supabase config push`.
@@ -332,6 +341,11 @@ curl -X POST https://vekdufflzklfxljqufbq.supabase.co/functions/v1/storylines \
 
 The response carries a `log` of every attempt, including each rejected sentence and the reason,
 which is the first place to look when a game has fewer storylines than expected.
+
+A rerun replaces each storyline in place and never clears a game first. When the model produces
+nothing for a slot, the sentence already stored is kept as long as it is still true of today's
+facts, and the log says so ("kept the earlier storyline, still true"); one the facts no longer
+support is removed.
 
 SPEC 6.18 wants a run the morning of each game and a refresh an hour before. Both are scheduled by
 migration `20260917000200` (`storylines-morning`, `storylines-refresh`), each guarded so a day with
