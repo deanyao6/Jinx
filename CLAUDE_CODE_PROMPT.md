@@ -20,7 +20,7 @@ Then paste everything below the line into Claude Code.
 
 Checked against the actual machine and repo. Resolve items 1 and 2 before pasting.
 
-**1. The repo is NOT empty, and starting over would be expensive.** `~/Desktop/name_tbd` holds a
+**1. The repo is NOT empty, and starting over would be expensive.** `~/Desktop/Jinx` holds a
 complete, tested implementation of the previous spec: 229 passing tests, 15 migrations, eight Edge
 Functions, both ingestion pipelines, 82,000 games loaded locally. A section-by-section audit against
 this spec found roughly **55 to 60 percent of it survives by value**:
