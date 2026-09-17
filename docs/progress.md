@@ -89,11 +89,31 @@ Each of these was live, and none was visible from the outside.
 - **Offline cache skips queries whose data is not JSON** (the two `Map`-valued game lookups), the check-in and imports keys, and search/handle lookups. Cache entries are keyed by user id and cleared on sign out; the cache buster is the app version.
 - **Crash reporting sends the user id and nothing else about the person**: `sendDefaultPii` is off, request bodies and console breadcrumbs are dropped, and URLs are stripped of their query strings before leaving the device.
 - **Relive is owed to attended games, not to queue rows.** `enqueue_game_detail` skips any game
-  whose detail already exists, which is every game in `mlb-sync`'s rolling three-day window, so a
-  queue-driven worker would never have built their stories. `games_needing_relive` asks the
+  whose detail already exists (a friend logged it first), so a queue-driven worker would never
+  build a story for the second person. `games_needing_relive` asks the
   question directly: attended, final, detailed, no story. `games.relive_checked_at` stops a game
   with no published win probability being refetched forever; recent games are retried for two
   weeks because both providers publish it late.
+- **First-time MLB detail comes only from `detail_queue`** (SPEC 4.7), fixed 2026-09-17. Until
+  then `mlb-sync` and the daily `detail.ts --pending` job both fetched detail for every final in
+  the last three days, logged or not. Now `mlb-sync` syncs the schedule, re-fetches a logged
+  game's detail once about 12 hours after it ended, and leaves first fetches to the queue drain
+  that runs right after it; `--pending` asks `games_needing_detail` only. Proven on local with
+  the real function: three unlogged finals stayed without detail across runs, the one then logged
+  by a user had detail and a Relive story on the next run, and the correction pass re-fetched
+  that game alone out of 13 that were old enough. On hosted, game 824464 went final after the
+  deploy and two scheduled runs (`net._http_response` 16 and 17, both 200) left it with its 8-2
+  score and no detail rows, while the 18:45 run detailed two logged games from the queue.
+- **A storyline refresh settles each slot by itself and never deletes ahead of the model call**
+  (`packages/core/src/storylines/refresh.ts`), fixed 2026-09-17. A new sentence is upserted over
+  the old one on the slot's unique index; when the model produces nothing, the stored sentence
+  stays if the validator still accepts it against today's facts and goes if it does not (a streak
+  that ended in the first game of a doubleheader). Proven on hosted: a refresh of a game with two
+  morning rows left the same two row ids carrying new text.
+- **`storylines` finds going games by filtering `games` on the server first**, then paging through
+  the going attendances for those games only, fixed 2026-09-17. Reproduced on local against real
+  PostgREST with 1,102 going rows: the old single request returned 1,000 and did not contain
+  tonight's game; the new selection returned it.
 - **Storylines are also requested at check-in.** SPEC 6.18 schedules them for games someone marked
   as going. A walk-up check-in at a neutral game would have reached Pick a side with none, so a
   trigger on `checkins` asks for that one game, and the screen polls until they arrive.

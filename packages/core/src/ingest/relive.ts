@@ -139,8 +139,8 @@ export interface DrainOptions {
  * Drains the MLB half of `detail_queue`, then builds stories for attended games that lack one.
  *
  * Two passes, because they have different triggers. Detail is asked for by the queue. A story is
- * owed to any attended game with detail, including the ones `mlb-sync`'s rolling window detailed
- * before anyone logged them, which never enter the queue at all.
+ * owed to any attended game with detail, including one whose detail was already there when it was
+ * logged (a friend logged it first), which `enqueue_game_detail` never queues a second time.
  */
 export async function drainMlbQueue(
   db: MinimalDb,
@@ -179,7 +179,7 @@ export async function drainMlbQueue(
     }
   }
 
-  // Rows whose detail arrived by another path (the rolling window, the daily job) close here.
+  // Rows whose detail arrived by another path (the daily job, a manual --pks run) close here.
   const { error: settleError } = await db.rpc('detail_queue_settle');
   if (settleError) result.errors.push(`detail_queue_settle: ${settleError.message}`);
 

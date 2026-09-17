@@ -2,8 +2,11 @@
  * Fetch MLB game details (appearances, scoring timeline, context, moments) and write them.
  *
  *   npx tsx ingest/src/mlb/detail.ts --pks 746419,775300         # specific games
- *   npx tsx ingest/src/mlb/detail.ts --pending [--limit 200]      # finals lacking detail that someone attended,
- *                                                                 # plus finals from the last 3 days
+ *   npx tsx ingest/src/mlb/detail.ts --pending [--limit 200]      # finals lacking detail that someone logged
+ *
+ * `--pending` is the net under the mlb-sync Edge Function, which drains `detail_queue` every 15
+ * minutes. It asks only for logged games: SPEC.md 4.7 keeps detail out of the database for games
+ * nobody cares about, so a recent final is not a reason by itself.
  */
 import { createDb, loadTeamMap, loadVenueMaps, type Db } from '../db.js';
 import { upsertGameDetail } from '../games.js';
@@ -15,25 +18,12 @@ function arg(name: string): string | null {
 }
 
 async function pendingPks(db: Db, limit: number): Promise<string[]> {
-  const since = new Date(Date.now() - 3 * 86400_000).toISOString();
-  const { data: recent, error: e1 } = await db
-    .from('games')
-    .select('provider_game_id')
-    .eq('provider', 'mlb')
-    .eq('status', 'final')
-    .is('detail_ingested_at', null)
-    .gte('scheduled_start', since)
-    .limit(limit);
-  if (e1) throw new Error(e1.message);
-  const { data: attended, error: e2 } = await db.rpc('games_needing_detail', {
+  const { data, error } = await db.rpc('games_needing_detail', {
     p_provider: 'mlb',
     p_limit: limit,
   });
-  if (e2) throw new Error(e2.message);
-  const pks = new Set<string>();
-  for (const r of (recent ?? []) as { provider_game_id: string }[]) pks.add(r.provider_game_id);
-  for (const r of (attended ?? []) as { provider_game_id: string }[]) pks.add(r.provider_game_id);
-  return [...pks].slice(0, limit);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as { provider_game_id: string }[]).map((r) => r.provider_game_id);
 }
 
 async function main(): Promise<void> {

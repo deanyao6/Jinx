@@ -4,7 +4,7 @@
 -- a concurrent run or a future prompt change must not be able to store a second storyline for a side.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(7);
+select plan(10);
 
 insert into public.venues (id, key, name) values ('00000000-0000-0000-0000-0000000005b1', 'story-venue', 'Story Park')
 on conflict (key) do nothing;
@@ -49,12 +49,37 @@ select throws_ok($$insert into public.storylines (game_id, team_id, text, source
   ('00000000-0000-0000-0000-0000000005c1', '00000000-0000-0000-0000-0000000005a1', 'Made-up source.', 'news')$$,
   '23514', null, 'an unknown source is refused');
 
--- Replacing them, which is what a refresh an hour before the start does, still works.
+-- A refresh replaces a slot in place, in one statement, so there is never a moment with no
+-- storyline (the function upserts on this index through PostgREST). Both kinds of slot.
+select lives_ok($$
+  insert into public.storylines (game_id, team_id, text, source) values
+    ('00000000-0000-0000-0000-0000000005c1', '00000000-0000-0000-0000-0000000005a1', 'Morning.', 'results'),
+    ('00000000-0000-0000-0000-0000000005c1', null, 'Morning game line.', 'schedule');
+  insert into public.storylines (game_id, team_id, text, source) values
+    ('00000000-0000-0000-0000-0000000005c1', '00000000-0000-0000-0000-0000000005a1', 'Refreshed.', 'results'),
+    ('00000000-0000-0000-0000-0000000005c1', null, 'Refreshed game line.', 'schedule')
+  on conflict (game_id, team_id) do update set text = excluded.text, generated_at = now()
+$$, 'a refresh can upsert over both a team slot and the game slot');
+
+select results_eq(
+  $$select text from public.storylines where game_id = '00000000-0000-0000-0000-0000000005c1' order by team_id nulls last$$,
+  $$values ('Refreshed.'), ('Refreshed game line.')$$,
+  'the upsert replaced each slot and added no rows');
+
+-- Removing one slot, which is what happens to a sentence that stopped being true, leaves the rest.
+delete from public.storylines
+ where game_id = '00000000-0000-0000-0000-0000000005c1' and team_id is null;
+select results_eq(
+  $$select text from public.storylines where game_id = '00000000-0000-0000-0000-0000000005c1'$$,
+  $$values ('Refreshed.')$$,
+  'removing the game slot leaves the team slot');
+
+-- Replacing them wholesale still works too.
 select lives_ok($$
   delete from public.storylines where game_id = '00000000-0000-0000-0000-0000000005c1';
   insert into public.storylines (game_id, team_id, text, source) values
     ('00000000-0000-0000-0000-0000000005c1', '00000000-0000-0000-0000-0000000005a1', 'Refreshed.', 'results')
-$$, 'a refresh can replace a game''s storylines');
+$$, 'a game''s storylines can be deleted and rewritten');
 
 select * from finish();
 rollback;

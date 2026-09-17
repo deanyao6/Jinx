@@ -16,3 +16,4 @@ export {
   type Verdict,
 } from './validate.js';
 export { retryPrompt, significancePrompt, STORYLINE_SYSTEM, teamPrompt } from './prompt.js';
+export { settleSlot, type SlotDecision, type SlotInput } from './refresh.js';

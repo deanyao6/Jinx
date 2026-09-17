@@ -14,6 +14,10 @@
  * A sentence that fails validation is retried with the specific reason, up to MAX_ATTEMPTS, and
  * failing that is not stored at all. No storyline is always better than a wrong one.
  *
+ * A refresh settles each slot on its own (packages/core/src/storylines/refresh.ts): a run where
+ * the model fails keeps the sentence already there for as long as it is still true, and a new one
+ * replaces the old in a single statement. Nothing is deleted ahead of the model call.
+ *
  * Internal only: pg_cron or an operator with the service role key. Users never call this.
  *
  * Body, one of:
@@ -40,6 +44,8 @@ import {
   type TeamName,
 } from '../_shared/core/index.ts';
 import { authorizeInternal, json, serviceDb } from '../_shared/db.ts';
+import { GAME_COLUMNS, goingGamesInWindow, type GameRow } from './games.ts';
+import { existingStorylines, storeSlot } from './store.ts';
 
 /**
  * The same model as ticket parsing. Writing one factual sentence from a small JSON object is well
@@ -56,28 +62,12 @@ const MAX_GAMES = 50;
 
 const Output = z.object({ text: z.string() });
 
-interface GameRow {
-  id: string;
-  sport_id: string;
-  season: number;
-  game_type: string;
-  status: string;
-  scheduled_start: string;
-  home_team_id: string;
-  away_team_id: string;
-  home_score: number | null;
-  away_score: number | null;
-}
-
 interface TeamRow {
   id: string;
   name: string;
   city: string | null;
   nickname: string | null;
 }
-
-const GAME_COLUMNS =
-  'id, sport_id, season, game_type, status, scheduled_start, home_team_id, away_team_id, home_score, away_score';
 
 function toSchedule(g: GameRow): ScheduleGame {
   return {
@@ -156,24 +146,7 @@ async function gamesToProcess(db: MinimalDb, body: StorylinesBody): Promise<Game
   const now = new Date();
   const from = new Date(now.getTime() + fromHours * 3_600_000);
   const until = new Date(now.getTime() + hours * 3_600_000);
-  const { data: going, error: goingError } = await db
-    .from('attendances')
-    .select('game_id')
-    .eq('status', 'going');
-  if (goingError) throw new Error(goingError.message);
-  const ids = [...new Set((going ?? []).map((r) => (r as { game_id: string }).game_id))];
-  if (ids.length === 0) return [];
-
-  const { data, error } = await db
-    .from('games')
-    .select(GAME_COLUMNS)
-    .in('id', ids)
-    .eq('status', 'scheduled')
-    .gte('scheduled_start', from.toISOString())
-    .lt('scheduled_start', until.toISOString())
-    .limit(MAX_GAMES);
-  if (error) throw new Error(error.message);
-  return (data ?? []) as GameRow[];
+  return goingGamesInWindow(db, from, until, MAX_GAMES);
 }
 
 async function processGame(
@@ -249,61 +222,64 @@ async function processGame(
   const pair: [TeamName, TeamName] = [asName(home), asName(away)];
   const schedule = toSchedule(game);
 
-  const rows: {
-    game_id: string;
-    team_id: string | null;
-    text: string;
-    source: string;
-    facts: unknown;
-  }[] = [];
+  // Each slot is settled on its own, as soon as its sentence is known. A model call that throws
+  // (a timeout, an overloaded API) counts as a run that produced nothing, never as a reason to
+  // lose the sentence already stored.
+  const existing = await existingStorylines(db, game.id);
+  const attempt = async (
+    prompt: string,
+    facts: unknown,
+    ctx: Parameters<typeof validateStoryline>[2],
+    label: string,
+  ): Promise<string | null> => {
+    try {
+      return await generate(client, prompt, facts, ctx, log, label);
+    } catch (e) {
+      log.push(`${label}: model call failed (${e instanceof Error ? e.message : String(e)})`);
+      return null;
+    }
+  };
+  let written = 0;
 
   for (const [team, opponent] of [
     [home, away],
     [away, home],
   ] as const) {
-    const facts = teamFacts(
+    const label = `${game.id} ${shortName(team)}`;
+    const ctx = { teams: pair, league, subject: asName(team) };
+    const computed = teamFacts(
       schedule,
       team.id,
       { team: shortName(team), opponent: shortName(opponent) },
       history,
     );
-    if (!hasSomethingToSay(facts)) {
-      log.push(`${game.id} ${shortName(team)}: nothing to say yet`);
-      continue;
-    }
-    const text = await generate(
-      client,
-      teamPrompt(facts),
-      facts,
-      { teams: pair, league, subject: asName(team) },
-      log,
-      `${game.id} ${shortName(team)}`,
+    const facts = hasSomethingToSay(computed) ? computed : null;
+    if (!facts) log.push(`${label}: nothing to say yet`);
+    const generated = facts ? await attempt(teamPrompt(facts), facts, ctx, label) : null;
+    const action = await storeSlot(
+      db,
+      { gameId: game.id, teamId: team.id, source: 'results' },
+      { facts, generated, existingText: existing.get(team.id) ?? null, ctx },
     );
-    if (text) rows.push({ game_id: game.id, team_id: team.id, text, source: 'results', facts });
+    if (action === 'keep') log.push(`${label}: kept the earlier storyline, still true`);
+    if (action === 'remove') log.push(`${label}: removed the earlier storyline, no longer true`);
+    if (action === 'write') written++;
   }
 
+  const label = `${game.id} significance`;
+  const ctx = { teams: pair, league, subject: null };
   const sig = significance(schedule, { home: shortName(home), away: shortName(away) }, history);
-  if (sig) {
-    const text = await generate(
-      client,
-      significancePrompt(sig),
-      sig,
-      { teams: pair, league, subject: null },
-      log,
-      `${game.id} significance`,
-    );
-    if (text) rows.push({ game_id: game.id, team_id: null, text, source: 'schedule', facts: sig });
-  }
+  const generated = sig ? await attempt(significancePrompt(sig), sig, ctx, label) : null;
+  const action = await storeSlot(
+    db,
+    { gameId: game.id, teamId: null, source: 'schedule' },
+    { facts: sig, generated, existingText: existing.get('') ?? null, ctx },
+  );
+  if (action === 'keep') log.push(`${label}: kept the earlier storyline, still true`);
+  if (action === 'remove') log.push(`${label}: removed the earlier storyline, no longer true`);
+  if (action === 'write') written++;
 
-  // Replace rather than add. The unique index would refuse a second row per slot anyway; this
-  // makes a refresh an hour before the start (SPEC 6.18) overwrite the morning's version.
-  const { error: deleteError } = await db.from('storylines').delete().eq('game_id', game.id);
-  if (deleteError) throw new Error(deleteError.message);
-  if (rows.length > 0) {
-    const { error: insertError } = await db.from('storylines').insert(rows);
-    if (insertError) throw new Error(insertError.message);
-  }
-  return rows.length;
+  return written;
 }
 
 Deno.serve(async (req) => {
