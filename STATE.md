@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 13:30 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 14:30 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -137,12 +137,15 @@ last open question and shipped on 2026-09-17.
   another person's profile. **Not yet looked at on a device or simulator:** light mode, the
   signed-out screens (welcome, email, code, onboarding), and the screens that need data the local
   account lacks (a bucket list with progress, notifications, companions, imports with matches).
-- **Migration `20260917000500` is applied on local and NOT on hosted.** It makes NFL division
-  bucket lists say "stadiums". `npx supabase db push --linked --yes` applies it; an agent's
-  permission guard refused to, so it needs Dean.
-- **Every real person gets the same default avatar.** The reference `Avatar` only knows the six
-  demo names and `profiles.avatar_path` is drawn nowhere, so search results and requests cannot
-  be told apart by picture. Photo upload is spec'd (SPEC 8.6) and unbuilt.
+- **Hosted is three migrations behind local: `20260917000500`, `000600`, `000700`.** An agent's
+  permission guard refuses a hosted `db push`, so this needs Dean, in this order:
+  1. `npx supabase db push --linked --yes` (NFL list titles; superlatives v2 with
+     `venues.elevation_ft`; the `avatars` bucket and its policies).
+  2. `npm run functions:sync && npx supabase functions deploy delete-account --project-ref vekdufflzklfxljqufbq`
+     so account deletion also removes the avatar. Do it AFTER step 1: the function walks the
+     `avatars` bucket, which must exist first.
+  Until then the TestFlight build keeps working as it does today, because the old payload keys
+  are still written and nothing in a shipped build reads the new ones.
 - **`support@example.com` is the support address in the app**, and the privacy text still carries
   a "Replace Jinx with the final name" line and "(draft)" titles. Fix before external TestFlight.
 - **`games.final_at` is never filled** on hosted (0 of 2,734 finals this season). Check-in falls
