@@ -4,6 +4,7 @@ import {
   MLB_VIDEO_HUB,
   NFL_VIDEO_HUB,
   highlightsSiteLabel,
+  nflNicknameInSeason,
   nflWeekSlug,
   officialHighlightsUrl,
 } from './highlights.js';
@@ -71,6 +72,28 @@ describe('officialHighlightsUrl', () => {
     expect(officialHighlightsUrl({ ...nfl, awayNickname: 'Football Team' })).toContain(
       '/football-team-at-eagles-',
     );
+  });
+});
+
+describe('a franchise that was renamed', () => {
+  // nfl.com files a game under the name of the time; all three were requested on 2026-09-17.
+  const was = (season: number, week: number) =>
+    officialHighlightsUrl({
+      ...nfl,
+      providerGameId: `${season}_${String(week).padStart(2, '0')}_WAS_PHI`,
+      season,
+      awayNickname: 'Commanders',
+    });
+
+  it('uses the name Washington had that season', () => {
+    expect(was(2019, 1)).toBe('https://www.nfl.com/games/redskins-at-eagles-2019-reg-1');
+    expect(was(2020, 17)).toBe('https://www.nfl.com/games/football-team-at-eagles-2020-reg-17');
+    expect(was(2022, 10)).toBe('https://www.nfl.com/games/commanders-at-eagles-2022-reg-10');
+  });
+
+  it('leaves every other team alone', () => {
+    expect(nflNicknameInSeason('Raiders', 2015)).toBe('Raiders');
+    expect(nflNicknameInSeason('Eagles', 2004)).toBe('Eagles');
   });
 });
 

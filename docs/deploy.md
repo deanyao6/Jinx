@@ -55,8 +55,15 @@ Vault secrets let pg_cron call Edge Functions. Run once in the SQL editor:
 
 ```sql
 select vault.create_secret('https://<ref>.supabase.co', 'project_url');
-select vault.create_secret('<service-role-key>', 'service_role_key');
+select vault.create_secret('<legacy service role JWT>', 'service_role_key');
+select vault.create_secret('<CRON_SECRET>', 'cron_secret');
 ```
+
+All three, and `service_role_key` must be the **legacy JWT** (`eyJ...`), not the new
+`sb_secret_...` key: the gateway refuses the new format. `cron_secret` is what the functions
+themselves check. With any of them missing, pg_cron still reports every job as succeeded and
+nothing is called. `scripts/hosted-rollout.sh` sets all three and then proves a call arrived by
+reading `net._http_response`.
 
 Edge Function secrets. `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are
 injected by the Supabase runtime automatically, so do not set those yourself:
@@ -66,9 +73,12 @@ npx supabase secrets set ANTHROPIC_API_KEY=... INBOUND_EMAIL_SECRET=... CRON_SEC
 npm run functions:deploy
 ```
 
-Functions and their schedules: `mlb-sync` (every 15 min), `mlb-live` (every minute while someone
-is checked in), `parse-ticket`, `inbound-email`, `evaluate-goals`, `send-push` (every 2 min),
-`cleanup-imports` (daily), `delete-account`.
+Functions and their schedules: `mlb-sync` (every 15 min; also drains the detail queue and builds
+MLB Relive stories), `mlb-live` (every minute while someone is checked in), `storylines` (12:00 UTC
+for the day's games, every 30 min for games starting in 60 to 90 minutes, and on a check-in at a
+game that has none), `send-push` (every 2 min), `cleanup-imports` (daily), `evaluate-goals` (after
+a game goes final), `parse-ticket` and `delete-account` (called by the app), `inbound-email`
+(waits for a domain).
 
 Optional function secrets: `EXPO_ACCESS_TOKEN` (only if you turn on enhanced push security in the
 EAS dashboard) and `TICKET_IMAGE_RETENTION_DAYS` (defaults to 7).
@@ -323,12 +333,38 @@ curl -X POST https://vekdufflzklfxljqufbq.supabase.co/functions/v1/storylines \
 The response carries a `log` of every attempt, including each rejected sentence and the reason,
 which is the first place to look when a game has fewer storylines than expected.
 
-SPEC 6.18 wants a run the morning of each game and a refresh an hour before. Neither is scheduled
-yet: `call_edge_function` has to learn to send `x-cron-secret` first (docs/verification.md).
+SPEC 6.18 wants a run the morning of each game and a refresh an hour before. Both are scheduled by
+migration `20260917000200` (`storylines-morning`, `storylines-refresh`), each guarded so a day with
+no game someone is going to makes no call at all. A third path covers the walk-up: a check-in at a
+game with no storylines asks for that game there and then.
 
 `CRON_SECRET` is set on the hosted project. Its value is not in the repo; rotate it with
 `npx supabase secrets set CRON_SECRET=$(openssl rand -hex 32)`, and update anything that calls
 the internal functions.
+
+## Rolling the backend out to hosted
+
+`bash scripts/hosted-rollout.sh` is the whole sequence, in order, and it checks its own work:
+
+1. `supabase db push`: the migrations not yet on hosted (`20260917000200`, `20260917000300`).
+2. The three vault secrets above, replaced rather than duplicated on a rerun.
+3. Deploys `cleanup-imports`, `delete-account`, `mlb-sync`, `mlb-live`, `send-push`,
+   `evaluate-goals`, `storylines`, `parse-ticket`.
+4. `scripts/verify-privacy-functions.mjs` against hosted: a throwaway user, a backdated ticket
+   import, then account deletion, with 15 checks that the rows and the files are really gone.
+5. Fires `mlb-sync` through `call_edge_function` and waits for status 200 in `net._http_response`.
+6. Calls the other scheduled functions once, authenticated.
+7. Rebuilds MLB stories made before the RBI fix (`relive.ts --rebuild`), then builds any missing.
+8. Prints the cron jobs, the last hour of pg_net responses, the open queue and any overdue ticket
+   images.
+9. Starts both scheduled GitHub workflows.
+
+It never resets or drops anything, and the only user it touches is one it creates and deletes.
+`bash scripts/hosted-rollout.sh verify` runs steps 4 onward only.
+
+**It had not been run when this was written** (2026-09-17). Until it is: `cleanup-imports` is not
+deployed while `parse-ticket` accepts uploads, which is a live privacy gap; the Delete account
+button on TestFlight calls a function that does not exist; and no scheduled job does anything.
 
 ## Not done, and not needed for a UI look
 
@@ -336,6 +372,6 @@ the internal functions.
   email import still needs its own secret and a domain.
 - **Resend.** Email OTP is unusable on the built-in sender (2 per hour). Sign in with Apple does
   not need it.
-- **Game detail on the hosted project.** `game_wp_timeline` and `game_story_steps` are filled per
-  game by `ingest/src/{mlb,nfl}/relive.ts`; run them against the hosted project once there are
-  attended games there, or Relive has nothing to show.
+- **Game detail on the hosted project** builds itself once the rollout above has run: MLB inside
+  `mlb-sync` every 15 minutes, NFL in the nightly GitHub workflow. Before that, Relive has nothing
+  to show for a newly logged game.

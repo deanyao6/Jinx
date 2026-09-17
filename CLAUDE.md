@@ -16,7 +16,20 @@ A passport for sports fans: every game you attend becomes part of a living recor
 > bulk detail ingestion with an on-demand `detail_queue`. The domain layer, ingestion and database
 > are ~90% intact; the presentation layer is a rebuild. Overnight progress is in `OVERNIGHT.md`.
 
-## Where things stand (2026-09-16)
+## Where things stand (2026-09-17)
+
+**Everything in FINISH_V1.md that can be done without touching the hosted project is done and
+proven on the local stack. The hosted half has NOT been applied.** The session that did the work
+ran in a permission mode that refused every operation against hosted, reads included. Run
+`bash scripts/hosted-rollout.sh` (it verifies itself; see docs/deploy.md). Until then, on hosted:
+`cleanup-imports` and `delete-account` are not deployed, no scheduled job does anything, and
+nothing builds a Relive story. [docs/progress.md](docs/progress.md) has every milestone against its
+"Done when" with the command that proves it, and says plainly which are not met (M0.5 needs
+Dean's approval, M4 needs a domain, M9 needs eyes on a device, M10 needs a friend).
+
+The rest of this section is the 2026-09-16 state and is still true.
+
+## Where things stood (2026-09-16)
 
 **The presentation-layer rebuild has started.** `OVERNIGHT.md` is the log. The design
 system is ported (tokens, 19 static Archivo instances, 36 generated icons, 7 stadium
@@ -109,6 +122,11 @@ npm run fonts               # regenerate the static Archivo instances (fontTools
 npm run seed:colors:check   # validate the 65 team palettes and their contrast
 npm run functions:test      # Deno tests for Edge Functions (syncs packages/core into _shared first)
 npm run functions:check     # Deno typecheck of every Edge Function
+bash scripts/hosted-rollout.sh            # apply the backend to hosted and prove it (not run by an agent; see docs/deploy.md)
+node scripts/verify-privacy-functions.mjs # cleanup-imports + delete-account really delete (throwaway user)
+node scripts/verify-user-journeys.mjs     # M2, M3, M6, M7, M8 done-whens as real users through RLS
+npx tsx ingest/src/verify/relive.ts       # M8.5: 5 MLB + 5 NFL stories against an independent source
+npx tsx ingest/src/mlb/relive.ts --rebuild # regenerate every MLB story after a change to how steps are built
 python3 seed/scripts/build_seed_sql.py   # regenerate supabase/seed.sql from seed/*.json
 python3 seed/scripts/check_team_colors.py # audit team_colors.json: coverage, verbatim reference rows, WCAG contrast
 npx tsx ingest/src/mlb/backfill.ts --from 2000 --to 2026   # MLB schedules + finals (needs SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)
@@ -124,4 +142,10 @@ npx tsx ingest/src/elo/run.ts --sport mlb                  # Elo ratings + froze
 - Domain rules live in `packages/core` as pure functions with unit tests, mirrored in SQL where records are computed server-side.
 - Provider data goes through the `SportsDataProvider` adapter. Canonical IDs are internal UUIDs; provider IDs live in `provider` / `provider_game_id` columns.
 - Verified facts about external APIs (field names, column names, licenses) live in `docs/verification.md`. Update it whenever a VERIFY item from the spec is checked.
-- Every RLS policy has a test in `supabase/tests`.
+- Every RLS policy has a test in `supabase/tests`, storage.objects policies included (`011`).
+- Every route needs a way in. `apps/mobile/src/features/navigation/__tests__/reachability.test.ts`
+  fails when a screen loses its last link; a route that needs none is allowlisted there with a reason.
+- Judge a scheduled job by `net._http_response`, never by `cron.job_run_details`, which says
+  "succeeded" for a job that called nothing.
+- Short team names come from `teams.nickname` (`shortTeamName`), never from stripping the city:
+  the Mets play in Flushing.

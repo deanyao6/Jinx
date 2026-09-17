@@ -35,6 +35,19 @@ function slug(name: string): string {
 }
 
 /**
+ * nfl.com files a game under the name the team had that season, and `teams.nickname` is today's.
+ * Washington is the only franchise whose nickname changed since 2000, twice. Checked 2026-09-17:
+ * `redskins-at-eagles-2019-reg-1` and `football-team-at-eagles-2020-reg-17` answer 200, and
+ * `commanders-at-eagles-2019-reg-1` answers 404.
+ */
+export function nflNicknameInSeason(nickname: string, season: number): string {
+  if (nickname.trim().toLowerCase() !== 'commanders') return nickname;
+  if (season <= 2019) return 'Redskins';
+  if (season <= 2021) return 'Football Team';
+  return nickname;
+}
+
+/**
  * nflverse numbers playoff weeks on from the regular season: 18 to 21 while the season had 17
  * weeks, 19 to 22 since it grew to 18 in 2021. nfl.com restarts at post-1.
  */
@@ -55,8 +68,9 @@ export function officialHighlightsUrl(game: HighlightsGame): string {
   }
   if (game.sport === 'nfl') {
     const week = Number((game.providerGameId ?? '').split('_')[1]);
-    const away = slug(game.awayNickname ?? '');
-    const home = slug(game.homeNickname ?? '');
+    const season = game.season ?? 0;
+    const away = slug(nflNicknameInSeason(game.awayNickname ?? '', season));
+    const home = slug(nflNicknameInSeason(game.homeNickname ?? '', season));
     const weekSlug = game.season
       ? nflWeekSlug(game.season, week, game.gameType ?? 'regular')
       : null;

@@ -215,3 +215,54 @@ accepted it. It is now set on the hosted project. Two things follow:
 2. `call_edge_function` in `20260915000300_cron.sql` sends only the bearer token. Before any cron
    job is scheduled on the hosted project it needs to send `x-cron-secret` too, read from vault
    like the key. Not done yet.
+
+## Official highlights have a per-game page in both leagues (SPEC 6.19) — VERIFIED 2026-09-17
+
+Relive's highlights row opened `https://www.mlb.com/video` for every game, NFL games included,
+because "guessing a per-game deep link would 404". It does not have to guess. Requested with curl,
+following redirects:
+
+| URL | Result |
+|---|---|
+| `https://www.mlb.com/gameday/823191/final/video` | 200, lands on `/gameday/tigers-vs-giants/2026/08/07/823191/final/video` |
+| `https://www.mlb.com/gameday/718780/final/video` | 200 |
+| `https://www.mlb.com/gameday/999999999/final/video` | **404** |
+| `https://www.nfl.com/games/bears-at-eagles-2025-reg-13` | 200 |
+| `https://www.nfl.com/games/chiefs-at-eagles-2024-post-4` | 200 (Super Bowl LIX; nflverse week 22) |
+| `https://www.nfl.com/games/nobody-at-eagles-2025-reg-13` | **404** |
+
+The 404s matter as much as the 200s: they show these are pages about one game and not a catch-all
+that answers anything. MLB needs only the gamePk. NFL needs both nicknames, the season, and the
+week, which is the second field of the nflverse id (`2025_13_CHI_PHI`). Playoff weeks restart at
+`post-1`: nflverse week minus 18 since the season grew to 18 weeks in 2021, minus 17 before.
+`packages/core/src/highlights.ts` falls back to the league hub when any piece is missing, and for
+preseason, which was not checked.
+
+nfl.com files a game under the name the team had that season, and `teams.nickname` is today's
+name. Washington is the only franchise whose nickname changed since 2000, and it changed twice:
+
+| URL | Result |
+|---|---|
+| `https://www.nfl.com/games/commanders-at-eagles-2019-reg-1` | **404** |
+| `https://www.nfl.com/games/redskins-at-eagles-2019-reg-1` | 200 |
+| `https://www.nfl.com/games/football-team-at-eagles-2020-reg-17` | 200 |
+| `https://www.nfl.com/games/washington-at-eagles-2020-reg-17` | **404** |
+
+`nflNicknameInSeason` maps it: Redskins through 2019, Football Team for 2020 and 2021.
+
+Not checked: seasons before 2016, which the hosted project does not hold, and preseason.
+
+## Relive dropped runs that carried no RBI — FOUND AND FIXED 2026-09-17
+
+`buildStorySteps` kept a plate appearance as a scoring step only when `result.rbi` was non-zero.
+A run that comes home on a double play, an error, a wild pitch or a balk has no RBI. Braves at
+Nationals, 2023-03-30 (gamePk 718780), final 7-2: the run on a 4th-inning double play and the run
+on a 9th-inning throwing error were both missing, so the story read 3-1, then 4-2, and ended at
+6-2.
+
+It was found the way docs/verification.md says to look: the generated story was read against the
+box score, not just accepted because it was written without an error. Steps are now keyed on the
+score changing between entries. `ingest/src/verify/relive.ts` compares a story with the scoring
+plays in the game feed, a different endpoint from the one the story is built from, and that game
+is one of its ten. Stories built before the fix are wrong in the same way until
+`npx tsx ingest/src/mlb/relive.ts --rebuild` is run against the database that holds them.

@@ -1,22 +1,64 @@
 # Build progress
 
-Milestones from SPEC.md Section 12. Status as of 2026-09-16.
+Milestones from SPEC.md Section 12, each checked against its own "Done when" on 2026-09-17.
 
-Xcode 26.6 is now installed and the app has been verified running in the iOS Simulator (iPhone 17 Pro, iOS 26.5), so the "needs device pass" notes below now mean a pass on real hardware, which still requires the Apple Developer Program. See docs/simulator.md.
+**How to read this.** "The code exists" is not evidence, and neither is a commit message: an
+overnight log once said the data repository was mounted when it never had been. Every row below
+names the command that was run and what it printed. Where a bar has two halves and only one could
+be checked, the row says which.
 
-| Milestone | Status | Notes |
-|---|---|---|
-| M0 Repo and infrastructure | done | Expo SDK 57 app boots to the four-tab bar; CI workflow; local Supabase on ports 54421-54427 (54321 range is used by another project on this machine) |
-| M1 Reference data and ingestion | done (server) | 74,949 MLB games 2000-2026 with finals, NFL 2000-2026 via nflverse pipeline, 20 famous games spot-checked with correct moments, Elo backtest recorded in docs/elo-backtest.md |
-| M2 Auth, onboarding, manual logging | app done (needs device pass) | Sign in with Apple + email OTP, session in SecureStore, onboarding (handle, teams, city, birthday, past games), Games tab (Upcoming, Log a game, History), log sheet with companions/seat/side picker, bulk mode, game detail, You tab + edit profile. Verified by typecheck, lint, jest, `expo export`; no simulator on this machine yet |
-| M3 Passport | done | Rooting + records in core and SQL, stats cache, stamps, superlatives, players seen, moments; Passport tab and detail screens built and verified against the local backend |
-| M4 Ticket imports | done (needs live Anthropic key to test parsing end to end) | Matcher (31 fixtures), parse-ticket + inbound-email Edge Functions, Cloudflare worker, image cleanup; upload flow, imports inbox, forwarding address screens |
-| M5 Check-in and pledge | done | Lock rules in core with fixture tests, check_in/make_pledge/validate RPCs, mlb-live polling; check-in and pledge screens with countdown, local reminder, push registration |
-| M6 Companions | done | Invite/accept/import RPCs, companion records; With segment, person detail, invite deep link, tagged-games import, followed-user tagging |
-| M7 Social | done | Follows, blocks, reports, feed, rivalries, overlap, profile view/search; Friends tab, find people, requests, profile screen, blocked users |
-| M8 Map, goals, bucket lists | done | Goal evaluator in core (spec examples tested), evaluate-goals function, curated lists seeded; map, goals, and bucket list screens |
-| M9 Share cards and Wrapped | done (needs device pass) | Wrapped generation + season publish job. App: `features/share` renders 1080×1920 cards (passport record, single game, pledge result, stamp, companion record, goal completed, every Wrapped card) in light and dark from theme tokens, captured with react-native-view-shot and shared with expo-sharing from `/share/[template]`; entry points on the Passport header, game detail, pledge result, completed goals, companion rows, stamps and Wrapped cards. `/wrapped/[sport]/[season]` pages the cards with a season picker and on-demand previews via `my_wrapped`. Verified by typecheck, lint, jest (two template render tests), `expo export`, and a scratch run of `my_wrapped` against the local backend; snapshot pixels not yet checked on a device |
-| M10 TestFlight hardening | app done (TestFlight group pending) | Export, delete-account, push delivery, game-day reminders. App: You tab has public profile preview, Privacy (private, share seats, show on overlap), Blocked users via `blocked_users` with Unblock on a blocked profile, Export my data (JSON to the cache dir + share sheet), Delete account (type DELETE, invokes `delete-account`, signs out), About with version, attributions, Terms, Privacy policy and a mailto support link. Query cache persisted to AsyncStorage so Passport and History render from disk with a subtle offline notice on failed refetches; every query error shows a retry notice and every list has an empty state. `@sentry/react-native` initialised only when `EXPO_PUBLIC_SENTRY_DSN` is set, user id only. External TestFlight group and App Store privacy details still to do |
+**Two environments.** `local` is the Supabase stack on this machine (ports 54421-54427), loaded
+with 82,240 games. `hosted` is `vekdufflzklfxljqufbq`, which Dean's phone uses. The session that
+wrote this could not touch hosted at all, reads included: its permission mode refused every
+operation against it. So everything below was proven on local, and the hosted half is
+`bash scripts/hosted-rollout.sh`, which has **not been run**. Rows that depend on it say so.
+
+| Milestone | Status | Done when | Evidence |
+|---|---|---|---|
+| M0 Repo and infrastructure | **met** | App boots to a tab bar in the simulator; CI green; `supabase db reset` works | `gh run list`: CI green on every push of 2026-09-17, and CI's third job runs `supabase db reset --local` then the pgTAP suite from empty on each one. App running in the iPhone 17 Pro simulator: `docs/evidence/m5-pick-a-side-local.png` shows the four-tab bar |
+| M0.5 Design system and UI parity | **waiting on Dean** | Side-by-side screenshots of all screens in both themes approved by Dean | `npm run parity` produces the contact sheets. Approval is Dean's to give; it is not self-certified here |
+| M1 Reference data and ingestion | **met, with one number over** | Every game 2000 to present; 20 known games correct; Elo backtest recorded; database under 150 MB | local: 82,240 games. Elo log loss and parameters in `docs/elo-backtest.md`. 20 famous games spot-checked (first pass). **Database is 226 MB locally, not under 150**: `game_appearances` alone is 90 MB, mostly NFL, whose detail arrives in bulk per season (see Decisions). It is under the 300 MB target of SPEC 4.7 and the 500 MB free-tier cap. hosted holds 2016 onward by Dean's choice |
+| M2 Auth, onboarding, manual logging | **met** | New user signs up, picks teams, logs 10 past games including a doubleheader, sees them in History, cannot read another user's private data | `node scripts/verify-user-journeys.mjs`, as real signed-in users through the API so RLS is in the loop: 9 M2 checks pass, including both halves of the 2018-07-22 Phillies doubleheader and a stranger reading 0 rows of a private user's games. Sign in with Apple itself works on Dean's phone (TestFlight build 2) |
+| M3 Passport | **met** | Rules 6.1-6.2 and 6.7-6.9 unit-tested for every listed edge case; passport right for a seeded user | `npm test`: `packages/core` 203 tests; `supabase/tests/003_stats` covers ties, postponed, neutral, both favorites and the relocated Rams. Journey script: passport says 8-2, the ten final scores counted by hand say 8-2; one stamp, ten visits |
+| M4 Ticket imports | **half met** | 30-fixture matcher passes; a real screenshot and a real forwarded email each produce a verified attendance; images auto-delete | Matcher: 31 fixtures pass. Real screenshot: verified end to end on hosted by the TestFlight session. Auto-delete: `node scripts/verify-privacy-functions.mjs` on local, 15/15, an 8-day-old image is removed and one resolved today is kept; **on hosted `cleanup-imports` is still not deployed**, which is a live privacy gap until the rollout runs. **Forwarded email cannot pass without a domain** (blocked on Dean); its UI is now hidden until one exists |
+| M5 Check-in, pick a side, storylines | **met on local** | Fixtures replayed with a fake clock prove lock and validation for six named cases | `packages/core/src/pledge.test.ts`: pledge before first run, after first run (void), MLB scoreless 1st, NFL first score before 10:00, NFL no score by 10:00, missing timestamps. `supabase/tests/004`: 14 assertions on check_in, make_pledge and validation. The screen: a real `make_pledge` call as the local user, then `docs/evidence/m5-pick-a-side-local.png`, with +0.56 = 1 minus the frozen 0.438. Storylines were verified against ground truth on hosted (docs/verification.md); their schedules exist only once the rollout runs |
+| M6 Companions | **met** | Placeholder "Dad" tagged at 5 games links to a new account, which imports 3; records right for both | Journey script, 8 M6 checks: the invite reports 5 tagged games, Dad is offered 5 and imports 3, his History has exactly those 3, the fan's record with Dad is 3-2 over 5 and matches the scores, Dad's passport counts 3 |
+| M7 Social | **met** | RLS tests cover private accounts, blocks, mutual-only overlap and rivalries; feed paginates | `supabase/tests/002` (24 assertions) and `005` (18). Pagination had no test: the journey script now pages the feed 4 and 4 and proves the two pages are exactly the first 8, no repeats. `010` is new and covers the reports policies, which had none |
+| M8 Map, goals, bucket lists | **met** | Evaluator passes every 6.13 example; the "HR in 5 ballparks with a walk-off" goal completes on seeded data and fires a notification | `packages/core/src/goals.test.ts`. Journey script, on real ingested games through the deployed-locally `evaluate-goals` function: 4 ballparks and no walk-off reads 4 of 5 and not complete; the fifth, with a walk-off, completes it; exactly one `goal_completed` notification |
+| M8.5 Relive | **met on local** | Relive plays correctly for 5 real MLB and 5 real NFL games, including extra innings and overtime | `npx tsx ingest/src/verify/relive.ts`: all 10 pass against a source the story was not built from (MLB: the game feed; NFL: `game_scoring_timeline`). Includes 2024 World Series Game 1 (10 innings) and two overtime games. One of the ten passes only since the RBI fix below. Screen with a real photo from private storage: `docs/evidence/m8.5-relive-nfl-local.png`. **On hosted nothing builds a story until the rollout runs**, and stories built before the fix need `--rebuild` (the script does both) |
+| M9 Share cards and Wrapped | **half met** | Share cards correct in light and dark on small and large iPhones; Wrapped generates for a seeded user for MLB 2026 | `my_wrapped('mlb', 2026)` as the local user returns all ten cards, and they match his one 2026 game (Oracle Park stamp, 60 degrees, 144 minutes). Share templates have render tests. **Pixels on a small and a large iPhone in both themes have not been looked at by anyone** |
+| M10 TestFlight hardening | **not met** | A friend with no context installs from TestFlight, onboards, imports a ticket and checks in, without help | This is a test with a person and it has not happened. What is ready for it: account deletion and export proven on local (15/15) and reachable again from Settings; every screen has a way in, enforced by a test; two dead ends are hidden. Still Dean's: Sentry DSN, App Store privacy details, the external TestFlight group, and submitting the build |
+
+## What was found wrong on 2026-09-17, and fixed
+
+Each of these was live, and none was visible from the outside.
+
+- **pg_cron reported every hosted job as succeeded while calling nothing.** Vault was empty, so
+  `call_edge_function` raised a notice and returned; and with vault filled it would still have
+  been refused, because it sent only the bearer token (docs/verification.md). It now sends
+  `x-cron-secret` too, and warns instead of whispering. Proven on local through pg_net:
+  `net._http_response` row with status 200 from `mlb-sync`. **Judge a scheduled call by that
+  table, never by `cron.job_run_details`.**
+- **Nothing drained `detail_queue` and nothing scheduled built Relive**, for either sport. A newly
+  logged game never got a story. `drainMlbQueue` in `packages/core` now runs inside `mlb-sync`
+  every 15 minutes; the nightly NFL job ingests the seasons of queued games and then builds
+  stories. Proven on local: a 2023 game logged with no detail had 84 probability points and a
+  story one scheduled call later.
+- **Relive dropped every run scored without an RBI.** Steps were keyed on `result.rbi`. Braves at
+  Nationals, 2023-03-30, went 3-1 to 4-2 and stopped at 6-2 on a 7-2 final. Found by reading the
+  generated story against the box score. Steps are now keyed on the score changing.
+- **`delete-account` left files behind.** It listed one level of one bucket. It now walks every
+  user bucket recursively and refuses to delete the user if storage cleanup fails.
+- **Six things had no way in** after the reference tab bar replaced the old tabs: sign out,
+  export my data, moments witnessed, bucket lists, follow requests, and your own public profile.
+  `features/navigation/__tests__/reachability.test.ts` now fails if any route loses its last link.
+- **The forwarding address told people to mail tickets to `u-...@in.example.com`**, and "Continue
+  with email" waited for a code no sender would send. Both hidden behind flags that need no code
+  to flip.
+- **Nine MLB teams showed their full name where a short one belonged** ("New York Mets" on a
+  pill): their city is not the start of their name. Short names now read `teams.nickname`.
+- **Official highlights opened MLB's site for NFL games.** Both leagues have a real per-game page;
+  the link now goes there.
 
 ## Decisions that differ from or refine the spec
 
@@ -41,3 +83,26 @@ Xcode 26.6 is now installed and the app has been verified running in the iOS Sim
 - **Legal copy lives in `apps/mobile/src/features/legal/text.ts`** as verbatim copies of `docs/attribution.md`, `docs/terms.md` and `docs/privacy.md`, rendered by a Markdown-lite component. Metro cannot import `.md` files without extra config; keep the two in sync when the docs change.
 - **Offline cache skips queries whose data is not JSON** (the two `Map`-valued game lookups), the check-in and imports keys, and search/handle lookups. Cache entries are keyed by user id and cleared on sign out; the cache buster is the app version.
 - **Crash reporting sends the user id and nothing else about the person**: `sendDefaultPii` is off, request bodies and console breadcrumbs are dropped, and URLs are stripped of their query strings before leaving the device.
+- **Relive is owed to attended games, not to queue rows.** `enqueue_game_detail` skips any game
+  whose detail already exists, which is every game in `mlb-sync`'s rolling three-day window, so a
+  queue-driven worker would never have built their stories. `games_needing_relive` asks the
+  question directly: attended, final, detailed, no story. `games.relive_checked_at` stops a game
+  with no published win probability being refetched forever; recent games are retried for two
+  weeks because both providers publish it late.
+- **Storylines are also requested at check-in.** SPEC 6.18 schedules them for games someone marked
+  as going. A walk-up check-in at a neutral game would have reached Pick a side with none, so a
+  trigger on `checkins` asks for that one game, and the screen polls until they arrive.
+- **The forwarding flag is the domain.** `forwardingEnabled` is true when
+  `EXPO_PUBLIC_INBOUND_EMAIL_DOMAIN` is a real domain and false for the `example.com` placeholder,
+  so there is nothing to remember to flip on the day the domain exists.
+- **Videos open in the system player.** The app bundles no video module. Upload, visibility,
+  report and block all work for a video; playing one opens its signed URL.
+- **Photos upload as followers-only** (SPEC 9), although the column default is `private`. The app
+  sets it explicitly; the stricter default stays as the floor for any other writer.
+- **The personal line on Relive's last step is in the present tense**: "Your record with Dad is
+  7-1", not "goes to 7-1". It is computed at view time from today's records, as SPEC 6.19 asks,
+  so it cannot honestly claim what the record was on the night.
+- **NFL detail is stored for every game, not only logged ones**, which is why the database is over
+  M1's 150 MB. A season's play-by-play is one file, so ingesting all of it costs nothing extra in
+  requests, and it is what makes a logged NFL game complete immediately instead of overnight.
+  Trimming `game_appearances` to attended games would bring it under; that is Dean's call.

@@ -1,5 +1,12 @@
 # Finish Jinx v1
 
+> **Status, end of the 2026-09-17 finishing session.** Sections 2.1 and 2.2 are built, tested and
+> proven on the **local** stack. **Nothing was applied to hosted**: that session's permission mode
+> refused every operation against the hosted project, reads included, so section 1's hosted
+> findings below are still exactly true. The next step is one command, run by Dean or by a session
+> allowed to: `bash scripts/hosted-rollout.sh`. Then one `eas build` and a submit.
+> Per-milestone evidence, and what is honestly not met, is in `docs/progress.md`.
+
 **Your job: take Jinx from "installed on TestFlight" to "v1 as the spec defines it", verified.**
 
 Written 2026-09-17 by the session that shipped TestFlight builds 1-3, for the session finishing v1.
