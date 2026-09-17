@@ -1,18 +1,19 @@
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BackHeader } from '@/components/reference/BackHeader';
-import { Card, EmptyNote, Row, SearchField, SectionLabel } from '@/features/favorites/ui';
-import { screen } from '@/features/favorites/screen';
+import { EmptyState } from '@/components/EmptyState';
+import { Loading } from '@/components/Loading';
+import { SectionHeader } from '@/components/SectionHeader';
+import { TextField } from '@/components/TextField';
 import { rosterMeta } from '@/features/favorites/meta';
+import { PickRow } from '@/features/account/ui/PickRow';
+import { SettingsFrame } from '@/features/account/ui/SettingsFrame';
 import {
   useFavoritePlayers,
   useTeamRoster,
   useToggleFavoritePlayer,
 } from '@/features/players/queries';
-import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
+import { TeamTheme } from '@/theme/reference/TeamTheme';
 
 /**
  * Step three of the player picker: choose a player.
@@ -24,15 +25,16 @@ import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/Tea
  * The search goes to the database rather than filtering what arrived, because the roster is
  * capped at 200 rows and a long-serving franchise has more players than that. Typing a name
  * that is not in the first 200 still finds them.
+ *
+ * The whole list is in the team's colours: a slim mark on every row, and the fill on the
+ * players you follow.
  */
-function RosterBody() {
-  const { base } = useReferenceTheme();
+export default function RosterRoute() {
   const { teamId, name, sport } = useLocalSearchParams<{
     teamId?: string;
     name?: string;
     sport?: string;
   }>();
-  const insets = useSafeAreaInsets();
   const [query, setQuery] = React.useState('');
   const [debounced, setDebounced] = React.useState('');
 
@@ -54,54 +56,53 @@ function RosterBody() {
 
   const list = roster.data ?? [];
 
-  return (
-    <View style={[screen.root, { paddingTop: insets.top, backgroundColor: base.scr }]}>
-      <BackHeader
-        title={name ?? 'Players'}
-        fallback={`/settings/favorites/players?sport=${sport ?? 'mlb'}`}
+  const rows = list.map((p) => {
+    const on = favoriteIds.has(p.id);
+    return (
+      <PickRow
+        key={p.id}
+        mark
+        title={p.full_name}
+        meta={rosterMeta(p)}
+        selected={on}
+        accessibilityLabel={`${p.full_name}, ${on ? 'remove from' : 'add to'} favorites`}
+        onPress={() => toggle.mutate({ player: { id: p.id, full_name: p.full_name }, on: !on })}
       />
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <SearchField value={query} onChangeText={setQuery} placeholder="Search players" />
-        <SectionLabel>Choose a player</SectionLabel>
-        {roster.isPending ? (
-          <EmptyNote>Loading players…</EmptyNote>
-        ) : list.length === 0 ? (
-          <EmptyNote>
-            {debounced.trim()
-              ? `No players match "${debounced.trim()}".`
-              : 'No players recorded for this team yet. Lineups arrive with a game’s detail.'}
-          </EmptyNote>
-        ) : (
-          <Card>
-            {list.map((p) => {
-              const on = favoriteIds.has(p.id);
-              return (
-                <Row
-                  key={p.id}
-                  title={p.full_name}
-                  meta={rosterMeta(p)}
-                  checked={on}
-                  accessibilityLabel={`${p.full_name}, ${on ? 'remove from' : 'add to'} favorites`}
-                  onPress={() =>
-                    toggle.mutate({ player: { id: p.id, full_name: p.full_name }, on: !on })
-                  }
-                />
-              );
-            })}
-          </Card>
-        )}
-      </ScrollView>
-    </View>
-  );
-}
+    );
+  });
 
-export default function RosterRoute() {
   return (
-    <ReferenceThemeProvider team="none">
-      <RosterBody />
-    </ReferenceThemeProvider>
+    <SettingsFrame
+      title={name ?? 'Players'}
+      fallback={`/settings/favorites/players?sport=${sport ?? 'mlb'}`}
+    >
+      <TextField
+        value={query}
+        onChangeText={setQuery}
+        placeholder="Search players"
+        accessibilityLabel="Search players"
+        autoCapitalize="none"
+        autoCorrect={false}
+        clearButtonMode="while-editing"
+      />
+      <SectionHeader title="Choose a player" />
+      {roster.isPending ? (
+        <Loading label="Loading players…" />
+      ) : list.length === 0 ? (
+        <EmptyState
+          icon="i-search"
+          title="No players"
+          body={
+            debounced.trim()
+              ? `No players match "${debounced.trim()}".`
+              : 'No players recorded for this team yet. Lineups arrive with a game’s detail.'
+          }
+        />
+      ) : teamId ? (
+        <TeamTheme team={teamId}>{rows}</TeamTheme>
+      ) : (
+        rows
+      )}
+    </SettingsFrame>
   );
 }

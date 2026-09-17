@@ -1,15 +1,16 @@
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BackHeader } from '@/components/reference/BackHeader';
-import { Card, EmptyNote, Row, SearchField, SectionLabel } from '@/features/favorites/ui';
-import { screen } from '@/features/favorites/screen';
+import { EmptyState } from '@/components/EmptyState';
+import { Loading } from '@/components/Loading';
+import { SectionHeader } from '@/components/SectionHeader';
+import { TextField } from '@/components/TextField';
+import { PickRow } from '@/features/account/ui/PickRow';
+import { SettingsFrame } from '@/features/account/ui/SettingsFrame';
 import { useFavoriteTeams, useSetFavoriteTeams } from '@/features/profile/queries';
 import { useTeams, type Team } from '@/features/teams/queries';
 import { sportLabel } from '@/lib/format';
-import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
+import { TeamTheme } from '@/theme/reference/TeamTheme';
 
 /**
  * Step two of the team picker: choose a team in one league, and that is the whole flow.
@@ -17,11 +18,12 @@ import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/Tea
  * Tapping toggles immediately rather than collecting a selection behind a Save button.
  * There is nothing else on the screen to save, and the favourites list you came from
  * updates under you, so a Save would only be a way to lose the change by leaving.
+ *
+ * Every row sits in its own team's colours: a plain row with a coloured tile until you pick
+ * it, and filled with the colour once you have.
  */
-function TeamsBody() {
-  const { base } = useReferenceTheme();
+export default function TeamsRoute() {
   const { sport } = useLocalSearchParams<{ sport?: string }>();
-  const insets = useSafeAreaInsets();
   const [query, setQuery] = React.useState('');
 
   const teams = useTeams(true);
@@ -54,49 +56,45 @@ function TeamsBody() {
   };
 
   return (
-    <View style={[screen.root, { paddingTop: insets.top, backgroundColor: base.scr }]}>
-      <BackHeader
-        title={sport ? sportLabel(sport) : 'Teams'}
-        fallback="/settings/favorites/league?mode=teams"
+    <SettingsFrame
+      title={sport ? sportLabel(sport) : 'Teams'}
+      fallback="/settings/favorites/league?mode=teams"
+    >
+      <TextField
+        value={query}
+        onChangeText={setQuery}
+        placeholder="Search teams"
+        accessibilityLabel="Search teams"
+        autoCapitalize="none"
+        autoCorrect={false}
+        clearButtonMode="while-editing"
       />
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <SearchField value={query} onChangeText={setQuery} placeholder="Search teams" />
-        <SectionLabel>Choose a team</SectionLabel>
-        {teams.isPending ? (
-          <EmptyNote>Loading teams…</EmptyNote>
-        ) : list.length === 0 ? (
-          <EmptyNote>
-            {query.trim() ? `No teams match "${query.trim()}".` : 'No teams in this league yet.'}
-          </EmptyNote>
-        ) : (
-          <Card>
-            {list.map((t) => {
-              const on = favoriteIds.has(t.id);
-              return (
-                <Row
-                  key={t.id}
-                  title={t.name}
-                  meta={t.city}
-                  checked={on}
-                  accessibilityLabel={`${t.name}, ${on ? 'remove from' : 'add to'} favorites`}
-                  onPress={() => toggle(t)}
-                />
-              );
-            })}
-          </Card>
-        )}
-      </ScrollView>
-    </View>
-  );
-}
-
-export default function TeamsRoute() {
-  return (
-    <ReferenceThemeProvider team="none">
-      <TeamsBody />
-    </ReferenceThemeProvider>
+      <SectionHeader title="Choose a team" />
+      {teams.isPending ? (
+        <Loading label="Loading teams…" />
+      ) : list.length === 0 ? (
+        <EmptyState
+          icon="i-search"
+          title="No teams"
+          body={query.trim() ? `No teams match "${query.trim()}".` : 'No teams in this league yet.'}
+        />
+      ) : (
+        list.map((t) => {
+          const on = favoriteIds.has(t.id);
+          return (
+            <TeamTheme key={t.id} team={t.id}>
+              <PickRow
+                badge={t.abbreviation}
+                title={t.name}
+                meta={t.city}
+                selected={on}
+                accessibilityLabel={`${t.name}, ${on ? 'remove from' : 'add to'} favorites`}
+                onPress={() => toggle(t)}
+              />
+            </TeamTheme>
+          );
+        })
+      )}
+    </SettingsFrame>
   );
 }

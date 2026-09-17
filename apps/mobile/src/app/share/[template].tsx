@@ -1,6 +1,7 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React, { useMemo, useRef, useState } from 'react';
 import { ScrollView, useWindowDimensions, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/Button';
 import { Notice, errorMessage } from '@/components/Notice';
@@ -22,12 +23,20 @@ const SCHEMES: { key: Scheme; label: string }[] = [
 ];
 
 /**
+ * What the preview cannot have: the navigator header, and everything under the preview (label,
+ * segments, button, caption) with the padding around the preview itself. Both err on the large side.
+ */
+const HEADER_HEIGHT = 56;
+const FOOTER_HEIGHT = 200;
+
+/**
  * Share sheet: previews a card, toggles light and dark, and shares the 1080x1920 PNG. The card is
  * rendered twice: a scaled preview on screen and an unscaled copy off screen that captureRef reads.
  */
 export default function ShareScreen() {
   const theme = useTheme();
-  const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
   const params = useLocalSearchParams<{ template?: string; payload?: string }>();
   const template = useMemo(
     () => parseShareTemplate(params.template, params.payload),
@@ -40,7 +49,14 @@ export default function ShareScreen() {
   const cardRef = useRef<View>(null);
 
   const handle = profile.data?.handle ?? '';
-  const previewWidth = Math.min(width - theme.spacing.lg * 2, 320);
+  // The card is 9:16, so it is the height that runs out first. Size the preview to what is left
+  // once the header and the footer below have had theirs, so the whole sheet fits without a scroll
+  // on most phones; the ScrollView is still there for the ones where it cannot.
+  const room = height - insets.top - insets.bottom - HEADER_HEIGHT - FOOTER_HEIGHT;
+  const previewWidth = Math.max(
+    180,
+    Math.min(width - theme.spacing.lg * 2, 320, (room * CARD_WIDTH) / CARD_HEIGHT),
+  );
   const scale = previewWidth / CARD_WIDTH;
 
   const onShare = async () => {
@@ -71,14 +87,14 @@ export default function ShareScreen() {
       <Stack.Screen options={{ title: 'Share' }} />
       <ScrollView
         contentContainerStyle={{
+          flexGrow: 1,
           paddingHorizontal: theme.spacing.lg,
           paddingVertical: theme.spacing.md,
           alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <View style={{ alignSelf: 'stretch' }}>
-          <Segmented options={SCHEMES} value={scheme} onChange={setScheme} />
-        </View>
+        {/* The card straight on the canvas: its own fill is the edge, so no outline. */}
         <View
           accessibilityLabel="Card preview"
           style={{
@@ -86,8 +102,6 @@ export default function ShareScreen() {
             height: CARD_HEIGHT * scale,
             borderRadius: theme.radius.lg,
             overflow: 'hidden',
-            borderWidth: 1,
-            borderColor: theme.colors.line,
           }}
         >
           <View
@@ -101,17 +115,24 @@ export default function ShareScreen() {
             <ShareCard template={template} handle={handle} scheme={scheme} />
           </View>
         </View>
-        {error ? (
-          <Notice tone="error" style={{ alignSelf: 'stretch', marginTop: theme.spacing.md }}>
-            {errorMessage(error)}
-          </Notice>
-        ) : null}
+      </ScrollView>
+      <View
+        style={{
+          paddingHorizontal: theme.spacing.lg,
+          paddingTop: theme.spacing.sm,
+          paddingBottom: insets.bottom + theme.spacing.md,
+        }}
+      >
+        <Text variant="kicker" color="muted" style={{ marginBottom: theme.spacing.sm }}>
+          Appearance
+        </Text>
+        <Segmented options={SCHEMES} value={scheme} onChange={setScheme} />
+        {error ? <Notice tone="error">{errorMessage(error)}</Notice> : null}
         <Button
           title="Share image"
           onPress={() => void onShare()}
           loading={busy}
           disabled={!handle}
-          style={{ alignSelf: 'stretch', marginTop: theme.spacing.md }}
         />
         <Text
           variant="caption"
@@ -121,7 +142,7 @@ export default function ShareScreen() {
         >
           1080×1920 PNG with your handle. Team names only, never logos.
         </Text>
-      </ScrollView>
+      </View>
       {/* Off-screen, unscaled copy that captureRef snapshots at 3x. */}
       <View
         pointerEvents="none"

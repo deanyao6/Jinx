@@ -7,9 +7,8 @@ import { Button } from '@/components/Button';
 import { FormScreen } from '@/components/FormScreen';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
-import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
-import { StepHeader } from '@/features/onboarding/StepHeader';
+import { StepIntro } from '@/features/onboarding/ui/StepIntro';
 import { useProfile, useUpdateProfile } from '@/features/profile/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -59,17 +58,11 @@ function CityForm({ initialCity }: { initialCity: string }) {
 
   return (
     <FormScreen>
-      <Button
-        title="Back"
-        variant="ghost"
-        small
-        onPress={() => router.back()}
-        style={{ alignSelf: 'flex-start', marginBottom: theme.spacing.md }}
-      />
-      <StepHeader
+      <StepIntro
         step={3}
         title="Home city"
-        subtitle="Used for miles traveled and your map. Optional."
+        body="Used for miles traveled and your map. Optional."
+        onBack={() => router.back()}
       />
       {notice ? <Notice tone="error">{notice}</Notice> : null}
       <TextField
@@ -80,10 +73,8 @@ function CityForm({ initialCity }: { initialCity: string }) {
         autoCapitalize="words"
         returnKeyType="done"
         onSubmitEditing={onUseCity}
+        hint="We only look up the city you type. Your device location is never stored."
       />
-      <Text variant="caption" color="muted" style={{ marginBottom: theme.spacing.md }}>
-        We only look up the city you type. Your device location is never stored.
-      </Text>
       <View style={{ gap: theme.spacing.sm }}>
         <Button
           title="Use my city"

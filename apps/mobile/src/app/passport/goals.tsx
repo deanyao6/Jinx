@@ -6,9 +6,12 @@ import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { EmptyState } from '@/components/EmptyState';
 import { Loading } from '@/components/Loading';
+import { PageIntro } from '@/components/PageIntro';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
+import { SectionHeader } from '@/components/SectionHeader';
+import { StatTile } from '@/components/StatTile';
 import { Text } from '@/components/Text';
 import { buildSuggestedGoal, progressLabel, sameDefinition } from '@/features/goals/builder';
 import {
@@ -20,7 +23,7 @@ import {
   useGoals,
   useSyncGoalProgress,
 } from '@/features/goals/queries';
-import { GoalRow } from '@/features/goals/ui/GoalRow';
+import { GoalCard } from '@/features/goals/ui/GoalCard';
 import { openShare } from '@/features/share/navigate';
 import { currentSeason } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -60,69 +63,78 @@ export default function GoalsScreen() {
 
   return (
     <Screen>
-      <Text variant="h1">{year} goals</Text>
-      <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
-        Progress updates as your games go final. Hold a goal to remove it.
-      </Text>
+      <PageIntro
+        kicker={String(year)}
+        title="Goals"
+        body="Progress updates as your games go final. Hold a goal to remove it."
+      />
       {goals.isPending || games.isPending ? <Loading /> : null}
       {goals.isError ? <ErrorNotice error={goals.error} onRetry={goals.refetch} /> : null}
       {games.isError ? <ErrorNotice error={games.error} onRetry={games.refetch} /> : null}
       {create.isError ? <ErrorNotice error={create.error} /> : null}
       {remove.isError ? <ErrorNotice error={remove.error} /> : null}
 
-      {suggestion ? (
-        <Card label="Suggested">
-          <Text variant="bodyStrong">{suggestion.title}</Text>
-          <Text variant="sub" color="muted">
-            You went to {lastYear.data} {lastYear.data === 1 ? 'game' : 'games'} last year. Try{' '}
-            {suggestion.definition.type === 'count' ? suggestion.definition.target : ''}?
-          </Text>
-          <Button
-            title="Add"
-            variant="secondary"
-            small
-            loading={create.isPending}
-            onPress={() => create.mutate(suggestion)}
-            style={{ alignSelf: 'flex-start', marginTop: theme.spacing.sm }}
-          />
-        </Card>
+      {evaluated.length > 0 ? (
+        <View style={{ flexDirection: 'row', gap: 10, marginBottom: theme.spacing.xl }}>
+          <StatTile label="In progress" value={String(active.length)} />
+          <StatTile label="Done" value={String(done.length)} accent />
+        </View>
       ) : null}
 
+      {/* The one way to add a goal is the button at the foot of the page, so this only points. */}
       {goals.data && goals.data.length === 0 ? (
-        <Card>
-          <EmptyState
-            title="No goals yet"
-            body="Attend more games, visit new stadiums, see your team on the road, or build your own."
-            actionTitle="New goal"
-            onAction={() => router.push('/passport/new-goal')}
-          />
-        </Card>
+        <EmptyState
+          icon="i-target"
+          title="No goals yet"
+          body="Attend more games, visit new stadiums, see your team on the road, or build your own. Tap New goal below to start."
+        />
       ) : null}
 
       {active.length > 0 ? (
-        <Card label="In progress">
-          {active.map(({ goal, definition, progress }, i) => (
-            <GoalRow
+        <View style={{ marginBottom: theme.spacing.sm }}>
+          <SectionHeader title="In progress" />
+          {active.map(({ goal, definition, progress }) => (
+            <GoalCard
               key={goal.id}
               title={goal.title}
               definition={definition}
               progress={progress}
-              last={i === active.length - 1}
               onLongPress={() => confirmDelete(goal.id, goal.title)}
             />
           ))}
+        </View>
+      ) : null}
+
+      {suggestion ? (
+        <Card tone="accent" label="Suggested">
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.md }}>
+            <View style={{ flex: 1 }}>
+              <Text variant="bodyStrong">{suggestion.title}</Text>
+              <Text variant="sub" color="muted" style={{ marginTop: 1 }}>
+                You went to {lastYear.data} {lastYear.data === 1 ? 'game' : 'games'} last year. Try{' '}
+                {suggestion.definition.type === 'count' ? suggestion.definition.target : ''}?
+              </Text>
+            </View>
+            <Button
+              title="Add"
+              variant="secondary"
+              small
+              loading={create.isPending}
+              onPress={() => create.mutate(suggestion)}
+            />
+          </View>
         </Card>
       ) : null}
 
       {done.length > 0 ? (
-        <Card label="Done">
-          {done.map(({ goal, definition, progress }, i) => (
-            <GoalRow
+        <View style={{ marginTop: theme.spacing.sm, marginBottom: theme.spacing.sm }}>
+          <SectionHeader title="Done" />
+          {done.map(({ goal, definition, progress }) => (
+            <GoalCard
               key={goal.id}
               title={goal.title}
               definition={definition}
               progress={progress}
-              last={i === done.length - 1}
               onLongPress={() => confirmDelete(goal.id, goal.title)}
               onShare={() =>
                 openShare(router, {
@@ -134,14 +146,15 @@ export default function GoalsScreen() {
               }
             />
           ))}
-        </Card>
+        </View>
       ) : null}
 
       {/* Bucket lists had no entry point once the old Passport tab left the bar. */}
-      <Card>
+      <Card style={{ paddingVertical: theme.spacing.xs, marginTop: theme.spacing.sm }}>
         <Row
+          icon="i-map"
           title="Bucket lists"
-          subtitle="Every ballpark, every stadium, or a list of your own"
+          subtitle="Every stadium in a league, a division, or a list of your own"
           first
           chevron
           onPress={() => router.push('/passport/bucketlists')}

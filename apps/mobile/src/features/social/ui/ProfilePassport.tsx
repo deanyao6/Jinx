@@ -41,7 +41,7 @@ export function ProfilePassport({ stats, name }: Props) {
       ) : null}
       <Text variant="caption" color="muted">
         {s.totals.games === 1 ? '1 game' : `${s.totals.games} games`} at {s.totals.venues}{' '}
-        {s.totals.venues === 1 ? 'ballpark' : 'ballparks'}
+        {s.totals.venues === 1 ? 'stadium' : 'stadiums'}
         {s.players_seen ? ` · ${s.players_seen} players seen` : ''}
       </Text>
     </>

@@ -12,6 +12,9 @@ import { Notice, errorMessage } from '@/components/Notice';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useGame, type GameDetail } from '@/features/games/queries';
+import { shortTeamName } from '@/features/data/names';
+import { Scoreboard } from '@/features/games/ui/Scoreboard';
+import { SideTheme } from '@/features/games/ui/SideTheme';
 import { FollowedCompanions } from '@/features/people/FollowedCompanions';
 import { useAddPerson, usePeople } from '@/features/people/queries';
 import { useFavoriteTeams } from '@/features/profile/queries';
@@ -19,7 +22,6 @@ import {
   doubleheaderLabel,
   formatGameDateLong,
   formatPriceCents,
-  formatScore,
   parsePriceToCents,
 } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -56,7 +58,6 @@ type FormProps = { gameId: string; game: GameDetail; existing: Attendance | null
 
 function LogForm({ gameId, game: g, existing }: FormProps) {
   const theme = useTheme();
-  const c = theme.colors;
   const router = useRouter();
   const favorites = useFavoriteTeams();
   const people = usePeople();
@@ -144,15 +145,33 @@ function LogForm({ gameId, game: g, existing }: FormProps) {
 
   return (
     <FormScreen headerOffset={60}>
-      <Text variant="h2">
-        {g.away?.name ?? 'Away'} at {g.home?.name ?? 'Home'}
-      </Text>
-      <Text color="muted" variant="sub" style={{ marginBottom: theme.spacing.md }}>
-        {[formatGameDateLong(g.scheduled_start), g.venue?.name, dh].filter(Boolean).join(' · ')}
-        {g.status === 'final'
-          ? ` · Final ${formatScore({ homeScore: g.home_score, awayScore: g.away_score, status: g.status })}`
-          : ''}
-      </Text>
+      <Scoreboard
+        away={{
+          teamId: g.away?.id ?? null,
+          abbreviation: g.away?.abbreviation,
+          name: g.away ? shortTeamName(g.away.name, { nickname: g.away.nickname }) : 'Away',
+          ...(g.status === 'final' ? { score: String(g.away_score ?? 0) } : {}),
+        }}
+        home={{
+          teamId: g.home?.id ?? null,
+          abbreviation: g.home?.abbreviation,
+          name: g.home ? shortTeamName(g.home.name, { nickname: g.home.nickname }) : 'Home',
+          ...(g.status === 'final' ? { score: String(g.home_score ?? 0) } : {}),
+        }}
+        winner={
+          g.status !== 'final' || g.home_score == null || g.away_score == null
+            ? null
+            : g.home_score > g.away_score
+              ? 'home'
+              : g.away_score > g.home_score
+                ? 'away'
+                : null
+        }
+        status={[g.status === 'final' ? 'Final' : null, formatGameDateLong(g.scheduled_start), dh]
+          .filter(Boolean)
+          .join(' · ')}
+        venue={g.venue?.name ?? null}
+      />
 
       {g.status === 'postponed' && g.rescheduled_to_game_id ? (
         <Notice>
@@ -185,24 +204,13 @@ function LogForm({ gameId, game: g, existing }: FormProps) {
             {[g.away, g.home].map((t) => {
               const on = chosenTeamId === t.id;
               return (
-                <Pressable
-                  key={t.id}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: on }}
-                  onPress={() => setChosenTeamId(t.id)}
-                  style={{
-                    borderWidth: 2,
-                    borderColor: on ? c.ink : c.line,
-                    backgroundColor: on ? c.ink : c.card,
-                    borderRadius: theme.radius.lg,
-                    paddingVertical: 12,
-                    paddingHorizontal: 16,
-                  }}
-                >
-                  <Text variant="stat" color={on ? 'onInk' : 'ink'}>
-                    {t.name}
-                  </Text>
-                </Pressable>
+                <SideTheme key={t.id} team={t.id}>
+                  <RootingOption
+                    name={t.name}
+                    selected={on}
+                    onPress={() => setChosenTeamId(t.id)}
+                  />
+                </SideTheme>
               );
             })}
           </View>
@@ -323,5 +331,36 @@ function LogForm({ gameId, game: g, existing }: FormProps) {
         style={{ marginTop: theme.spacing.sm }}
       />
     </FormScreen>
+  );
+}
+
+/** One side of "who are you rooting for", in that team's own colour: washed, or solid once picked. */
+function RootingOption({
+  name,
+  selected,
+  onPress,
+}: {
+  name: string;
+  selected: boolean;
+  onPress: () => void;
+}) {
+  const theme = useTheme();
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ selected }}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        backgroundColor: selected ? theme.accent.fill : theme.accent.wash,
+        borderRadius: theme.radius.lg,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        opacity: pressed ? 0.8 : 1,
+      })}
+    >
+      <Text variant="h2" style={{ color: selected ? theme.accent.onFill : theme.accent.text }}>
+        {name}
+      </Text>
+    </Pressable>
   );
 }

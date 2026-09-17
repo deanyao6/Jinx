@@ -1,21 +1,23 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BackHeader } from '@/components/reference/BackHeader';
-import { Card, EmptyNote, Row, SectionLabel, Segments } from '@/features/favorites/ui';
+import { Card } from '@/components/Card';
+import { EmptyState } from '@/components/EmptyState';
+import { Row } from '@/components/Row';
+import { SectionHeader } from '@/components/SectionHeader';
+import { Segmented } from '@/components/Segmented';
+import { PickRow } from '@/features/account/ui/PickRow';
+import { SettingsFrame } from '@/features/account/ui/SettingsFrame';
 import { useFavoritePlayers, useToggleFavoritePlayer } from '@/features/players/queries';
 import { useFavoriteTeams, useSetFavoriteTeams } from '@/features/profile/queries';
 import { sportLabel } from '@/lib/format';
-import { screen } from '@/features/favorites/screen';
-import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
+import { TeamTheme } from '@/theme/reference/TeamTheme';
 
 type Tab = 'teams' | 'players';
 
-const TABS = [
-  { key: 'teams' as const, label: 'Teams' },
-  { key: 'players' as const, label: 'Players' },
+const TABS: { key: Tab; label: string }[] = [
+  { key: 'teams', label: 'Teams' },
+  { key: 'players', label: 'Players' },
 ];
 
 /**
@@ -29,12 +31,13 @@ const TABS = [
  * Both tabs show what you have and send you to a picker to add more. Removing happens
  * here, adding happens in the picker, which is why a row on this screen is a toggle that
  * only ever turns things off.
+ *
+ * Each team is filled in its own colours, which is the point of the page: this is where the
+ * colour of the rest of the app is chosen.
  */
-function FavoritesBody() {
-  const { base } = useReferenceTheme();
+export default function FavoritesRoute() {
   const params = useLocalSearchParams<{ tab?: string }>();
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   // The picker pushes back here with ?tab=players so you land where you left.
   const [tab, setTab] = React.useState<Tab>(params.tab === 'players' ? 'players' : 'teams');
 
@@ -47,86 +50,79 @@ function FavoritesBody() {
   const playerList = players.data ?? [];
 
   return (
-    <View style={[screen.root, { paddingTop: insets.top, backgroundColor: base.scr }]}>
-      <BackHeader title="Favorites" fallback="/settings" />
-      <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}>
-        <Segments options={TABS} value={tab} onChange={setTab} />
+    <SettingsFrame title="Favorites" fallback="/settings">
+      <Segmented options={TABS} value={tab} onChange={setTab} />
 
-        {tab === 'teams' ? (
-          <>
-            <Card>
-              <Row
-                title="Add a team"
-                meta="Pick a league, then a team"
-                chevron
-                onPress={() => router.push('/settings/favorites/league?mode=teams')}
+      {tab === 'teams' ? (
+        <>
+          <Card>
+            <Row
+              icon="i-plus"
+              title="Add a team"
+              subtitle="Pick a league, then a team"
+              chevron
+              accessibilityLabel="Add a team"
+              onPress={() => router.push('/settings/favorites/league?mode=teams')}
+            />
+          </Card>
+          <SectionHeader title={teamList.length === 1 ? '1 team' : `${teamList.length} teams`} />
+          {teamList.length === 0 ? (
+            <EmptyState
+              icon="i-spark"
+              title="No favorite teams yet"
+              body="Your passport uses these to decide which games count as yours."
+            />
+          ) : (
+            teamList.map((t) => (
+              <TeamTheme key={t.id} team={t.id}>
+                <PickRow
+                  badge={t.abbreviation}
+                  title={t.name}
+                  meta={sportLabel(t.sport_id)}
+                  selected
+                  accessibilityLabel={`${t.name}, remove from favorites`}
+                  onPress={() => setTeams.mutate(teamList.filter((other) => other.id !== t.id))}
+                />
+              </TeamTheme>
+            ))
+          )}
+        </>
+      ) : (
+        <>
+          <Card>
+            <Row
+              icon="i-plus"
+              title="Add a player"
+              subtitle="Pick a league, then a team, then a player"
+              chevron
+              accessibilityLabel="Add a player"
+              onPress={() => router.push('/settings/favorites/league?mode=players')}
+            />
+          </Card>
+          <SectionHeader
+            title={playerList.length === 1 ? '1 player' : `${playerList.length} players`}
+          />
+          {playerList.length === 0 ? (
+            <EmptyState
+              icon="i-user"
+              title="No favorite players yet"
+              body="Follow someone and your passport can tell you how many times you have seen them play."
+            />
+          ) : (
+            playerList.map((p) => (
+              <PickRow
+                key={p.id}
+                mark
+                title={p.full_name}
+                selected
+                selectedTone="wash"
+                accessibilityLabel={`${p.full_name}, remove from favorites`}
+                onPress={() => togglePlayer.mutate({ player: p, on: false })}
               />
-            </Card>
-            <SectionLabel>
-              {teamList.length === 1 ? '1 team' : `${teamList.length} teams`}
-            </SectionLabel>
-            {teamList.length === 0 ? (
-              <EmptyNote>
-                No favorite teams yet. Your passport uses these to decide which games count as
-                yours.
-              </EmptyNote>
-            ) : (
-              <Card>
-                {teamList.map((t) => (
-                  <Row
-                    key={t.id}
-                    title={t.name}
-                    meta={sportLabel(t.sport_id)}
-                    checked
-                    accessibilityLabel={`${t.name}, remove from favorites`}
-                    onPress={() => setTeams.mutate(teamList.filter((other) => other.id !== t.id))}
-                  />
-                ))}
-              </Card>
-            )}
-          </>
-        ) : (
-          <>
-            <Card>
-              <Row
-                title="Add a player"
-                meta="Pick a league, then a team, then a player"
-                chevron
-                onPress={() => router.push('/settings/favorites/league?mode=players')}
-              />
-            </Card>
-            <SectionLabel>
-              {playerList.length === 1 ? '1 player' : `${playerList.length} players`}
-            </SectionLabel>
-            {playerList.length === 0 ? (
-              <EmptyNote>
-                No favorite players yet. Follow someone and your passport can tell you how many
-                times you have seen them play.
-              </EmptyNote>
-            ) : (
-              <Card>
-                {playerList.map((p) => (
-                  <Row
-                    key={p.id}
-                    title={p.full_name}
-                    checked
-                    accessibilityLabel={`${p.full_name}, remove from favorites`}
-                    onPress={() => togglePlayer.mutate({ player: p, on: false })}
-                  />
-                ))}
-              </Card>
-            )}
-          </>
-        )}
-      </ScrollView>
-    </View>
-  );
-}
-
-export default function FavoritesRoute() {
-  return (
-    <ReferenceThemeProvider team="none">
-      <FavoritesBody />
-    </ReferenceThemeProvider>
+            ))
+          )}
+        </>
+      )}
+    </SettingsFrame>
   );
 }

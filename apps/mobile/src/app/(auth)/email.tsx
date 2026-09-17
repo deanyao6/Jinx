@@ -5,9 +5,10 @@ import { View } from 'react-native';
 import { Button } from '@/components/Button';
 import { FormScreen } from '@/components/FormScreen';
 import { Notice, errorMessage } from '@/components/Notice';
-import { Text } from '@/components/Text';
+import { PageIntro } from '@/components/PageIntro';
 import { TextField } from '@/components/TextField';
 import { isValidEmail, sendEmailCode } from '@/features/auth/email';
+import { BackLink } from '@/features/onboarding/ui/BackLink';
 import { useTheme } from '@/theme/ThemeProvider';
 
 export default function EmailScreen() {
@@ -34,19 +35,12 @@ export default function EmailScreen() {
 
   return (
     <FormScreen>
-      <Button
-        title="Back"
-        variant="ghost"
-        small
-        onPress={() => router.back()}
-        style={{ alignSelf: 'flex-start' }}
+      <BackLink onPress={() => router.back()} />
+      <PageIntro
+        kicker="Sign in"
+        title="Your email"
+        body="We will send a 6-digit code. No password needed."
       />
-      <Text variant="h1" style={{ marginTop: theme.spacing.lg }}>
-        Your email
-      </Text>
-      <Text color="muted" style={{ marginBottom: theme.spacing.lg }}>
-        We will send a 6-digit code. No password needed.
-      </Text>
       {error ? <Notice tone="error">{error}</Notice> : null}
       <TextField
         label="Email"

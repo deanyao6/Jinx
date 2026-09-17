@@ -6,8 +6,9 @@ import { Linking } from 'react-native';
 import { Card } from '@/components/Card';
 import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
+import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
-import { MarkdownLite } from '@/features/legal/MarkdownLite';
+import { LegalText } from '@/features/account/ui/LegalText';
 import { ATTRIBUTION_MD } from '@/features/legal/text';
 import { APP_NAME, SUPPORT_EMAIL } from '@/lib/app';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -26,25 +27,41 @@ export default function AboutScreen() {
   return (
     <Screen>
       <Stack.Screen options={{ title: 'About' }} />
-      <Card>
-        <Text variant="h2">{APP_NAME}</Text>
-        <Text variant="sub" color="muted">
-          A passport for sports fans. {appVersionLine()}
+      <Card tone="accent">
+        <Text variant="kicker" color="accent">
+          A passport for sports fans
+        </Text>
+        <Text
+          variant="display"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={{ marginTop: theme.spacing.xs }}
+        >
+          {APP_NAME}
+        </Text>
+        <Text variant="caption" color="muted" style={{ marginTop: theme.spacing.xs }}>
+          {appVersionLine()}
         </Text>
       </Card>
-      <Card label="Data attributions">
-        <MarkdownLite md={ATTRIBUTION_MD} />
-      </Card>
-      <Card label="Legal">
-        <Row title="Terms of use" chevron first onPress={() => router.push('/you/terms')} />
-        <Row title="Privacy policy" chevron onPress={() => router.push('/you/privacy-policy')} />
-      </Card>
-      <Card label="Contact">
+
+      <SectionHeader title="Legal" />
+      <Card>
+        <Row icon="i-book" title="Terms of use" chevron onPress={() => router.push('/you/terms')} />
         <Row
+          icon="i-lock"
+          title="Privacy policy"
+          chevron
+          onPress={() => router.push('/you/privacy-policy')}
+        />
+      </Card>
+
+      <SectionHeader title="Contact" />
+      <Card>
+        <Row
+          icon="i-ext"
           title="Email support"
           subtitle={SUPPORT_EMAIL}
           chevron
-          first
           onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=${subject}`)}
         />
       </Card>
@@ -52,6 +69,9 @@ export default function AboutScreen() {
         Reports are reviewed within 24 hours. You can report or block anyone from the menu on their
         profile.
       </Text>
+
+      <SectionHeader title="Data attributions" />
+      <LegalText md={ATTRIBUTION_MD} />
     </Screen>
   );
 }

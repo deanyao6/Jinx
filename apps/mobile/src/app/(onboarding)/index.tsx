@@ -8,7 +8,7 @@ import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
 import { TextField } from '@/components/TextField';
 import { useAuth } from '@/features/auth/hooks';
-import { StepHeader } from '@/features/onboarding/StepHeader';
+import { StepIntro } from '@/features/onboarding/ui/StepIntro';
 import {
   useHandleAvailable,
   useProfile,
@@ -56,10 +56,10 @@ function HandleForm({ profile, metaName }: { profile: Profile; metaName: string 
 
   return (
     <FormScreen>
-      <StepHeader
+      <StepIntro
         step={1}
         title="Pick a handle"
-        subtitle="Friends find you by handle. Your name shows on your passport."
+        body="Friends find you by handle. Your name shows on your passport."
       />
       {mutationError ? <Notice tone="error">{mutationError}</Notice> : null}
       <TextField
@@ -93,7 +93,12 @@ function HandleForm({ profile, metaName }: { profile: Profile; metaName: string 
         error={touched ? nameError : null}
       />
       <View style={{ marginTop: theme.spacing.sm }}>
-        <Button title="Next" onPress={onNext} loading={update.isPending} disabled={!canContinue} />
+        <Button
+          title="Continue"
+          onPress={onNext}
+          loading={update.isPending}
+          disabled={!canContinue}
+        />
       </View>
     </FormScreen>
   );

@@ -43,6 +43,8 @@ export function useTheme(): Theme {
       text: p.accent,
       second: p.second,
       wash: alpha(p.accent, scheme === 'dark' ? 0.16 : 0.1),
+      solid: p.fill,
+      onSolid: p.onFill,
       themed: true,
     };
     return makeTheme(scheme, accent);

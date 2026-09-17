@@ -9,9 +9,14 @@ import { GameRow } from '@/components/GameRow';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
+import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
+import { SectionHeader } from '@/components/SectionHeader';
+import { StatTile } from '@/components/StatTile';
 import { Text } from '@/components/Text';
 import type { GameDetail } from '@/features/games/queries';
+import { Fact, QuietDangerButton } from '@/features/games/ui/detailParts';
+import { SideTheme } from '@/features/games/ui/SideTheme';
 import {
   groupImports,
   parsedSummary,
@@ -73,21 +78,31 @@ export default function ImportsInboxScreen() {
   return (
     <Screen>
       <Stack.Screen options={{ title: 'Imports' }} />
-      <Button
-        title="Upload more tickets"
-        variant="secondary"
-        small
-        onPress={() => router.push('/games/import')}
-        style={{ alignSelf: 'flex-start', marginBottom: theme.spacing.md }}
-      />
       {open === 0 ? (
         <EmptyState
+          icon="i-ticket"
           title="Inbox is clear"
           body="Tickets you upload or forward by email show up here for a quick confirm."
           actionTitle="Upload tickets"
           onAction={() => router.push('/games/import')}
         />
-      ) : null}
+      ) : (
+        <>
+          <View style={{ flexDirection: 'row', gap: 10, marginBottom: theme.spacing.md }}>
+            <StatTile label="Ready" value={String(groups.confirm.length)} accent />
+            <StatTile label="To pick" value={String(groups.review.length)} />
+            <StatTile label="Not found" value={String(groups.failed.length)} />
+          </View>
+          <Card style={{ paddingVertical: theme.spacing.xs + 1 }}>
+            <Row
+              icon="i-plus"
+              title="Upload more tickets"
+              chevron
+              onPress={() => router.push('/games/import')}
+            />
+          </Card>
+        </>
+      )}
 
       {groups.confirm.map((i) => (
         <ImportCard key={i.id} imp={i} byId={byId} />
@@ -99,28 +114,38 @@ export default function ImportsInboxScreen() {
         <ImportCard key={i.id} imp={i} byId={byId} />
       ))}
       {groups.processing.length ? (
-        <Card label="Still reading">
-          {groups.processing.map((i) => (
-            <Text key={i.id} variant="sub" color="muted">
-              {i.source === 'email' ? 'Forwarded email' : 'Uploaded file'} from{' '}
-              {formatGameDate(i.created_at)}
-            </Text>
-          ))}
-        </Card>
+        <>
+          <SectionHeader title="Still reading" />
+          <Card>
+            <View style={{ gap: 8 }}>
+              {groups.processing.map((i) => (
+                <Fact key={i.id} icon="i-clock" tone="muted">
+                  {i.source === 'email' ? 'Forwarded email' : 'Uploaded file'} from{' '}
+                  {formatGameDate(i.created_at)}
+                </Fact>
+              ))}
+            </View>
+          </Card>
+        </>
       ) : null}
 
       {groups.done.length ? (
-        <Card label="Logged from imports">
-          {groups.done.map((i, idx) => {
-            const p = readParsed(i.parsed);
-            const g = i.candidate_game_ids?.[0] ? byId.get(i.candidate_game_ids[0]) : undefined;
-            return (
-              <Text key={i.id} variant="sub" color="muted" style={{ marginTop: idx === 0 ? 0 : 4 }}>
-                {g ? gameLine(g) : parsedSummary(p)}
-              </Text>
-            );
-          })}
-        </Card>
+        <>
+          <SectionHeader title="Logged from imports" />
+          <Card>
+            <View style={{ gap: 8 }}>
+              {groups.done.map((i) => {
+                const p = readParsed(i.parsed);
+                const g = i.candidate_game_ids?.[0] ? byId.get(i.candidate_game_ids[0]) : undefined;
+                return (
+                  <Fact key={i.id} icon="i-check-c" tone="muted">
+                    {g ? gameLine(g) : parsedSummary(p)}
+                  </Fact>
+                );
+              })}
+            </View>
+          </Card>
+        </>
       ) : null}
     </Screen>
   );
@@ -170,149 +195,157 @@ function ImportCard({ imp, byId }: { imp: TicketImport; byId: Map<string, GameDe
       ? "Couldn't find this game"
       : 'Needs your pick';
 
+  // A card that has found its game takes that game's home colours; the rest stay the person's own.
   return (
-    <Card label={label}>
-      <View style={{ flexDirection: 'row', gap: theme.spacing.md }}>
-        {thumb.data ? (
-          <Image
-            source={{ uri: thumb.data }}
-            accessibilityLabel="Your ticket"
-            style={{
-              width: 56,
-              height: 72,
-              borderRadius: theme.radius.sm,
-              backgroundColor: theme.colors.tint,
-            }}
-            resizeMode="cover"
-          />
-        ) : null}
-        <View style={{ flex: 1 }}>
-          {isConfirm && best ? (
-            <Text variant="bodyStrong">
-              Log {best.away?.name ?? 'Away'} vs {best.home?.name ?? 'Home'},{' '}
-              {formatGameDateLong(best.scheduled_start)} at {best.venue?.name ?? 'the venue'}?
-            </Text>
-          ) : (
-            <Text variant="bodyStrong">{parsedSummary(p)}</Text>
-          )}
-          <Text variant="caption" color="muted">
-            {[
-              seat,
-              p.venue,
-              p.ticketing_platform,
-              imp.source === 'email' ? 'From email' : 'From upload',
-            ]
-              .filter(Boolean)
-              .join(' · ')}
-          </Text>
-        </View>
-      </View>
-
-      {confirm.error ? (
-        <Notice tone="error" style={{ marginTop: theme.spacing.sm }}>
-          {errorMessage(confirm.error)}
-        </Notice>
-      ) : null}
-
-      {isConfirm && best ? (
-        <View style={{ flexDirection: 'row', gap: theme.spacing.sm, marginTop: theme.spacing.md }}>
-          <Button
-            title="Log it"
-            onPress={() => onConfirm(best.id)}
-            loading={confirm.isPending}
-            style={{ flex: 1 }}
-          />
-          <Button title="Not this game" variant="ghost" onPress={() => setPicked('other')} />
-        </View>
-      ) : null}
-
-      {makeup ? (
-        <Notice style={{ marginTop: theme.spacing.md }}>
-          <Text variant="sub" style={{ marginBottom: theme.spacing.sm }}>
-            This game was postponed to {formatGameDate(makeup.scheduled_start)}. Log that one?
-          </Text>
-          <Button
-            title={`Log ${formatGameDate(makeup.scheduled_start)} instead`}
-            small
-            onPress={() => onConfirm(makeup.id)}
-            loading={confirm.isPending}
-            style={{ alignSelf: 'flex-start' }}
-          />
-        </Notice>
-      ) : null}
-
-      {(!isConfirm || picked === 'other') && !isFailed && candidates.length ? (
-        <View style={{ marginTop: theme.spacing.md }}>
-          <Text variant="caption" color="muted" style={{ marginBottom: 4 }}>
-            {p.doubleheader_ambiguous ? 'Which game of the doubleheader?' : 'Which game is it?'}
-          </Text>
-          {candidates.map((cand, i) => {
-            const g = byId.get(cand.game_id)!;
-            const on = picked === cand.game_id;
-            return (
-              <GameRow
-                key={cand.game_id}
-                first={i === 0}
-                game={{
-                  id: g.id,
-                  scheduled_start: g.scheduled_start,
-                  status: g.status,
-                  awayName: g.away?.name ?? 'Away',
-                  homeName: g.home?.name ?? 'Home',
-                  venueName: g.venue?.name,
-                  home_score: g.home_score,
-                  away_score: g.away_score,
-                  is_tie: g.is_tie,
-                  doubleheader_number: g.doubleheader_number,
-                }}
-                badge={on ? 'Selected' : null}
-                right={
-                  <View style={{ alignItems: 'flex-end', maxWidth: 140 }}>
-                    <Text variant="bodyStrong" style={{ fontVariant: ['tabular-nums'] }}>
-                      {Math.round(cand.score)}
-                    </Text>
-                    <Text variant="caption" color="muted" numberOfLines={2}>
-                      {[doubleheaderLabel(g.doubleheader_number), ...cand.reasons]
-                        .filter(Boolean)
-                        .join(', ')}
-                    </Text>
-                  </View>
-                }
-                onPress={() => setPicked(cand.game_id)}
-              />
-            );
-          })}
-          {picked && picked !== 'other' ? (
-            <Button
-              title="Log this game"
-              onPress={() => onConfirm(picked)}
-              loading={confirm.isPending}
-              style={{ marginTop: theme.spacing.sm }}
+    <SideTheme team={isConfirm ? best?.home?.id : null}>
+      <Card label={label}>
+        <View style={{ flexDirection: 'row', gap: theme.spacing.md }}>
+          {thumb.data ? (
+            <Image
+              source={{ uri: thumb.data }}
+              accessibilityLabel="Your ticket"
+              style={{
+                width: 56,
+                height: 72,
+                borderRadius: theme.radius.sm,
+                backgroundColor: theme.colors.tint,
+              }}
+              resizeMode="cover"
             />
           ) : null}
+          <View style={{ flex: 1 }}>
+            {isConfirm && best ? (
+              <Text variant="bodyStrong">
+                Log {best.away?.name ?? 'Away'} vs {best.home?.name ?? 'Home'},{' '}
+                {formatGameDateLong(best.scheduled_start)} at {best.venue?.name ?? 'the venue'}?
+              </Text>
+            ) : (
+              <Text variant="bodyStrong">{parsedSummary(p)}</Text>
+            )}
+            <Text variant="caption" color="muted">
+              {[
+                seat,
+                p.venue,
+                p.ticketing_platform,
+                imp.source === 'email' ? 'From email' : 'From upload',
+              ]
+                .filter(Boolean)
+                .join(' · ')}
+            </Text>
+          </View>
         </View>
-      ) : null}
 
-      {isFailed ? (
-        <Text variant="sub" color="muted" style={{ marginTop: theme.spacing.sm }}>
-          {imp.error && imp.error !== 'No matching game found'
-            ? imp.error
-            : 'We read the ticket but no game in our schedule matched it.'}
-        </Text>
-      ) : null}
-
-      <View style={{ flexDirection: 'row', gap: theme.spacing.sm, marginTop: theme.spacing.md }}>
-        {isFailed || picked === 'other' || !isConfirm ? (
-          <Button title="Search instead" variant="secondary" small onPress={onSearch} />
+        {confirm.error ? (
+          <Notice tone="error" style={{ marginTop: theme.spacing.sm }}>
+            {errorMessage(confirm.error)}
+          </Notice>
         ) : null}
-        <Button
-          title="Discard"
-          variant="danger"
-          small
-          onPress={onDiscard}
-          loading={discard.isPending}
-        />
-      </View>
-    </Card>
+
+        {isConfirm && best ? (
+          <View
+            style={{ flexDirection: 'row', gap: theme.spacing.sm, marginTop: theme.spacing.md }}
+          >
+            <Button
+              title="Log it"
+              onPress={() => onConfirm(best.id)}
+              loading={confirm.isPending}
+              style={{ flex: 1 }}
+            />
+            <Button title="Not this game" variant="ghost" onPress={() => setPicked('other')} />
+          </View>
+        ) : null}
+
+        {makeup ? (
+          <Notice style={{ marginTop: theme.spacing.md }}>
+            <Text variant="sub" style={{ marginBottom: theme.spacing.sm }}>
+              This game was postponed to {formatGameDate(makeup.scheduled_start)}. Log that one?
+            </Text>
+            <Button
+              title={`Log ${formatGameDate(makeup.scheduled_start)} instead`}
+              small
+              onPress={() => onConfirm(makeup.id)}
+              loading={confirm.isPending}
+              style={{ alignSelf: 'flex-start' }}
+            />
+          </Notice>
+        ) : null}
+
+        {(!isConfirm || picked === 'other') && !isFailed && candidates.length ? (
+          <View style={{ marginTop: theme.spacing.md }}>
+            <Text variant="kicker" color="accent" style={{ marginBottom: 4 }}>
+              {p.doubleheader_ambiguous ? 'Which game of the doubleheader?' : 'Which game is it?'}
+            </Text>
+            {candidates.map((cand, i) => {
+              const g = byId.get(cand.game_id)!;
+              const on = picked === cand.game_id;
+              return (
+                <GameRow
+                  key={cand.game_id}
+                  first={i === 0}
+                  game={{
+                    id: g.id,
+                    scheduled_start: g.scheduled_start,
+                    status: g.status,
+                    awayName: g.away?.name ?? 'Away',
+                    homeName: g.home?.name ?? 'Home',
+                    venueName: g.venue?.name,
+                    home_score: g.home_score,
+                    away_score: g.away_score,
+                    is_tie: g.is_tie,
+                    doubleheader_number: g.doubleheader_number,
+                  }}
+                  badge={on ? 'Selected' : null}
+                  right={
+                    <View style={{ alignItems: 'flex-end', maxWidth: 140 }}>
+                      <Text variant="bodyStrong" style={{ fontVariant: ['tabular-nums'] }}>
+                        {Math.round(cand.score)}
+                      </Text>
+                      <Text variant="caption" color="muted" numberOfLines={2}>
+                        {[doubleheaderLabel(g.doubleheader_number), ...cand.reasons]
+                          .filter(Boolean)
+                          .join(', ')}
+                      </Text>
+                    </View>
+                  }
+                  onPress={() => setPicked(cand.game_id)}
+                />
+              );
+            })}
+            {picked && picked !== 'other' ? (
+              <Button
+                title="Log this game"
+                onPress={() => onConfirm(picked)}
+                loading={confirm.isPending}
+                style={{ marginTop: theme.spacing.sm }}
+              />
+            ) : null}
+          </View>
+        ) : null}
+
+        {isFailed ? (
+          <Text variant="sub" color="muted" style={{ marginTop: theme.spacing.sm }}>
+            {imp.error && imp.error !== 'No matching game found'
+              ? imp.error
+              : 'We read the ticket but no game in our schedule matched it.'}
+          </Text>
+        ) : null}
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: theme.spacing.md,
+          }}
+        >
+          {isFailed || picked === 'other' || !isConfirm ? (
+            <Button title="Search instead" variant="secondary" small onPress={onSearch} />
+          ) : (
+            <View />
+          )}
+          <QuietDangerButton title="Discard" onPress={onDiscard} loading={discard.isPending} />
+        </View>
+      </Card>
+    </SideTheme>
   );
 }

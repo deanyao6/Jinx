@@ -5,10 +5,15 @@ import { View } from 'react-native';
 import { Button } from '@/components/Button';
 import { FormScreen } from '@/components/FormScreen';
 import { Notice, errorMessage } from '@/components/Notice';
-import { Text } from '@/components/Text';
+import { PageIntro } from '@/components/PageIntro';
 import { TextField } from '@/components/TextField';
 import { sendEmailCode, verifyEmailCode } from '@/features/auth/email';
+import { BackLink } from '@/features/onboarding/ui/BackLink';
+import { fontFamily } from '@/theme/fonts';
 import { useTheme } from '@/theme/ThemeProvider';
+
+/** The space between the six digits. Also the left padding that keeps them optically centred. */
+const CODE_SPACING = 12;
 
 export default function CodeScreen() {
   const theme = useTheme();
@@ -46,19 +51,12 @@ export default function CodeScreen() {
 
   return (
     <FormScreen>
-      <Button
-        title="Back"
-        variant="ghost"
-        small
-        onPress={() => router.back()}
-        style={{ alignSelf: 'flex-start' }}
+      <BackLink onPress={() => router.back()} />
+      <PageIntro
+        kicker="Sign in"
+        title="Check your email"
+        body={`Enter the 6-digit code we sent to ${email}.`}
       />
-      <Text variant="h1" style={{ marginTop: theme.spacing.lg }}>
-        Check your email
-      </Text>
-      <Text color="muted" style={{ marginBottom: theme.spacing.lg }}>
-        Enter the 6-digit code we sent to {email}.
-      </Text>
       {error ? <Notice tone="error">{error}</Notice> : null}
       {resent ? <Notice tone="success">Sent a new code.</Notice> : null}
       <TextField
@@ -71,7 +69,17 @@ export default function CodeScreen() {
         autoFocus
         maxLength={6}
         placeholder="123456"
-        style={{ fontSize: 28, fontWeight: '800', letterSpacing: 6 }}
+        // The condensed heavy cut the app sets every number in. The family carries the weight, so
+        // no `fontWeight`: iOS would fake a second bolding on top. Letter spacing trails the last
+        // digit too, so the same amount on the left puts the group back in the middle.
+        style={{
+          fontFamily: fontFamily({ width: 62, weight: 900 }),
+          fontSize: 44,
+          letterSpacing: CODE_SPACING,
+          textAlign: 'center',
+          paddingLeft: CODE_SPACING,
+          minHeight: 76,
+        }}
         onSubmitEditing={valid ? onVerify : undefined}
       />
       <View style={{ gap: theme.spacing.sm, marginTop: theme.spacing.sm }}>

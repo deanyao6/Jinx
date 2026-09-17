@@ -7,8 +7,10 @@ import { Card } from '@/components/Card';
 import { FormScreen } from '@/components/FormScreen';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
-import { Text } from '@/components/Text';
+import { Row } from '@/components/Row';
+import { SectionHeader } from '@/components/SectionHeader';
 import { TextField } from '@/components/TextField';
+import { IdentityCard } from '@/features/account/ui/IdentityCard';
 import {
   useHandleAvailable,
   useProfile,
@@ -61,52 +63,53 @@ function EditProfileForm({ profile }: { profile: Profile }) {
   return (
     <FormScreen headerOffset={60}>
       {errorText ? <Notice tone="error">{errorText}</Notice> : null}
-      <Card label="Profile">
-        <TextField
-          label="Handle"
-          prefix="@"
-          value={handle}
-          onChangeText={(t) => setHandle(t.toLowerCase())}
-          autoCapitalize="none"
-          autoCorrect={false}
-          maxLength={20}
-          error={handle ? (handleError ?? (taken ? 'That handle is taken.' : null)) : null}
-        />
-        <TextField
-          label="Name"
-          value={name}
-          onChangeText={setName}
-          autoCapitalize="words"
-          maxLength={40}
-          error={name ? nameError : null}
-        />
-        <TextField
-          label="Home city"
-          value={city}
-          onChangeText={setCity}
-          autoCapitalize="words"
-          placeholder="Optional"
-          containerStyle={{ marginBottom: 0 }}
-        />
-      </Card>
+      <IdentityCard
+        name={name}
+        handle={normalizeHandle(handle) || profile.handle}
+        note={city.trim() || null}
+      />
+      <SectionHeader title="Profile" />
+      <TextField
+        label="Handle"
+        prefix="@"
+        value={handle}
+        onChangeText={(t) => setHandle(t.toLowerCase())}
+        autoCapitalize="none"
+        autoCorrect={false}
+        maxLength={20}
+        error={handle ? (handleError ?? (taken ? 'That handle is taken.' : null)) : null}
+      />
+      <TextField
+        label="Name"
+        value={name}
+        onChangeText={setName}
+        autoCapitalize="words"
+        maxLength={40}
+        error={name ? nameError : null}
+      />
+      <TextField
+        label="Home city"
+        value={city}
+        onChangeText={setCity}
+        autoCapitalize="words"
+        placeholder="Optional"
+      />
       {/*
         Favourite teams used to be a 62-row checklist right here. They moved to
         Settings > Favorites, which also holds favourite players: they are not profile
         fields, they decide what the passport counts (SPEC.md 5.1).
       */}
-      <Card label="Favorites">
-        <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.sm }}>
-          Your teams and players live in Settings, under Favorites.
-        </Text>
-        <Button
+      <SectionHeader title="Favorites" />
+      <Card>
+        <Row
+          icon="i-spark"
           title="Open Favorites"
-          variant="secondary"
-          small
+          subtitle="Your teams and players live in Settings, under Favorites."
+          chevron
           onPress={() => router.push('/settings/favorites')}
-          style={{ alignSelf: 'flex-start' }}
         />
       </Card>
-      <View style={{ marginBottom: theme.spacing.xl }}>
+      <View style={{ marginTop: theme.spacing.sm, marginBottom: theme.spacing.xl }}>
         <Button title="Save" onPress={onSave} disabled={!canSave} loading={update.isPending} />
       </View>
     </FormScreen>

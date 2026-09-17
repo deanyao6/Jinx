@@ -1,12 +1,15 @@
 import { Stack } from 'expo-router';
 import React from 'react';
-import { Switch, View } from 'react-native';
+import { View } from 'react-native';
 
 import { Card } from '@/components/Card';
 import { ErrorNotice } from '@/components/ErrorNotice';
+import { IconTile } from '@/components/IconTile';
 import { Loading } from '@/components/Loading';
 import { Screen } from '@/components/Screen';
+import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
+import { ToggleRow } from '@/features/account/ui/ToggleRow';
 import { useProfile, useUpdateProfile, type ProfilePatch } from '@/features/profile/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -33,7 +36,6 @@ const SETTINGS: { key: Key; title: string; body: string }[] = [
 /** Privacy toggles on the profile row (SPEC.md 8.9, 9). */
 export default function PrivacyScreen() {
   const theme = useTheme();
-  const c = theme.colors;
   const profile = useProfile();
   const update = useUpdateProfile();
   const p = profile.data;
@@ -50,41 +52,32 @@ export default function PrivacyScreen() {
       {profile.isError ? <ErrorNotice error={profile.error} onRetry={profile.refetch} /> : null}
       {update.isError ? <ErrorNotice error={update.error} /> : null}
       {p ? (
-        <Card>
-          {SETTINGS.map((s, i) => (
-            <View
-              key={s.key}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 12,
-                paddingVertical: 10,
-                borderTopWidth: i === 0 ? 0 : 1,
-                borderTopColor: c.line,
-              }}
-            >
-              <View style={{ flex: 1 }}>
-                <Text variant="bodyStrong">{s.title}</Text>
-                <Text variant="caption" color="muted">
-                  {s.body}
-                </Text>
-              </View>
-              <Switch
+        <>
+          <SectionHeader title="Who sees what" />
+          <Card>
+            {SETTINGS.map((s) => (
+              <ToggleRow
+                key={s.key}
+                title={s.title}
+                body={s.body}
                 value={!!p[s.key]}
                 onValueChange={(v) => onToggle(s.key, v)}
-                accessibilityLabel={s.title}
-                trackColor={{ true: c.ink, false: c.line }}
-                thumbColor={c.card}
               />
-            </View>
-          ))}
-        </Card>
+            ))}
+          </Card>
+        </>
       ) : null}
-      <Text variant="caption" color="muted">
-        Your location is used only when you tap Check in and is never stored. Ticket images are
-        private and deleted after processing. Blocks hide you and the other person from each other
-        everywhere.
-      </Text>
+      <SectionHeader title="Always private" />
+      <Card tone="accent">
+        <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing.md }}>
+          <IconTile icon="i-lock" />
+          <Text variant="sub" style={{ flex: 1 }}>
+            Your location is used only when you tap Check in and is never stored. Ticket images are
+            private and deleted after processing. Blocks hide you and the other person from each
+            other everywhere.
+          </Text>
+        </View>
+      </Card>
     </Screen>
   );
 }

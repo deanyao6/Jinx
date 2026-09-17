@@ -22,11 +22,13 @@ type Props = {
   onPress?: () => void;
   right?: React.ReactNode;
   badge?: string | null;
+  /** The badge is a label in the team colour unless it reports a state. */
+  badgeTone?: 'accent' | 'green' | 'red' | 'muted';
   first?: boolean;
 };
 
 /** "date · away at home · venue · score" list row used by search, history, and upcoming. */
-export function GameRow({ game, onPress, right, badge }: Props) {
+export function GameRow({ game, onPress, right, badge, badgeTone = 'accent' }: Props) {
   const score = formatScore({
     homeScore: game.home_score,
     awayScore: game.away_score,
@@ -54,7 +56,7 @@ export function GameRow({ game, onPress, right, badge }: Props) {
           {meta}
         </Text>
         {badge ? (
-          <Text variant="label" color="green" style={{ marginTop: 2 }}>
+          <Text variant="label" color={badgeTone} style={{ marginTop: 2 }}>
             {badge}
           </Text>
         ) : null}

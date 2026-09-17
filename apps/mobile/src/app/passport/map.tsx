@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { MapView, Marker, Polyline, type MapHandle } from '@/features/map/native-map';
 
+import { Card } from '@/components/Card';
 import { Chip } from '@/components/Chip';
 import { Loading } from '@/components/Loading';
 import { ErrorNotice } from '@/components/ErrorNotice';
@@ -17,18 +18,24 @@ import { useFavoriteTeams, useProfile } from '@/features/profile/queries';
 import { sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
 
+/**
+ * Drawn over map tiles, which no theme colour can promise contrast against, so the ring is
+ * pinned: white on the light map, the ink colour on the dark one.
+ */
 function VenuePin({ marker, dark }: { marker: VenueMarker; dark: boolean }) {
   const theme = useTheme();
   const c = theme.colors;
   const size = markerSize(marker.visits);
-  const color = marker.ghost ? c.muted : marker.closed ? c.muted : c.red;
+  // A stadium you have been to is your team's colour. Closed ones step back to grey.
+  const fill = marker.closed ? c.muted : theme.accent.fill;
+  const onFill = marker.closed ? c.screen : theme.accent.onFill;
   return (
     <View
       style={{
         width: size,
         height: size,
         borderRadius: size / 2,
-        backgroundColor: marker.ghost ? (dark ? '#00000066' : '#FFFFFFAA') : color,
+        backgroundColor: marker.ghost ? (dark ? '#00000066' : '#FFFFFFAA') : fill,
         borderWidth: 2,
         borderColor: marker.ghost ? c.muted : dark ? c.ink : '#FFFFFF',
         borderStyle: marker.ghost ? 'dashed' : 'solid',
@@ -39,16 +46,49 @@ function VenuePin({ marker, dark }: { marker: VenueMarker; dark: boolean }) {
     >
       {!marker.ghost ? (
         <Text
+          variant="stat"
           style={{
-            fontSize: size >= 36 ? 13 : 11,
-            lineHeight: 15,
-            fontWeight: '800',
-            color: '#FFFFFF',
+            fontSize: size >= 36 ? 16 : 13,
+            lineHeight: size >= 36 ? 18 : 15,
+            color: onFill,
+            fontVariant: ['tabular-nums'],
           }}
         >
           {marker.visits}
         </Text>
       ) : null}
+    </View>
+  );
+}
+
+/** One entry of the legend under the map: the pin it explains, its count, its name. */
+function LegendCount({
+  swatch,
+  value,
+  label,
+}: {
+  swatch: React.ReactNode;
+  value: number;
+  label: string;
+}) {
+  return (
+    <View
+      accessible
+      accessibilityLabel={`${value} ${label}`}
+      style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 10 }}
+    >
+      {swatch}
+      <View>
+        <Text
+          variant="stat"
+          style={{ fontSize: 26, lineHeight: 28, fontVariant: ['tabular-nums'] }}
+        >
+          {value}
+        </Text>
+        <Text variant="kicker" color="muted">
+          {label}
+        </Text>
+      </View>
     </View>
   );
 }
@@ -114,6 +154,10 @@ export default function MapScreen() {
     });
   }, [markers, lines, home]);
 
+  const visitedCount = markers.filter((m) => !m.ghost).length;
+  const ghostCount = markers.filter((m) => m.ghost).length;
+  const closedCount = markers.filter((m) => !m.ghost && m.closed).length;
+
   const byId = useMemo(() => new Map(stamps.map((s) => [s.venue_id, s])), [stamps]);
 
   return (
@@ -166,8 +210,7 @@ export default function MapScreen() {
           marginTop: theme.spacing.sm,
           borderRadius: theme.radius.lg,
           overflow: 'hidden',
-          borderWidth: 1,
-          borderColor: c.line,
+          backgroundColor: c.card,
         }}
       >
         <MapView
@@ -236,10 +279,44 @@ export default function MapScreen() {
         ) : null}
       </View>
       <View style={{ paddingHorizontal: theme.spacing.lg, paddingBottom: theme.spacing.lg }}>
-        <Text variant="caption" color="muted">
-          {markers.filter((m) => !m.ghost).length} visited, {markers.filter((m) => m.ghost).length}{' '}
-          on your lists. Bigger pins mean more visits; dashed pins are bucket-list venues.
-        </Text>
+        <Card style={{ marginBottom: 0, gap: theme.spacing.md }}>
+          <View style={{ flexDirection: 'row', gap: theme.spacing.md }}>
+            <LegendCount
+              value={visitedCount}
+              label="Visited"
+              swatch={
+                <View
+                  style={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: 9,
+                    backgroundColor: theme.accent.fill,
+                  }}
+                />
+              }
+            />
+            <LegendCount
+              value={ghostCount}
+              label="On your lists"
+              swatch={
+                <View
+                  style={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: 9,
+                    borderWidth: 2,
+                    borderStyle: 'dashed',
+                    borderColor: c.muted,
+                  }}
+                />
+              }
+            />
+          </View>
+          <Text variant="caption" color="muted">
+            Bigger pins mean more visits. Dashed pins are bucket list venues
+            {closedCount > 0 ? ', grey pins have closed' : ''}.
+          </Text>
+        </Card>
       </View>
       <VenueSheet
         stamp={venue}

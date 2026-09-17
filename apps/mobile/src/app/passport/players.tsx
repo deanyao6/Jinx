@@ -5,11 +5,11 @@ import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
-import { Row } from '@/components/Row';
-import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useDebounced } from '@/features/games/ui/useDebounced';
-import { usePlayersSeen } from '@/features/passport/queries';
+import { useMyStats, usePlayersSeen } from '@/features/passport/queries';
+import { CountHero } from '@/features/passport/ui/CountHero';
+import { PlayerRankRow } from '@/features/passport/ui/PlayerRankRow';
 import { formatGameDate, sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -20,16 +20,31 @@ export default function PlayersSeenScreen() {
   const debounced = useDebounced(query, 250);
   const players = usePlayersSeen(debounced);
   const rows = players.data?.pages.flat() ?? [];
+  // Already cached by the Passport tab. It carries the total, which a paged list cannot.
+  const total = useMyStats().data?.players_seen ?? 0;
+  // A search result has no places: third in "everyone named Harper" is not third overall.
+  const ranked = debounced.trim().length === 0;
 
   return (
     <View style={{ flex: 1, backgroundColor: c.screen }}>
       <FlatList
         data={rows}
         keyExtractor={(p) => p.player_id}
-        contentContainerStyle={{ padding: theme.spacing.lg, paddingBottom: theme.spacing.xxl }}
+        contentContainerStyle={{
+          paddingTop: theme.spacing.sm,
+          paddingHorizontal: theme.spacing.lg,
+          paddingBottom: theme.spacing.xxl,
+        }}
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           <>
+            {total > 0 ? (
+              <CountHero
+                kicker="Most seen first"
+                value={total.toLocaleString()}
+                unit={total === 1 ? 'player seen' : 'players seen'}
+              />
+            ) : null}
             <TextField
               placeholder="Search players"
               value={query}
@@ -45,6 +60,7 @@ export default function PlayersSeenScreen() {
             ) : null}
             {players.data && rows.length === 0 ? (
               <EmptyState
+                icon={debounced.trim() ? 'i-search' : 'i-users'}
                 title={debounced.trim() ? 'No players match' : 'No players yet'}
                 body={
                   debounced.trim()
@@ -55,34 +71,33 @@ export default function PlayersSeenScreen() {
             ) : null}
           </>
         }
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              backgroundColor: c.card,
-              paddingHorizontal: theme.spacing.md,
-              borderColor: c.line,
-              borderLeftWidth: 1,
-              borderRightWidth: 1,
-              borderTopWidth: index === 0 ? 1 : 0,
-              borderBottomWidth: index === rows.length - 1 ? 1 : 0,
-              borderTopLeftRadius: index === 0 ? theme.radius.lg : 0,
-              borderTopRightRadius: index === 0 ? theme.radius.lg : 0,
-              borderBottomLeftRadius: index === rows.length - 1 ? theme.radius.lg : 0,
-              borderBottomRightRadius: index === rows.length - 1 ? theme.radius.lg : 0,
-            }}
-          >
-            <Row
-              first={index === 0}
-              title={item.full_name}
-              subtitle={`${sportLabel(item.sport_id)}, last seen ${formatGameDate(item.last_seen, { withYear: true })}`}
-              right={
-                <Text variant="bodyStrong" style={{ fontVariant: ['tabular-nums'] }}>
-                  {item.seen} {item.seen === 1 ? 'time' : 'times'}
-                </Text>
-              }
-            />
-          </View>
-        )}
+        renderItem={({ item, index }) => {
+          const first = index === 0;
+          const last = index === rows.length - 1;
+          return (
+            // One filled card drawn a row at a time, so the list can stay virtualised.
+            <View
+              style={{
+                backgroundColor: c.card,
+                paddingHorizontal: theme.spacing.lg,
+                paddingTop: first ? 5 : 0,
+                paddingBottom: last ? 5 : 0,
+                borderTopLeftRadius: first ? theme.radius.lg : 0,
+                borderTopRightRadius: first ? theme.radius.lg : 0,
+                borderBottomLeftRadius: last ? theme.radius.lg : 0,
+                borderBottomRightRadius: last ? theme.radius.lg : 0,
+              }}
+            >
+              <PlayerRankRow
+                rank={ranked ? index + 1 : null}
+                accent={ranked && index < 3}
+                name={item.full_name}
+                subtitle={`${sportLabel(item.sport_id)}, last seen ${formatGameDate(item.last_seen, { withYear: true })}`}
+                seen={item.seen}
+              />
+            </View>
+          );
+        }}
         onEndReachedThreshold={0.4}
         onEndReached={() => {
           if (players.hasNextPage && !players.isFetchingNextPage) void players.fetchNextPage();

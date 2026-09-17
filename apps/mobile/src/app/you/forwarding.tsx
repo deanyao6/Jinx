@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Clipboard from 'expo-clipboard';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
@@ -6,11 +5,14 @@ import { Alert, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
-import { FormScreen } from '@/components/FormScreen';
 import { ErrorNotice } from '@/components/ErrorNotice';
+import { FormScreen } from '@/components/FormScreen';
+import { IconTile } from '@/components/IconTile';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
+import { IconCheckC, IconClock } from '@/components/reference/icons';
 import { Row } from '@/components/Row';
+import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useAuthStore } from '@/features/auth/store';
@@ -67,6 +69,9 @@ export default function ForwardingScreen() {
     }
   };
 
+  // The sign-in address has its own row, so it is left out of the list below it.
+  const others = (emails.data ?? []).filter((e) => e.email !== signInEmail?.toLowerCase());
+
   const onRemove = (email: string) => {
     Alert.alert('Remove this address?', `Mail from ${email} will be ignored.`, [
       { text: 'Keep', style: 'cancel' },
@@ -77,37 +82,41 @@ export default function ForwardingScreen() {
   return (
     <FormScreen headerOffset={90}>
       <Stack.Screen options={{ title: 'Forwarding address' }} />
-      <Card label="Your forwarding address">
-        <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.sm }}>
-          Forward ticket confirmations from any site (Ticketmaster, SeatGeek, StubHub, TickPick,
-          team sites) to this address. Upcoming games are marked Going and past games are logged.
-        </Text>
+      <Card tone="accent">
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <IconTile icon="i-ticket" solid />
+          <View style={{ flex: 1 }}>
+            <Text variant="kicker" color="accent">
+              Your forwarding address
+            </Text>
+            {address ? (
+              <Text variant="bodyStrong" selectable style={{ fontVariant: ['tabular-nums'] }}>
+                {address}
+              </Text>
+            ) : inbound.data === null ? (
+              <Text variant="sub" color="muted">
+                No address yet. Tap New address to create one.
+              </Text>
+            ) : null}
+          </View>
+        </View>
         {inbound.isPending ? <Loading /> : null}
         {inbound.isError ? (
           <ErrorNotice
             error={inbound.error}
             message="Could not load your address."
             onRetry={inbound.refetch}
+            style={{ marginTop: theme.spacing.md, marginBottom: 0 }}
           />
         ) : null}
-        {address ? (
-          <Text variant="bodyStrong" selectable style={{ fontVariant: ['tabular-nums'] }}>
-            {address}
-          </Text>
-        ) : inbound.data === null ? (
-          <Text variant="sub" color="muted">
-            No address yet. Tap New address to create one.
-          </Text>
-        ) : null}
         {rotate.error ? (
-          <Notice tone="error" style={{ marginTop: theme.spacing.sm }}>
+          <Notice tone="error" style={{ marginTop: theme.spacing.md, marginBottom: 0 }}>
             {errorMessage(rotate.error)}
           </Notice>
         ) : null}
         <View style={{ flexDirection: 'row', gap: theme.spacing.sm, marginTop: theme.spacing.md }}>
           <Button
             title={copied ? 'Copied' : 'Copy address'}
-            variant="secondary"
             small
             onPress={copy}
             disabled={!address}
@@ -121,75 +130,71 @@ export default function ForwardingScreen() {
           />
         </View>
       </Card>
+      <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
+        Forward ticket confirmations from any site (Ticketmaster, SeatGeek, StubHub, TickPick, team
+        sites) to this address. Upcoming games are marked Going and past games are logged.
+      </Text>
 
-      <Card label="Addresses you can forward from">
-        <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.sm }}>
-          Mail is only accepted from these senders. Your sign-in email always works.
-        </Text>
-        {signInEmail ? (
-          <Row
-            title={signInEmail}
-            subtitle="Sign-in email"
-            first
-            right={<Ionicons name="checkmark-circle" size={18} color={c.green} />}
-          />
-        ) : null}
-        {emails.isPending ? <Loading /> : null}
-        {(emails.data ?? [])
-          .filter((e) => e.email !== signInEmail?.toLowerCase())
-          .map((e, i) => (
+      <SectionHeader title="Addresses you can forward from" />
+      <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
+        Mail is only accepted from these senders. Your sign-in email always works.
+      </Text>
+      {signInEmail || emails.isPending || others.length ? (
+        <Card>
+          {signInEmail ? (
+            <Row
+              title={signInEmail}
+              subtitle="Sign-in email"
+              right={<IconCheckC size={20} color={c.green} />}
+            />
+          ) : null}
+          {emails.isPending ? <Loading /> : null}
+          {others.map((e) => (
             <Row
               key={e.email}
               title={e.email}
               subtitle={e.verified ? 'Verified' : 'Waiting for a first email from this address'}
-              first={!signInEmail && i === 0}
               right={
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                   {e.verified ? (
-                    <Ionicons name="checkmark-circle" size={18} color={c.green} />
+                    <IconCheckC size={20} color={c.green} />
                   ) : (
-                    <Ionicons name="time" size={18} color={c.muted} />
+                    <IconClock size={20} color={c.muted} />
                   )}
                   <Button title="Remove" variant="ghost" small onPress={() => onRemove(e.email)} />
                 </View>
               }
             />
           ))}
-        {remove.error ? <Notice tone="error">{errorMessage(remove.error)}</Notice> : null}
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: theme.spacing.sm,
-            alignItems: 'flex-start',
-            marginTop: theme.spacing.md,
-          }}
-        >
-          <TextField
-            placeholder="name@example.com"
-            value={draft}
-            onChangeText={setDraft}
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            containerStyle={{ flex: 1, marginBottom: 0 }}
-            returnKeyType="done"
-            onSubmitEditing={onAdd}
-            accessibilityLabel="Email address to add"
-            error={add.error ? errorMessage(add.error) : null}
-          />
-          <Button
-            title="Add"
-            variant="secondary"
-            onPress={onAdd}
-            disabled={!isPlausibleEmail(draft)}
-            loading={add.isPending}
-          />
-        </View>
-        <Text variant="caption" color="muted" style={{ marginTop: theme.spacing.sm }}>
-          Send any email from this address to your forwarding address and we&apos;ll verify it.
-        </Text>
-      </Card>
+        </Card>
+      ) : null}
+      {remove.error ? <Notice tone="error">{errorMessage(remove.error)}</Notice> : null}
+      <View style={{ flexDirection: 'row', gap: theme.spacing.sm, alignItems: 'flex-start' }}>
+        <TextField
+          placeholder="name@example.com"
+          value={draft}
+          onChangeText={setDraft}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          textContentType="emailAddress"
+          containerStyle={{ flex: 1, marginBottom: 0 }}
+          returnKeyType="done"
+          onSubmitEditing={onAdd}
+          accessibilityLabel="Email address to add"
+          error={add.error ? errorMessage(add.error) : null}
+        />
+        <Button
+          title="Add"
+          variant="secondary"
+          onPress={onAdd}
+          disabled={!isPlausibleEmail(draft)}
+          loading={add.isPending}
+        />
+      </View>
+      <Text variant="caption" color="muted" style={{ marginTop: theme.spacing.sm }}>
+        Send any email from this address to your forwarding address and we&apos;ll verify it.
+      </Text>
     </FormScreen>
   );
 }

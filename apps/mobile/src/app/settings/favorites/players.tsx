@@ -1,27 +1,26 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BackHeader } from '@/components/reference/BackHeader';
-import { Card, EmptyNote, Row, SearchField, SectionLabel } from '@/features/favorites/ui';
-import { screen } from '@/features/favorites/screen';
+import { EmptyState } from '@/components/EmptyState';
+import { Loading } from '@/components/Loading';
+import { SectionHeader } from '@/components/SectionHeader';
+import { TextField } from '@/components/TextField';
+import { PickRow } from '@/features/account/ui/PickRow';
+import { SettingsFrame } from '@/features/account/ui/SettingsFrame';
 import { useTeams } from '@/features/teams/queries';
 import { sportLabel } from '@/lib/format';
-import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
+import { TeamTheme } from '@/theme/reference/TeamTheme';
 
 /**
  * Step two of the player picker: choose a team, which is the way into its roster.
  *
  * Nothing is favourited here. The rows carry a chevron rather than a checkmark so the
  * screen cannot be mistaken for the team picker, which looks the same and does something
- * else entirely.
+ * else entirely. Each row's tile is that team's colour.
  */
-function PlayerTeamsBody() {
-  const { base } = useReferenceTheme();
+export default function PlayerTeamsRoute() {
   const { sport } = useLocalSearchParams<{ sport?: string }>();
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   const [query, setQuery] = React.useState('');
   const teams = useTeams(true);
 
@@ -40,50 +39,46 @@ function PlayerTeamsBody() {
   }, [teams.data, sport, query]);
 
   return (
-    <View style={[screen.root, { paddingTop: insets.top, backgroundColor: base.scr }]}>
-      <BackHeader
-        title={sport ? sportLabel(sport) : 'Teams'}
-        fallback="/settings/favorites/league?mode=players"
+    <SettingsFrame
+      title={sport ? sportLabel(sport) : 'Teams'}
+      fallback="/settings/favorites/league?mode=players"
+    >
+      <TextField
+        value={query}
+        onChangeText={setQuery}
+        placeholder="Search teams"
+        accessibilityLabel="Search teams"
+        autoCapitalize="none"
+        autoCorrect={false}
+        clearButtonMode="while-editing"
       />
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <SearchField value={query} onChangeText={setQuery} placeholder="Search teams" />
-        <SectionLabel>Choose a team</SectionLabel>
-        {teams.isPending ? (
-          <EmptyNote>Loading teams…</EmptyNote>
-        ) : list.length === 0 ? (
-          <EmptyNote>
-            {query.trim() ? `No teams match "${query.trim()}".` : 'No teams in this league yet.'}
-          </EmptyNote>
-        ) : (
-          <Card>
-            {list.map((t) => (
-              <Row
-                key={t.id}
-                title={t.name}
-                meta={t.city}
-                chevron
-                accessibilityLabel={`${t.name}, see players`}
-                onPress={() =>
-                  router.push(
-                    `/settings/favorites/roster?teamId=${t.id}&name=${encodeURIComponent(t.name)}&sport=${t.sport_id}`,
-                  )
-                }
-              />
-            ))}
-          </Card>
-        )}
-      </ScrollView>
-    </View>
-  );
-}
-
-export default function PlayerTeamsRoute() {
-  return (
-    <ReferenceThemeProvider team="none">
-      <PlayerTeamsBody />
-    </ReferenceThemeProvider>
+      <SectionHeader title="Choose a team" />
+      {teams.isPending ? (
+        <Loading label="Loading teams…" />
+      ) : list.length === 0 ? (
+        <EmptyState
+          icon="i-search"
+          title="No teams"
+          body={query.trim() ? `No teams match "${query.trim()}".` : 'No teams in this league yet.'}
+        />
+      ) : (
+        list.map((t) => (
+          <TeamTheme key={t.id} team={t.id}>
+            <PickRow
+              badge={t.abbreviation}
+              title={t.name}
+              meta={t.city}
+              chevron
+              accessibilityLabel={`${t.name}, see players`}
+              onPress={() =>
+                router.push(
+                  `/settings/favorites/roster?teamId=${t.id}&name=${encodeURIComponent(t.name)}&sport=${t.sport_id}`,
+                )
+              }
+            />
+          </TeamTheme>
+        ))
+      )}
+    </SettingsFrame>
   );
 }

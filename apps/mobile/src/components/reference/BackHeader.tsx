@@ -68,11 +68,7 @@ export function BackHeader({ title, fallback = '/', right, style }: BackHeaderPr
         {...BACK_A11Y}
         onPress={goBack}
         hitSlop={8}
-        style={({ pressed }) => [
-          s.ib,
-          { borderColor: base.line, backgroundColor: base.card },
-          pressed && { opacity: 0.6 },
-        ]}
+        style={({ pressed }) => [s.ib, { backgroundColor: base.card }, pressed && { opacity: 0.6 }]}
       >
         <ChevL size={18} color={base.ink} />
       </Pressable>
@@ -118,11 +114,16 @@ const s = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: { flex: 1, textAlign: 'center', fontSize: 20, fontFamily: fontFamily({ weight: 800 }) },
+  // The same title the navigator header draws on every other sub page (subPageHeader.tsx).
+  title: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 21,
+    fontFamily: fontFamily({ width: 62, weight: 900 }),
+  },
   slot: { width: 36, height: 36, alignItems: 'center', justifyContent: 'center' },
   legacy: {
     width: 36,

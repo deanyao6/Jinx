@@ -9,7 +9,7 @@ import { Notice, errorMessage } from '@/components/Notice';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { ageOn, MIN_AGE, parseBirthDate } from '@/features/onboarding/birthdate';
-import { StepHeader } from '@/features/onboarding/StepHeader';
+import { StepIntro } from '@/features/onboarding/ui/StepIntro';
 import { useProfile, useUpdateProfile } from '@/features/profile/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -49,17 +49,11 @@ function BirthdayForm({ initial }: { initial: string | null }) {
 
   return (
     <FormScreen>
-      <Button
-        title="Back"
-        variant="ghost"
-        small
-        onPress={() => router.back()}
-        style={{ alignSelf: 'flex-start', marginBottom: theme.spacing.md }}
-      />
-      <StepHeader
+      <StepIntro
         step={4}
         title="Your birthday"
-        subtitle="Jinx is for fans 13 and up. We never show your birthday to anyone."
+        body="Jinx is for fans 13 and up. We never show your birthday to anyone."
+        onBack={() => router.back()}
       />
       {update.error ? <Notice tone="error">{errorMessage(update.error)}</Notice> : null}
       <View style={{ flexDirection: 'row', gap: theme.spacing.sm }}>
@@ -98,7 +92,7 @@ function BirthdayForm({ initial }: { initial: string | null }) {
         </Text>
       ) : null}
       <Button
-        title="Next"
+        title="Continue"
         onPress={onNext}
         loading={update.isPending}
         disabled={touched && !!error}

@@ -1,16 +1,28 @@
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
+import { View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { FormScreen } from '@/components/FormScreen';
+import { Notice } from '@/components/Notice';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useDeleteAccount, useExportData } from '@/features/account/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
 const CONFIRM_WORD = 'DELETE';
+
+/** Everything the server removes, one line each so none of it hides in a paragraph. */
+const REMOVED = [
+  'Your profile',
+  'Every game you logged, with its seats and companions',
+  'Pledges, goals and lists',
+  'Ticket imports and images',
+  'Notifications',
+  'Your Wrapped snapshots',
+];
 
 /**
  * Two-step account deletion (SPEC.md 9, 11): confirm intent, then type DELETE. Everything, including
@@ -29,15 +41,42 @@ export default function DeleteAccountScreen() {
       <Stack.Screen options={{ title: 'Delete account' }} />
       {remove.isError ? <ErrorNotice error={remove.error} /> : null}
       {exportData.isError ? <ErrorNotice error={exportData.error} /> : null}
-      <Card>
-        <Text variant="h2">This cannot be undone</Text>
-        <Text color="muted" style={{ marginTop: theme.spacing.sm }}>
-          Deleting your account removes your profile, every game you logged, seats, companions,
-          pledges, goals, lists, ticket imports and images, notifications, and your Wrapped
-          snapshots. People you tagged lose you from their companion lists.
+      <Notice tone="error" style={{ padding: theme.spacing.lg, borderRadius: theme.radius.lg }}>
+        <Text variant="kicker" color="red">
+          Permanent
         </Text>
-        <Text color="muted" style={{ marginTop: theme.spacing.sm }}>
-          Want a copy first? Export your data as JSON.
+        <Text variant="h2" color="red" style={{ marginTop: 2 }}>
+          This cannot be undone
+        </Text>
+        <Text variant="sub" style={{ marginTop: theme.spacing.sm }}>
+          Deleting your account removes:
+        </Text>
+        <View style={{ marginTop: theme.spacing.sm, gap: 6 }}>
+          {REMOVED.map((line) => (
+            <View key={line} style={{ flexDirection: 'row', gap: theme.spacing.sm }}>
+              <View
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: 3,
+                  marginTop: 7,
+                  backgroundColor: theme.colors.red,
+                }}
+              />
+              <Text variant="sub" style={{ flex: 1 }}>
+                {line}
+              </Text>
+            </View>
+          ))}
+        </View>
+        <Text variant="sub" style={{ marginTop: theme.spacing.md }}>
+          People you tagged lose you from their companion lists.
+        </Text>
+      </Notice>
+      <Card>
+        <Text variant="bodyStrong">Want a copy first?</Text>
+        <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
+          Export your data as JSON.
         </Text>
         <Button
           title="Export my data"
@@ -51,8 +90,9 @@ export default function DeleteAccountScreen() {
       {step === 1 ? (
         <Button title="I understand, continue" variant="danger" onPress={() => setStep(2)} />
       ) : (
-        <Card label={`Type ${CONFIRM_WORD} to confirm`}>
+        <View style={{ marginTop: theme.spacing.sm }}>
           <TextField
+            label={`Type ${CONFIRM_WORD} to confirm`}
             value={typed}
             onChangeText={setTyped}
             autoCapitalize="characters"
@@ -67,7 +107,7 @@ export default function DeleteAccountScreen() {
             loading={remove.isPending}
             onPress={() => remove.mutate()}
           />
-        </Card>
+        </View>
       )}
     </FormScreen>
   );

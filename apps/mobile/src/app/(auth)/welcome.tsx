@@ -8,6 +8,7 @@ import { Notice, errorMessage } from '@/components/Notice';
 import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { isAppleSignInAvailable, signInWithApple } from '@/features/auth/apple';
+import { StadiumWatermark, WelcomeSeals } from '@/features/onboarding/ui/WelcomeArt';
 import { features } from '@/lib/env';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -36,12 +37,30 @@ export default function WelcomeScreen() {
 
   return (
     <Screen scroll={false}>
+      {/* No team is known yet, so the page is ink: the design is the type, the seals and the space. */}
+      <StadiumWatermark />
       <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text variant="display">Jinx</Text>
-        <Text variant="h2" style={{ marginTop: theme.spacing.md }}>
+        <WelcomeSeals />
+        <Text variant="kicker" color="muted" style={{ marginTop: theme.spacing.xl }}>
+          Fan passport
+        </Text>
+        {/*
+          The Passport tab's wordmark, at the size of a cover. The line is Archivo's full 1.088em:
+          anything shorter and iOS clips the foot of the J (see components/reference/TightText).
+        */}
+        <Text
+          variant="display"
+          accessibilityRole="header"
+          accessibilityLabel="Jinx"
+          allowFontScaling={false}
+          style={{ fontSize: 112, lineHeight: 122, letterSpacing: 1, marginTop: -4 }}
+        >
+          JINX
+        </Text>
+        <Text variant="h2" style={{ marginTop: theme.spacing.sm }}>
           A passport for every game you attend.
         </Text>
-        <Text color="muted" style={{ marginTop: theme.spacing.sm }}>
+        <Text variant="sub" color="muted" style={{ marginTop: theme.spacing.sm, maxWidth: 320 }}>
           Log the games you have been to, keep your record, and collect stadium stamps.
         </Text>
       </View>

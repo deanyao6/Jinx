@@ -129,11 +129,11 @@ describe('LogSheet', () => {
 
   it('renders the matchup, doubleheader label, companions, and the favorite-side note', async () => {
     const screen = await renderSheet();
-    await waitFor(() =>
-      expect(screen.getByText('New York Mets at Philadelphia Phillies')).toBeTruthy(),
-    );
+    // The matchup is a scoreboard now: each side is one labelled block with its own score.
+    await waitFor(() => expect(screen.getByLabelText('New York Mets, away, 2')).toBeTruthy());
+    expect(screen.getByLabelText('Philadelphia Phillies, home, 5')).toBeTruthy();
     expect(screen.getByText(/Doubleheader, game 2/)).toBeTruthy();
-    expect(screen.getByText(/Final 2–5/)).toBeTruthy();
+    expect(screen.getByText(/^Final · /)).toBeTruthy();
     await waitFor(() => expect(screen.getByText('Dad')).toBeTruthy());
     await waitFor(() =>
       expect(screen.getByText('Counts for your Philadelphia Phillies record.')).toBeTruthy(),

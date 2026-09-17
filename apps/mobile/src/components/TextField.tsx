@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextInput, type TextInputProps, View, type ViewStyle } from 'react-native';
 
+import { alpha } from '@/theme/color';
 import { fontFamily } from '@/theme/fonts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Text } from './Text';
@@ -28,7 +29,9 @@ export function TextField({ label, error, hint, containerStyle, prefix, style, .
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: c.card,
+          // A wash of ink, not the card colour: a field has to show up inside a card as well as
+          // on the canvas.
+          backgroundColor: alpha(c.ink, theme.scheme === 'dark' ? 0.07 : 0.05),
           // No outline at rest. The ring only appears to say something: focus, or an error.
           borderColor: error ? c.red : focused ? theme.accent.text : 'transparent',
           borderWidth: 1.5,

@@ -22,9 +22,9 @@ export function Chip({ label, selected = false, onPress, style, accent = 'ink' }
     ? green
       ? alpha(c.green, 0.16)
       : theme.accent.fill
-    : theme.scheme === 'dark'
-      ? alpha(c.ink, 0.08)
-      : c.card;
+    : // A wash of ink rather than the card colour, so an unselected chip shows up on a card as
+      // well as on the canvas.
+      alpha(c.ink, theme.scheme === 'dark' ? 0.08 : 0.06);
   const color = selected ? (green ? c.green : theme.accent.onFill) : c.ink;
   return (
     <Pressable

@@ -5,9 +5,12 @@ import { Pressable, View } from 'react-native';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { CheckRow } from '@/components/CheckRow';
+import { IconTile } from '@/components/IconTile';
 import { Loading } from '@/components/Loading';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Notice, errorMessage } from '@/components/Notice';
+import { PageIntro } from '@/components/PageIntro';
+import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
@@ -16,6 +19,9 @@ import { useAuthStore } from '@/features/auth/store';
 import { checkInFailureCopy, isWithinCheckInWindow, pctLabel } from '@/features/checkin/lock';
 import { measureDistanceToVenue } from '@/features/checkin/location';
 import { PickASideLive } from '@/features/checkin/reference/PickASideLive';
+import { ResultPill, type ResultTone } from '@/features/games/ui/detailParts';
+import { Scoreboard } from '@/features/games/ui/Scoreboard';
+import { SideTheme } from '@/features/games/ui/SideTheme';
 import {
   useCheckIn,
   useChooseSide,
@@ -26,7 +32,7 @@ import {
 import { getPushStatus, registerPush, type PushStatus } from '@/features/notifications/push';
 import { useAddPerson, usePeople } from '@/features/people/queries';
 import { openShare } from '@/features/share/navigate';
-import { formatGameDateLong, formatGameTime } from '@/lib/format';
+import { formatGameDateLong, formatGameTime, sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
 
 export default function CheckInScreen() {
@@ -67,7 +73,6 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
   const checkedIn = !!ctx.checked_in_at;
   const inWindow = isWithinCheckInWindow(now, ctx.scheduled_start, ctx.final_at);
   const venueKnown = ctx.venue.lat != null && ctx.venue.lng != null && ctx.venue.geofence_m != null;
-  const title = `${ctx.away.name} at ${ctx.home.name}`;
 
   useEffect(() => {
     if (checkedIn) return;
@@ -98,86 +103,117 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
     }
   };
 
+  // The page is in the colours of the side this person is on, and the home team's until there is one.
+  const pageTeam = ctx.attendance?.rooting_team_id ?? ctx.pledge?.team_id ?? ctx.home.team_id;
+
   return (
-    <Screen>
-      <Stack.Screen options={{ title: 'Check in' }} />
-      {checkedIn ? (
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+    <SideTheme team={pageTeam}>
+      <Screen>
+        <Stack.Screen options={{ title: 'Check in' }} />
+        {checkedIn ? (
           <View
             style={{
-              width: 8,
-              height: 8,
-              borderRadius: 4,
-              backgroundColor: theme.colors.red,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 6,
+              marginBottom: theme.spacing.sm,
             }}
-          />
-          <Text variant="caption" color="red" style={{ fontWeight: '700' }}>
-            You&apos;re at {ctx.venue.name ?? 'the game'}
-          </Text>
-        </View>
-      ) : null}
-      <Text variant="h1">{checkedIn ? headline(ctx) : title}</Text>
-      <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
-        {checkedIn ? title : (ctx.venue.name ?? 'Venue TBD')} ·{' '}
-        {formatGameDateLong(ctx.scheduled_start)}, {formatGameTime(ctx.scheduled_start)}
-      </Text>
-
-      {!checkedIn ? (
-        <Card label={`Check in at ${ctx.venue.name ?? 'the venue'}`}>
-          <Text variant="sub" style={{ marginBottom: theme.spacing.sm }}>
-            We use your location once, right now, to confirm you are inside{' '}
-            {ctx.venue.name ?? 'the venue'}. Your coordinates are never stored, only how far you
-            were from the gate.
-          </Text>
-          {!inWindow ? (
-            <Text variant="caption" color="muted" style={{ marginBottom: theme.spacing.sm }}>
-              {now < Date.parse(ctx.check_in_opens_at)
-                ? `Check-in opens ${formatGameDateLong(ctx.check_in_opens_at)} at ${formatGameTime(ctx.check_in_opens_at)}, three hours before the start.`
-                : 'Check-in for this game has closed.'}
+          >
+            <View
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: theme.colors.red,
+              }}
+            />
+            <Text variant="caption" color="red" style={{ fontWeight: '700' }}>
+              You&apos;re at {ctx.venue.name ?? 'the game'}
             </Text>
-          ) : null}
-          {!venueKnown ? (
-            <Text variant="caption" color="muted" style={{ marginBottom: theme.spacing.sm }}>
-              {checkInFailureCopy('venue_unknown', {})}
-            </Text>
-          ) : null}
-          {failure ? (
-            <Notice tone="error">
-              {checkInFailureCopy(failure.reason, {
-                distance_m: failure.distance_m,
-                venueName: ctx.venue.name,
-              })}
-            </Notice>
-          ) : null}
-          {checkIn.error ? <Notice tone="error">{errorMessage(checkIn.error)}</Notice> : null}
-          <Button
-            title="Check in"
-            onPress={onCheckIn}
-            loading={checkIn.isPending}
-            disabled={
-              !inWindow || !venueKnown || ctx.status === 'postponed' || ctx.status === 'cancelled'
-            }
-          />
-        </Card>
-      ) : ctx.both_favorites ? (
-        <SidePicker gameId={gameId} ctx={ctx} />
-      ) : ctx.neutral_for_user ? (
-        <PledgePanel gameId={gameId} ctx={ctx} />
-      ) : (
-        <FavoritePanel gameId={gameId} ctx={ctx} />
-      )}
-
-      {checkedIn ? <PushPrimer /> : null}
-
-      {checkedIn ? (
-        <Button
-          title="See game details"
-          variant="ghost"
-          onPress={() => router.push(`/games/${gameId}`)}
-          style={{ marginTop: theme.spacing.sm }}
+          </View>
+        ) : null}
+        <Scoreboard
+          away={{ teamId: ctx.away.team_id, name: ctx.away.name }}
+          home={{ teamId: ctx.home.team_id, name: ctx.home.name }}
+          winner={null}
+          kicker={sportLabel(ctx.sport_id)}
+          status={`${formatGameDateLong(ctx.scheduled_start)}, ${formatGameTime(ctx.scheduled_start)}`}
+          venue={ctx.venue.name ?? 'Venue TBD'}
         />
-      ) : null}
-    </Screen>
+        {checkedIn ? <PageIntro title={headline(ctx)} /> : null}
+
+        {!checkedIn ? (
+          <Card>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 12,
+                marginBottom: theme.spacing.md,
+              }}
+            >
+              <IconTile icon="i-gate" />
+              <Text variant="h2" style={{ flex: 1 }}>
+                Check in at {ctx.venue.name ?? 'the venue'}
+              </Text>
+            </View>
+            <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
+              We use your location once, right now, to confirm you are inside{' '}
+              {ctx.venue.name ?? 'the venue'}. Your coordinates are never stored, only how far you
+              were from the gate.
+            </Text>
+            {!inWindow ? (
+              <Text variant="caption" color="muted" style={{ marginBottom: theme.spacing.sm }}>
+                {now < Date.parse(ctx.check_in_opens_at)
+                  ? `Check-in opens ${formatGameDateLong(ctx.check_in_opens_at)} at ${formatGameTime(ctx.check_in_opens_at)}, three hours before the start.`
+                  : 'Check-in for this game has closed.'}
+              </Text>
+            ) : null}
+            {!venueKnown ? (
+              <Text variant="caption" color="muted" style={{ marginBottom: theme.spacing.sm }}>
+                {checkInFailureCopy('venue_unknown', {})}
+              </Text>
+            ) : null}
+            {failure ? (
+              <Notice tone="error">
+                {checkInFailureCopy(failure.reason, {
+                  distance_m: failure.distance_m,
+                  venueName: ctx.venue.name,
+                })}
+              </Notice>
+            ) : null}
+            {checkIn.error ? <Notice tone="error">{errorMessage(checkIn.error)}</Notice> : null}
+            <Button
+              title="Check in"
+              onPress={onCheckIn}
+              loading={checkIn.isPending}
+              disabled={
+                !inWindow || !venueKnown || ctx.status === 'postponed' || ctx.status === 'cancelled'
+              }
+            />
+          </Card>
+        ) : ctx.both_favorites ? (
+          <SidePicker gameId={gameId} ctx={ctx} />
+        ) : ctx.neutral_for_user ? (
+          <PledgePanel gameId={gameId} ctx={ctx} />
+        ) : (
+          <FavoritePanel gameId={gameId} ctx={ctx} />
+        )}
+
+        {checkedIn ? <PushPrimer /> : null}
+
+        {checkedIn ? (
+          <Card style={{ paddingVertical: theme.spacing.xs + 1 }}>
+            <Row
+              icon="i-ticket"
+              title="See game details"
+              chevron
+              onPress={() => router.push(`/games/${gameId}`)}
+            />
+          </Card>
+        ) : null}
+      </Screen>
+    </SideTheme>
   );
 }
 
@@ -207,10 +243,23 @@ function PushPrimer() {
   }, []);
   if (status !== 'undetermined' || !userId) return null;
   return (
-    <Card label="Notifications">
-      <Text variant="sub" style={{ marginBottom: theme.spacing.sm }}>
-        Get your pledge result and game-day reminders as notifications.
-      </Text>
+    <Card>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 12,
+          marginBottom: theme.spacing.md,
+        }}
+      >
+        <IconTile icon="i-bell" />
+        <View style={{ flex: 1 }}>
+          <Text variant="bodyStrong">Notifications</Text>
+          <Text variant="sub" color="muted">
+            Get your pledge result and game-day reminders as notifications.
+          </Text>
+        </View>
+      </View>
       <Button
         title="Turn on notifications"
         variant="secondary"
@@ -230,39 +279,28 @@ function PushPrimer() {
 
 function SidePicker({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
   const theme = useTheme();
-  const c = theme.colors;
   const choose = useChooseSide();
   const current = ctx.attendance?.rooting_team_id ?? null;
   return (
-    <Card label="You follow both teams. Who are you rooting for today?">
+    <Card>
+      <Text variant="bodyStrong" style={{ marginBottom: theme.spacing.md }}>
+        You follow both teams. Who are you rooting for today?
+      </Text>
       <View style={{ gap: theme.spacing.sm }}>
-        {[ctx.away, ctx.home].map((t) => {
-          const on = current === t.team_id;
-          return (
-            <Pressable
-              key={t.team_id}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: on }}
+        {[ctx.away, ctx.home].map((t) => (
+          // Each choice is in its own team's colours: solid once picked, washed until then.
+          <SideTheme key={t.team_id} team={t.team_id}>
+            <SideOption
+              name={t.name}
+              selected={current === t.team_id}
               disabled={choose.isPending || !ctx.attendance}
               onPress={() =>
                 ctx.attendance &&
                 choose.mutate({ attendanceId: ctx.attendance.id, gameId, teamId: t.team_id })
               }
-              style={{
-                borderWidth: 2,
-                borderColor: on ? c.ink : c.line,
-                backgroundColor: on ? c.ink : c.card,
-                borderRadius: theme.radius.lg,
-                paddingVertical: 12,
-                paddingHorizontal: 16,
-              }}
-            >
-              <Text variant="stat" color={on ? 'onInk' : 'ink'}>
-                {t.name}
-              </Text>
-            </Pressable>
-          );
-        })}
+            />
+          </SideTheme>
+        ))}
       </View>
       {choose.error ? (
         <Notice tone="error" style={{ marginTop: theme.spacing.sm }}>
@@ -275,6 +313,40 @@ function SidePicker({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
           : 'Skip this and the game stays neutral for your record.'}
       </Text>
     </Card>
+  );
+}
+
+function SideOption({
+  name,
+  selected,
+  disabled,
+  onPress,
+}: {
+  name: string;
+  selected: boolean;
+  disabled: boolean;
+  onPress: () => void;
+}) {
+  const theme = useTheme();
+  const a = theme.accent;
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ selected }}
+      disabled={disabled}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        backgroundColor: selected ? a.fill : a.wash,
+        borderRadius: theme.radius.lg,
+        paddingVertical: 14,
+        paddingHorizontal: 16,
+        opacity: pressed ? 0.8 : 1,
+      })}
+    >
+      <Text variant="stat" style={{ color: selected ? a.onFill : a.text }}>
+        {name}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -399,50 +471,73 @@ function PledgePanel({ ctx }: { gameId: string; ctx: GameContext }) {
     id === ctx.home.team_id ? ctx.home.name : id === ctx.away.team_id ? ctx.away.name : 'team';
   const won = p.result === 'win';
   const gain = (1 - p.win_prob_at_pledge).toFixed(2);
+  const pill: { label: string; tone: ResultTone } =
+    p.status === 'void'
+      ? { label: 'Void', tone: 'neutral' }
+      : won
+        ? { label: 'Won', tone: 'win' }
+        : p.result === 'loss'
+          ? { label: 'Lost', tone: 'loss' }
+          : { label: 'Tied', tone: 'neutral' };
   return (
-    <Card label="Your pick">
-      {p.status === 'void' ? (
-        <>
-          <Text variant="h2">Your pick did not count</Text>
-          <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
-            Your pick came after the first score, so it doesn&apos;t count.
+    <SideTheme team={p.team_id}>
+      <Card>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 10,
+          }}
+        >
+          <Text variant="kicker" color="accent">
+            Your pick
           </Text>
-        </>
-      ) : (
-        <>
-          <Text variant="h2">
-            The {teamName(p.team_id)}{' '}
-            {p.result === 'win' ? 'won' : p.result === 'loss' ? 'lost' : 'tied'}
-          </Text>
-          <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
-            {won
-              ? `+${gain} vs expected. They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`
-              : `They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`}
-          </Text>
-        </>
-      )}
-      <Button
-        title="Share result"
-        variant="secondary"
-        small
-        onPress={() =>
-          openShare(router, {
-            kind: 'pledge',
-            team: teamName(p.team_id),
-            away: ctx.away.name,
-            home: ctx.home.name,
-            date: ctx.scheduled_start,
-            result:
-              p.status === 'void'
-                ? 'void'
-                : p.result === 'win' || p.result === 'loss' || p.result === 'tie'
-                  ? p.result
-                  : 'pending',
-            winProb: p.win_prob_at_pledge,
-          })
-        }
-        style={{ alignSelf: 'flex-start', marginTop: theme.spacing.md }}
-      />
-    </Card>
+          <ResultPill label={pill.label} tone={pill.tone} />
+        </View>
+        {p.status === 'void' ? (
+          <>
+            <Text variant="h2">Your pick did not count</Text>
+            <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
+              Your pick came after the first score, so it doesn&apos;t count.
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text variant="h2">
+              The {teamName(p.team_id)}{' '}
+              {p.result === 'win' ? 'won' : p.result === 'loss' ? 'lost' : 'tied'}
+            </Text>
+            <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
+              {won
+                ? `+${gain} vs expected. They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`
+                : `They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`}
+            </Text>
+          </>
+        )}
+        <Button
+          title="Share result"
+          variant="secondary"
+          small
+          onPress={() =>
+            openShare(router, {
+              kind: 'pledge',
+              team: teamName(p.team_id),
+              away: ctx.away.name,
+              home: ctx.home.name,
+              date: ctx.scheduled_start,
+              result:
+                p.status === 'void'
+                  ? 'void'
+                  : p.result === 'win' || p.result === 'loss' || p.result === 'tie'
+                    ? p.result
+                    : 'pending',
+              winProb: p.win_prob_at_pledge,
+            })
+          }
+          style={{ alignSelf: 'flex-start', marginTop: theme.spacing.md }}
+        />
+      </Card>
+    </SideTheme>
   );
 }

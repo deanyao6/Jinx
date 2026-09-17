@@ -5,8 +5,10 @@ import { View } from 'react-native';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { CheckRow } from '@/components/CheckRow';
+import { IconTile } from '@/components/IconTile';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
+import type { IconName } from '@/components/reference/icons';
 import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { useAuth } from '@/features/auth/hooks';
@@ -42,6 +44,21 @@ function reasonCopy(reason: string): { title: string; body: string } {
         body: 'The link may have expired or been replaced. Ask them to share a new one.',
       };
   }
+}
+
+/** The top of the card: a tile, what happened, and one line about what it means. */
+function InviteHeader({ icon, title, body }: { icon: IconName; title: string; body: string }) {
+  return (
+    <View style={{ alignItems: 'center', gap: 8 }}>
+      <IconTile icon={icon} size={56} solid />
+      <Text variant="h2" align="center" style={{ marginTop: 4 }}>
+        {title}
+      </Text>
+      <Text variant="sub" color="muted" align="center">
+        {body}
+      </Text>
+    </View>
+  );
 }
 
 export default function InviteScreen() {
@@ -85,16 +102,16 @@ export default function InviteScreen() {
       <Stack.Screen options={{ title: 'Invite' }} />
       {accept.isError ? <Notice tone="error">{errorMessage(accept.error)}</Notice> : null}
       {result && !result.ok ? (
-        <Card>
-          <Text variant="h2">{reasonCopy(result.reason).title}</Text>
-          <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
-            {reasonCopy(result.reason).body}
-          </Text>
+        <Card tone="accent">
+          <InviteHeader
+            icon={result.reason === 'blocked' ? 'i-lock' : 'i-users'}
+            title={reasonCopy(result.reason).title}
+            body={reasonCopy(result.reason).body}
+          />
           <Button
             title="Back to Friends"
-            variant="secondary"
             onPress={() => router.replace('/(tabs)/profile')}
-            style={{ marginTop: theme.spacing.md }}
+            style={{ marginTop: theme.spacing.lg }}
           />
         </Card>
       ) : null}
@@ -131,9 +148,24 @@ function Accepted({ owner, taggedGames }: { owner: string; taggedGames: number }
 
   return (
     <>
-      <Notice tone="success">
-        You’re linked. {who} can now tag you at games and see your record together.
-      </Notice>
+      <Card tone="accent">
+        <InviteHeader
+          icon="i-check-c"
+          title="You’re linked"
+          body={`${who} can now tag you at games and see your record together.${
+            done == null && taggedGames === 0
+              ? ` ${ownerName ? `${ownerName} hasn’t` : 'They haven’t'} tagged you at any games yet.`
+              : ''
+          }`}
+        />
+        {done == null && taggedGames === 0 ? (
+          <Button
+            title="Back to Friends"
+            onPress={() => router.replace('/(tabs)/profile')}
+            style={{ marginTop: theme.spacing.lg }}
+          />
+        ) : null}
+      </Card>
       {done != null ? (
         <Card>
           <Text variant="h2">{done === 1 ? '1 game added' : `${done} games added`}</Text>
@@ -143,29 +175,17 @@ function Accepted({ owner, taggedGames }: { owner: string; taggedGames: number }
           <Button
             title="See your games"
             onPress={() => router.replace('/(tabs)/games?segment=history')}
-            style={{ marginTop: theme.spacing.md }}
+            style={{ marginTop: theme.spacing.lg }}
           />
         </Card>
-      ) : taggedGames === 0 ? (
-        <Card>
-          <Text variant="sub" color="muted">
-            {who} hasn’t tagged you at any games yet.
-          </Text>
-          <Button
-            title="Back to Friends"
-            variant="secondary"
-            onPress={() => router.replace('/(tabs)/profile')}
-            style={{ marginTop: theme.spacing.md }}
-          />
-        </Card>
-      ) : (
+      ) : taggedGames === 0 ? null : (
         <Card>
           <Text variant="h2">
             {who} tagged you at {taggedGames === 1 ? '1 game' : `${taggedGames} games`}. Add them to
             your passport?
           </Text>
           <Text
-            variant="caption"
+            variant="sub"
             color="muted"
             style={{ marginTop: 4, marginBottom: theme.spacing.sm }}
           >

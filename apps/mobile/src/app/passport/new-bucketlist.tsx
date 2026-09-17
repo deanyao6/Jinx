@@ -9,6 +9,7 @@ import { Chip } from '@/components/Chip';
 import { FormScreen } from '@/components/FormScreen';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
+import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import {
@@ -44,7 +45,7 @@ export default function NewBucketListScreen() {
       {create.isError ? <Notice tone="error">{errorMessage(create.error)}</Notice> : null}
       <TextField
         label="Title"
-        placeholder="Every park on the East Coast"
+        placeholder="Every stadium on the East Coast"
         value={title}
         onChangeText={setTitle}
         maxLength={80}
@@ -64,30 +65,43 @@ export default function NewBucketListScreen() {
         autoCapitalize="none"
         autoCorrect={false}
         clearButtonMode="while-editing"
-        hint={picked.length ? `${picked.length} picked` : 'Pick at least one venue.'}
+        hint={picked.length ? null : 'Pick at least one stadium.'}
       />
       {picked.length ? (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: theme.spacing.sm }}>
-          {picked.map((v) => (
-            <Chip key={v.id} label={v.name} selected onPress={() => toggle(v)} />
-          ))}
+        <View style={{ marginBottom: theme.spacing.sm }}>
+          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6, marginBottom: 10 }}>
+            <Text variant="stat" color="accent" style={{ fontVariant: ['tabular-nums'] }}>
+              {picked.length}
+            </Text>
+            <Text variant="kicker" color="muted">
+              {picked.length === 1 ? 'stadium on the list' : 'stadiums on the list'}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            {picked.map((v) => (
+              <Chip key={v.id} label={v.name} selected onPress={() => toggle(v)} />
+            ))}
+          </View>
         </View>
       ) : null}
       {hits.isFetching ? <Loading /> : null}
       {hits.data && hits.data.length > 0 ? (
-        <Card label="Results">
-          {hits.data.map((v, i) => (
-            <CheckRow
-              key={v.id}
-              first={i === 0}
-              title={v.name}
-              subtitle={[v.city, v.state].filter(Boolean).join(', ')}
-              trailing={v.closed_year ? `Closed ${v.closed_year}` : null}
-              checked={pickedIds.has(v.id)}
-              onToggle={() => toggle(v)}
-            />
-          ))}
-        </Card>
+        <>
+          <SectionHeader title="Results" />
+          <Card style={{ paddingVertical: theme.spacing.xs }}>
+            {hits.data.map((v, i) => (
+              <CheckRow
+                key={v.id}
+                first={i === 0}
+                title={v.name}
+                subtitle={[v.city, v.state].filter(Boolean).join(', ')}
+                trailing={v.closed_year ? `Closed ${v.closed_year}` : null}
+                checked={pickedIds.has(v.id)}
+                onToggle={() => toggle(v)}
+              />
+            ))}
+          </Card>
+        </>
       ) : null}
       {hits.data && hits.data.length === 0 ? (
         <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>

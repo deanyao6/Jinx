@@ -1,5 +1,4 @@
 import { GOAL_TEMPLATES, type Sport } from '@jinx/core';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -10,7 +9,8 @@ import { CheckRow } from '@/components/CheckRow';
 import { Chip } from '@/components/Chip';
 import { FormScreen } from '@/components/FormScreen';
 import { Notice, errorMessage } from '@/components/Notice';
-import { Row } from '@/components/Row';
+import { IconPlus } from '@/components/reference/icons';
+import { SectionHeader } from '@/components/SectionHeader';
 import { Segmented } from '@/components/Segmented';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
@@ -25,6 +25,8 @@ import {
   type CustomGoalType,
 } from '@/features/goals/builder';
 import { useCreateGoal } from '@/features/goals/queries';
+import { OptionCard } from '@/features/goals/ui/OptionCard';
+import { templateMeta } from '@/features/goals/ui/templateMeta';
 import { useFavoriteTeams } from '@/features/profile/queries';
 import { currentSeason, sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -60,23 +62,29 @@ function Stepper({
   max?: number;
 }) {
   const theme = useTheme();
-  const c = theme.colors;
   const btn = (label: 'remove' | 'add', delta: number) => (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label === 'add' ? 'Increase' : 'Decrease'}
       onPress={() => onChange(Math.max(min, Math.min(max, value + delta)))}
       style={({ pressed }) => ({
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: c.tint,
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: theme.accent.wash,
         alignItems: 'center',
         justifyContent: 'center',
         opacity: pressed ? 0.6 : 1,
       })}
     >
-      <Ionicons name={label} size={20} color={c.ink} />
+      {label === 'add' ? (
+        <IconPlus size={20} color={theme.accent.text} />
+      ) : (
+        // The reference set has a plus and no minus, so the minus is the plus's own bar.
+        <View
+          style={{ width: 13, height: 2, borderRadius: 1, backgroundColor: theme.accent.text }}
+        />
+      )}
     </Pressable>
   );
   return (
@@ -84,14 +92,15 @@ function Stepper({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: theme.spacing.md,
-        marginVertical: theme.spacing.sm,
+        justifyContent: 'center',
+        gap: theme.spacing.xl,
       }}
     >
       {btn('remove', -1)}
       <Text
-        variant="stat"
-        style={{ minWidth: 48, textAlign: 'center', fontVariant: ['tabular-nums'] }}
+        variant="display"
+        color="accent"
+        style={{ minWidth: 84, textAlign: 'center', fontVariant: ['tabular-nums'] }}
       >
         {value}
       </Text>
@@ -157,34 +166,30 @@ export default function NewGoalScreen() {
 
       {mode === 'template' ? (
         <>
-          <Card label="Pick a template">
-            {GOAL_TEMPLATES.map((t, i) => {
-              const on = t.key === templateKey;
-              return (
-                <Row
-                  key={t.key}
-                  first={i === 0}
-                  title={t.title(on ? n : t.defaultN)}
-                  onPress={() => pickTemplate(t.key, t.defaultN)}
-                  accessibilityLabel={t.title(t.defaultN)}
-                  right={
-                    <Ionicons
-                      name={on ? 'radio-button-on' : 'radio-button-off'}
-                      size={20}
-                      color={on ? theme.colors.ink : theme.colors.muted}
-                    />
-                  }
-                />
-              );
-            })}
-          </Card>
+          <SectionHeader title="Pick a template" />
+          {GOAL_TEMPLATES.map((t) => {
+            const on = t.key === templateKey;
+            const meta = templateMeta(t.key);
+            return (
+              <OptionCard
+                key={t.key}
+                icon={meta.icon}
+                title={t.title(on ? n : t.defaultN)}
+                description={meta.description}
+                selected={on}
+                onPress={() => pickTemplate(t.key, t.defaultN)}
+                accessibilityLabel={t.title(t.defaultN)}
+              />
+            );
+          })}
           {templateNeedsN(templateKey) ? (
-            <Card label="How many">
+            <Card label="How many" style={{ marginTop: theme.spacing.sm }}>
               <Stepper value={n} onChange={setN} />
             </Card>
           ) : null}
           {templateKey === 'team_on_road' && franchises.length > 1 ? (
-            <Card label="Which team">
+            <View style={{ marginTop: theme.spacing.sm, marginBottom: theme.spacing.sm }}>
+              <SectionHeader title="Which team" />
               <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 {franchises.map(([id, name]) => (
                   <Chip
@@ -195,10 +200,10 @@ export default function NewGoalScreen() {
                   />
                 ))}
               </View>
-            </Card>
+            </View>
           ) : null}
           {templateKey === 'team_on_road' && franchises.length === 0 ? (
-            <Notice>
+            <Notice style={{ marginTop: theme.spacing.sm }}>
               Follow a team in your profile first so this goal knows who ‘your team’ is.
             </Notice>
           ) : null}
@@ -212,9 +217,11 @@ export default function NewGoalScreen() {
               onChange={(type) => patch({ type })}
             />
             {custom.type !== 'exists' ? (
-              <Stepper value={custom.target} onChange={(target) => patch({ target })} />
+              <View style={{ marginVertical: theme.spacing.sm }}>
+                <Stepper value={custom.target} onChange={(target) => patch({ target })} />
+              </View>
             ) : null}
-            <Text variant="caption" color="muted">
+            <Text variant="caption" color="muted" align="center">
               {custom.type === 'count'
                 ? 'Number of games that match.'
                 : custom.type === 'distinct_venues'
@@ -222,7 +229,9 @@ export default function NewGoalScreen() {
                   : 'Done the first time a matching game goes final.'}
             </Text>
           </Card>
-          <Card label="Sport">
+          {/* Chips sit on the canvas, not in a card: an unselected chip is the card colour. */}
+          <View style={{ marginBottom: theme.spacing.md }}>
+            <SectionHeader title="Sport" />
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
               <Chip
                 label="Any"
@@ -238,8 +247,9 @@ export default function NewGoalScreen() {
                 />
               ))}
             </View>
-          </Card>
-          <Card label="Moment in the game">
+          </View>
+          <View style={{ marginBottom: theme.spacing.md }}>
+            <SectionHeader title="Moment in the game" />
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
               <Chip
                 label="Any"
@@ -255,9 +265,12 @@ export default function NewGoalScreen() {
                 />
               ))}
             </View>
-          </Card>
-          <Card label="Your team">
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          </View>
+          <View>
+            <SectionHeader title="Your team" />
+            <View
+              style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: theme.spacing.xs }}
+            >
               <Chip
                 label="Any"
                 selected={custom.team === null}
@@ -272,19 +285,21 @@ export default function NewGoalScreen() {
                 />
               ))}
             </View>
-            <CheckRow
-              title="On the road"
-              subtitle="Your side is the away team"
-              checked={custom.road}
-              onToggle={() => patch({ road: !custom.road })}
-            />
-            <CheckRow
-              title="New stadium"
-              subtitle="Your first visit to the venue"
-              checked={custom.newVenue}
-              onToggle={() => patch({ newVenue: !custom.newVenue })}
-            />
-          </Card>
+            <Card style={{ paddingVertical: theme.spacing.xs }}>
+              <CheckRow
+                title="On the road"
+                subtitle="Your side is the away team"
+                checked={custom.road}
+                onToggle={() => patch({ road: !custom.road })}
+              />
+              <CheckRow
+                title="New stadium"
+                subtitle="Your first visit to the venue"
+                checked={custom.newVenue}
+                onToggle={() => patch({ newVenue: !custom.newVenue })}
+              />
+            </Card>
+          </View>
           <TextField
             label="Title"
             placeholder={customGoalTitle(custom)}
@@ -295,9 +310,9 @@ export default function NewGoalScreen() {
         </>
       )}
 
-      <Card label="Preview">
-        <Text variant="bodyStrong">{draft?.title ?? 'Pick the options above'}</Text>
-        <Text variant="caption" color="muted">
+      <Card tone="accent" label="Preview" style={{ marginTop: theme.spacing.sm }}>
+        <Text variant="h2">{draft?.title ?? 'Pick the options above'}</Text>
+        <Text variant="caption" color="muted" style={{ marginTop: 2 }}>
           {year} goal
         </Text>
       </Card>

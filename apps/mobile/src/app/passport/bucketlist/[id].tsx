@@ -1,16 +1,17 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, View, type ViewStyle } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
-import { CheckRow } from '@/components/CheckRow';
 import { GameRow } from '@/components/GameRow';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
-import { Text } from '@/components/Text';
+import { ProgressBar } from '@/components/ProgressBar';
 import { Screen } from '@/components/Screen';
+import { SectionHeader } from '@/components/SectionHeader';
+import { Text } from '@/components/Text';
 import { useAuthStore } from '@/features/auth/store';
 import {
   bucketListProgress,
@@ -27,11 +28,16 @@ import {
   useJoinedBucketLists,
   useLeaveBucketList,
   useVenuesByIds,
+  type VenueLite,
 } from '@/features/bucketlists/queries';
+import { listSport } from '@/features/bucketlists/ui/sport';
+import { VenueStamp } from '@/features/bucketlists/ui/VenueStamp';
 import { useGoalGames } from '@/features/goals/queries';
-import { ProgressBar } from '@/features/goals/ui/ProgressBar';
+import { ProgressCount } from '@/features/goals/ui/GoalCard';
 import { progressRatio } from '@/features/goals/builder';
 import { useGamesByIds } from '@/features/passport/queries';
+import { defaultShapeKey, useVenueShapes } from '@/features/venues/shapes';
+import { sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
 
 export default function BucketListDetailScreen() {
@@ -87,6 +93,36 @@ export default function BucketListDetailScreen() {
     [venues.data, visited],
   );
 
+  const sport = listSport(l?.slug ?? null);
+  const shapes = useVenueShapes();
+  const shapeOf = useMemo(
+    () => new Map((shapes.data ?? []).map((r) => [r.venue_id, r.shape_key])),
+    [shapes.data],
+  );
+  const seen = sortedVenues.filter((v) => visited.has(v.id));
+  const unseen = sortedVenues.filter((v) => !visited.has(v.id));
+  // The hero keeps the count when the list is finished ("30 of 30"), where a row says "Done".
+  const heroLabel =
+    progress && definition && definition.type !== 'exists' && definition.type !== 'any_of'
+      ? `${progress.current} of ${progress.target}`
+      : bucketProgressLabel(progress, definition);
+  const stampGrid: ViewStyle = {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: theme.spacing.sm,
+    paddingBottom: 0,
+  };
+  const stamp = (v: VenueLite) => (
+    <VenueStamp
+      key={v.id}
+      name={v.name}
+      place={[v.city, v.state].filter(Boolean).join(', ')}
+      note={v.closed_year ? `Closed ${v.closed_year}` : null}
+      shapeKey={shapeOf.get(v.id) ?? defaultShapeKey(sport ? [sport] : [])}
+      visited={visited.has(v.id)}
+    />
+  );
+
   return (
     <Screen>
       <Stack.Screen options={{ title: l?.title ?? 'Bucket list' }} />
@@ -97,37 +133,35 @@ export default function BucketListDetailScreen() {
       ) : null}
       {l ? (
         <>
-          <Card>
-            <Text variant="h2">{l.title}</Text>
+          <Card tone="accent">
+            <Text variant="kicker" color="accent">
+              {[sport ? sportLabel(sport) : null, l.is_curated ? 'Curated list' : 'Custom list']
+                .filter(Boolean)
+                .join(' · ')}
+            </Text>
+            <Text variant="h2" style={{ marginTop: 4 }}>
+              {l.title}
+            </Text>
             {l.description ? (
-              <Text color="muted" style={{ marginTop: 2 }}>
+              <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
                 {l.description}
               </Text>
             ) : null}
+            <View style={{ marginTop: theme.spacing.lg, marginBottom: theme.spacing.md }}>
+              {progress ? <ProgressCount big label={heroLabel} done={progress.completed} /> : null}
+            </View>
+            <ProgressBar
+              value={progress ? progressRatio(progress) : 0}
+              done={!!progress?.completed}
+              height={10}
+            />
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: theme.spacing.md,
+                alignItems: 'center',
+                gap: theme.spacing.sm,
+                marginTop: theme.spacing.lg,
               }}
-            >
-              <Text variant="caption" color="muted">
-                {l.is_curated ? 'Curated list' : 'Custom list'}
-              </Text>
-              <Text
-                variant="sub"
-                color={progress?.completed ? 'green' : 'muted'}
-                style={{ fontWeight: '700' }}
-              >
-                {progress ? bucketProgressLabel(progress, definition) : ''}
-              </Text>
-            </View>
-            <ProgressBar
-              ratio={progress ? progressRatio(progress) : 0}
-              done={!!progress?.completed}
-            />
-            <View
-              style={{ flexDirection: 'row', gap: theme.spacing.sm, marginTop: theme.spacing.md }}
             >
               {isJoined ? (
                 <Button
@@ -140,9 +174,9 @@ export default function BucketListDetailScreen() {
               ) : (
                 <Button
                   title="Join list"
-                  small
                   loading={join.isPending}
                   onPress={() => join.mutate(l.id)}
+                  style={{ flex: 1 }}
                 />
               )}
               {isMine ? (
@@ -152,52 +186,57 @@ export default function BucketListDetailScreen() {
           </Card>
 
           {venueIds.length > 0 ? (
-            <Card label={`${visited.size} of ${venueIds.length} visited`}>
+            <View style={{ marginTop: theme.spacing.sm }}>
               {venues.isPending ? <Loading /> : null}
-              {sortedVenues.map((v, i) => (
-                <CheckRow
-                  key={v.id}
-                  first={i === 0}
-                  title={v.name}
-                  subtitle={[v.city, v.state].filter(Boolean).join(', ')}
-                  checked={visited.has(v.id)}
-                  trailing={v.closed_year ? `Closed ${v.closed_year}` : null}
-                />
-              ))}
-            </Card>
+              {seen.length > 0 ? (
+                <>
+                  <SectionHeader title={`${visited.size} of ${venueIds.length} visited`} />
+                  <Card style={stampGrid}>{seen.map(stamp)}</Card>
+                </>
+              ) : null}
+              {unseen.length > 0 ? (
+                <>
+                  <SectionHeader title={`${unseen.length} to go`} />
+                  <Card style={stampGrid}>{unseen.map(stamp)}</Card>
+                </>
+              ) : null}
+            </View>
           ) : null}
 
           {venueIds.length === 0 && definition ? (
-            <Card
-              label={
-                matched.length
-                  ? `${matched.length} matching ${matched.length === 1 ? 'game' : 'games'}`
-                  : 'Matching games'
-              }
-            >
-              {matched.length === 0 ? (
-                <Text variant="sub" color="muted">
-                  None yet. It counts the first time one of your attended games matches.
-                </Text>
-              ) : null}
-              {matched.map((g, i) => {
-                const full = matchedGames.data?.get(g.gameId);
-                if (!full) return null;
-                return (
-                  <GameRow
-                    key={g.gameId}
-                    first={i === 0}
-                    game={{
-                      ...full,
-                      awayName: full.away?.name ?? 'Away',
-                      homeName: full.home?.name ?? 'Home',
-                      venueName: full.venue?.name ?? null,
-                    }}
-                    onPress={() => router.push(`/games/${g.gameId}`)}
-                  />
-                );
-              })}
-            </Card>
+            <View style={{ marginTop: theme.spacing.sm }}>
+              <SectionHeader
+                title={
+                  matched.length
+                    ? `${matched.length} matching ${matched.length === 1 ? 'game' : 'games'}`
+                    : 'Matching games'
+                }
+              />
+              <Card>
+                {matched.length === 0 ? (
+                  <Text variant="sub" color="muted">
+                    None yet. It counts the first time one of your attended games matches.
+                  </Text>
+                ) : null}
+                {matched.map((g, i) => {
+                  const full = matchedGames.data?.get(g.gameId);
+                  if (!full) return null;
+                  return (
+                    <GameRow
+                      key={g.gameId}
+                      first={i === 0}
+                      game={{
+                        ...full,
+                        awayName: full.away?.name ?? 'Away',
+                        homeName: full.home?.name ?? 'Home',
+                        venueName: full.venue?.name ?? null,
+                      }}
+                      onPress={() => router.push(`/games/${g.gameId}`)}
+                    />
+                  );
+                })}
+              </Card>
+            </View>
           ) : null}
         </>
       ) : null}

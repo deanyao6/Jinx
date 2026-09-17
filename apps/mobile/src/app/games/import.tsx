@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack, useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -6,7 +5,10 @@ import { View } from 'react-native';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Notice, errorMessage } from '@/components/Notice';
+import { PageIntro } from '@/components/PageIntro';
+import { IconCheckC, IconSearch, IconTicket } from '@/components/reference/icons';
 import { Screen } from '@/components/Screen';
+import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
 import { useAuthStore } from '@/features/auth/store';
 import { useInvalidateImports } from '@/features/imports/queries';
@@ -19,6 +21,7 @@ import {
   type ImportProgress,
   type PickedFile,
 } from '@/features/imports/upload';
+import { alpha } from '@/theme/color';
 import { useTheme } from '@/theme/ThemeProvider';
 import { features } from '@/lib/env';
 
@@ -128,13 +131,16 @@ export default function ImportScreen() {
   return (
     <Screen>
       <Stack.Screen options={{ title: 'Upload tickets' }} />
-      <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
-        Screenshots or PDFs of tickets, past or upcoming. We read the teams, date, and seat, find
-        the game, and ask you to confirm. Only you can ever see the files.
-      </Text>
+      <PageIntro
+        kicker="Past or upcoming"
+        title="Upload tickets"
+        body="Screenshots or PDFs of tickets. We read the teams, date, and seat, find the game, and ask you to confirm. Only you can ever see the files."
+      />
       <View style={{ flexDirection: 'row', gap: theme.spacing.sm, marginBottom: theme.spacing.md }}>
+        {/* One solid button at a time: picking files, until there is something to review. */}
         <Button
           title="Screenshots"
+          variant={anyDone ? 'secondary' : 'primary'}
           onPress={() => pick('images')}
           disabled={busy}
           style={{ flex: 1 }}
@@ -150,52 +156,62 @@ export default function ImportScreen() {
       {pickError ? <Notice tone="error">{pickError}</Notice> : null}
 
       {items.length ? (
-        <Card label={`${items.length} file${items.length === 1 ? '' : 's'}`}>
-          {items.map((p, i) => (
-            <View
-              key={p.key}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-                paddingVertical: 10,
-                borderTopWidth: i === 0 ? 0 : 1,
-                borderTopColor: c.line,
-              }}
-            >
-              <Ionicons
-                name={
-                  p.step === 'done'
-                    ? p.result === 'failed'
-                      ? 'help-circle'
-                      : 'checkmark-circle'
-                    : p.step === 'error'
-                      ? 'alert-circle'
-                      : 'ellipse-outline'
-                }
-                size={20}
-                color={
-                  p.step === 'error'
-                    ? c.red
-                    : p.step === 'done' && p.result !== 'failed'
-                      ? c.green
-                      : c.muted
-                }
-              />
-              <View style={{ flex: 1 }}>
-                <Text variant="bodyStrong" numberOfLines={1}>
-                  {p.file.name}
-                </Text>
-                <Text variant="caption" color={p.step === 'error' ? 'red' : 'muted'}>
-                  {stepLabel(p)}
-                </Text>
-              </View>
-              {p.step === 'error' ? (
-                <Button title="Retry" variant="secondary" small onPress={() => retry(p.key)} />
-              ) : null}
-            </View>
-          ))}
-        </Card>
+        <>
+          <SectionHeader title={`${items.length} file${items.length === 1 ? '' : 's'}`} />
+          <Card style={{ paddingVertical: theme.spacing.xs + 1 }}>
+            {items.map((p) => {
+              const found = p.step === 'done' && p.result !== 'failed';
+              const Icon = found
+                ? IconCheckC
+                : p.step === 'done' && p.result === 'failed'
+                  ? IconSearch
+                  : IconTicket;
+              return (
+                <View
+                  key={p.key}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 12,
+                    paddingVertical: 11,
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 38,
+                      height: 38,
+                      borderRadius: 11,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor:
+                        p.step === 'error'
+                          ? alpha(c.red, 0.12)
+                          : found
+                            ? alpha(c.green, 0.14)
+                            : theme.accent.wash,
+                    }}
+                  >
+                    <Icon
+                      size={20}
+                      color={p.step === 'error' ? c.red : found ? c.green : theme.accent.text}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text variant="bodyStrong" numberOfLines={1}>
+                      {p.file.name}
+                    </Text>
+                    <Text variant="caption" color={p.step === 'error' ? 'red' : 'muted'}>
+                      {stepLabel(p)}
+                    </Text>
+                  </View>
+                  {p.step === 'error' ? (
+                    <Button title="Retry" variant="secondary" small onPress={() => retry(p.key)} />
+                  ) : null}
+                </View>
+              );
+            })}
+          </Card>
+        </>
       ) : null}
 
       {anyDone ? (

@@ -1,9 +1,10 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import React, { useMemo, useRef, useState } from 'react';
 import {
   FlatList,
   Pressable,
+  StyleSheet,
   useWindowDimensions,
   View,
   type NativeScrollEvent,
@@ -15,11 +16,12 @@ import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
+import { IconChevR, IconPlus } from '@/components/reference/icons';
 import { Row } from '@/components/Row';
 import { Text } from '@/components/Text';
 import { Sheet } from '@/features/passport/ui/Sheet';
 import { openShare } from '@/features/share/navigate';
-import { wrappedCardCopy, wrappedTitle } from '@/features/wrapped/copy';
+import { wrappedTitle } from '@/features/wrapped/copy';
 import {
   isPreviewSeason,
   seasonOptions,
@@ -28,16 +30,29 @@ import {
   useWrappedSeasons,
 } from '@/features/wrapped/queries';
 import type { WrappedCard } from '@/features/wrapped/types';
+import { cardTreatment, StoryPips, StoryScope, useStoryPalette } from '@/features/wrapped/ui/story';
+import { StoryCard } from '@/features/wrapped/ui/StoryCard';
 import { sportLabel } from '@/lib/format';
+import { alpha, luminance } from '@/theme/color';
 import { useTheme } from '@/theme/ThemeProvider';
 
-/** Full-screen, horizontally paged Wrapped cards for one sport and season (SPEC.md 8.8). */
+/** The chrome under the status bar: 8, the pips, 10, the 36 title row, 8. Cards pad past it. */
+const CHROME_HEIGHT = 8 + 3 + 10 + 36 + 8;
+
+/**
+ * Wrapped for one sport and season (SPEC.md 8.8): a full-screen story, paged sideways. Each card
+ * paints the whole screen and the chrome (pips, close, the season picker) floats over it in that
+ * card's colours.
+ */
 export default function WrappedScreen() {
   const theme = useTheme();
   const c = theme.colors;
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { width } = useWindowDimensions();
+  const window = useWindowDimensions();
+  const width = window.width;
+  // A full-screen modal is the window, but measure rather than assume: a card is sized to this.
+  const [height, setHeight] = useState(window.height);
   const params = useLocalSearchParams<{ sport: string; season: string }>();
   const sport = params.sport;
   const season = Number(params.season);
@@ -67,73 +82,78 @@ export default function WrappedScreen() {
   };
 
   const title = valid ? wrappedTitle(sport, season) : 'Wrapped';
+  const onClose = () => (router.canGoBack() ? router.back() : router.replace('/(tabs)'));
+  const onPick = () => setPicking(true);
+
+  const story = valid && !!wrapped.data;
+  // The card the chrome is floating over. None while the deck is empty or still settling.
+  const showing = story ? cards[Math.min(page, cards.length - 1)] : undefined;
 
   return (
-    <View style={{ flex: 1, backgroundColor: c.page }}>
-      <View
-        style={{
-          paddingTop: insets.top + theme.spacing.sm,
-          paddingHorizontal: theme.spacing.lg,
-          paddingBottom: theme.spacing.sm,
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: theme.spacing.sm,
-        }}
-      >
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Close"
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)'))}
-          hitSlop={8}
-          style={({ pressed }) => ({
-            width: 36,
-            height: 36,
-            borderRadius: 18,
-            backgroundColor: c.tint,
-            alignItems: 'center',
-            justifyContent: 'center',
-            opacity: pressed ? 0.6 : 1,
-          })}
-        >
-          <Ionicons name="close" size={20} color={c.ink} />
-        </Pressable>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Pick a season"
-          onPress={() => setPicking(true)}
-          style={({ pressed }) => ({
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 4,
-            opacity: pressed ? 0.6 : 1,
-          })}
-        >
-          <Text variant="h2" numberOfLines={1}>
-            {title}
-          </Text>
-          <Ionicons name="chevron-down" size={18} color={c.muted} />
-        </Pressable>
-        {preview ? (
-          <View
-            style={{
-              borderRadius: theme.radius.pill,
-              borderWidth: 1,
-              borderColor: c.gold,
-              paddingHorizontal: 8,
-              paddingVertical: 2,
-            }}
-          >
-            <Text variant="label" color="gold">
-              Preview
-            </Text>
-          </View>
-        ) : null}
-      </View>
+    <View
+      style={{ flex: 1, backgroundColor: c.screen }}
+      onLayout={(e) => setHeight(e.nativeEvent.layout.height)}
+    >
+      {story ? (
+        <FlatList
+          ref={listRef}
+          style={StyleSheet.absoluteFill}
+          data={cards}
+          keyExtractor={(card, i) => `${card.kind}-${i}`}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={onScrollEnd}
+          getItemLayout={(_d, index) => ({ length: width, offset: width * index, index })}
+          renderItem={({ item, index }) => (
+            <StoryCard
+              card={item}
+              sport={sport}
+              season={season}
+              index={index}
+              count={cards.length}
+              width={width}
+              height={height}
+              top={insets.top + CHROME_HEIGHT + theme.spacing.lg}
+              bottom={insets.bottom + theme.spacing.xl}
+              onShare={() => openShare(router, { kind: 'wrapped', sport, season, card: item })}
+            />
+          )}
+        />
+      ) : null}
+
+      {showing ? (
+        <StoryScope card={showing}>
+          <CardChrome
+            card={showing}
+            title={title}
+            preview={preview}
+            page={page}
+            count={cards.length}
+            onClose={onClose}
+            onPick={onPick}
+          />
+        </StoryScope>
+      ) : (
+        <Chrome
+          title={title}
+          preview={preview}
+          colors={{
+            fg: c.ink,
+            soft: c.muted,
+            faint: alpha(c.ink, theme.scheme === 'dark' ? 0.12 : 0.07),
+            badgeBg: alpha(c.gold, 0.16),
+            badgeFg: c.gold,
+          }}
+          onClose={onClose}
+          onPick={onPick}
+        />
+      )}
 
       {!valid ? (
         <View style={{ padding: theme.spacing.lg }}>
           <EmptyState
+            icon="i-spark"
             title="Pick a season"
             actionTitle="Choose"
             onAction={() => setPicking(true)}
@@ -148,6 +168,7 @@ export default function WrappedScreen() {
       ) : !wrapped.data ? (
         <View style={{ padding: theme.spacing.lg }}>
           <EmptyState
+            icon="i-spark"
             title={`No ${sportLabel(sport)} games in ${season}`}
             body="Wrapped needs at least one game that went final. Log one and come back."
             actionTitle="Log a game"
@@ -160,54 +181,7 @@ export default function WrappedScreen() {
             style={{ marginTop: theme.spacing.sm }}
           />
         </View>
-      ) : (
-        <>
-          <FlatList
-            ref={listRef}
-            data={cards}
-            keyExtractor={(card, i) => `${card.kind}-${i}`}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onMomentumScrollEnd={onScrollEnd}
-            getItemLayout={(_d, index) => ({ length: width, offset: width * index, index })}
-            renderItem={({ item, index }) => (
-              <WrappedCardView
-                card={item}
-                sport={sport}
-                season={season}
-                index={index}
-                count={cards.length}
-                width={width}
-                onShare={() => openShare(router, { kind: 'wrapped', sport, season, card: item })}
-              />
-            )}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: 6,
-              paddingTop: theme.spacing.sm,
-              paddingBottom: insets.bottom + theme.spacing.md,
-            }}
-            accessibilityLabel={`Card ${page + 1} of ${cards.length}`}
-          >
-            {cards.map((card, i) => (
-              <View
-                key={`${card.kind}-${i}`}
-                style={{
-                  width: i === page ? 18 : 6,
-                  height: 6,
-                  borderRadius: 3,
-                  backgroundColor: i === page ? c.ink : c.line,
-                }}
-              />
-            ))}
-          </View>
-        </>
-      )}
+      ) : null}
 
       <Sheet visible={picking} title="Seasons" onClose={() => setPicking(false)}>
         {regenerate.isError ? <ErrorNotice error={regenerate.error} /> : null}
@@ -219,6 +193,7 @@ export default function WrappedScreen() {
             <Row
               key={`${o.sport_id}-${o.season}`}
               first={i === 0}
+              icon={isPreview ? 'i-clock' : 'i-spark'}
               title={wrappedTitle(o.sport_id, o.season)}
               subtitle={
                 isPreview
@@ -261,95 +236,143 @@ export default function WrappedScreen() {
   );
 }
 
-function WrappedCardView({
+type ChromeColors = {
+  fg: string;
+  soft: string;
+  /** `fg` as a fill: the round close button, an unreached pip. */
+  faint: string;
+  badgeBg: string;
+  badgeFg: string;
+};
+
+/** The chrome over a card, in that card's colours. Rendered inside the card's `StoryScope`. */
+function CardChrome({
   card,
-  sport,
-  season,
-  index,
+  title,
+  preview,
+  page,
   count,
-  width,
-  onShare,
+  onClose,
+  onPick,
 }: {
   card: WrappedCard;
-  sport: string;
-  season: number;
-  index: number;
+  title: string;
+  preview: boolean;
+  page: number;
   count: number;
-  width: number;
-  onShare: () => void;
+  onClose: () => void;
+  onPick: () => void;
+}) {
+  const palette = useStoryPalette(cardTreatment(card));
+  return (
+    <>
+      {/* The card runs under the status bar, so the clock has to read on the card's colour. */}
+      <StatusBar style={luminance(palette.bg) < 0.4 ? 'light' : 'dark'} />
+      <Chrome
+        title={title}
+        preview={preview}
+        colors={{
+          fg: palette.fg,
+          soft: palette.soft,
+          faint: palette.faint,
+          badgeBg: palette.faint,
+          badgeFg: palette.fg,
+        }}
+        pips={{ page, count }}
+        onClose={onClose}
+        onPick={onPick}
+      />
+    </>
+  );
+}
+
+/** Progress pips, then close, the season title that opens the picker, and the preview badge. */
+function Chrome({
+  title,
+  preview,
+  colors,
+  pips,
+  onClose,
+  onPick,
+}: {
+  title: string;
+  preview: boolean;
+  colors: ChromeColors;
+  pips?: { page: number; count: number };
+  onClose: () => void;
+  onPick: () => void;
 }) {
   const theme = useTheme();
-  const c = theme.colors;
-  const copy = wrappedCardCopy(card, sport, season);
-  const accent = c[copy.accent];
-  const big = copy.headline.length > 12;
+  const insets = useSafeAreaInsets();
   return (
-    <View style={{ width, paddingHorizontal: theme.spacing.lg, paddingVertical: theme.spacing.sm }}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: c.card,
-          borderColor: c.line,
-          borderWidth: 1,
-          borderRadius: theme.radius.lg,
-          padding: theme.spacing.xl,
-          justifyContent: 'space-between',
-          overflow: 'hidden',
-        }}
-      >
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 8,
-            backgroundColor: accent,
-          }}
-        />
-        <Text variant="caption" color="muted">
-          {index + 1} of {count}
-        </Text>
-        <View>
-          <Text
-            variant="label"
+    <View
+      pointerEvents="box-none"
+      style={{
+        paddingTop: insets.top + 8,
+        paddingHorizontal: theme.spacing.lg,
+        paddingBottom: 8,
+        gap: 10,
+      }}
+    >
+      {pips ? (
+        <StoryPips page={pips.page} count={pips.count} on={colors.fg} off={colors.faint} />
+      ) : (
+        <View style={{ height: 3 }} />
+      )}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Close"
+          onPress={onClose}
+          hitSlop={8}
+          style={({ pressed }) => ({
+            width: 36,
+            height: 36,
+            borderRadius: 18,
+            backgroundColor: colors.faint,
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: pressed ? 0.6 : 1,
+          })}
+        >
+          {/* The reference icon set has no cross, and its plus turned an eighth is one. */}
+          <View style={{ transform: [{ rotate: '45deg' }] }}>
+            <IconPlus size={20} color={colors.fg} />
+          </View>
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Pick a season"
+          onPress={onPick}
+          style={({ pressed }) => ({
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 4,
+            opacity: pressed ? 0.6 : 1,
+          })}
+        >
+          <Text variant="h2" numberOfLines={1} style={{ color: colors.fg, flexShrink: 1 }}>
+            {title}
+          </Text>
+          <View style={{ transform: [{ rotate: '90deg' }] }}>
+            <IconChevR size={16} color={colors.soft} />
+          </View>
+        </Pressable>
+        {preview ? (
+          <View
             style={{
-              color: accent,
-              textTransform: 'uppercase',
-              letterSpacing: 1.2,
-              marginBottom: 8,
+              borderRadius: theme.radius.pill,
+              backgroundColor: colors.badgeBg,
+              paddingHorizontal: 10,
+              paddingVertical: 4,
             }}
           >
-            {copy.label}
-          </Text>
-          <Text
-            variant="display"
-            numberOfLines={3}
-            adjustsFontSizeToFit
-            style={{
-              color: accent,
-              fontSize: big ? 40 : 72,
-              lineHeight: big ? 44 : 76,
-              fontVariant: ['tabular-nums'],
-            }}
-          >
-            {copy.headline}
-          </Text>
-          <Text variant="body" style={{ marginTop: theme.spacing.md }}>
-            {copy.body}
-          </Text>
-          {copy.lines.slice(0, 6).map((line) => (
-            <Text key={line} variant="sub" color="muted" style={{ marginTop: 4 }} numberOfLines={1}>
-              {line}
+            <Text variant="kicker" style={{ color: colors.badgeFg }}>
+              Preview
             </Text>
-          ))}
-        </View>
-        <Button
-          title="Share this card"
-          variant="secondary"
-          onPress={onShare}
-          style={{ alignSelf: 'flex-start' }}
-        />
+          </View>
+        ) : null}
       </View>
     </View>
   );

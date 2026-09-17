@@ -128,6 +128,13 @@ export type Accent = {
   second: string;
   /** `fill` washed out, for the background of a card or an icon tile. */
   wash: string;
+  /**
+   * The team's true colour, even when it is nearly black. `fill` steps aside for a lighter one
+   * on a dark screen so a button can be seen; a large block such as a scoreboard half wants the
+   * real thing, and is big enough to carry it.
+   */
+  solid: string;
+  onSolid: string;
   /** Whether a team is in scope at all. */
   themed: boolean;
 };
@@ -148,6 +155,8 @@ export function neutralAccent(colors: ColorTokens): Accent {
     text: colors.ink,
     second: colors.muted,
     wash: colors.tint,
+    solid: colors.ink,
+    onSolid: colors.onInk,
     themed: false,
   };
 }

@@ -6,12 +6,16 @@ import { EmptyState } from '@/components/EmptyState';
 import { GameRow } from '@/components/GameRow';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
+import { PageIntro } from '@/components/PageIntro';
 import { Screen } from '@/components/Screen';
 import { momentDetail, momentLabel } from '@/features/attendances/moments';
 import { useMomentGames } from '@/features/passport/queries';
+import { momentIcon } from '@/features/passport/ui/MomentTrophies';
+import { useTheme } from '@/theme/ThemeProvider';
 
 export default function MomentGamesScreen() {
   const router = useRouter();
+  const theme = useTheme();
   const { type } = useLocalSearchParams<{ type: string }>();
   const games = useMomentGames(type);
   const label = type ? momentLabel(type) : 'Moment';
@@ -21,10 +25,17 @@ export default function MomentGamesScreen() {
       {games.isPending ? <Loading /> : null}
       {games.isError ? <ErrorNotice error={games.error} onRetry={games.refetch} /> : null}
       {games.data && games.data.length === 0 ? (
-        <EmptyState title={`No ${label.toLowerCase()} yet`} />
+        <EmptyState icon={momentIcon(type ?? '')} title={`No ${label.toLowerCase()} yet`} />
       ) : null}
       {games.data && games.data.length > 0 ? (
-        <Card label={`${games.data.length} ${games.data.length === 1 ? 'game' : 'games'}`}>
+        <PageIntro
+          kicker={label}
+          title={`${games.data.length} ${games.data.length === 1 ? 'game' : 'games'}`}
+          body="Every game you were at when it happened. Tap one to open it."
+        />
+      ) : null}
+      {games.data && games.data.length > 0 ? (
+        <Card style={{ paddingVertical: theme.spacing.xs + 2 }}>
           {games.data.map((row, i) => {
             const ev = row.game.events.find((e) => e.type === type) ?? row.game.events[0];
             const detail = ev ? momentDetail(ev.type, ev.detail ?? {}) : null;
