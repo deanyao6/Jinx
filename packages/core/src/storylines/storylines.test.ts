@@ -1,8 +1,20 @@
 import { describe, expect, it } from 'vitest';
 
-import { currentStreak, hasSomethingToSay, teamFacts, type ScheduleGame } from './facts.js';
+import {
+  currentStreak,
+  hasSomethingToSay,
+  meaningfulStreak,
+  teamFacts,
+  type ScheduleGame,
+} from './facts.js';
 import { significance } from './significance.js';
-import { numbersIn, validateStoryline, type TeamName, type ValidationContext } from './validate.js';
+import {
+  allowedNumbers,
+  numbersIn,
+  validateStoryline,
+  type TeamName,
+  type ValidationContext,
+} from './validate.js';
 
 const PHI = 'phi';
 const NYM = 'nym';
@@ -70,6 +82,16 @@ describe('currentStreak', () => {
   });
 });
 
+describe('meaningfulStreak', () => {
+  it('reports a single game as no streak at all', () => {
+    // From the World Series run: "riding 1-game winning streak". One game is not a streak.
+    expect(meaningfulStreak(1)).toBe(0);
+    expect(meaningfulStreak(-1)).toBe(0);
+    expect(meaningfulStreak(2)).toBe(2);
+    expect(meaningfulStreak(-4)).toBe(-4);
+  });
+});
+
 describe('teamFacts', () => {
   it('uses only games before this one, never the game itself or later ones', () => {
     const history = [
@@ -112,6 +134,28 @@ describe('teamFacts', () => {
     expect(f.lastMeeting).toEqual({ season: 2025, teamScore: 2, opponentScore: 5, result: 'loss' });
     // Last season's meeting is history, not this season's head to head.
     expect(f.vsOpponent).toBeUndefined();
+  });
+
+  it('keeps a record to the regular season, even going into a postseason game', () => {
+    // Regression, from the first real World Series run: the Dodgers were 93-69 and 12-4 in the
+    // postseason, and the storyline said "105-73 record". Every digit was in the facts, so the
+    // validator had nothing to reject. The fix has to be here.
+    const ws = { ...UPCOMING, gameType: 'postseason' };
+    const history = [
+      won(PHI, ATL, '2026-05-01T00:00:00Z'),
+      won(ATL, PHI, '2026-05-02T00:00:00Z'),
+      { ...won(PHI, NYM, '2026-05-28T00:00:00Z'), gameType: 'postseason' },
+      { ...won(PHI, NYM, '2026-05-29T00:00:00Z'), gameType: 'postseason' },
+    ];
+    const f = teamFacts(ws, PHI, { team: 'Phillies', opponent: 'Mets' }, history);
+    expect(f.seasonRecord).toEqual({ wins: 1, losses: 1, ties: 0 });
+    // Home only: the loss was at Atlanta. The two postseason home wins do not count either.
+    expect(f.venueRecord).toEqual({ wins: 1, losses: 0, ties: 0 });
+    // The series against the Mets is significance's to report; a regular-season split is absent.
+    expect(f.vsOpponent).toBeUndefined();
+    // A run that carries into October is still one run. Two postseason wins after a loss is 2.
+    expect(f.streak).toBe(2);
+    expect(f.lastMeeting?.result).toBe('win');
   });
 
   it('only reports the last ten once there are ten', () => {
@@ -181,6 +225,14 @@ describe('significance', () => {
   it('does not count spring training as having opened the season', () => {
     const history = [{ ...won(PHI, NYM, '2026-03-01T00:00:00Z'), gameType: 'preseason' }];
     expect(significance(UPCOMING, names, history)?.kind).toBe('season_opener');
+  });
+});
+
+describe('allowedNumbers', () => {
+  it('allows the ten that lastTen is named for', () => {
+    // From the World Series run, where "8-2 record in last 10 games" was rejected for stating 10.
+    expect(allowedNumbers({ lastTen: { wins: 8, losses: 2, ties: 0 } }).has(10)).toBe(true);
+    expect(allowedNumbers({ seasonRecord: { wins: 8, losses: 2, ties: 0 } }).has(10)).toBe(false);
   });
 });
 
@@ -295,6 +347,45 @@ describe('validateStoryline', () => {
         teams: [cards, mets],
         league: [cards, mets],
         subject: cards,
+      },
+    );
+    expect(v).toEqual({ ok: true });
+  });
+
+  it('names a team whose city is not the start of its name', () => {
+    // Regression, from the first real run: the Mets' city is Flushing, so "Mets" could not be
+    // derived from "New York Mets", and this correct sentence was rejected for not naming them.
+    const flushingMets: TeamName = { name: 'New York Mets', city: 'Flushing', nickname: 'Mets' };
+    const v = validateStoryline(
+      'Mets look to snap a 4-game losing streak after beating the Phillies 6-1 last time.',
+      { streak: -4, lastMeeting: { teamScore: 6, opponentScore: 1 } },
+      { teams: [flushingMets, phillies], league: [flushingMets, phillies], subject: flushingMets },
+    );
+    expect(v).toEqual({ ok: true });
+  });
+
+  it('still catches a third team by its nickname when its city does not match', () => {
+    // The same bug weakened this check: the Yankees were looked up as "New York Yankees", so a
+    // bare "Yankees" slipped past it. The proper-noun rule would still have caught it; this one
+    // now does too.
+    const bronxYankees: TeamName = { name: 'New York Yankees', city: 'Bronx', nickname: 'Yankees' };
+    const v = validateStoryline('The Phillies have won 5 straight, like the Yankees.', facts, {
+      ...ctx,
+      league: [...league, bronxYankees],
+    });
+    expect(v).toMatchObject({ ok: false });
+    expect(v.ok ? '' : v.reason).toMatch(/Yankees/);
+  });
+
+  it('accepts a nickname that is not part of the full name', () => {
+    const dbacks: TeamName = { name: 'Arizona Diamondbacks', city: 'Phoenix', nickname: 'D-backs' };
+    const v = validateStoryline(
+      'The D-backs have won 5 straight.',
+      { streak: 5 },
+      {
+        teams: [dbacks, phillies],
+        league: [dbacks, phillies],
+        subject: dbacks,
       },
     );
     expect(v).toEqual({ ok: true });

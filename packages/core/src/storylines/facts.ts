@@ -32,14 +32,15 @@ export interface TeamFacts {
   /** Whether this team is at home in the upcoming game. */
   atHome: boolean;
   season: number;
+  /** The regular season record, which is what a fan means by "record". Never includes October. */
   seasonRecord: WinLossRecord;
-  /** Positive for a winning streak, negative for a losing one, 0 when there is none. */
+  /** Positive for a winning streak, negative for a losing one, 0 when there is none or it is 1. */
   streak: number;
   /** Record over the team's last ten decided games this season. Absent before ten games. */
   lastTen?: WinLossRecord;
   /** This season's record at home, or on the road, matching where this game is. */
   venueRecord: WinLossRecord;
-  /** This season's record against today's opponent. Absent when they have not met. */
+  /** This regular season's record against today's opponent. Absent when they have not met. */
   vsOpponent?: WinLossRecord;
   /** The most recent final between these two teams, in any season. */
   lastMeeting?: {
@@ -97,6 +98,11 @@ export function currentStreak(
   return kind === 'loss' ? -n : n;
 }
 
+/** A streak of one is reported as none. */
+export function meaningfulStreak(n: number): number {
+  return Math.abs(n) >= 2 ? n : 0;
+}
+
 /**
  * Facts for one side of an upcoming game, from games strictly before it.
  *
@@ -121,8 +127,19 @@ export function teamFacts(
     .filter(isFinal)
     .sort(byRecent);
 
+  // Two different windows, because fans mean two different things.
+  //
+  // A RECORD is the regular season. "105-73" is what you get by adding a team's postseason games
+  // to its regular season, and it is a number no fan would recognise: the 2025 Dodgers were 93-69.
+  // The first real World Series run stated exactly that, every digit of it in the facts, which is
+  // why the validator could not catch it. Records, the home or road split, the last ten and the
+  // season series are therefore regular season only.
+  //
+  // A STREAK and the LAST MEETING are not seasons, they are sequences, and a winning run that
+  // carries into October is still one run. Those use every non-preseason final.
   const thisSeason = involving.filter((g) => g.season === game.season);
-  const record = tally(thisSeason.map((g) => resultFor(g, teamId)));
+  const regular = thisSeason.filter((g) => g.gameType === 'regular');
+  const record = tally(regular.map((g) => resultFor(g, teamId)));
 
   const facts: TeamFacts = {
     team: names.team,
@@ -130,15 +147,17 @@ export function teamFacts(
     atHome,
     season: game.season,
     seasonRecord: record,
-    streak: currentStreak(thisSeason, teamId),
+    // One game is not a streak. Both World Series storylines reached for "a 1-game winning
+    // streak" when it was offered, so a run only becomes a fact at two.
+    streak: meaningfulStreak(currentStreak(thisSeason, teamId)),
     venueRecord: tally(
-      thisSeason
+      regular
         .filter((g) => (atHome ? g.homeTeamId === teamId : g.awayTeamId === teamId))
         .map((g) => resultFor(g, teamId)),
     ),
   };
 
-  const decided = thisSeason.filter((g) => {
+  const decided = regular.filter((g) => {
     const r = resultFor(g, teamId);
     return r === 'win' || r === 'loss';
   });
@@ -146,7 +165,8 @@ export function teamFacts(
     facts.lastTen = tally(decided.slice(0, 10).map((g) => resultFor(g, teamId)));
   }
 
-  const vs = thisSeason.filter((g) => g.homeTeamId === opponentId || g.awayTeamId === opponentId);
+  // The postseason series between them is significance.ts's to state, not this.
+  const vs = regular.filter((g) => g.homeTeamId === opponentId || g.awayTeamId === opponentId);
   if (vs.length > 0) facts.vsOpponent = tally(vs.map((g) => resultFor(g, teamId)));
 
   const last = involving.find((g) => g.homeTeamId === opponentId || g.awayTeamId === opponentId);

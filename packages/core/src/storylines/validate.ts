@@ -26,6 +26,15 @@ export interface TeamName {
   name: string;
   /** "Philadelphia". May be null for teams whose name does not start with a city. */
   city: string | null;
+  /**
+   * "Mets". Pass it whenever it is known, which is always, from `teams.nickname`.
+   *
+   * Deriving it by stripping the city off the name is only a fallback, and it fails for nine MLB
+   * teams whose `city` is not the start of their name: the Mets are in Flushing, the Yankees in
+   * the Bronx, the Rays in St. Petersburg. Without this the validator rejected "Mets look to snap a
+   * 4-game losing streak", a correct sentence, for not naming the Mets.
+   */
+  nickname?: string | null;
 }
 
 export interface ValidationContext {
@@ -163,13 +172,26 @@ const UNSUPPORTED = [
   /\bstandings\b/i,
 ];
 
+/**
+ * Numbers a fact states by its name rather than its value. `lastTen` holds a record, but the
+ * record is OF the last ten games, so "8-2 in their last 10" states nothing that is not there.
+ * The first World Series run rejected exactly that correct sentence.
+ */
+const IMPLIED_BY_KEY: Record<string, number> = { lastTen: 10 };
+
 /** Numeric leaves anywhere in the facts, as absolute values: a streak of -3 allows "3". */
 export function allowedNumbers(facts: unknown): Set<number> {
   const out = new Set<number>();
   const walk = (v: unknown) => {
     if (typeof v === 'number' && Number.isFinite(v)) out.add(Math.abs(v));
     else if (Array.isArray(v)) v.forEach(walk);
-    else if (v && typeof v === 'object') Object.values(v).forEach(walk);
+    else if (v && typeof v === 'object') {
+      for (const [key, child] of Object.entries(v)) {
+        const implied = IMPLIED_BY_KEY[key];
+        if (implied !== undefined && child != null) out.add(implied);
+        walk(child);
+      }
+    }
   };
   walk(facts);
   return out;
@@ -187,6 +209,7 @@ export function numbersIn(text: string): number[] {
 }
 
 function nickname(t: TeamName): string {
+  if (t.nickname) return t.nickname;
   return t.city && t.name.startsWith(t.city) ? t.name.slice(t.city.length).trim() : t.name;
 }
 

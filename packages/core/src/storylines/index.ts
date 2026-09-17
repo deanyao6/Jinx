@@ -1,6 +1,7 @@
 export {
   currentStreak,
   hasSomethingToSay,
+  meaningfulStreak,
   teamFacts,
   type ScheduleGame,
   type TeamFacts,

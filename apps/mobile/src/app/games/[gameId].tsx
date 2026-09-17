@@ -18,6 +18,7 @@ import { usePledgeForGame } from '@/features/checkin/queries';
 import { notablePlayers, othersLine } from '@/features/games/notable';
 import { useGame, useGameAppearances, useGameEvents } from '@/features/games/queries';
 import { useGameStorySteps } from '@/features/relive/queries';
+import { storylineCards, useStorylines } from '@/features/storylines/queries';
 import {
   doubleheaderLabel,
   formatGameDateLong,
@@ -44,6 +45,8 @@ export default function GameDetailScreen() {
   const pledge = usePledgeForGame(gameId);
   // Relive only exists for a game whose play-by-play has been turned into story steps.
   const story = useGameStorySteps(gameId);
+  // Pregame only: once a game is final, Relive tells its story instead.
+  const storylines = useStorylines(gameId);
   const remove = useDeleteAttendance();
   const [openedAt] = useState(() => Date.now());
 
@@ -358,6 +361,34 @@ export default function GameDetailScreen() {
           />
         </Card>
       )}
+
+      {g.status !== 'final' && storylines.data && storylines.data.length > 0 ? (
+        <Card label="Storylines">
+          {storylineCards(storylines.data, {
+            home: g.home?.id ?? null,
+            away: g.away?.id ?? null,
+          }).map((card, i) => (
+            <View
+              key={card.key}
+              style={
+                i > 0
+                  ? {
+                      borderTopWidth: 1,
+                      borderTopColor: c.line,
+                      paddingTop: theme.spacing.sm,
+                      marginTop: theme.spacing.sm,
+                    }
+                  : null
+              }
+            >
+              <Text variant="body">{card.text}</Text>
+              <Text variant="label" color="muted" style={{ marginTop: 4 }}>
+                {card.source}
+              </Text>
+            </View>
+          ))}
+        </Card>
+      ) : null}
 
       {/*
         Relive and the stadium guide had no entry point anywhere in the app: both routes

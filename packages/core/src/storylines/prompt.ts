@@ -23,6 +23,7 @@ export const STORYLINE_SYSTEM = [
   '- Do not claim anything about clinching, elimination, playoff races, injuries, rivalries, or history.',
   '- One sentence, under 140 characters, plain and specific. No hype words.',
   '- Never use an em dash. Use a comma instead.',
+  '- Write a score with the higher number first, as fans do: "lost 6-1", never "lost 1-6".',
   '',
   'Pick the single most interesting fact, or two that belong together, rather than listing several.',
 ].join('\n');

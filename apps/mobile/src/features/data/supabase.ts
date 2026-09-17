@@ -598,6 +598,10 @@ export function storylineSource(source: string): string {
       return 'OFFICIAL INJURY REPORT';
     case 'probable_starter':
       return 'PROBABLE STARTERS';
+    // The one storyline about the game itself: a postseason game or an opener, both read straight
+    // off the schedule (SPEC 6.18, as narrowed 2026-09-17).
+    case 'schedule':
+      return 'FROM THE SCHEDULE';
     default:
       return source.replace(/_/g, ' ').toUpperCase();
   }
