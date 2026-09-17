@@ -10,6 +10,7 @@ import { PickRow } from '@/features/account/ui/PickRow';
 import { SettingsFrame } from '@/features/account/ui/SettingsFrame';
 import { useFavoritePlayers, useToggleFavoritePlayer } from '@/features/players/queries';
 import { useFavoriteTeams, useSetFavoriteTeams } from '@/features/profile/queries';
+import { ThemeTeamPicker } from '@/features/teams/ui/ThemeTeamPicker';
 import { sportLabel } from '@/lib/format';
 import { TeamTheme } from '@/theme/reference/TeamTheme';
 
@@ -33,7 +34,8 @@ const TABS: { key: Tab; label: string }[] = [
  * only ever turns things off.
  *
  * Each team is filled in its own colours, which is the point of the page: this is where the
- * colour of the rest of the app is chosen.
+ * colour of the rest of the app is chosen. With two or more teams, "App colour" under the list
+ * picks which of them the app wears (`features/teams/themeStore.ts`).
  */
 export default function FavoritesRoute() {
   const params = useLocalSearchParams<{ tab?: string }>();
@@ -86,6 +88,7 @@ export default function FavoritesRoute() {
               </TeamTheme>
             ))
           )}
+          <ThemeTeamPicker teams={teamList} />
         </>
       ) : (
         <>

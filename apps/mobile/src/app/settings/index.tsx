@@ -38,7 +38,7 @@ export function settingsRows(opts: { forwarding: boolean }): SettingsRow[] {
     },
     {
       title: 'Favorites',
-      meta: 'Your teams and players',
+      meta: 'Your teams, players and app color',
       href: '/settings/favorites',
       icon: 'i-spark',
     },
