@@ -56,8 +56,14 @@ export function isLocalHost(url: string): boolean {
 
 export function assertEnv(): void {
   if (!env.supabaseUrl || !env.supabaseAnonKey) {
+    // Two different fixes, because there are two different causes, and the advice for one is
+    // useless for the other. Locally the values come from apps/mobile/.env. In an EAS build
+    // they cannot: .env is gitignored, so it is never uploaded, and the values have to be set
+    // as EAS environment variables on the profile's environment instead.
     throw new Error(
-      'Missing EXPO_PUBLIC_SUPABASE_URL or EXPO_PUBLIC_SUPABASE_ANON_KEY. Copy apps/mobile/.env.example to .env.',
+      __DEV__
+        ? 'Missing EXPO_PUBLIC_SUPABASE_URL or EXPO_PUBLIC_SUPABASE_ANON_KEY. Copy apps/mobile/.env.example to .env.'
+        : 'Missing EXPO_PUBLIC_SUPABASE_URL or EXPO_PUBLIC_SUPABASE_ANON_KEY. This build shipped without them: .env is gitignored and is not uploaded to EAS. Set them with `eas env:create production --name ... --value ...` and build again. See docs/deploy.md.',
     );
   }
   // __DEV__ is false in a release build, which is what TestFlight ships.

@@ -223,22 +223,33 @@ Section 3 above. Enable Apple, put `com.deanyao.jinx` in Client IDs, save. Nothi
 
 Without this the app builds and installs and then cannot sign anybody in.
 
-## 2. Point the build at the hosted project  (either of us)
+## 2. Environment variables  (done, but understand it)
 
-`EXPO_PUBLIC_*` values are inlined into the bundle at build time, and `apps/mobile/.env` points at
-the local stack. `assertEnv()` will now crash a release build that still does, on purpose, but it
-is better not to get that far:
+**`apps/mobile/.env` is never part of an EAS build.** It is gitignored, EAS uploads the git
+project, and so the build sees none of it. Editing `.env` before building does nothing at all;
+the first build here was started without this and would have installed and then crashed on
+launch, which is exactly what EAS's own line meant:
 
 ```
-# apps/mobile/.env
-EXPO_PUBLIC_SUPABASE_URL=https://vekdufflzklfxljqufbq.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=<the anon key from `npx supabase projects api-keys`>
+No environment variables with visibility "Plain text" and "Sensitive" found
+for the "production" environment on EAS.
 ```
 
-Put the local values back afterwards, or local development talks to production.
+The values live on EAS instead, per environment, and are already set:
 
-Better, once this stops being a one-off: move them to EAS environment variables so the profile
-decides, and `.env` stays local-only.
+```
+cd apps/mobile
+eas env:list production
+#   EXPO_PUBLIC_SUPABASE_URL=https://vekdufflzklfxljqufbq.supabase.co
+#   EXPO_PUBLIC_SUPABASE_ANON_KEY=<anon>
+#   EXPO_PUBLIC_INBOUND_EMAIL_DOMAIN=in.example.com
+```
+
+`plaintext` visibility is correct for all three: `EXPO_PUBLIC_*` values are compiled into the
+bundle and are public by design (SPEC.md Section 3). Nothing secret may be added here.
+
+`.env` keeps pointing at the local stack, which is what local development wants. The two no
+longer interfere, so there is nothing to put back after a build.
 
 ## 3. Build  (Dean, interactive Apple login)
 
