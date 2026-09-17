@@ -302,10 +302,38 @@ Sign in with Apple creates a **new** account, with its own user id. The three ga
 in a different database. Either log them again on the phone, which also exercises the logging
 flow, or say so and they can be copied across once the new user id exists.
 
+## Storylines
+
+Deployed to the hosted project. Internal only, so it is called with both the legacy service role
+JWT (the gateway requires one) and `CRON_SECRET` (the function requires that). See
+docs/verification.md for why the service role key alone is refused on this project.
+
+```
+# One or more games, by id
+curl -X POST https://vekdufflzklfxljqufbq.supabase.co/functions/v1/storylines \
+  -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "x-cron-secret: $CRON_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"game_ids":["<game id>"]}'
+
+# Every game someone is going to that starts within the window
+  -d '{"upcoming_hours":36}'
+```
+
+The response carries a `log` of every attempt, including each rejected sentence and the reason,
+which is the first place to look when a game has fewer storylines than expected.
+
+SPEC 6.18 wants a run the morning of each game and a refresh an hour before. Neither is scheduled
+yet: `call_edge_function` has to learn to send `x-cron-secret` first (docs/verification.md).
+
+`CRON_SECRET` is set on the hosted project. Its value is not in the repo; rotate it with
+`npx supabase secrets set CRON_SECRET=$(openssl rand -hex 32)`, and update anything that calls
+the internal functions.
+
 ## Not done, and not needed for a UI look
 
-- **Edge Function secrets** (`ANTHROPIC_API_KEY`, `INBOUND_EMAIL_SECRET`, `CRON_SECRET`) and
-  `npm run functions:deploy`. Ticket parsing and email import stay dark without them.
+- **`INBOUND_EMAIL_SECRET`** and the email worker. `ANTHROPIC_API_KEY` and `CRON_SECRET` are set;
+  email import still needs its own secret and a domain.
 - **Resend.** Email OTP is unusable on the built-in sender (2 per hour). Sign in with Apple does
   not need it.
 - **Game detail on the hosted project.** `game_wp_timeline` and `game_story_steps` are filled per

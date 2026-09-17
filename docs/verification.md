@@ -160,3 +160,58 @@ scorer and all 10 resolved — Swift, Santos, Elliott, Brown, Monangai, Kmet.
 
 Existing `game_events` rows are NOT backfilled. Attribution applies as games are ingested;
 re-running `ingest/src/nfl/run.ts` for a season rewrites that season's moments with players.
+
+## Storylines against ground truth (SPEC 6.18) — VERIFIED 2026-09-17
+
+Run on the hosted project with `claude-haiku-4-5`, then every stored sentence read against the
+`games` table. "Accepted by the validator" was not treated as "correct": the validator checks that
+each number exists in the facts, not which field it came from, so the output was checked by hand.
+
+Games: 2025 World Series Game 7 (Dodgers at Blue Jays, series 3-3) and Phillies at Mets on
+2026-09-17 and 2026-09-18.
+
+Final output, all five correct:
+
+| Game | Storyline | Checked against |
+|---|---|---|
+| WS G7 | Dodgers and Blue Jays are tied 3-3 in their postseason series. | Six prior postseason finals between them |
+| WS G7 | Blue Jays are 54-27 at home this season as they host the Dodgers, whom they lost to 1-3 most recently. | 81 regular-season home games |
+| WS G7 | Dodgers visit Toronto riding 8 wins in last 10 games, having won 2 of 3 meetings this season. | The three August 2025 games: won 5-1, won 9-1, lost 4-5 |
+| PHI at NYM | Mets host Phillies after winning 6-1 in their last meeting, but sit on a 4-game losing streak at home where they are 34-43. | Streak -4, home 34-43 |
+| PHI at NYM | Phillies visit Mets after losing 6-1 in their last meeting. | Last meeting 1-6 |
+
+What the first runs got wrong, and where each was fixed:
+
+- **Records included the postseason** (`facts.ts`). "105-73 record" for the 2025 Dodgers was 93-69
+  plus 12-4. Every digit was a real fact, so validation could not catch it.
+- **Nine MLB teams could not be named** (`validate.ts`). Their `city` is not the start of their
+  name: Mets/Flushing, Yankees/Bronx, Rays/St. Petersburg, Rangers/Arlington, Angels/Anaheim,
+  Twins/Minneapolis, Rockies/Denver, D-backs/Phoenix, Athletics/Sacramento. Fixed by passing
+  `teams.nickname` rather than deriving it.
+- **"Last 10" was rejected for stating 10.** `lastTen` implies it.
+- **"A 1-game winning streak."** A streak is only a fact at two or more.
+
+Known soft spots, deliberately left: the validator guarantees numbers, team names, invented proper
+nouns and a list of unsupportable claims (clinch, standings, injuries, history, "first time"). It
+does not judge implication or tone. "Looking to bounce back" was written for a team that had won
+its last game, because it lost its last meeting with this opponent; true, and slightly misleading.
+Score order is asked for in the prompt ("6-1", not "1-6") but not enforced.
+
+## Supabase new key format breaks internal auth — FOUND 2026-09-17
+
+This project was created with Supabase's new API key format. The Edge Function runtime injects
+`SUPABASE_SERVICE_ROLE_KEY` in that format, so it never string-equals the legacy JWT that
+`call_edge_function` sends from vault. `authorizeInternal` in `_shared/db.ts` therefore refused
+**every** internal call: `evaluate-goals`, `send-push`, `mlb-sync`, `cleanup-imports`, and
+`storylines`. It had not surfaced only because nothing was deployed or scheduled.
+
+`CRON_SECRET` is the fix that does not depend on key format, and `authorizeInternal` already
+accepted it. It is now set on the hosted project. Two things follow:
+
+1. The Supabase **gateway** still requires a valid JWT before a request reaches the function, so a
+   caller sends both: `Authorization: Bearer <legacy service role JWT>` for the gateway and
+   `x-cron-secret: <CRON_SECRET>` for the function. The secret alone gets
+   `UNAUTHORIZED_NO_AUTH_HEADER`.
+2. `call_edge_function` in `20260915000300_cron.sql` sends only the bearer token. Before any cron
+   job is scheduled on the hosted project it needs to send `x-cron-secret` too, read from vault
+   like the key. Not done yet.

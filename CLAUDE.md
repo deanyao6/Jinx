@@ -112,6 +112,7 @@ npx tsx ingest/src/mlb/detail.ts --pending                 # MLB details for att
 npx tsx ingest/src/nfl/run.ts --from 2000 --to 2026        # NFL schedules, play-by-play, appearances
 npx tsx ingest/src/mlb/relive.ts --attended                 # MLB win probability + story steps
 npx tsx ingest/src/nfl/relive.ts --attended                # NFL ditto, from the nflverse play-by-play
+# storylines: an Edge Function, not a script; see docs/deploy.md for the curl
 npx tsx ingest/src/elo/run.ts --sport mlb                  # Elo ratings + frozen win probabilities
 ```
 
