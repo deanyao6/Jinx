@@ -12,7 +12,14 @@
  * Existing stories are left alone unless --game names one or --force is passed, so a rerun
  * is cheap.
  */
-import { buildPbpStorySteps, parsePbpWinProbability, type PbpWpRow } from '@jinx/core';
+import {
+  buildPbpStorySteps,
+  markReliveChecked,
+  parsePbpWinProbability,
+  reliveTargets,
+  writeRelive,
+  type PbpWpRow,
+} from '@jinx/core';
 
 import { fetchAsset, openAsset, pbpAsset } from './assets.js';
 import { readCsv, toPbpRow } from './csv.js';
@@ -46,26 +53,21 @@ async function targets(db: Db): Promise<GameRow[]> {
   const select =
     'id, provider_game_id, season, home_score, away_score, home:home_team_id(name), away:away_team_id(name)';
 
-  // The attended set is resolved FIRST and narrows the games query, rather than being
-  // filtered out of it afterwards. PostgREST returns at most 1000 rows per request and
-  // there are 7,289 NFL games, so reading games first and filtering in memory silently
-  // missed anything outside that first page — which is exactly what happened.
+  // The attended set comes from one server-side function, games_needing_relive, never from
+  // "read attendances, then filter in memory": PostgREST returns at most 1000 rows per request,
+  // and that pattern silently dropped a real game once. The function also skips games that
+  // already have a story, so a nightly run with nothing new downloads nothing.
   if (!onlyGame && !season) {
-    const { data: attended, error: attendedError } = await db
-      .from('attendances')
-      .select('game_id')
-      .eq('status', 'attended');
-    if (attendedError) throw attendedError;
-    const ids = [...new Set((attended ?? []).map((a) => (a as { game_id: string }).game_id))];
-    if (ids.length === 0) return [];
-    const { data, error } = await db
-      .from('games')
-      .select(select)
-      .eq('provider', 'nflverse')
-      .eq('status', 'final')
-      .in('id', ids);
-    if (error) throw error;
-    return (data ?? []) as unknown as GameRow[];
+    const rows = await reliveTargets(db, 'nflverse', 500);
+    return rows.map((r) => ({
+      id: r.game_id,
+      provider_game_id: r.provider_game_id,
+      season: r.season,
+      home_score: r.home_score,
+      away_score: r.away_score,
+      home: { name: r.home_name },
+      away: { name: r.away_name },
+    }));
   }
 
   let query = db.from('games').select(select).eq('provider', 'nflverse').eq('status', 'final');
@@ -135,9 +137,10 @@ async function main() {
   const onlyGame = arg('game');
   const db = createDb();
 
+  await settleQueue(db);
   const games = await targets(db);
   if (games.length === 0) {
-    console.log('no matching final NFL games');
+    console.log('no final NFL games are missing a story');
     return;
   }
 
@@ -181,6 +184,9 @@ async function main() {
       const points = parsePbpWinProbability(rows);
       if (points.length === 0) {
         console.log(`  ${g.provider_game_id}: no win probability in the play-by-play, skipped`);
+        // Looked, and there is nothing to build. Recent games are still retried for two weeks
+        // (games_needing_relive), because nflverse publishes a game's plays a day or so late.
+        await markReliveChecked(db, g.id);
         continue;
       }
       const steps = buildPbpStorySteps(rows, points, {
@@ -190,38 +196,19 @@ async function main() {
         homeName: g.home?.name ?? 'Home',
       });
 
-      // Steps first: they reference (game_id, wp_seq).
-      await db.from('game_story_steps').delete().eq('game_id', g.id);
-      await db.from('game_wp_timeline').delete().eq('game_id', g.id);
-      const { error: wpError } = await db.from('game_wp_timeline').insert(
-        points.map((p) => ({
-          game_id: g.id,
-          seq: p.seq,
-          period: p.period,
-          half: p.half,
-          home_wp: p.homeWp,
-          occurred_at: p.occurredAt,
-        })),
-      );
-      if (wpError) throw wpError;
       const players = await resolvePlayers(
         db,
         steps.map((s) => s.scorerProviderId).filter((id): id is string => !!id),
       );
-      const { error: stepError } = await db.from('game_story_steps').insert(
+      await writeRelive(
+        db,
+        g.id,
+        points,
         steps.map((s) => ({
-          game_id: g.id,
-          seq: s.seq,
-          wp_seq: s.wpSeq,
-          away_score: s.awayScore,
-          home_score: s.homeScore,
-          label: s.label,
-          text: s.text,
-          scorer_player_id: s.scorerProviderId ? (players.get(s.scorerProviderId) ?? null) : null,
-          scorer_name: s.scorerName,
+          ...s,
+          scorerPlayerId: s.scorerProviderId ? (players.get(s.scorerProviderId) ?? null) : null,
         })),
       );
-      if (stepError) throw stepError;
       done += 1;
       const named = steps.filter((s) => s.scorerName).length;
       console.log(
@@ -230,6 +217,13 @@ async function main() {
     }
   }
   console.log(`done: ${done} game(s)`);
+}
+
+/** NFL detail arrives in bulk, so queue rows for NFL games are closed here rather than one by one. */
+async function settleQueue(db: Db): Promise<void> {
+  const { data, error } = await db.rpc('detail_queue_settle');
+  if (error) throw new Error(`detail_queue_settle: ${error.message}`);
+  console.log(`detail queue: ${Number(data ?? 0)} row(s) closed`);
 }
 
 main().catch((e) => {

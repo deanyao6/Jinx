@@ -23,6 +23,10 @@ jobs:
         run: npx tsx ingest/src/mlb/backfill.ts --from $(date +%Y) --to $(date +%Y) --force
       - name: MLB details for attended games lacking detail
         run: npx tsx ingest/src/mlb/detail.ts --pending --limit 300
+      # The scheduled path is the mlb-sync Edge Function, every 15 minutes. This is the net under
+      # it: if pg_cron or the function is down, stories still land within a day.
+      - name: MLB Relive stories for attended games
+        run: npx tsx ingest/src/mlb/relive.ts --attended
       - name: Elo (MLB)
         run: npx tsx ingest/src/elo/run.ts --sport mlb
       - name: Elo (NFL)

@@ -4,6 +4,7 @@
  *   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... \
  *     npx tsx ingest/src/nfl/run.ts --seasons 2023,2024
  *     npx tsx ingest/src/nfl/run.ts --from 2000 --to 2026 [--skip-schedule] [--skip-detail] [--force]
+ *     npx tsx ingest/src/nfl/run.ts --queued     # the current season, plus seasons of queued games
  *
  * Schedule: games.csv is upserted for every season from 2000 regardless of --seasons (cheap, and it
  * keeps scores and kickoff times current). Detail: for each requested season the pbp csv.gz is
@@ -54,6 +55,8 @@ interface Args {
   skipSchedule: boolean;
   skipDetail: boolean;
   force: boolean;
+  /** Also ingest the seasons of queued NFL games that lack detail. */
+  queued: boolean;
 }
 
 function argValue(argv: string[], name: string): string | undefined {
@@ -84,7 +87,32 @@ export function parseArgs(argv: string[]): Args {
     skipSchedule: argv.includes('--skip-schedule'),
     skipDetail: argv.includes('--skip-detail'),
     force: argv.includes('--force'),
+    queued: argv.includes('--queued'),
   };
+}
+
+/** "2019_07_PHI_DAL" -> 2019. nflverse game ids always lead with the season. */
+export function seasonOfGameId(providerGameId: string): number | null {
+  const season = Number(providerGameId.slice(0, 4));
+  return Number.isInteger(season) && season >= 1999 ? season : null;
+}
+
+/**
+ * Seasons that hold a queued NFL game still lacking detail (SPEC 4.7). A user who logs a game
+ * from a season nobody has ingested gets it overnight, instead of only ever the current season.
+ */
+export async function queuedSeasons(db: Db): Promise<number[]> {
+  const { data, error } = await db.rpc('detail_queue_pending', {
+    p_provider: 'nflverse',
+    p_limit: 500,
+  });
+  if (error) throw new Error(`detail_queue_pending: ${error.message}`);
+  const seasons = new Set<number>();
+  for (const row of (data ?? []) as { provider_game_id: string }[]) {
+    const season = seasonOfGameId(row.provider_game_id);
+    if (season !== null) seasons.add(season);
+  }
+  return [...seasons].sort((a, b) => a - b);
 }
 
 const log = (line: string): void => console.log(line);
@@ -226,6 +254,11 @@ async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
   if (args.seasons.length === 0) throw new Error('no seasons requested');
   const db = createDb();
+  if (args.queued) {
+    const extra = (await queuedSeasons(db)).filter((s) => !args.seasons.includes(s));
+    if (extra.length > 0) log(`queued games add season(s): ${extra.join(', ')}`);
+    args.seasons.push(...extra);
+  }
   const ctx: GameWriteContext = {
     teamMap: await loadTeamMap(db, 'nflverse'),
     venueMaps: await loadVenueMaps(db),

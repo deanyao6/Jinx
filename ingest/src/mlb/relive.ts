@@ -2,96 +2,98 @@
  * Fills game_wp_timeline and game_story_steps for games a user attended (SPEC 4.3b, 6.19).
  *
  * MLB publishes per-play win probability at /v1/game/{gamePk}/winProbability, verified in
- * docs/verification.md, so the line under Relive is real rather than modelled. Runs over
- * games that already have detail and no story yet.
+ * docs/verification.md, so the line under Relive is real rather than modelled.
  *
- *   npx tsx ingest/src/mlb/relive.ts --attended
- *   npx tsx ingest/src/mlb/relive.ts --game <gamePk>
+ * The scheduled path is the `mlb-sync` Edge Function, which runs the same code every 15
+ * minutes. This script is the manual and catch-up route:
+ *
+ *   npx tsx ingest/src/mlb/relive.ts --attended [--limit 300]   # attended games with no story
+ *   npx tsx ingest/src/mlb/relive.ts --game <gamePk>            # rebuild one game
+ *   npx tsx ingest/src/mlb/relive.ts --rebuild                  # rebuild every existing MLB story,
+ *                                                               # after a change to how steps are built
  */
-import { MlbClient, buildStorySteps, parseWinProbability } from '@jinx/core';
+import { MlbClient, buildMlbRelive, reliveTargets, selectAll, type ReliveTarget } from '@jinx/core';
 
-import { createDb } from '../db.js';
+import { createDb, type Db } from '../db.js';
 
-type GameRow = {
-  id: string;
-  provider_game_id: string;
-  home_score: number | null;
-  away_score: number | null;
-  home: { name: string } | null;
-  away: { name: string } | null;
-};
+function arg(name: string): string | null {
+  const i = process.argv.indexOf(`--${name}`);
+  return i >= 0 && process.argv[i + 1] ? (process.argv[i + 1] as string) : null;
+}
+
+const GAME_COLUMNS =
+  'id, provider_game_id, season, home_score, away_score, home:home_team_id(name), away:away_team_id(name)';
+
+/** One game by gamePk, or, with no gamePk, every MLB game that already has a story. */
+async function existingGames(db: Db, gamePk: string | null): Promise<ReliveTarget[]> {
+  let data: unknown[];
+  if (gamePk) {
+    const res = await db
+      .from('games')
+      .select(GAME_COLUMNS)
+      .eq('provider', 'mlb')
+      .eq('status', 'final')
+      .eq('provider_game_id', gamePk);
+    if (res.error) throw new Error(res.error.message);
+    data = res.data ?? [];
+  } else {
+    // Paged and filtered on the server: a plain select stops at 1000 rows without saying so.
+    const withStory = await selectAll<{ game_id: string }>(db, 'game_story_steps', 'game_id', (q) =>
+      q.eq('seq', 1),
+    );
+    data = [];
+    const ids = withStory.map((r) => r.game_id);
+    for (let i = 0; i < ids.length; i += 200) {
+      const res = await db
+        .from('games')
+        .select(GAME_COLUMNS)
+        .eq('provider', 'mlb')
+        .eq('status', 'final')
+        .in('id', ids.slice(i, i + 200));
+      if (res.error) throw new Error(res.error.message);
+      data.push(...(res.data ?? []));
+    }
+  }
+  type Row = Omit<ReliveTarget, 'game_id' | 'home_name' | 'away_name'> & {
+    id: string;
+    home: { name: string } | null;
+    away: { name: string } | null;
+  };
+  return ((data ?? []) as unknown as Row[]).map((g) => ({
+    game_id: g.id,
+    provider_game_id: g.provider_game_id,
+    season: g.season,
+    home_score: g.home_score,
+    away_score: g.away_score,
+    home_name: g.home?.name ?? 'Home',
+    away_name: g.away?.name ?? 'Away',
+  }));
+}
 
 async function main() {
-  const args = process.argv.slice(2);
-  const onlyGame = args.includes('--game') ? args[args.indexOf('--game') + 1] : null;
+  const onlyGame = arg('game');
   const db = createDb();
   const client = new MlbClient();
-
-  let query = db
-    .from('games')
-    .select(
-      'id, provider_game_id, home_score, away_score, home:home_team_id(name), away:away_team_id(name)',
-    )
-    .eq('provider', 'mlb')
-    .eq('status', 'final')
-    .not('detail_ingested_at', 'is', null);
-  if (onlyGame) query = query.eq('provider_game_id', onlyGame);
-
-  const { data, error } = await query;
-  if (error) throw error;
-  const games = (data ?? []) as unknown as GameRow[];
+  const rebuild = process.argv.includes('--rebuild');
+  const games =
+    onlyGame || rebuild
+      ? await existingGames(db, onlyGame)
+      : await reliveTargets(db, 'mlb', Number(arg('limit') ?? '300'));
   if (games.length === 0) {
-    console.log('no final games with detail; run ingest/src/mlb/detail.ts first');
+    console.log('no attended final MLB games are missing a story');
     return;
   }
 
   let done = 0;
   for (const g of games) {
-    // The shared Db interface has no count(); one row is enough to know a story exists.
-    const existing = await db.from('game_story_steps').select('seq').eq('game_id', g.id).limit(1);
-    if (!onlyGame && (existing.data?.length ?? 0) > 0) continue;
-
-    const entries = await client.getJson<unknown[]>(`v1/game/${g.provider_game_id}/winProbability`);
-    const points = parseWinProbability(entries as never[]);
-    if (points.length === 0) {
+    const built = await buildMlbRelive(db, client, g);
+    if (!built) {
       console.log(`${g.provider_game_id}: no win probability published, skipped`);
       continue;
     }
-    const steps = buildStorySteps(entries as never[], points, {
-      awayScore: g.away_score ?? 0,
-      homeScore: g.home_score ?? 0,
-      awayName: g.away?.name ?? 'Away',
-      homeName: g.home?.name ?? 'Home',
-    });
-
-    // Points first: story steps reference (game_id, wp_seq).
-    await db.from('game_story_steps').delete().eq('game_id', g.id);
-    await db.from('game_wp_timeline').delete().eq('game_id', g.id);
-    const wpRows = points.map((p) => ({
-      game_id: g.id,
-      seq: p.seq,
-      period: p.period,
-      half: p.half,
-      home_wp: p.homeWp,
-      occurred_at: p.occurredAt,
-    }));
-    const { error: wpError } = await db.from('game_wp_timeline').insert(wpRows);
-    if (wpError) throw wpError;
-    const { error: stepError } = await db.from('game_story_steps').insert(
-      steps.map((s) => ({
-        game_id: g.id,
-        seq: s.seq,
-        wp_seq: s.wpSeq,
-        away_score: s.awayScore,
-        home_score: s.homeScore,
-        label: s.label,
-        text: s.text,
-      })),
-    );
-    if (stepError) throw stepError;
     done += 1;
     console.log(
-      `${g.provider_game_id}: ${points.length} probability points, ${steps.length} story steps`,
+      `${g.provider_game_id}: ${built.points} probability points, ${built.steps} story steps`,
     );
   }
   console.log(`done: ${done} game(s)`);

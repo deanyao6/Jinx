@@ -1,10 +1,15 @@
 /**
- * delete-account: removes the caller's stored ticket images, then deletes the auth user, which
+ * delete-account: removes everything the caller stored, then deletes the auth user, which
  * cascades through every user table (SPEC.md 9, 11). Auth: the user's JWT.
+ *
+ * Storage goes first and a failure there stops the deletion. Storage objects are not reached by
+ * the cascade, so once the user row is gone nothing would ever point at a leftover ticket image
+ * or photo again; failing loudly while the account still exists lets the user simply retry.
  */
 import { createClient } from '@supabase/supabase-js';
 
 import { json } from '../_shared/db.ts';
+import { removeUserObjects, USER_BUCKETS } from '../_shared/storage.ts';
 
 Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -19,20 +24,19 @@ Deno.serve(async (req) => {
   const userId = userData.user.id;
 
   const admin = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-  const { data: paths } = await userClient.rpc('my_storage_paths');
-  const list = (paths ?? []) as string[];
-  if (list.length > 0) {
-    const { error: rmErr } = await admin.storage.from('ticket-imports').remove(list);
-    if (rmErr) console.error('storage cleanup failed', rmErr.message);
+  const removed: Record<string, number> = {};
+  try {
+    for (const bucket of USER_BUCKETS)
+      removed[bucket] = await removeUserObjects(admin, bucket, userId);
+  } catch (err) {
+    console.error('storage cleanup failed', err);
+    return json(
+      { error: 'Could not remove your stored files. Nothing was deleted; try again.' },
+      500,
+    );
   }
-  // Anything else under the user's folder (e.g. avatars) is removed too.
-  const { data: objects } = await admin.storage
-    .from('ticket-imports')
-    .list(userId, { limit: 1000 });
-  const rest = (objects ?? []).map((o) => `${userId}/${o.name}`);
-  if (rest.length > 0) await admin.storage.from('ticket-imports').remove(rest);
 
   const { error: delErr } = await admin.auth.admin.deleteUser(userId);
   if (delErr) return json({ error: delErr.message }, 500);
-  return json({ ok: true });
+  return json({ ok: true, removed });
 });

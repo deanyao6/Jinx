@@ -64,4 +64,12 @@ jobs:
         run: |
           extra=""
           if [ "$FORCE" = "true" ]; then extra="--force"; fi
-          npx tsx ingest/src/nfl/run.ts --seasons "${{ steps.seasons.outputs.seasons }}" $extra
+          npx tsx ingest/src/nfl/run.ts --seasons "${{ steps.seasons.outputs.seasons }}" --queued $extra
+
+      # SPEC 4.7 and 6.19: a logged NFL game gets its win probability line and story overnight,
+      # with nobody running a script. Reads the play-by-play the step above already cached.
+      - name: Relive stories for attended games
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npx tsx ingest/src/nfl/relive.ts --attended

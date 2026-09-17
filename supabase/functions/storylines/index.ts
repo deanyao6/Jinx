@@ -19,6 +19,8 @@
  * Body, one of:
  *   { "game_ids": ["..."] }          these games
  *   { "upcoming_hours": 36 }         games someone is going to that start within the window
+ *   { "from_hours": 1, "upcoming_hours": 1.5 }   the same, for a window that opens later than now:
+ *                                    the refresh an hour before the start (SPEC 6.18)
  */
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
@@ -131,10 +133,13 @@ async function generate(
   return null;
 }
 
-async function gamesToProcess(
-  db: MinimalDb,
-  body: { game_ids?: string[]; upcoming_hours?: number },
-): Promise<GameRow[]> {
+interface StorylinesBody {
+  game_ids?: string[];
+  upcoming_hours?: number;
+  from_hours?: number;
+}
+
+async function gamesToProcess(db: MinimalDb, body: StorylinesBody): Promise<GameRow[]> {
   if (body.game_ids?.length) {
     const { data, error } = await db
       .from('games')
@@ -147,7 +152,9 @@ async function gamesToProcess(
   // Only games someone is actually going to. Generating for every game on the schedule would cost
   // real money for storylines nobody opens.
   const hours = Math.min(Math.max(body.upcoming_hours ?? 36, 1), 168);
+  const fromHours = Math.min(Math.max(body.from_hours ?? 0, 0), hours);
   const now = new Date();
+  const from = new Date(now.getTime() + fromHours * 3_600_000);
   const until = new Date(now.getTime() + hours * 3_600_000);
   const { data: going, error: goingError } = await db
     .from('attendances')
@@ -162,8 +169,8 @@ async function gamesToProcess(
     .select(GAME_COLUMNS)
     .in('id', ids)
     .eq('status', 'scheduled')
-    .gte('scheduled_start', now.toISOString())
-    .lte('scheduled_start', until.toISOString())
+    .gte('scheduled_start', from.toISOString())
+    .lt('scheduled_start', until.toISOString())
     .limit(MAX_GAMES);
   if (error) throw new Error(error.message);
   return (data ?? []) as GameRow[];
@@ -302,7 +309,7 @@ async function processGame(
 Deno.serve(async (req) => {
   if (!authorizeInternal(req)) return json({ error: 'unauthorized' }, 401);
 
-  let body: { game_ids?: string[]; upcoming_hours?: number };
+  let body: StorylinesBody;
   try {
     body = await req.json();
   } catch {

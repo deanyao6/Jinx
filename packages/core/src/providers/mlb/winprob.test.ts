@@ -93,3 +93,57 @@ describe('buildStorySteps', () => {
     expect(steps.every((s) => seqs.has(s.wpSeq))).toBe(true);
   });
 });
+
+describe('buildStorySteps, runs that carry no RBI', () => {
+  // Braves 7, Nationals 2 on 2023-03-30. Two of the nine runs came home without an RBI: one on a
+  // double play in the 4th, one on a throwing error in the 9th. Keying steps on RBI dropped both,
+  // so the story jumped from 3-1 to 4-2 and stopped at 6-2 before a 7-2 final.
+  const raw = JSON.parse(
+    readFileSync(
+      new URL(
+        '../../../../../ingest/fixtures/mlb/winprob_718780_ATL_WSH_2023-03-30.json',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+  );
+  const pts = parseWinProbability(raw);
+  const story = buildStorySteps(raw, pts, {
+    awayScore: 7,
+    homeScore: 2,
+    awayName: 'Atlanta Braves',
+    homeName: 'Washington Nationals',
+  });
+  const scoring = story.slice(1, -1);
+
+  it('has a step for every change of score', () => {
+    expect(scoring.map((s) => `${s.awayScore}-${s.homeScore}`)).toEqual([
+      '1-0',
+      '2-0',
+      '3-0',
+      '3-1',
+      '4-1',
+      '4-2',
+      '6-2',
+      '7-2',
+    ]);
+  });
+
+  it('never skips a run: each step is the one before it plus what scored', () => {
+    let total = 0;
+    for (const s of scoring) {
+      expect(s.awayScore + s.homeScore).toBeGreaterThan(total);
+      total = s.awayScore + s.homeScore;
+    }
+    expect(total).toBe(9);
+  });
+
+  it('reaches the final score before the final step', () => {
+    expect(scoring.at(-1)).toMatchObject({ awayScore: 7, homeScore: 2 });
+  });
+
+  it('keeps the play text when the play says who scored', () => {
+    expect(scoring.at(4)?.text).toContain('grounds into a double play');
+    expect(scoring.at(4)?.label).toBe('Top 4th');
+  });
+});

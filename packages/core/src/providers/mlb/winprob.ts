@@ -81,6 +81,18 @@ export function parseWinProbability(entries: readonly RawEntry[]): WpPoint[] {
 }
 
 /**
+ * The play's own description when it says who scored. A run that comes home in the middle of a
+ * plate appearance (a wild pitch, a steal of home) is not mentioned in the appearance's result,
+ * so "strikes out swinging" alone would sit under a changed score; say what happened first.
+ */
+function scoringText(description: string | undefined, runs: number, team: string): string {
+  const text = description?.trim() ?? '';
+  if (/\bscores\b|\bhomers\b|\bhome run\b|\bgrand slam\b/i.test(text)) return text;
+  const lead = `${team} score ${runs === 1 ? 'a run' : `${runs} runs`} during the at-bat.`;
+  return text ? `${lead} ${text}` : lead;
+}
+
+/**
  * Pregame, one step per scoring play, then the final (SPEC 6.19).
  *
  * Scores come from the entries themselves rather than being accumulated, so a step always
@@ -107,20 +119,37 @@ export function buildStorySteps(
 
   // Walk entries and points together: parseWinProbability keeps their order, but drops
   // entries it could not read, so the index is not shared.
+  //
+  // A scoring play is one where the scoreboard changed, NOT one with an RBI. A run that comes
+  // home on a double play, an error, a wild pitch or a balk carries no RBI, and keying on RBI
+  // dropped those steps entirely: Braves at Nationals on 2023-03-30 jumped from 3-1 to 4-2 and
+  // ended 6-2 on a 7-2 final. The score is tracked across every entry, usable or not, so a
+  // dropped entry cannot make the next one look like it scored twice.
   let pi = 0;
+  let prevAway = 0;
+  let prevHome = 0;
   for (const e of entries) {
     const h = half(e.about?.halfInning);
     const usable = typeof e.homeTeamWinProbability === 'number' && h != null && !!e.about?.inning;
     const point = usable ? points[pi++] : undefined;
-    if (!point) continue;
-    if (!e.result?.rbi) continue;
+    const awayScore = e.result?.awayScore ?? prevAway;
+    const homeScore = e.result?.homeScore ?? prevHome;
+    const runs = awayScore - prevAway + (homeScore - prevHome);
+    const scoredForAway = awayScore > prevAway;
+    prevAway = awayScore;
+    prevHome = homeScore;
+    if (!point || runs <= 0) continue;
     steps.push({
       seq: steps.length + 1,
       wpSeq: point.seq,
-      awayScore: e.result.awayScore ?? 0,
-      homeScore: e.result.homeScore ?? 0,
+      awayScore,
+      homeScore,
       label: periodLabel(point.period, point.half),
-      text: e.result.description?.trim() || e.result.event || 'A run scored.',
+      text: scoringText(
+        e.result?.description,
+        runs,
+        scoredForAway ? final.awayName : final.homeName,
+      ),
     });
   }
 
