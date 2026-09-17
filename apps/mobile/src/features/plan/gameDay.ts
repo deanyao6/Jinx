@@ -1,5 +1,5 @@
 import type { GameDayFixture } from '@/features/data/shapes';
-import { listSentence, nickname, type TeamRef } from '@/features/data/names';
+import { listSentence, shortTeamName, type TeamRef } from '@/features/data/names';
 
 /**
  * The Plan tab, built from a game you have marked as going (SPEC.md 6.3, 6.4, 8.8.5).
@@ -171,7 +171,7 @@ export function timeline(
 
 function matchupLine(game: UpcomingGame['game'], teams?: ReadonlyMap<string, TeamRef>): string {
   const name = (t: { id: string; name: string } | null) =>
-    t ? nickname(t.name, teams?.get(t.id)?.city ?? null) : 'TBD';
+    t ? shortTeamName(t.name, teams?.get(t.id)) : 'TBD';
   return `${name(game.away)} at ${name(game.home)}`;
 }
 

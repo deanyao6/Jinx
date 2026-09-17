@@ -40,7 +40,21 @@ export const storylineKeys = {
   game: (gameId: string | undefined) => ['storylines', gameId] as const,
 };
 
-export function useStorylines(gameId: string | undefined) {
+/**
+ * An empty result is "not written yet", not an answer, and the query cache is persisted: cached
+ * for half an hour it would keep a game storyless across restarts after the storylines landed.
+ * Relive lost a game for a day exactly this way (features/relive/queries.ts).
+ */
+export function storylinesStaleTime(rows: readonly unknown[] | undefined): number {
+  return (rows?.length ?? 0) > 0 ? 30 * 60_000 : 15_000;
+}
+
+/**
+ * `poll` is for Pick a side. A walk-up check-in asks the server to write this game's storylines
+ * there and then, which takes some seconds, so the screen asks again until they arrive and then
+ * stops. Give up after five minutes: a game with nothing to say never gets any.
+ */
+export function useStorylines(gameId: string | undefined, opts: { poll?: boolean } = {}) {
   return useQuery({
     queryKey: storylineKeys.game(gameId),
     queryFn: async (): Promise<StorylineRow[]> => {
@@ -52,7 +66,12 @@ export function useStorylines(gameId: string | undefined) {
       return (data ?? []) as StorylineRow[];
     },
     enabled: !!gameId,
-    // Refreshed an hour before the start (SPEC 6.18), so an hour-old copy is never far behind.
-    staleTime: 30 * 60_000,
+    // Refreshed an hour before the start (SPEC 6.18), so a half-hour-old copy is never far behind.
+    staleTime: (query) => storylinesStaleTime(query.state.data),
+    refetchInterval: (query) => {
+      if (!opts.poll || (query.state.data?.length ?? 0) > 0) return false;
+      const waited = Date.now() - (query.state.dataUpdatedAt || Date.now());
+      return query.state.dataUpdateCount > 20 || waited > 5 * 60_000 ? false : 15_000;
+    },
   });
 }

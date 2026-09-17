@@ -12,7 +12,7 @@ import { Text } from '@/components/Text';
 import { useNavStore } from '@/features/nav/store';
 import { StepHeader } from '@/features/onboarding/StepHeader';
 import { useInboundAddress, useUpdateProfile } from '@/features/profile/queries';
-import { env } from '@/lib/env';
+import { env, features } from '@/lib/env';
 import { useTheme } from '@/theme/ThemeProvider';
 
 export default function PastGamesStep() {
@@ -97,34 +97,36 @@ export default function PastGamesStep() {
         </Card>
       </Pressable>
 
-      <Card>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <Ionicons name="mail" size={22} color={c.muted} />
-          <View style={{ flex: 1 }}>
-            <Text variant="bodyStrong" color="muted">
-              Forwarding address
-            </Text>
-            <Text variant="caption" color="muted">
-              Forward ticket emails here and we will log the game. Manage sender addresses in the
-              You tab.
-            </Text>
+      {features.forwarding ? (
+        <Card>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Ionicons name="mail" size={22} color={c.muted} />
+            <View style={{ flex: 1 }}>
+              <Text variant="bodyStrong" color="muted">
+                Forwarding address
+              </Text>
+              <Text variant="caption" color="muted">
+                Forward ticket emails here and we will log the game. Manage sender addresses in the
+                You tab.
+              </Text>
+            </View>
           </View>
-        </View>
-        {address ? (
-          <View style={{ marginTop: theme.spacing.md }}>
-            <Text variant="bodyStrong" selectable style={{ fontVariant: ['tabular-nums'] }}>
-              {address}
-            </Text>
-            <Button
-              title={copied ? 'Copied' : 'Copy address'}
-              variant="secondary"
-              small
-              onPress={copy}
-              style={{ alignSelf: 'flex-start', marginTop: theme.spacing.sm }}
-            />
-          </View>
-        ) : null}
-      </Card>
+          {address ? (
+            <View style={{ marginTop: theme.spacing.md }}>
+              <Text variant="bodyStrong" selectable style={{ fontVariant: ['tabular-nums'] }}>
+                {address}
+              </Text>
+              <Button
+                title={copied ? 'Copied' : 'Copy address'}
+                variant="secondary"
+                small
+                onPress={copy}
+                style={{ alignSelf: 'flex-start', marginTop: theme.spacing.sm }}
+              />
+            </View>
+          ) : null}
+        </Card>
+      ) : null}
 
       <View style={{ marginTop: theme.spacing.md }}>
         <Button title="Finish" onPress={() => finish(null)} loading={update.isPending} />

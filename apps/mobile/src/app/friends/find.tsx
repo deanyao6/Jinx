@@ -7,11 +7,12 @@ import { Card } from '@/components/Card';
 import { FormScreen } from '@/components/FormScreen';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
+import { Row } from '@/components/Row';
 import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useDebounced } from '@/features/games/ui/useDebounced';
 import { shareAppLink } from '@/features/people/invite';
-import { useSearchProfiles } from '@/features/social/queries';
+import { useFollowRequests, useSearchProfiles } from '@/features/social/queries';
 import { Avatar } from '@/features/social/ui/Avatar';
 import { FollowButton } from '@/features/social/ui/FollowButton';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -24,6 +25,8 @@ export default function FindPeopleScreen() {
   const debounced = useDebounced(query, 250);
   const results = useSearchProfiles(debounced);
   const active = debounced.trim().length >= 2;
+  const requests = useFollowRequests();
+  const pending = requests.data?.length ?? 0;
 
   return (
     <FormScreen headerOffset={90}>
@@ -38,6 +41,18 @@ export default function FindPeopleScreen() {
         accessibilityLabel="Search people"
         hint={active ? null : 'Type at least two letters.'}
       />
+      {/* Shown only when someone is waiting: a private account's requests had no way in. */}
+      {pending > 0 && !active ? (
+        <Card>
+          <Row
+            title="Follow requests"
+            subtitle={pending === 1 ? '1 person is waiting' : `${pending} people are waiting`}
+            first
+            chevron
+            onPress={() => router.push('/friends/requests')}
+          />
+        </Card>
+      ) : null}
       {results.isError ? <ErrorNotice error={results.error} onRetry={results.refetch} /> : null}
       {active && results.isPending ? <Loading /> : null}
       {active && results.data ? (

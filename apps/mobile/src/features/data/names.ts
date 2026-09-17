@@ -9,7 +9,30 @@
  * and `supabase.ts` re-exports them so nothing that already imports them has to change.
  */
 
-export type TeamRef = { id: string; name: string; city: string | null; abbreviation: string };
+export type TeamRef = {
+  id: string;
+  name: string;
+  city: string | null;
+  abbreviation: string;
+  /** `teams.nickname`. Optional so a fixture or an older cached row still type-checks. */
+  nickname?: string | null;
+};
+
+/**
+ * The short name a pill, a row or a button shows: "Phillies", "Mets".
+ *
+ * Reads `teams.nickname` first. Deriving it from the city fails for nine MLB teams whose city is
+ * not the start of their name: the Mets play in Flushing and the Yankees in the Bronx, so both
+ * came out as "New York Mets" and "New York Yankees" wherever a short name was wanted. The
+ * storylines validator hit the same wall (docs/verification.md).
+ */
+export function shortTeamName(
+  name: string,
+  ref: { nickname?: string | null; city?: string | null } | null | undefined,
+): string {
+  const nick = ref?.nickname?.trim();
+  return nick ? nick : nickname(name, ref?.city);
+}
 
 /** "Philadelphia Phillies" in "Philadelphia" is shown as "Phillies" on a pill. */
 export function nickname(name: string, city: string | null | undefined): string {

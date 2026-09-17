@@ -1,4 +1,4 @@
-import { storylineCards, type StorylineRow } from '../queries';
+import { storylineCards, storylinesStaleTime, type StorylineRow } from '../queries';
 
 const HOME = 'mets';
 const AWAY = 'phillies';
@@ -30,5 +30,16 @@ describe('storylineCards', () => {
       AWAY,
       HOME,
     ]);
+  });
+});
+
+describe('storylinesStaleTime', () => {
+  it('does not hold on to "none yet": the cache is persisted, and they may land in seconds', () => {
+    expect(storylinesStaleTime([])).toBeLessThanOrEqual(30_000);
+    expect(storylinesStaleTime(undefined)).toBeLessThanOrEqual(30_000);
+  });
+
+  it('keeps real storylines for half an hour, inside the pregame refresh', () => {
+    expect(storylinesStaleTime([{ text: 'x' }])).toBe(30 * 60_000);
   });
 });

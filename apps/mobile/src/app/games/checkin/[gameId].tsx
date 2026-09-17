@@ -1,5 +1,5 @@
-import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Button } from '@/components/Button';
@@ -13,34 +13,17 @@ import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useMyAttendanceForGame } from '@/features/attendances/queries';
 import { useAuthStore } from '@/features/auth/store';
-import {
-  checkInFailureCopy,
-  estimateLock,
-  formatCountdown,
-  isWithinCheckInWindow,
-  lockNoteCopy,
-  lockRuleCopy,
-  pctLabel,
-  pledgeConfirmationCopy,
-} from '@/features/checkin/lock';
+import { checkInFailureCopy, isWithinCheckInWindow, pctLabel } from '@/features/checkin/lock';
 import { measureDistanceToVenue } from '@/features/checkin/location';
-import { PledgeSides } from '@/features/checkin/PledgeSides';
+import { PickASideLive } from '@/features/checkin/reference/PickASideLive';
 import {
   useCheckIn,
   useChooseSide,
   useGameContext,
-  useLiveState,
-  useMakePledge,
   useSetCompanions,
   type GameContext,
 } from '@/features/checkin/queries';
-import {
-  cancelPledgeReminder,
-  getPushStatus,
-  registerPush,
-  schedulePledgeReminder,
-  type PushStatus,
-} from '@/features/notifications/push';
+import { getPushStatus, registerPush, type PushStatus } from '@/features/notifications/push';
 import { useAddPerson, usePeople } from '@/features/people/queries';
 import { openShare } from '@/features/share/navigate';
 import { formatGameDateLong, formatGameTime } from '@/lib/format';
@@ -59,7 +42,19 @@ export default function CheckInScreen() {
       </Screen>
     );
   }
-  return <CheckInBody gameId={gameId} ctx={ctx.data} />;
+  // A neutral fan who has checked in goes straight to the reference Pick a side (SPEC 6.4.1),
+  // until the pick is settled; after that this route shows the result card below.
+  const c = ctx.data;
+  const settled = !!c.pledge && c.pledge.status !== 'provisional';
+  if (c.checked_in_at && c.neutral_for_user && !c.both_favorites && !settled) {
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <PickASideLive gameId={gameId} ctx={c} />
+      </>
+    );
+  }
+  return <CheckInBody gameId={gameId} ctx={c} />;
 }
 
 function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
@@ -390,189 +385,64 @@ function FavoritePanel({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
   );
 }
 
-function PledgePanel({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
+/**
+ * The settled pledge. While a pick is still open, a neutral fan is on the reference Pick a side
+ * screen instead (PickASideLive, routed above), so this only ever renders a result.
+ */
+function PledgePanel({ ctx }: { gameId: string; ctx: GameContext }) {
   const theme = useTheme();
   const router = useRouter();
-  const pledge = useMakePledge();
-  const [now, setNow] = useState(() => Date.now());
-  const [failure, setFailure] = useState<string | null>(null);
-
   const p = ctx.pledge;
-  const validated = !!p && p.status !== 'provisional';
-  const gameOver = ctx.status === 'final';
-  const live = useLiveState(gameId, ctx.sport_id === 'mlb' && !validated && !gameOver);
-  const lock = estimateLock(
-    ctx.sport_id,
-    ctx.scheduled_start,
-    live.data ?? null,
-    now,
-    ctx.estimated_lock_at,
-  );
-  const locked = lock.locked || validated || gameOver;
-
-  useEffect(() => {
-    if (locked) return;
-    const t = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(t);
-  }, [locked]);
-
-  // Local reminder when the user leaves without a pledge; cancelled on return or on a pledge.
-  const reminder = useRef<{ needed: boolean; lockAtMs: number }>({ needed: false, lockAtMs: 0 });
-  useEffect(() => {
-    reminder.current = { needed: !p && !locked, lockAtMs: Date.parse(lock.at) };
-  }, [p, locked, lock.at]);
-  useFocusEffect(
-    useCallback(() => {
-      void cancelPledgeReminder(gameId);
-      return () => {
-        const r = reminder.current;
-        if (r.needed) void schedulePledgeReminder(gameId, r.lockAtMs);
-      };
-    }, [gameId]),
-  );
+  if (!p) return null;
 
   const teamName = (id: string | null | undefined) =>
     id === ctx.home.team_id ? ctx.home.name : id === ctx.away.team_id ? ctx.away.name : 'team';
-
-  const onPick = async (teamId: string) => {
-    if (locked) return;
-    setFailure(null);
-    try {
-      const res = await pledge.mutateAsync({ gameId, teamId });
-      if (!res.ok) setFailure(pledgeFailureCopy(res.reason));
-      else void cancelPledgeReminder(gameId);
-    } catch {
-      // surfaced through pledge.error
-    }
-  };
-
-  if (validated && p) {
-    const won = p.result === 'win';
-    const gain = (1 - p.win_prob_at_pledge).toFixed(2);
-    return (
-      <Card label="Your pledge">
-        {p.status === 'void' ? (
-          <>
-            <Text variant="h2">Pledge did not count</Text>
-            <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
-              Your pledge was made after the first score, so it doesn&apos;t count.
-            </Text>
-          </>
-        ) : (
-          <>
-            <Text variant="h2">
-              Your pledge to the {teamName(p.team_id)}{' '}
-              {p.result === 'win' ? 'won' : p.result === 'loss' ? 'lost' : 'tied'}
-            </Text>
-            <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
-              {won
-                ? `+${gain} vs expected. They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`
-                : `They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`}
-            </Text>
-          </>
-        )}
-        <Button
-          title="Share result"
-          variant="secondary"
-          small
-          onPress={() =>
-            openShare(router, {
-              kind: 'pledge',
-              team: teamName(p.team_id),
-              away: ctx.away.name,
-              home: ctx.home.name,
-              date: ctx.scheduled_start,
-              result:
-                p.status === 'void'
-                  ? 'void'
-                  : p.result === 'win' || p.result === 'loss' || p.result === 'tie'
-                    ? p.result
-                    : 'pending',
-              winProb: p.win_prob_at_pledge,
-            })
-          }
-          style={{ alignSelf: 'flex-start', marginTop: theme.spacing.md }}
-        />
-      </Card>
-    );
-  }
-
+  const won = p.result === 'win';
+  const gain = (1 - p.win_prob_at_pledge).toFixed(2);
   return (
-    <>
-      <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
-        You&apos;re neutral at {ctx.away.name} at {ctx.home.name}. {lockRuleCopy(ctx.sport_id)}.
-      </Text>
-      <Card style={{ alignItems: 'center' }}>
-        <Text variant="label" color="muted" style={{ textTransform: 'uppercase' }}>
-          {locked ? 'Pledges' : 'Locks in'}
-        </Text>
-        <Text
-          variant="display"
-          style={{ fontVariant: ['tabular-nums'], marginVertical: 6 }}
-          accessibilityLiveRegion="polite"
-        >
-          {locked ? 'Locked' : formatCountdown(lock.at, now)}
-        </Text>
-        <Text variant="caption" color="muted">
-          {locked
-            ? lock.reason === 'first_score'
-              ? 'Someone scored.'
-              : lock.reason === 'end_of_first'
-                ? 'The first inning is over.'
-                : gameOver
-                  ? 'The game is over.'
-                  : 'The estimated lock has passed.'
-            : lock.reason === 'estimate' || lock.reason === 'live_fallback'
-              ? `${lockNoteCopy(ctx.sport_id)} (estimated)`
-              : lockNoteCopy(ctx.sport_id)}
-        </Text>
-      </Card>
-
-      <PledgeSides
-        away={ctx.away}
-        home={ctx.home}
-        selectedTeamId={p?.team_id ?? null}
-        disabled={locked || pledge.isPending}
-        onPick={onPick}
+    <Card label="Your pick">
+      {p.status === 'void' ? (
+        <>
+          <Text variant="h2">Your pick did not count</Text>
+          <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
+            Your pick came after the first score, so it doesn&apos;t count.
+          </Text>
+        </>
+      ) : (
+        <>
+          <Text variant="h2">
+            The {teamName(p.team_id)}{' '}
+            {p.result === 'win' ? 'won' : p.result === 'loss' ? 'lost' : 'tied'}
+          </Text>
+          <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
+            {won
+              ? `+${gain} vs expected. They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`
+              : `They were ${pctLabel(p.win_prob_at_pledge)} to win when you picked.`}
+          </Text>
+        </>
+      )}
+      <Button
+        title="Share result"
+        variant="secondary"
+        small
+        onPress={() =>
+          openShare(router, {
+            kind: 'pledge',
+            team: teamName(p.team_id),
+            away: ctx.away.name,
+            home: ctx.home.name,
+            date: ctx.scheduled_start,
+            result:
+              p.status === 'void'
+                ? 'void'
+                : p.result === 'win' || p.result === 'loss' || p.result === 'tie'
+                  ? p.result
+                  : 'pending',
+            winProb: p.win_prob_at_pledge,
+          })
+        }
+        style={{ alignSelf: 'flex-start', marginTop: theme.spacing.md }}
       />
-
-      {failure ? <Notice tone="error">{failure}</Notice> : null}
-      {pledge.error ? <Notice tone="error">{errorMessage(pledge.error)}</Notice> : null}
-
-      {p && !locked ? (
-        <Notice tone="success">
-          {pledgeConfirmationCopy(teamName(p.team_id), p.win_prob_at_pledge)}
-        </Notice>
-      ) : null}
-      {p && locked ? (
-        <Notice>
-          Your pledge to the {teamName(p.team_id)} ({pctLabel(p.win_prob_at_pledge)} to win) is
-          locked in. The result posts once the game is final.
-        </Notice>
-      ) : null}
-      {!p && locked ? (
-        <Notice>No pledge before the lock, so this game stays neutral on your record.</Notice>
-      ) : null}
-
-      <Text variant="caption" color="muted">
-        Backing the underdog counts for more on your record vs expected: a win adds one minus the
-        team&apos;s win probability. Win probability comes from pregame ratings.
-      </Text>
-    </>
+    </Card>
   );
-}
-
-function pledgeFailureCopy(reason: string): string {
-  switch (reason) {
-    case 'not_checked_in':
-      return 'Check in at the venue first, then pick a side.';
-    case 'not_neutral':
-      return 'You follow one of these teams, so this game already counts for your record.';
-    case 'game_over':
-      return 'This game is over. Pledges close at the lock.';
-    case 'already_validated':
-      return 'This pledge has already been scored.';
-    default:
-      return 'Could not save your pledge. Try again.';
-  }
 }

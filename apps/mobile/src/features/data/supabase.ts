@@ -12,7 +12,7 @@ import { gameDayFromUpcoming, type UpcomingGame } from '@/features/plan/gameDay'
 import { defaultShapeKey } from '@/features/venues/shapes';
 
 import { emptyRepository } from './empty';
-import { listSentence, nickname, type TeamRef } from './names';
+import { listSentence, nickname, shortTeamName, type TeamRef } from './names';
 import type {
   GameLogFixture,
   GameRowFixture,
@@ -29,7 +29,7 @@ import type { Repository } from './types';
 
 // Re-exported: these moved to ./names to break an import cycle with the Plan tab, and
 // everything that already imports them from here keeps working.
-export { listSentence, nickname, type TeamRef } from './names';
+export { listSentence, nickname, shortTeamName, type TeamRef } from './names';
 
 /**
  * The Supabase-backed repository (SPEC.md 8.9), built up milestone by milestone.
@@ -150,7 +150,7 @@ function toStamp(
 function teamCard(team: StatsTeam, teams: ReadonlyMap<string, TeamRef>): RecordCardFixture {
   const ref = teams.get(team.team_id);
   return {
-    name: nickname(team.name, ref?.city),
+    name: shortTeamName(team.name, ref),
     record: displayRecord(team.record),
     pct: `${formatWinRate(team.record)} pct`,
     team: team.team_id,
@@ -210,7 +210,7 @@ export function passportPillsFromStats(inputs: PassportInputs): TeamPill[] {
       const played = team.record.wins + team.record.losses + team.record.ties;
       return {
         key: team.team_id,
-        label: nickname(team.name, ref?.city),
+        label: shortTeamName(team.name, ref),
         count: String(played),
         team: team.team_id,
       };
@@ -250,7 +250,7 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
   }
 
   const ref = teams.get(team.team_id);
-  const short = nickname(team.name, ref?.city);
+  const short = shortTeamName(team.name, ref);
   const played = team.record.wins + team.record.losses + team.record.ties;
   return {
     teamKey: team.team_id,
@@ -316,7 +316,7 @@ export function gameLogFromAttendances(inputs: PassportInputs, key: string): Gam
 
   const team = stats.teams.find((t) => t.team_id === key);
   if (!team) return null;
-  const short = nickname(team.name, teams.get(team.team_id)?.city);
+  const short = shortTeamName(team.name, teams.get(team.team_id));
   const matching = attendances.filter(
     (a) => a.game.home_team_id === key || a.game.away_team_id === key,
   );
@@ -417,7 +417,7 @@ export function profileFromAccount(
 ): ProfileFixture {
   const chips = account.favorites.map((t) => ({
     team: t.id,
-    label: nickname(t.name, t.city),
+    label: shortTeamName(t.name, t),
   }));
 
   const rows: ProfileFixture['rows'][number][] = [
@@ -522,12 +522,12 @@ export function gameRowFromAttendance(
   const g = attendance.game;
   if (!g.home || !g.away) return null;
 
-  const homeCity = teams.get(g.home.id)?.city ?? null;
-  const awayCity = teams.get(g.away.id)?.city ?? null;
+  const home = shortTeamName(g.home.name, teams.get(g.home.id));
+  const away = shortTeamName(g.away.name, teams.get(g.away.id));
   const title =
     g.home_score == null || g.away_score == null
-      ? `${nickname(g.away.name, awayCity)} at ${nickname(g.home.name, homeCity)}`
-      : `${nickname(g.away.name, awayCity)} ${g.away_score}, ${nickname(g.home.name, homeCity)} ${g.home_score}`;
+      ? `${away} at ${home}`
+      : `${away} ${g.away_score}, ${home} ${g.home_score}`;
 
   const when = new Date(g.scheduled_start).toLocaleDateString('en-US', {
     month: 'short',
@@ -615,7 +615,7 @@ export function pickASideFromContext(
 ) {
   const side = (team: PickASideContext['home']) => {
     const ref = teams.get(team.team_id);
-    const short = nickname(team.name, ref?.city);
+    const short = shortTeamName(team.name, ref);
     return {
       team: team.team_id,
       badge: ref?.abbreviation ?? '–',

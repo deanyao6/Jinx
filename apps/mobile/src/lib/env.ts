@@ -24,6 +24,38 @@ export const env = {
   demo: isOn(process.env.EXPO_PUBLIC_DEMO) || isOn(process.env.DEMO),
 };
 
+/**
+ * Is there a real inbound domain behind the forwarding address (SPEC.md 2 item 3, M4)?
+ *
+ * The flag IS the domain: there is nothing to forget to flip on the day the domain exists. Until
+ * then the configured value is the `in.example.com` placeholder, and every screen that would
+ * tell someone to forward their tickets to `u-...@in.example.com` has to stay hidden, because
+ * mail sent there goes nowhere and says nothing.
+ */
+export function forwardingEnabled(domain: string | undefined): boolean {
+  const d = (domain ?? '').trim().toLowerCase();
+  if (!d || !d.includes('.')) return false;
+  return !(d === 'example.com' || d.endsWith('.example.com') || d.endsWith('.example'));
+}
+
+/**
+ * Is "Continue with email" offered (SPEC.md 2 item 1: Sign in with Apple only, for now)?
+ *
+ * Email one-time codes need a real sender, which needs Resend and a domain. Without one a
+ * TestFlight user taps the button, waits for a code that is never sent, and is stuck. The route
+ * and the code screen stay in the app, so turning this on later is one environment variable,
+ * `EXPO_PUBLIC_EMAIL_SIGN_IN=1`, and no code. Development builds always offer it: the simulator
+ * cannot do Sign in with Apple, and locally the code arrives in Mailpit.
+ */
+export function emailSignInEnabled(flag: string | undefined, dev: boolean): boolean {
+  return dev || isOn(flag);
+}
+
+export const features = {
+  forwarding: forwardingEnabled(env.inboundEmailDomain),
+  emailSignIn: emailSignInEnabled(process.env.EXPO_PUBLIC_EMAIL_SIGN_IN, __DEV__),
+};
+
 /** `1`, `true` or `yes` in any case. Anything else, including unset, is off. */
 function isOn(value: string | undefined): boolean {
   if (!value) return false;

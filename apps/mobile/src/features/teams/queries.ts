@@ -5,13 +5,15 @@ import type { TeamTokens } from '@/theme/reference/teams';
 
 import { TEAM_COLOR_COLUMNS, toTeamTokens, type TeamColorsRow } from './palettes';
 
-export const TEAM_COLUMNS = 'id, sport_id, name, city, abbreviation, franchise_id, active';
+export const TEAM_COLUMNS =
+  'id, sport_id, name, city, nickname, abbreviation, franchise_id, active';
 
 export type Team = {
   id: string;
   sport_id: string;
   name: string;
   city: string;
+  nickname: string | null;
   abbreviation: string;
   franchise_id: string;
   active: boolean;

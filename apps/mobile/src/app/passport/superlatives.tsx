@@ -5,6 +5,7 @@ import { Card } from '@/components/Card';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
+import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { superlativeRows, type SuperlativeRow } from '@/features/passport/format';
@@ -58,6 +59,23 @@ export default function SuperlativesScreen() {
           Games without weather or timing data are skipped. Rows with a game open its detail page.
         </Text>
       ) : null}
+      {/* The only way into these two. They hung off the old Passport tab, and the reference
+          Passport has no row for them, so without this Moments witnessed was unreachable. */}
+      <Card label="More from your games">
+        <Row
+          title="Moments witnessed"
+          subtitle="Walk-offs, no-hitters, pick sixes, comebacks"
+          first
+          chevron
+          onPress={() => router.push('/passport/moments')}
+        />
+        <Row
+          title="Players seen"
+          subtitle="Everyone who appeared in a game you attended"
+          chevron
+          onPress={() => router.push('/passport/players')}
+        />
+      </Card>
       <VenueSheet stamp={venue} onClose={() => setVenue(null)} />
     </Screen>
   );

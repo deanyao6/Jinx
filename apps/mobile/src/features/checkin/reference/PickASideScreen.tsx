@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ICONS } from '@/components/reference/icons';
 import { LiveDot } from '@/components/reference/LiveDot';
 import { useRepository } from '@/features/data/context';
+import type { Repository } from '@/features/data/types';
 import { EmptyState } from '@/features/data/EmptyState';
 import { pickConfirmation } from '@/features/demo/fixtures';
 import { TabBar } from '@/features/passport/reference/parts';
@@ -22,21 +23,65 @@ import { border, radius, screenPadding } from '@/theme/reference/tokens';
 export function PickASideScreen({ picked }: { picked?: 'away' | 'home' }) {
   return (
     <ReferenceThemeProvider team="none">
-      <Body initialPicked={picked} />
+      <FixtureBody initialPicked={picked} />
     </ReferenceThemeProvider>
   );
 }
 
-function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
+export type PickASideData = ReturnType<Repository['pickASide']>;
+
+export type PickASideViewProps = {
+  data: PickASideData;
+  picked: 'away' | 'home' | undefined;
+  onPick: (side: 'away' | 'home') => void;
+  /** Picks are closed: the lock passed, the game ended, or the pledge was validated. */
+  locked?: boolean;
+  /** A pick is on its way to the server. Buttons hold still so two taps cannot race. */
+  busy?: boolean;
+  /** Replaces the confirmation line, e.g. once locked. Defaults to the reference's copy. */
+  statusText?: string | null;
+  /** A failed pick, in words. Shown under the buttons. */
+  errorText?: string | null;
+  /** Shown under Storylines while they load or when the game has none. */
+  storylinesNote?: string | null;
+  onBack?: () => void;
+};
+
+/**
+ * The fixture-backed screen: the parity harness, demo mode, and the repository's empty state.
+ * A real game is mounted through PickASideLive, which feeds the same view.
+ */
+function FixtureBody({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
   // The reference lets you switch sides freely until the countdown locks, so this is a
   // plain toggle rather than a one-way commit.
   const [picked, setPicked] = React.useState<'away' | 'home' | undefined>(initialPicked);
+  const d = useRepository().pickASide();
+  return <PickASideView data={d} picked={picked} onPick={setPicked} />;
+}
+
+export function PickASideView({
+  data: d,
+  picked,
+  onPick,
+  locked = false,
+  busy = false,
+  statusText,
+  errorText,
+  storylinesNote,
+  onBack,
+}: PickASideViewProps) {
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const Book = ICONS['i-book'];
   const Lock = ICONS['i-lock'];
-  const d = useRepository().pickASide();
+  const Back = ICONS['i-chev-l'];
   const chosen = picked ? (picked === 'away' ? d.away : d.home) : null;
+  const confirmation =
+    statusText !== undefined
+      ? statusText
+      : chosen
+        ? pickConfirmation(chosen.name, chosen.winProb)
+        : null;
 
   /**
    * No game, no sides to pick between.
@@ -82,6 +127,16 @@ function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
         showsVerticalScrollIndicator={false}
       >
         <View style={s.top}>
+          {onBack ? (
+            <Pressable
+              onPress={onBack}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel="Back"
+            >
+              <Back size={22} color={base.ink} />
+            </Pressable>
+          ) : null}
           <View style={[s.live, { borderColor: base.good }]}>
             {/* `.fx-live i` pulses at 1.6s. The harness freezes animation, and SPEC.md 8.2
                 requires honouring Reduce Motion, so the still state is a real state. */}
@@ -92,7 +147,9 @@ function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
             {d.venue}
           </Text>
           <View style={[s.lock, { borderColor: base.warn }]}>
-            <Text style={[s.lockText, { color: base.warn }]}>{`LOCKS IN ${d.lockCountdown}`}</Text>
+            <Text style={[s.lockText, { color: base.warn }]} accessibilityLiveRegion="polite">
+              {locked ? 'LOCKED' : `LOCKS IN ${d.lockCountdown}`}
+            </Text>
           </View>
         </View>
 
@@ -131,26 +188,31 @@ function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
           <RootButton
             label={d.away.button}
             pressed={picked === 'away'}
-            dimmed={picked === 'home'}
-            onPress={() => setPicked('away')}
+            dimmed={picked === 'home' || (locked && picked !== 'away')}
+            disabled={locked || busy}
+            onPress={() => onPick('away')}
           />
         </TeamTheme>
         <TeamTheme team={d.home.team}>
           <RootButton
             label={d.home.button}
             pressed={picked === 'home'}
-            dimmed={picked === 'away'}
-            onPress={() => setPicked('home')}
+            dimmed={picked === 'away' || (locked && picked !== 'home')}
+            disabled={locked || busy}
+            onPress={() => onPick('home')}
           />
         </TeamTheme>
 
-        {chosen ? (
+        {confirmation ? (
           <View style={[s.confirm, { backgroundColor: base.surface }]}>
-            <Lock size={20} color={base.good} />
-            <Text style={[s.confirmText, { color: base.ink }]}>
-              {pickConfirmation(chosen.name, chosen.winProb)}
-            </Text>
+            <Lock size={20} color={locked && !chosen ? base.muted : base.good} />
+            <Text style={[s.confirmText, { color: base.ink }]}>{confirmation}</Text>
           </View>
+        ) : null}
+        {errorText ? (
+          <Text style={[s.errorText, { color: base.bad }]} accessibilityRole="alert">
+            {errorText}
+          </Text>
         ) : null}
 
         <View style={s.storyHead}>
@@ -166,6 +228,9 @@ function Body({ initialPicked }: { initialPicked?: 'away' | 'home' }) {
             <Text style={[s.storySource, { color: base.muted }]}>{story.source}</Text>
           </View>
         ))}
+        {d.storylines.length === 0 && storylinesNote ? (
+          <Text style={[s.storySource, { color: base.muted }]}>{storylinesNote}</Text>
+        ) : null}
       </ScrollView>
       <TabBar active="Games" />
     </View>
@@ -199,11 +264,13 @@ function RootButton({
   label,
   pressed,
   dimmed,
+  disabled = false,
   onPress,
 }: {
   label: string;
   pressed: boolean;
   dimmed: boolean;
+  disabled?: boolean;
   onPress: () => void;
 }) {
   const { base, team } = useReferenceTheme();
@@ -211,7 +278,8 @@ function RootButton({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityState={{ selected: pressed }}
+      accessibilityState={{ selected: pressed, disabled }}
+      disabled={disabled}
       onPress={onPress}
       style={[
         s.root,
@@ -306,6 +374,7 @@ const s = StyleSheet.create({
   // `.confirm{border-radius:16px;padding:12px;font-size:13.5px;line-height:1.4}`
   confirm: { flexDirection: 'row', gap: 10, borderRadius: 16, padding: 12, marginBottom: 10 },
   confirmText: { flex: 1, fontSize: 13.5, lineHeight: 13.5 * 1.4, fontFamily: fontFamily() },
+  errorText: { fontSize: 13, lineHeight: 13 * 1.4, marginTop: 8, fontFamily: fontFamily() },
 
   // `.fx-sth{margin:14px 0 8px;gap:6px}`
   storyHead: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 14, marginBottom: 8 },

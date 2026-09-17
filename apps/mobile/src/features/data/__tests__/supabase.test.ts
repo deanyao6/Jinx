@@ -712,3 +712,30 @@ describe('stadium shapes', () => {
     expect(defaultShapeKey([])).toBe('bowl');
   });
 });
+
+describe('shortTeamName', () => {
+  // Required lazily so this block stands alone at the end of the file.
+  const { shortTeamName } = jest.requireActual('../names') as typeof import('../names');
+
+  it('reads the stored nickname, which is the only thing that works for the Mets', () => {
+    // Their city is Flushing, which is not how "New York Mets" begins.
+    expect(shortTeamName('New York Mets', { city: 'Flushing', nickname: 'Mets' })).toBe('Mets');
+    expect(shortTeamName('New York Yankees', { city: 'Bronx', nickname: 'Yankees' })).toBe(
+      'Yankees',
+    );
+    expect(shortTeamName('Arizona Diamondbacks', { city: 'Phoenix', nickname: 'D-backs' })).toBe(
+      'D-backs',
+    );
+  });
+
+  it('falls back to stripping the city when there is no nickname', () => {
+    expect(shortTeamName('Philadelphia Phillies', { city: 'Philadelphia' })).toBe('Phillies');
+    expect(shortTeamName('Philadelphia Phillies', { city: 'Philadelphia', nickname: ' ' })).toBe(
+      'Phillies',
+    );
+  });
+
+  it('keeps the full name when it knows nothing else', () => {
+    expect(shortTeamName('Athletics', null)).toBe('Athletics');
+  });
+});

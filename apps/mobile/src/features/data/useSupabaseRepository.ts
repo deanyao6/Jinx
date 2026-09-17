@@ -73,6 +73,7 @@ export function useSupabaseRepository(): { repository: Repository; status: Repos
         name: team.name,
         city: team.city,
         abbreviation: team.abbreviation,
+        nickname: team.nickname,
       });
     }
 

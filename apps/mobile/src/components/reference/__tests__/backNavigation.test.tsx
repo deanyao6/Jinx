@@ -11,6 +11,13 @@ import ShareStackLayout from '@/app/share/_layout';
 import ProfileStackLayout from '@/app/u/_layout';
 import YouStackLayout from '@/app/you/_layout';
 
+// Settings signs out and exports, which would pull Supabase into a test about one button.
+jest.mock('@/features/auth/hooks', () => ({ useSignOut: () => jest.fn() }));
+jest.mock('@/features/account/queries', () => ({
+  useExportData: () => ({ mutate: jest.fn(), isPending: false, isError: false }),
+}));
+jest.mock('@/features/profile/queries', () => ({ useProfile: () => ({ data: null }) }));
+
 const mockBack = jest.fn();
 const mockReplace = jest.fn();
 const mockCanGoBack = jest.fn(() => true);

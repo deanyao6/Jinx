@@ -7,6 +7,7 @@ import { Card } from '@/components/Card';
 import { EmptyState } from '@/components/EmptyState';
 import { Loading } from '@/components/Loading';
 import { ErrorNotice } from '@/components/ErrorNotice';
+import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { buildSuggestedGoal, progressLabel, sameDefinition } from '@/features/goals/builder';
@@ -135,6 +136,17 @@ export default function GoalsScreen() {
           ))}
         </Card>
       ) : null}
+
+      {/* Bucket lists had no entry point once the old Passport tab left the bar. */}
+      <Card>
+        <Row
+          title="Bucket lists"
+          subtitle="Every ballpark, every stadium, or a list of your own"
+          first
+          chevron
+          onPress={() => router.push('/passport/bucketlists')}
+        />
+      </Card>
 
       <View style={{ marginTop: theme.spacing.sm }}>
         <Button title="New goal" onPress={() => router.push('/passport/new-goal')} />

@@ -125,8 +125,9 @@ export function notificationRoute(n: { kind: string; data: unknown }): string | 
     case 'email_verified':
     case 'inbound_rejected':
       return '/you/forwarding';
-    case 'new_follower':
     case 'follow_request':
+      return '/friends/requests';
+    case 'new_follower':
       return '/(tabs)/profile';
     case 'wrapped_ready': {
       const sport = typeof data.sport_id === 'string' ? data.sport_id : null;

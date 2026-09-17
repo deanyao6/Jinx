@@ -8,6 +8,7 @@ import { Notice, errorMessage } from '@/components/Notice';
 import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { isAppleSignInAvailable, signInWithApple } from '@/features/auth/apple';
+import { features } from '@/lib/env';
 import { useTheme } from '@/theme/ThemeProvider';
 
 export default function WelcomeScreen() {
@@ -59,12 +60,15 @@ export default function WelcomeScreen() {
             onPress={onApple}
           />
         ) : null}
-        <Button
-          title="Continue with email"
-          variant={appleAvailable ? 'secondary' : 'primary'}
-          onPress={() => router.push('/(auth)/email')}
-          disabled={busy}
-        />
+        {/* Hidden until there is a real email sender (features.emailSignIn). The route stays. */}
+        {features.emailSignIn ? (
+          <Button
+            title="Continue with email"
+            variant={appleAvailable ? 'secondary' : 'primary'}
+            onPress={() => router.push('/(auth)/email')}
+            disabled={busy}
+          />
+        ) : null}
         <Text variant="caption" color="muted" align="center">
           You must be 13 or older to use Jinx.
         </Text>

@@ -20,6 +20,7 @@ import {
   type PickedFile,
 } from '@/features/imports/upload';
 import { useTheme } from '@/theme/ThemeProvider';
+import { features } from '@/lib/env';
 
 function stepLabel(p: ImportProgress): string {
   switch (p.step) {
@@ -204,9 +205,11 @@ export default function ImportScreen() {
           disabled={busy}
         />
       ) : null}
-      <Text variant="caption" color="muted" style={{ marginTop: theme.spacing.md }}>
-        Prefer email? Forward ticket confirmations to your forwarding address from the You tab.
-      </Text>
+      {features.forwarding ? (
+        <Text variant="caption" color="muted" style={{ marginTop: theme.spacing.md }}>
+          Prefer email? Forward ticket confirmations to your forwarding address in Settings.
+        </Text>
+      ) : null}
     </Screen>
   );
 }
