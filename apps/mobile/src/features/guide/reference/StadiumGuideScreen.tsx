@@ -17,21 +17,24 @@ import type { ShareStamp } from '@/features/share/types';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, screenPadding } from '@/theme/reference/tokens';
+import { useMyStats } from '@/features/passport/queries';
+import type { StatsStamp } from '@/features/passport/types';
+import { env } from '@/lib/env';
 
 /**
  * Stadium guide, ported from the sixth phone in `design/reference.html` (SPEC.md 8.8.6).
  * A demo shell in v1, behind FEATURE_GUIDE.
  */
-export function StadiumGuideScreen({ tab = 'food' }: { tab?: string }) {
+export function StadiumGuideScreen({ tab = 'food', venueId }: { tab?: string; venueId?: string }) {
   const guide = useRepository().guide();
   return (
     <ReferenceThemeProvider team={guide.team}>
-      <Body initialTab={tab} />
+      <Body initialTab={tab} venueId={venueId} />
     </ReferenceThemeProvider>
   );
 }
 
-function Body({ initialTab }: { initialTab: string }) {
+function Body({ initialTab, venueId }: { initialTab: string; venueId?: string }) {
   const [tab, setTab] = React.useState(initialTab);
   const { base, team } = useReferenceTheme();
   const insets = useSafeAreaInsets();
@@ -41,6 +44,9 @@ function Body({ initialTab }: { initialTab: string }) {
   const repo = useRepository();
   const guide = repo.guide();
   const rows = repo.guideRows(tab);
+  // The user's own stamps, for the share card. Skipped in demo mode, where there is no user.
+  const stats = useMyStats();
+  const stamps = env.demo ? [] : (stats.data?.stamps ?? []);
 
   /**
    * The escape hatch. This chevron shipped as a plain View, which left the tab bar as the
@@ -114,7 +120,7 @@ function Body({ initialTab }: { initialTab: string }) {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Share this stadium"
-            onPress={() => openShare(router, guideShareStamp(guide))}
+            onPress={() => openShare(router, guideShareStamp(guide, stamps, venueId))}
             style={[s.iconButton, { backgroundColor: base.surface }]}
           >
             <Share size={20} color={base.ink} />
@@ -207,16 +213,32 @@ function Body({ initialTab }: { initialTab: string }) {
  * payload as well as a name, so a bare `/share/guide` would land on the sheet's "This card
  * could not be opened" state. A venue's card is the stamp, so Share opens that.
  *
- * The demo guide carries no visit history, so the counts are the card's own empty states: a
- * stamp with no number and no first-visit line. TODO: read the real visit count and first
- * visit once the screen takes the route's venueId.
+ * With a venue the user has been to, the card is their real stamp: its visit count, its first
+ * visit, and its place in their collection. Otherwise it is the fixture's venue with the
+ * card's own empty states, and never an invented number of visits.
  */
-function guideShareStamp(guide: GuideFixture): ShareStamp {
+export function guideShareStamp(
+  guide: GuideFixture,
+  stamps: readonly StatsStamp[],
+  venueId: string | undefined,
+): ShareStamp {
+  const index = venueId ? stamps.findIndex((st) => st.venue_id === venueId) : -1;
+  const stamp = index >= 0 ? stamps[index] : undefined;
+  if (stamp) {
+    return {
+      kind: 'stamp',
+      venue: stamp.name,
+      place: [stamp.city, stamp.state].filter(Boolean).join(', ') || null,
+      visits: stamp.visits,
+      firstVisit: stamp.first_visit,
+      stampCount: stamps.length,
+    };
+  }
   return {
     kind: 'stamp',
     venue: guide.venue,
     place: guide.subtitle,
-    visits: 1,
+    visits: 0,
     firstVisit: null,
     stampCount: null,
   };

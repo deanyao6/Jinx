@@ -12,7 +12,7 @@ import { gameDayFromUpcoming, type UpcomingGame } from '@/features/plan/gameDay'
 import { defaultShapeKey } from '@/features/venues/shapes';
 
 import { emptyRepository } from './empty';
-import { listSentence, nickname, shortTeamName, type TeamRef } from './names';
+import { listSentence, shortTeamName, type TeamRef } from './names';
 import type {
   GameLogFixture,
   GameRowFixture,
@@ -754,8 +754,8 @@ export function overlapLine(o: OverlapRow): string {
 
 export type ReliveGame = {
   scheduled_start: string;
-  home: { abbreviation: string; name: string; id: string } | null;
-  away: { abbreviation: string; name: string; id: string } | null;
+  home: { abbreviation: string; name: string; id: string; nickname?: string | null } | null;
+  away: { abbreviation: string; name: string; id: string; nickname?: string | null } | null;
   venue: { name: string } | null;
 };
 
@@ -789,12 +789,12 @@ export function reliveFromGame(
     away: {
       team: game.away?.id ?? 'none',
       badge: game.away?.abbreviation ?? '–',
-      name: nickname(game.away?.name ?? '', null),
+      name: shortTeamName(game.away?.name ?? '', game.away),
     },
     home: {
       team: game.home?.id ?? 'none',
       badge: game.home?.abbreviation ?? '–',
-      name: nickname(game.home?.name ?? '', null),
+      name: shortTeamName(game.home?.name ?? '', game.home),
     },
     note: parts.join(', '),
   };

@@ -13,3 +13,4 @@ export * from './matcher.js';
 export * from './pledge.js';
 export * from './goals.js';
 export * from './storylines/index.js';
+export * from './highlights.js';

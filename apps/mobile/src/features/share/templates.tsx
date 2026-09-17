@@ -255,7 +255,9 @@ export function StampTemplate({ t }: { t: ShareStamp }) {
       <Label>{t.stampCount ? `Stamp #${t.stampCount}` : 'New stamp'}</Label>
       <Stamp
         name={t.venue}
-        caption={t.visits === 1 ? 'First visit' : `${t.visits} visits`}
+        caption={
+          t.visits === 0 ? 'On the list' : t.visits === 1 ? 'First visit' : `${t.visits} visits`
+        }
         index={t.stampCount ?? 0}
         style={{ width: 220, padding: theme.spacing.lg }}
       />

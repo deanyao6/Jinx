@@ -1,7 +1,6 @@
-import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Line, Path, Polyline } from 'react-native-svg';
 
@@ -19,6 +18,8 @@ import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { motion, screenPadding } from '@/theme/reference/tokens';
 
+import { PhotoViewer } from '../PhotoViewer';
+import { fanCountLabel, pickMedia, useAddPhotos, useGamePhotos, type GamePhoto } from '../photos';
 import { useReliveGame } from '../useReliveGame';
 
 /**
@@ -46,6 +47,16 @@ export function ReliveScreen({ step = 0, gameId }: { step?: number; gameId?: str
         steps={gameId ? perGame.steps : repo.reliveSteps()}
         winProb={gameId ? perGame.winProb : repo.reliveWinProb()}
         isPending={gameId ? perGame.isPending : false}
+        real={
+          gameId
+            ? {
+                gameId,
+                attendanceId: perGame.attendanceId,
+                highlights: perGame.highlights,
+                shareGame: perGame.shareGame,
+              }
+            : undefined
+        }
       />
     </ReferenceThemeProvider>
   );
@@ -118,12 +129,15 @@ function Body({
   steps,
   winProb,
   isPending,
+  real,
 }: {
   initialStep: number;
   relive: ReliveFixture;
   steps: readonly ReliveStep[];
   winProb: readonly number[];
   isPending: boolean;
+  /** Set for a real game. Without it the photo strips are the reference's fixtures. */
+  real?: RealGame;
 }) {
   const { base, team } = useReferenceTheme();
   const repo = useRepository();
@@ -200,42 +214,12 @@ function Body({
     );
   }
 
-  /**
-   * Adding a photo. The picker is real; the upload is not, and this is deliberately noisy
-   * about that rather than silently doing nothing.
-   *
-   * A photo belongs to the attendance row for this game (`attendance_photos`), and this
-   * screen has no attendance row: `relive()` returns the demo fixture and ignores the
-   * route's gameId, and nothing in the app writes `attendance_photos` yet. So there is
-   * nowhere to put the asset the user just picked.
-   *
-   * TODO(upload): once relive() takes a gameId, resolve the attendance row, upload each
-   * asset to the private photos bucket and insert the attendance_photos row. The shape to
-   * copy is features/imports/upload.ts, which already does exactly this for tickets.
-   */
-  const addPhoto = async () => {
-    const picked = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsMultipleSelection: true,
-      selectionLimit: 10,
-      quality: 0.9,
-      exif: false,
-    });
-    if (picked.canceled) return;
-    // TODO(upload): picked.assets is dropped on the floor here. See above.
-  };
-
-  /**
-   * The row promises "Opens in the league's video site", so it has to open something. There
-   * is no per-game highlight URL to open: the fixture carries none, ingest stores none, and
-   * relive() ignores the route's gameId. Guessing a per-game deep link would 404, so this
-   * opens the league's video site itself, which is exactly what the row claims.
-   *
-   * TODO: open the game's own reel once a highlight URL is ingested, and pick the site from
-   * the game's sport rather than assuming MLB.
-   */
+  // A real game opens its own page on its own league's site. The fixture has no game, so the
+  // parity and demo build opens the league hub, which is all it can honestly point at.
+  const highlightsUrl = real?.highlights.url ?? HIGHLIGHTS_URL;
+  const highlightsMeta = real?.highlights.meta ?? "Opens in the league's video site";
   const openHighlights = () => {
-    void Linking.openURL(HIGHLIGHTS_URL);
+    void Linking.openURL(highlightsUrl);
   };
 
   return (
@@ -264,7 +248,7 @@ function Body({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Share this game"
-            onPress={() => openShare(router, reliveShareGame(relive, steps))}
+            onPress={() => openShare(router, real?.shareGame ?? reliveShareGame(relive, steps))}
             style={[s.iconButton, { backgroundColor: base.surface }]}
           >
             <Share size={20} color={base.ink} />
@@ -320,56 +304,62 @@ function Body({
           <Text style={[s.chartLabel, { color: base.muted }]}>{relive.chartLabels.right}</Text>
         </View>
 
-        <SectionRow
-          title="Your photos"
-          action="Add"
-          actionLabel="Add a photo"
-          onAction={() => void addPhoto()}
-        />
-        <View style={s.photos}>
-          {/* The tiles stay inert. `PhotoScene` draws a generated placeholder rather than a
-              photo, and the app has no full-screen viewer to open one in, so there is nothing
-              to show and nothing to set visibility on or delete. Wire the tap, and the two
-              actions docs/interactions.md asks for, when the viewer and real photos land. */}
-          {myPhotos.map((photo, i) => (
-            <View key={`${photo.kind}-${i}`} style={s.photo}>
-              <PhotoScene kind={photo.kind} seed={photo.seed} />
-            </View>
-          ))}
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Add a photo from your library"
-            onPress={() => void addPhoto()}
-            style={[s.photoAdd, { borderColor: base.line }]}
-          >
-            <Camera size={20} color={base.muted} />
-          </Pressable>
-          <RowSpacers count={PHOTO_COLUMNS - myPhotos.length - 1} />
-        </View>
-
-        {/* The whole section is omitted when nobody has posted, rather than drawn as an
-            empty strip under a header with no count. */}
-        {fanPhotos.length > 0 ? (
+        {real ? (
+          <RealPhotos game={real} />
+        ) : (
           <>
-            {/* The count is a count, not a link, so this header has no action. */}
-            <SectionRow title="From fans at this game" action={relive.fanCount} />
+            <SectionRow
+              title="Your photos"
+              action="Add"
+              actionLabel="Add a photo"
+              onAction={() => {}}
+            />
             <View style={s.photos}>
-              {/* Inert for the same reason as your own photos, plus report and block have no
-                  backend yet. */}
-              {fanPhotos.map((photo, i) => (
+              {/* The tiles stay inert. `PhotoScene` draws a generated placeholder rather than a
+                photo, and the app has no full-screen viewer to open one in, so there is nothing
+                to show and nothing to set visibility on or delete. Wire the tap, and the two
+                actions docs/interactions.md asks for, when the viewer and real photos land. */}
+              {myPhotos.map((photo, i) => (
                 <View key={`${photo.kind}-${i}`} style={s.photo}>
                   <PhotoScene kind={photo.kind} seed={photo.seed} />
                 </View>
               ))}
-              <RowSpacers count={PHOTO_COLUMNS - fanPhotos.length} />
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Add a photo from your library"
+                onPress={() => {}}
+                style={[s.photoAdd, { borderColor: base.line }]}
+              >
+                <Camera size={20} color={base.muted} />
+              </Pressable>
+              <RowSpacers count={PHOTO_COLUMNS - myPhotos.length - 1} />
             </View>
+
+            {/* The whole section is omitted when nobody has posted, rather than drawn as an
+              empty strip under a header with no count. */}
+            {fanPhotos.length > 0 ? (
+              <>
+                {/* The count is a count, not a link, so this header has no action. */}
+                <SectionRow title="From fans at this game" action={relive.fanCount} />
+                <View style={s.photos}>
+                  {/* Inert for the same reason as your own photos, plus report and block have no
+                    backend yet. */}
+                  {fanPhotos.map((photo, i) => (
+                    <View key={`${photo.kind}-${i}`} style={s.photo}>
+                      <PhotoScene kind={photo.kind} seed={photo.seed} />
+                    </View>
+                  ))}
+                  <RowSpacers count={PHOTO_COLUMNS - fanPhotos.length} />
+                </View>
+              </>
+            ) : null}
           </>
-        ) : null}
+        )}
 
         <View style={s.highlights}>
           <Pressable
             accessibilityRole="link"
-            accessibilityLabel="Official highlights, opens in the league's video site"
+            accessibilityLabel={`Official highlights. ${highlightsMeta}`}
             onPress={openHighlights}
             style={s.li}
           >
@@ -379,7 +369,7 @@ function Body({
             <View style={{ flex: 1, minWidth: 0 }}>
               <Text style={[s.liTitle, { color: base.ink }]}>Official highlights</Text>
               <Text style={[s.liMeta, { color: base.muted }]} numberOfLines={1}>
-                Opens in the league&apos;s video site
+                {highlightsMeta}
               </Text>
             </View>
             <Ext size={20} color={base.muted} />
@@ -388,6 +378,148 @@ function Body({
       </ScrollView>
       <TabBar active="Games" />
     </View>
+  );
+}
+
+type RealGame = {
+  gameId: string;
+  attendanceId: string | undefined;
+  highlights: { url: string; meta: string };
+  shareGame: ShareGame | null;
+};
+
+/**
+ * "Your photos" and "From fans at this game" for a real game (SPEC.md 6.19).
+ *
+ * The same two strips the reference draws, filled from `attendance_photos`. Uploads go to the
+ * private bucket as followers-only, each tile opens a viewer where the owner sets visibility or
+ * deletes, and a fan's tile opens the same viewer with report and block instead.
+ */
+function RealPhotos({ game }: { game: RealGame }) {
+  const { base } = useReferenceTheme();
+  const Camera = ICONS['i-camera'];
+  const photos = useGamePhotos(game.gameId, game.attendanceId);
+  const add = useAddPhotos(game.gameId, game.attendanceId);
+  const [open, setOpen] = React.useState<{ photo: GamePhoto; mine: boolean } | null>(null);
+  const [notice, setNotice] = React.useState<string | null>(null);
+
+  const mine = photos.data?.mine ?? [];
+  const fans = photos.data?.fans ?? [];
+  const canAdd = !!game.attendanceId;
+
+  const onAdd = async () => {
+    setNotice(null);
+    if (!canAdd) {
+      setNotice('Log this game first, then you can add photos to it.');
+      return;
+    }
+    try {
+      const picked = await pickMedia();
+      if (picked.length === 0) return;
+      const outcome = await add.mutateAsync(picked);
+      if (outcome.problems.length > 0) setNotice(outcome.problems[0] ?? null);
+    } catch {
+      setNotice('Those did not upload. Check your connection and try again.');
+    }
+  };
+
+  return (
+    <>
+      <SectionRow
+        title="Your photos"
+        action={add.isPending ? 'Uploading' : 'Add'}
+        actionLabel="Add a photo"
+        onAction={() => void onAdd()}
+      />
+      <PhotoGrid
+        tiles={[
+          ...mine.map((photo) => (
+            <PhotoTile
+              key={photo.id}
+              photo={photo}
+              onPress={() => setOpen({ photo, mine: true })}
+            />
+          )),
+          <Pressable
+            key="add"
+            accessibilityRole="button"
+            accessibilityLabel="Add a photo from your library"
+            disabled={add.isPending}
+            onPress={() => void onAdd()}
+            style={[s.photoAdd, { borderColor: base.line, opacity: add.isPending ? 0.5 : 1 }]}
+          >
+            <Camera size={20} color={base.muted} />
+          </Pressable>,
+        ]}
+      />
+      {notice ? <Text style={[s.photoNotice, { color: base.ink }]}>{notice}</Text> : null}
+      {photos.isError ? (
+        <Text style={[s.photoNotice, { color: base.muted }]}>Photos could not be loaded.</Text>
+      ) : null}
+
+      {/* Omitted when nobody has posted, rather than an empty strip under a bare header. */}
+      {fans.length > 0 ? (
+        <>
+          <SectionRow title="From fans at this game" action={fanCountLabel(fans.length)} />
+          <PhotoGrid
+            tiles={fans.map((photo) => (
+              <PhotoTile
+                key={photo.id}
+                photo={photo}
+                onPress={() => setOpen({ photo, mine: false })}
+              />
+            ))}
+          />
+        </>
+      ) : null}
+
+      <PhotoViewer
+        photo={open?.photo ?? null}
+        mine={open?.mine ?? false}
+        gameId={game.gameId}
+        onClose={() => setOpen(null)}
+      />
+    </>
+  );
+}
+
+/**
+ * Rows of four, as the reference draws them. Tiles are `flex: 1`, which cannot wrap by itself,
+ * so the rows are cut here and the last one is padded with spacers to keep its columns.
+ */
+function PhotoGrid({ tiles }: { tiles: React.ReactElement[] }) {
+  const rows: React.ReactElement[][] = [];
+  for (let i = 0; i < tiles.length; i += PHOTO_COLUMNS)
+    rows.push(tiles.slice(i, i + PHOTO_COLUMNS));
+  return (
+    <View style={{ gap: 6 }}>
+      {rows.map((row, i) => (
+        <View key={i} style={s.photos}>
+          {row}
+          <RowSpacers count={PHOTO_COLUMNS - row.length} />
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function PhotoTile({ photo, onPress }: { photo: GamePhoto; onPress: () => void }) {
+  const { base } = useReferenceTheme();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="imagebutton"
+      accessibilityLabel={photo.kind === 'video' ? 'Open video' : 'Open photo'}
+      style={[s.photo, s.photoTile, { backgroundColor: base.surface }]}
+    >
+      {photo.kind === 'photo' && photo.url ? (
+        <Image source={{ uri: photo.url }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+      ) : (
+        <Svg width={22} height={22} viewBox="0 0 24 24">
+          <Path d="M8 5.5v13l10.5-6.5z" fill={base.muted} />
+        </Svg>
+      )}
+    </Pressable>
   );
 }
 
@@ -483,8 +615,9 @@ const HIGHLIGHTS_URL = 'https://www.mlb.com/video';
  * sheet's "This card could not be opened" state. The game this screen relives is the
  * closest existing template, so Share opens that.
  *
- * Built from the demo fixture, because relive() ignores the route's gameId. TODO: build it
- * from the real game row once it does, which also removes `parseReliveNote` below.
+ * The fixture's card, for demo mode and the parity harness, where there is no game row. A real
+ * game's card comes from `shareGameFor` instead (useReliveGame), with its own sport and the
+ * side the user actually rooted for.
  */
 function reliveShareGame(relive: ReliveFixture, steps: readonly ReliveStep[]): ShareGame {
   const last = steps[steps.length - 1];
@@ -493,7 +626,7 @@ function reliveShareGame(relive: ReliveFixture, steps: readonly ReliveStep[]): S
   const { date, venue } = parseReliveNote(relive.note);
   return {
     kind: 'game',
-    // The demo game is MLB. TODO: take this from the game once there is one.
+    // The reference's demo game is MLB.
     sport: 'mlb',
     away: relive.away.name,
     home: relive.home.name,
@@ -626,6 +759,8 @@ const s = StyleSheet.create({
   // Holds a column open without drawing anything. See RowSpacers.
   photoSpacer: { flex: 1, aspectRatio: 1 },
   photo: { flex: 1, aspectRatio: 1, borderRadius: 12, overflow: 'hidden' },
+  photoTile: { alignItems: 'center', justifyContent: 'center' },
+  photoNotice: { fontSize: 12.5, lineHeight: 12.5 * 1.4, marginTop: 8, fontFamily: fontFamily() },
   photoAdd: {
     flex: 1,
     aspectRatio: 1,

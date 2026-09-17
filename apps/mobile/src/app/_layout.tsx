@@ -64,7 +64,9 @@ const persister = createAsyncStoragePersister({
   throttleTime: 1000,
 });
 
-const SKIP_PERSIST = new Set(['checkin', 'imports']);
+// relive-photos holds signed URLs that expire in an hour; a copy restored from disk the next day
+// would be a grid of broken images.
+const SKIP_PERSIST = new Set(['checkin', 'imports', 'relive-photos']);
 
 const persistOptions = {
   persister,

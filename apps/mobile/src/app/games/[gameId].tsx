@@ -29,6 +29,7 @@ import {
   statusLabel,
 } from '@/lib/format';
 import { openShare } from '@/features/share/navigate';
+import { shareGameFor } from '@/features/share/fromGame';
 import { ShareButton } from '@/features/share/ShareButton';
 import { AlsoThere } from '@/features/social/ui/AlsoThere';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -118,29 +119,7 @@ export default function GameDetailScreen() {
     isWithinCheckInWindow(openedAt, g.scheduled_start, null);
   const pl = pledge.data;
   const pledgeTeam = teamName(pl?.team_id ?? null);
-  const myResult: 'win' | 'loss' | 'tie' | null =
-    !final || !a?.rooting_team_id
-      ? null
-      : g.is_tie
-        ? 'tie'
-        : g.winner_team_id === a.rooting_team_id
-          ? 'win'
-          : 'loss';
-  const shareGame = () =>
-    openShare(router, {
-      kind: 'game',
-      sport: g.sport_id,
-      away: g.away?.name ?? 'Away',
-      home: g.home?.name ?? 'Home',
-      awayScore: g.away_score,
-      homeScore: g.home_score,
-      status: g.status,
-      venue: g.venue ? `${g.venue.name}, ${g.venue.city}` : null,
-      date: g.scheduled_start,
-      side: rootedName ?? null,
-      result: myResult,
-      verified: !!a?.verified,
-    });
+  const shareGame = () => openShare(router, shareGameFor(g, a));
   const sharePledge = () => {
     if (!pl) return;
     openShare(router, {

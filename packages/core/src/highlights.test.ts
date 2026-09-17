@@ -1,0 +1,90 @@
+import { describe, expect, it } from 'vitest';
+
+import {
+  MLB_VIDEO_HUB,
+  NFL_VIDEO_HUB,
+  highlightsSiteLabel,
+  nflWeekSlug,
+  officialHighlightsUrl,
+} from './highlights.js';
+
+const nfl = {
+  sport: 'nfl',
+  providerGameId: '2025_13_CHI_PHI',
+  season: 2025,
+  gameType: 'regular',
+  awayNickname: 'Bears',
+  homeNickname: 'Eagles',
+};
+
+describe('officialHighlightsUrl', () => {
+  // The three URLs asserted here were requested on 2026-09-17 and answered 200.
+  it('opens the MLB game by gamePk', () => {
+    expect(
+      officialHighlightsUrl({
+        sport: 'mlb',
+        providerGameId: '823191',
+        season: 2026,
+        gameType: 'regular',
+        awayNickname: 'Tigers',
+        homeNickname: 'Giants',
+      }),
+    ).toBe('https://www.mlb.com/gameday/823191/final/video');
+  });
+
+  it('opens the NFL game by matchup, season and week', () => {
+    expect(officialHighlightsUrl(nfl)).toBe(
+      'https://www.nfl.com/games/bears-at-eagles-2025-reg-13',
+    );
+  });
+
+  it('counts a playoff week from the start of the playoffs', () => {
+    // Super Bowl LIX: nflverse week 22 of the 2024 season.
+    expect(
+      officialHighlightsUrl({
+        ...nfl,
+        providerGameId: '2024_22_KC_PHI',
+        season: 2024,
+        gameType: 'postseason',
+        awayNickname: 'Chiefs',
+      }),
+    ).toBe('https://www.nfl.com/games/chiefs-at-eagles-2024-post-4');
+  });
+
+  it('never sends an NFL game to MLB, which is what the screen used to do', () => {
+    expect(officialHighlightsUrl(nfl)).not.toContain('mlb.com');
+    expect(highlightsSiteLabel('nfl')).toBe('Opens on NFL.com');
+    expect(highlightsSiteLabel('mlb')).toBe('Opens on MLB.com');
+  });
+
+  it('falls back to the league hub rather than guess a URL that would 404', () => {
+    expect(officialHighlightsUrl({ ...nfl, homeNickname: null })).toBe(NFL_VIDEO_HUB);
+    expect(officialHighlightsUrl({ ...nfl, providerGameId: 'garbage' })).toBe(NFL_VIDEO_HUB);
+    expect(officialHighlightsUrl({ ...nfl, gameType: 'preseason' })).toBe(NFL_VIDEO_HUB);
+    expect(officialHighlightsUrl({ ...nfl, sport: 'mlb', providerGameId: '2025_13_CHI_PHI' })).toBe(
+      MLB_VIDEO_HUB,
+    );
+  });
+
+  it('slugs a nickname with digits or spaces', () => {
+    expect(officialHighlightsUrl({ ...nfl, awayNickname: '49ers' })).toContain('/49ers-at-eagles-');
+    expect(officialHighlightsUrl({ ...nfl, awayNickname: 'Football Team' })).toContain(
+      '/football-team-at-eagles-',
+    );
+  });
+});
+
+describe('nflWeekSlug', () => {
+  it('knows the season grew to 18 weeks in 2021', () => {
+    expect(nflWeekSlug(2020, 18, 'postseason')).toBe('post-1');
+    expect(nflWeekSlug(2020, 21, 'postseason')).toBe('post-4');
+    expect(nflWeekSlug(2021, 19, 'postseason')).toBe('post-1');
+    expect(nflWeekSlug(2021, 22, 'postseason')).toBe('post-4');
+  });
+
+  it('refuses a week that cannot be a playoff round', () => {
+    expect(nflWeekSlug(2021, 18, 'postseason')).toBeNull();
+    expect(nflWeekSlug(2021, 23, 'postseason')).toBeNull();
+    expect(nflWeekSlug(2021, Number.NaN, 'regular')).toBeNull();
+  });
+});

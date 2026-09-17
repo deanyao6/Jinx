@@ -1,7 +1,6 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
 import { Linking } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 
 import { renderScreen } from '@/test/renderScreen';
 
@@ -23,7 +22,6 @@ jest.mock('expo-router', () => ({
 }));
 
 jest.mock('expo-image-picker', () => ({ launchImageLibraryAsync: jest.fn() }));
-const mockPicker = ImagePicker.launchImageLibraryAsync as jest.Mock;
 
 /**
  * Relive's controls, wired per docs/interactions.md. Every one of these shipped as a plain
@@ -35,7 +33,6 @@ describe('Relive navigation', () => {
     mockReplace.mockClear();
     mockBack.mockClear();
     mockCanGoBack.mockClear().mockReturnValue(true);
-    mockPicker.mockClear().mockResolvedValue({ canceled: true, assets: null });
     jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
   });
 
@@ -82,19 +79,11 @@ describe('Relive navigation', () => {
     });
   });
 
-  it.each([['Add a photo'], ['Add a photo from your library']])(
-    'opens the photo picker from %s',
-    async (label) => {
-      const { getByLabelText } = await renderScreen(<ReliveScreen />);
-      await fireEvent.press(getByLabelText(label));
-      expect(mockPicker).toHaveBeenCalledTimes(1);
-    },
-  );
-
-  // The row's own copy says "Opens in the league's video site", so it has to open one.
+  // The fixture has no game behind it, so the league hub is all it can honestly open. A real
+  // game opens its own page on its own league's site: see realGame.test.tsx.
   it('opens the league video site from the highlights row', async () => {
     const { getByLabelText } = await renderScreen(<ReliveScreen />);
-    await fireEvent.press(getByLabelText("Official highlights, opens in the league's video site"));
+    await fireEvent.press(getByLabelText("Official highlights. Opens in the league's video site"));
     expect(Linking.openURL).toHaveBeenCalledWith('https://www.mlb.com/video');
   });
 });

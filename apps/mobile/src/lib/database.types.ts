@@ -798,6 +798,7 @@ export type Database = {
           pledge_lock_reliable: boolean | null
           provider: string
           provider_game_id: string
+          relive_checked_at: string | null
           rescheduled_from_game_id: string | null
           rescheduled_to_game_id: string | null
           scheduled_start: string
@@ -830,6 +831,7 @@ export type Database = {
           pledge_lock_reliable?: boolean | null
           provider: string
           provider_game_id: string
+          relive_checked_at?: string | null
           rescheduled_from_game_id?: string | null
           rescheduled_to_game_id?: string | null
           scheduled_start: string
@@ -862,6 +864,7 @@ export type Database = {
           pledge_lock_reliable?: boolean | null
           provider?: string
           provider_game_id?: string
+          relive_checked_at?: string | null
           rescheduled_from_game_id?: string | null
           rescheduled_to_game_id?: string | null
           scheduled_start?: string
@@ -1404,7 +1407,7 @@ export type Database = {
           generated_at: string
           id: string
           source: string
-          team_id: string
+          team_id: string | null
           text: string
         }
         Insert: {
@@ -1413,7 +1416,7 @@ export type Database = {
           generated_at?: string
           id?: string
           source: string
-          team_id: string
+          team_id?: string | null
           text: string
         }
         Update: {
@@ -1422,7 +1425,7 @@ export type Database = {
           generated_at?: string
           id?: string
           source?: string
-          team_id?: string
+          team_id?: string | null
           text?: string
         }
         Relationships: [
@@ -2064,6 +2067,7 @@ export type Database = {
           reason: string
         }[]
       }
+      detail_queue_settle: { Args: never; Returns: number }
       discard_ticket_import: {
         Args: { p_import_id: string }
         Returns: undefined
@@ -2133,11 +2137,27 @@ export type Database = {
           sport_id: string
         }[]
       }
+      games_needing_relive: {
+        Args: { p_limit?: number; p_provider: string }
+        Returns: {
+          away_name: string
+          away_score: number
+          game_id: string
+          home_name: string
+          home_score: number
+          provider_game_id: string
+          season: number
+        }[]
+      }
       generate_wrapped: {
         Args: { p_season: number; p_sport: string; p_user: string }
         Returns: Json
       }
       goal_games: { Args: { p_user: string }; Returns: Json }
+      going_game_starts_between: {
+        Args: { p_from: string; p_to: string }
+        Returns: boolean
+      }
       import_tagged_games: {
         Args: { p_game_ids: string[]; p_owner: string }
         Returns: number
@@ -2386,6 +2406,7 @@ export type Database = {
           pledge_lock_reliable: boolean | null
           provider: string
           provider_game_id: string
+          relive_checked_at: string | null
           rescheduled_from_game_id: string | null
           rescheduled_to_game_id: string | null
           scheduled_start: string

@@ -473,7 +473,7 @@ export function useUnblock() {
   });
 }
 
-export type ReportTarget = 'user' | 'attendance' | 'feed_event' | 'person';
+export type ReportTarget = 'user' | 'attendance' | 'feed_event' | 'person' | 'attendance_photo';
 
 export const REPORT_REASONS = [
   'Impersonation',

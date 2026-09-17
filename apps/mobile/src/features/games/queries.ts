@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { supabase, type Rpc } from '@/lib/supabase';
 
-export const GAME_TEAM_COLUMNS = 'id, name, abbreviation, sport_id, franchise_id';
+export const GAME_TEAM_COLUMNS = 'id, name, nickname, abbreviation, sport_id, franchise_id';
 
 /** Game row with both teams and the venue embedded. */
 export const GAME_DETAIL_SELECT = `*,
@@ -13,6 +13,8 @@ export const GAME_DETAIL_SELECT = `*,
 export type GameTeam = {
   id: string;
   name: string;
+  /** `teams.nickname`: "Mets". Optional because rows cached before it was selected lack it. */
+  nickname?: string | null;
   abbreviation: string;
   sport_id: string;
   franchise_id: string;
@@ -22,6 +24,8 @@ export type GameVenue = { id: string; name: string; city: string; state: string 
 
 export type GameDetail = {
   id: string;
+  /** The provider's id: an MLB gamePk, or an nflverse id such as `2025_13_CHI_PHI`. */
+  provider_game_id?: string | null;
   sport_id: string;
   season: number;
   game_type: string;
