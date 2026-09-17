@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, type PressableProps, type ViewStyle } from 'react-native';
 
+import { alpha } from '@/theme/color';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Text } from './Text';
 
@@ -14,6 +15,11 @@ type Props = Omit<PressableProps, 'style'> & {
   small?: boolean;
 };
 
+/**
+ * `primary` is the team colour, solid: one per screen. `secondary` is the same colour washed
+ * out, which still reads as a button on a dark card where a grey fill did not. `ghost` is the
+ * colour as text alone. None of them has an outline.
+ */
 export function Button({
   title,
   variant = 'primary',
@@ -25,12 +31,19 @@ export function Button({
 }: Props) {
   const theme = useTheme();
   const c = theme.colors;
+  const a = theme.accent;
   const isDisabled = disabled || loading;
   const background =
-    variant === 'primary' ? c.ink : variant === 'secondary' ? c.tint : 'transparent';
-  const border = variant === 'ghost' || variant === 'danger' ? c.line : background;
-  const textColor: 'onInk' | 'ink' | 'red' =
-    variant === 'primary' ? 'onInk' : variant === 'danger' ? 'red' : 'ink';
+    variant === 'primary'
+      ? a.fill
+      : variant === 'secondary'
+        ? a.themed
+          ? a.wash
+          : alpha(c.ink, theme.scheme === 'dark' ? 0.12 : 0.07)
+        : variant === 'danger'
+          ? alpha(c.red, 0.12)
+          : 'transparent';
+  const textColor = variant === 'primary' ? a.onFill : variant === 'danger' ? c.red : a.text;
   return (
     <Pressable
       {...rest}
@@ -40,23 +53,21 @@ export function Button({
       style={({ pressed }) => [
         {
           backgroundColor: background,
-          borderColor: border,
-          borderWidth: 1,
-          borderRadius: theme.radius.md,
+          borderRadius: theme.radius.lg - 2,
           paddingVertical: small ? theme.spacing.sm : theme.spacing.md + 2,
-          paddingHorizontal: theme.spacing.lg,
+          paddingHorizontal: small ? theme.spacing.md + 2 : theme.spacing.lg + 2,
           alignItems: 'center',
           justifyContent: 'center',
-          opacity: isDisabled ? 0.5 : pressed ? 0.8 : 1,
-          minHeight: small ? 36 : 48,
+          opacity: isDisabled ? 0.45 : pressed ? 0.8 : 1,
+          minHeight: small ? 36 : 50,
         },
         style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? c.onInk : c.ink} />
+        <ActivityIndicator color={textColor} />
       ) : (
-        <Text variant="bodyStrong" color={textColor}>
+        <Text variant={small ? 'sub' : 'bodyStrong'} weight={750} style={{ color: textColor }}>
           {title}
         </Text>
       )}

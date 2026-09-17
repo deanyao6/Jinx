@@ -2,7 +2,6 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 
 import { doubleheaderLabel, formatGameDate, formatScore } from '@/lib/format';
-import { useTheme } from '@/theme/ThemeProvider';
 import { Text } from './Text';
 
 export type GameRowData = {
@@ -27,9 +26,7 @@ type Props = {
 };
 
 /** "date · away at home · venue · score" list row used by search, history, and upcoming. */
-export function GameRow({ game, onPress, right, badge, first }: Props) {
-  const theme = useTheme();
-  const c = theme.colors;
+export function GameRow({ game, onPress, right, badge }: Props) {
   const score = formatScore({
     homeScore: game.home_score,
     awayScore: game.away_score,
@@ -46,9 +43,7 @@ export function GameRow({ game, onPress, right, badge, first }: Props) {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
-        paddingVertical: 10,
-        borderTopWidth: first ? 0 : 1,
-        borderTopColor: c.line,
+        paddingVertical: 11,
       }}
     >
       <View style={{ flex: 1 }}>
@@ -66,9 +61,9 @@ export function GameRow({ game, onPress, right, badge, first }: Props) {
       </View>
       {right ?? (
         <Text
-          variant="bodyStrong"
+          variant="stat"
           color={game.status === 'final' ? 'ink' : 'muted'}
-          style={{ fontVariant: ['tabular-nums'] }}
+          style={{ fontSize: 20, lineHeight: 22, fontVariant: ['tabular-nums'] }}
         >
           {score}
         </Text>

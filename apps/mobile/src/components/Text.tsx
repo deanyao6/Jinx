@@ -9,8 +9,11 @@ type Variant = keyof typeof typeScale;
 
 type Props = TextProps & {
   variant?: Variant;
-  color?: keyof ColorTokens;
+  /** A base colour, or `accent` for the team in scope. */
+  color?: keyof ColorTokens | 'accent';
   align?: TextStyle['textAlign'];
+  /** An Archivo weight React Native's `fontWeight` cannot name, such as 750 or 850. */
+  weight?: number;
 };
 
 /** `'700'`, `700`, `'bold'` and `undefined` all have to land on a number Archivo has. */
@@ -36,12 +39,21 @@ function weightOf(value: TextStyle['fontWeight'], fallback: number): number {
  * here rather than at ~20 call sites means a screen can keep writing the weight it wants in
  * the ordinary way and still get a real instance.
  */
-export function Text({ variant = 'body', color = 'ink', align, style, ...rest }: Props) {
+export function Text({
+  variant = 'body',
+  color = 'ink',
+  align,
+  weight: exact,
+  style,
+  ...rest
+}: Props) {
   const theme = useTheme();
   const t = theme.type[variant];
   // Flattened so a caller's `fontWeight` — at any depth of nested style arrays — is seen.
   const passed = StyleSheet.flatten(style) as TextStyle | undefined;
-  const weight = weightOf(passed?.fontWeight, weightOf(t.fontWeight, 400));
+  const scaled = 'weight' in t ? t.weight : weightOf(t.fontWeight, 400);
+  const weight = exact ?? weightOf(passed?.fontWeight, scaled);
+  const width = 'width' in t ? t.width : undefined;
   return (
     <RNText
       {...rest}
@@ -49,13 +61,14 @@ export function Text({ variant = 'body', color = 'ink', align, style, ...rest }:
         {
           fontSize: t.fontSize,
           lineHeight: t.lineHeight,
-          color: theme.colors[color],
+          color: color === 'accent' ? theme.accent.text : theme.colors[color],
           textAlign: align,
         },
         'letterSpacing' in t ? { letterSpacing: t.letterSpacing } : null,
+        'upper' in t ? { textTransform: 'uppercase' } : null,
         passed,
         // Last, and unconditional: this must beat whatever the caller set.
-        { fontFamily: fontFamily({ weight }), fontWeight: undefined },
+        { fontFamily: fontFamily({ width, weight }), fontWeight: undefined },
       ]}
     />
   );

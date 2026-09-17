@@ -21,6 +21,8 @@ export type ReferenceTheme = {
   base: BaseColors;
   /** Resolved for the current colour scheme, from the team in scope. */
   team: TeamPalette;
+  /** Both appearances of the team in scope, for a region pinned to the other scheme. */
+  tokens: TeamTokens;
   /** The key of the team in scope, e.g. 'phi'. 'none' is the neutral theme. */
   teamKey: string;
   scheme: 'light' | 'dark';
@@ -89,6 +91,7 @@ export function ReferenceThemeProvider({
     () => ({
       base: resolved === 'dark' ? darkBase : lightBase,
       team: resolve(lookup(loaded, team), resolved),
+      tokens: lookup(loaded, team),
       teamKey: team,
       scheme: resolved,
     }),
@@ -109,11 +112,21 @@ export function TeamTheme({ team, children }: { team: string; children: React.Re
     () => ({
       ...parent,
       team: resolve(lookup(loaded, team), parent.scheme),
+      tokens: lookup(loaded, team),
       teamKey: team,
     }),
     [parent, team, loaded],
   );
   return <ReferenceThemeContext.Provider value={value}>{children}</ReferenceThemeContext.Provider>;
+}
+
+/**
+ * The team in scope, or null outside any provider. The shared components on the screens that
+ * are not in the reference read their accent this way: they sit under a provider in the app,
+ * and under none in a unit test, where neutral is the right answer.
+ */
+export function useOptionalReferenceTheme(): ReferenceTheme | null {
+  return useContext(ReferenceThemeContext);
 }
 
 export function useReferenceTheme(): ReferenceTheme {

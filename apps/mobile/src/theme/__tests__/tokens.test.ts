@@ -18,12 +18,15 @@ describe('the legacy palette follows the reference', () => {
   // back by hand-editing a hex.
   it('takes its surfaces straight from the reference base colours', () => {
     expect(lightColors.ink).toBe(lightBase.ink);
-    expect(lightColors.screen).toBe(lightBase.scr);
+    // The canvas, not `scr`: a card has no outline, so it needs a screen a shade off its own fill.
+    expect(lightColors.screen).toBe(lightBase.canvas);
+    expect(lightColors.screen).not.toBe(lightColors.card);
     expect(lightColors.card).toBe(lightBase.card);
     expect(lightColors.line).toBe(lightBase.line);
     expect(lightColors.muted).toBe(lightBase.muted);
     expect(darkColors.ink).toBe(darkBase.ink);
-    expect(darkColors.screen).toBe(darkBase.scr);
+    expect(darkColors.screen).toBe(darkBase.canvas);
+    expect(darkColors.screen).not.toBe(darkColors.card);
   });
 
   it('maps the semantic colours onto the reference names', () => {

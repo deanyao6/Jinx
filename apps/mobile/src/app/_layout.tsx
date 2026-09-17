@@ -26,6 +26,7 @@ import { useNotificationRuntime } from '@/features/notifications/push';
 import { useProfile } from '@/features/profile/queries';
 import { initSentry, wrapRoot } from '@/lib/sentry';
 import { useJinxFonts } from '@/theme/fonts';
+import { AccentRoot } from '@/features/teams/AccentRoot';
 import { TeamPaletteProvider } from '@/theme/reference/TeamTheme';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 import { darkColors, lightColors } from '@/theme/tokens';
@@ -240,7 +241,9 @@ function RootLayout() {
                   {/* Development only, and inert unless the visual parity harness is
                     running. See scripts/parity/ and SPEC.md M0.5. */}
                   <ParityHost>
-                    <RootNavigator />
+                    <AccentRoot>
+                      <RootNavigator />
+                    </AccentRoot>
                   </ParityHost>
                 </TeamPalettes>
               </FontGate>

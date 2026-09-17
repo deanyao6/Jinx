@@ -18,7 +18,7 @@ export function Segmented<T extends string>({ options, value, onChange }: Props<
       accessibilityRole="tablist"
       style={{
         flexDirection: 'row',
-        backgroundColor: c.tint,
+        backgroundColor: theme.scheme === 'dark' ? c.card : c.line,
         borderRadius: theme.radius.md,
         padding: 3,
         marginBottom: theme.spacing.md,
@@ -36,14 +36,14 @@ export function Segmented<T extends string>({ options, value, onChange }: Props<
               flex: 1,
               paddingVertical: 8,
               borderRadius: theme.radius.sm,
-              backgroundColor: on ? c.card : 'transparent',
+              backgroundColor: on ? theme.accent.fill : 'transparent',
               alignItems: 'center',
             }}
           >
             <Text
               variant="sub"
-              color={on ? 'ink' : 'muted'}
-              style={{ fontWeight: on ? '700' : '400' }}
+              weight={on ? 750 : 600}
+              style={{ color: on ? theme.accent.onFill : c.muted }}
             >
               {o.label}
             </Text>

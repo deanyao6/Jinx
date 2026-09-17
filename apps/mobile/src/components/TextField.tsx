@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextInput, type TextInputProps, View, type ViewStyle } from 'react-native';
 
+import { fontFamily } from '@/theme/fonts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Text } from './Text';
 
@@ -15,10 +16,11 @@ type Props = TextInputProps & {
 export function TextField({ label, error, hint, containerStyle, prefix, style, ...rest }: Props) {
   const theme = useTheme();
   const c = theme.colors;
+  const [focused, setFocused] = React.useState(false);
   return (
     <View style={[{ marginBottom: theme.spacing.md }, containerStyle]}>
       {label ? (
-        <Text variant="label" color="muted" style={{ marginBottom: 6, textTransform: 'uppercase' }}>
+        <Text variant="kicker" color="muted" style={{ marginBottom: 7 }}>
           {label}
         </Text>
       ) : null}
@@ -27,9 +29,10 @@ export function TextField({ label, error, hint, containerStyle, prefix, style, .
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: c.card,
-          borderColor: error ? c.red : c.line,
-          borderWidth: 1,
-          borderRadius: theme.radius.md,
+          // No outline at rest. The ring only appears to say something: focus, or an error.
+          borderColor: error ? c.red : focused ? theme.accent.text : 'transparent',
+          borderWidth: 1.5,
+          borderRadius: theme.radius.lg - 2,
           paddingHorizontal: theme.spacing.md,
         }}
       >
@@ -40,7 +43,16 @@ export function TextField({ label, error, hint, containerStyle, prefix, style, .
         ) : null}
         <TextInput
           placeholderTextColor={c.muted}
+          selectionColor={theme.accent.text}
           {...rest}
+          onFocus={(e) => {
+            setFocused(true);
+            rest.onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            setFocused(false);
+            rest.onBlur?.(e);
+          }}
           accessibilityLabel={rest.accessibilityLabel ?? label}
           style={[
             {
@@ -48,7 +60,8 @@ export function TextField({ label, error, hint, containerStyle, prefix, style, .
               color: c.ink,
               fontSize: theme.type.body.fontSize,
               paddingVertical: theme.spacing.md,
-              minHeight: 46,
+              minHeight: 48,
+              fontFamily: fontFamily(),
             },
             style,
           ]}

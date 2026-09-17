@@ -11,7 +11,7 @@
  * shapes still differ, and each screen still has to move across properly.
  *
  * The mapping is one-to-one where the reference has an equivalent, and stated where it does
- * not. `bg`/`scr`/`card`/`surface`/`ink`/`muted`/`line` carry over exactly.
+ * not. `bg`/`card`/`surface`/`ink`/`muted`/`line` carry over exactly; `screen` is `canvas`.
  */
 import {
   darkBase,
@@ -39,7 +39,9 @@ export type ColorTokens = {
 function fromBase(b: BaseColors): ColorTokens {
   return {
     page: b.bg,
-    screen: b.scr,
+    // The reference's Figma-derived screens sit on `canvas`, a shade off the card colour, which is
+    // what lets a card read as a card with no outline around it.
+    screen: b.canvas,
     card: b.card,
     ink: b.ink,
     muted: b.muted,
@@ -68,30 +70,94 @@ export const radius = {
   pill: referenceRadius.pill,
 } as const;
 
+/**
+ * The type scale. `width` is Archivo's width axis: 100 is the ordinary face, and the 60s are the
+ * condensed heavy cut the Passport sets its record and its section headings in. Headings and
+ * numbers use it here too, which is most of what makes a sub screen read as the same app.
+ */
 export const type = {
-  display: { fontSize: 64, fontWeight: '900', lineHeight: 60, letterSpacing: -1 },
-  h1: { fontSize: 30, fontWeight: '800', lineHeight: 32 },
-  h2: { fontSize: 22, fontWeight: '800', lineHeight: 26 },
-  stat: { fontSize: 26, fontWeight: '800', lineHeight: 28 },
+  display: { fontSize: 64, fontWeight: '900', lineHeight: 60, letterSpacing: -0.6, width: 62 },
+  h1: {
+    fontSize: 34,
+    fontWeight: '900',
+    lineHeight: 34,
+    letterSpacing: 0.2,
+    width: 62,
+    upper: true,
+  },
+  h2: { fontSize: 22, fontWeight: '800', weight: 850, lineHeight: 25, width: 70 },
+  /** A section heading, the Passport's "STADIUM STAMPS". */
+  section: {
+    fontSize: 17,
+    fontWeight: '900',
+    lineHeight: 20,
+    letterSpacing: 0.17,
+    width: 62,
+    upper: true,
+  },
+  stat: { fontSize: 30, fontWeight: '900', lineHeight: 30, width: 62 },
   body: { fontSize: 15, fontWeight: '400', lineHeight: 21 },
   bodyStrong: { fontSize: 15, fontWeight: '700', lineHeight: 21 },
   sub: { fontSize: 13.5, fontWeight: '400', lineHeight: 19 },
   caption: { fontSize: 12.5, fontWeight: '400', lineHeight: 17 },
   label: { fontSize: 11.5, fontWeight: '600', lineHeight: 14 },
+  /** The small caps line above a heading or a value: "LIFETIME RECORD". */
+  kicker: {
+    fontSize: 11,
+    fontWeight: '700',
+    weight: 750,
+    lineHeight: 14,
+    letterSpacing: 0.9,
+    upper: true,
+  },
 } as const;
+
+/**
+ * The colour a screen leans on. It is the team in scope (theme/reference/TeamTheme.tsx): the
+ * person's own team on their screens, the game's side on a game. With no team it is ink, which
+ * is what these screens used for everything before.
+ */
+export type Accent = {
+  /** Solid fill for the one thing to press, a selected chip, a progress bar. */
+  fill: string;
+  /** Text and icons on top of `fill`. */
+  onFill: string;
+  /** Team colour as text or a small mark, tuned per appearance to stay readable. */
+  text: string;
+  /** The team's second colour: rings, a thin rule, the far end of a gradient. */
+  second: string;
+  /** `fill` washed out, for the background of a card or an icon tile. */
+  wash: string;
+  /** Whether a team is in scope at all. */
+  themed: boolean;
+};
 
 export type Theme = {
   scheme: 'light' | 'dark';
   colors: ColorTokens;
+  accent: Accent;
   spacing: typeof spacing;
   radius: typeof radius;
   type: typeof type;
 };
 
-export function makeTheme(scheme: 'light' | 'dark'): Theme {
+export function neutralAccent(colors: ColorTokens): Accent {
+  return {
+    fill: colors.ink,
+    onFill: colors.onInk,
+    text: colors.ink,
+    second: colors.muted,
+    wash: colors.tint,
+    themed: false,
+  };
+}
+
+export function makeTheme(scheme: 'light' | 'dark', accent?: Accent): Theme {
+  const colors = scheme === 'dark' ? darkColors : lightColors;
   return {
     scheme,
-    colors: scheme === 'dark' ? darkColors : lightColors,
+    colors,
+    accent: accent ?? neutralAccent(colors),
     spacing,
     radius,
     type,

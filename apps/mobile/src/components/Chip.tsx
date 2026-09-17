@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, type ViewStyle } from 'react-native';
 
+import { alpha } from '@/theme/color';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Text } from './Text';
 
@@ -12,10 +13,19 @@ type Props = {
   accent?: 'green' | 'ink';
 };
 
+/** A filled pill. Selected is the team colour; `green` is for a state, not a choice. */
 export function Chip({ label, selected = false, onPress, style, accent = 'ink' }: Props) {
   const theme = useTheme();
   const c = theme.colors;
-  const color = accent === 'green' ? c.green : c.ink;
+  const green = accent === 'green';
+  const background = selected
+    ? green
+      ? alpha(c.green, 0.16)
+      : theme.accent.fill
+    : theme.scheme === 'dark'
+      ? alpha(c.ink, 0.08)
+      : c.card;
+  const color = selected ? (green ? c.green : theme.accent.onFill) : c.ink;
   return (
     <Pressable
       accessibilityRole="button"
@@ -25,11 +35,9 @@ export function Chip({ label, selected = false, onPress, style, accent = 'ink' }
       style={({ pressed }) => [
         {
           borderRadius: theme.radius.pill,
-          borderWidth: 1.5,
-          borderColor: selected ? color : c.line,
-          backgroundColor: selected && accent === 'ink' ? c.ink : c.card,
-          paddingVertical: 6,
-          paddingHorizontal: 12,
+          backgroundColor: background,
+          paddingVertical: 7,
+          paddingHorizontal: 13,
           opacity: pressed ? 0.7 : 1,
           marginRight: 6,
           marginBottom: 6,
@@ -37,13 +45,7 @@ export function Chip({ label, selected = false, onPress, style, accent = 'ink' }
         style,
       ]}
     >
-      <Text
-        variant="caption"
-        style={{
-          fontWeight: selected ? '700' : '400',
-          color: selected ? (accent === 'ink' ? c.onInk : c.green) : c.ink,
-        }}
-      >
+      <Text variant="caption" weight={selected ? 750 : 600} style={{ color }}>
         {label}
       </Text>
     </Pressable>

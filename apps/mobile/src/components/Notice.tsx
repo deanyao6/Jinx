@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, type ViewStyle } from 'react-native';
 
+import { alpha } from '@/theme/color';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Text } from './Text';
 
@@ -19,7 +20,12 @@ export function Notice({ children, tone = 'info', style }: Props) {
       accessibilityRole="alert"
       style={[
         {
-          backgroundColor: c.tint,
+          backgroundColor:
+            tone === 'error'
+              ? alpha(c.red, 0.12)
+              : tone === 'success'
+                ? alpha(c.green, 0.13)
+                : theme.accent.wash,
           borderRadius: theme.radius.md,
           padding: theme.spacing.md,
           marginBottom: theme.spacing.md,

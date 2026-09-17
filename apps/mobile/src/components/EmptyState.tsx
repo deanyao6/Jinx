@@ -2,7 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useTheme } from '@/theme/ThemeProvider';
+import type { IconName } from '@/components/reference/icons';
 import { Button } from './Button';
+import { IconTile } from './IconTile';
 import { Text } from './Text';
 
 type Props = {
@@ -10,9 +12,10 @@ type Props = {
   body?: string;
   actionTitle?: string;
   onAction?: () => void;
+  icon?: IconName;
 };
 
-export function EmptyState({ title, body, actionTitle, onAction }: Props) {
+export function EmptyState({ title, body, actionTitle, onAction, icon = 'i-ticket' }: Props) {
   const theme = useTheme();
   return (
     <View
@@ -23,6 +26,9 @@ export function EmptyState({ title, body, actionTitle, onAction }: Props) {
         gap: theme.spacing.sm,
       }}
     >
+      <View style={{ marginBottom: theme.spacing.sm }}>
+        <IconTile icon={icon} size={56} />
+      </View>
       <Text variant="h2" align="center">
         {title}
       </Text>
@@ -34,7 +40,7 @@ export function EmptyState({ title, body, actionTitle, onAction }: Props) {
       {actionTitle && onAction ? (
         <Button
           title={actionTitle}
-          variant="secondary"
+          variant="primary"
           onPress={onAction}
           style={{ marginTop: theme.spacing.md }}
         />

@@ -15,7 +15,7 @@ type Props = {
   first?: boolean;
 };
 
-export function CheckRow({ title, subtitle, checked, onToggle, disabled, trailing, first }: Props) {
+export function CheckRow({ title, subtitle, checked, onToggle, disabled, trailing }: Props) {
   const theme = useTheme();
   const c = theme.colors;
   return (
@@ -29,9 +29,7 @@ export function CheckRow({ title, subtitle, checked, onToggle, disabled, trailin
         flexDirection: 'row',
         alignItems: 'center',
         gap: 12,
-        paddingVertical: 10,
-        borderTopWidth: first ? 0 : 1,
-        borderTopColor: c.line,
+        paddingVertical: 11,
         opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
       })}
     >
@@ -41,13 +39,13 @@ export function CheckRow({ title, subtitle, checked, onToggle, disabled, trailin
           height: 24,
           borderRadius: 7,
           borderWidth: 2,
-          borderColor: checked ? c.ink : c.line,
-          backgroundColor: checked ? c.ink : 'transparent',
+          borderColor: checked ? theme.accent.fill : c.line,
+          backgroundColor: checked ? theme.accent.fill : 'transparent',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        {checked ? <Ionicons name="checkmark" size={16} color={c.onInk} /> : null}
+        {checked ? <Ionicons name="checkmark" size={16} color={theme.accent.onFill} /> : null}
       </View>
       <View style={{ flex: 1 }}>
         <Text variant="body">{title}</Text>
