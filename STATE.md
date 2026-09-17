@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 12:40 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 13:30 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -129,11 +129,24 @@ last open question and shipped on 2026-09-17.
 
 - **The local database is 226 MB** against M1's 150 MB bar, because NFL detail is stored for every
   game rather than logged ones. Under the 300 MB target and the 500 MB free-tier cap.
-- **Restyling the non-reference screens** is unasked and unspec'd. SPEC 8.8 names the reference
-  screens; everything else (onboarding, auth, game detail, check-in, imports, settings, map,
-  goals, bucket lists, Wrapped, other profiles) uses the same tokens and components but has no
-  layout to match. Ask before doing it.
-
+- **The sub page restyle has not been approved by Dean yet.** He asked for it on 2026-09-17: one
+  style on every page, far more team colour, fewer outlines, better type ratios. All 46 screens
+  outside the reference were restyled that day against `docs/subpage-style.md`, which is now the
+  rulebook for any screen that is not in `design/reference.html`. Verified on the simulator in
+  dark mode: game detail, log sheet, stamps, goals, bucket lists, settings, favorites, Wrapped,
+  another person's profile. **Not yet looked at on a device or simulator:** light mode, the
+  signed-out screens (welcome, email, code, onboarding), and the screens that need data the local
+  account lacks (a bucket list with progress, notifications, companions, imports with matches).
+- **Migration `20260917000500` is applied on local and NOT on hosted.** It makes NFL division
+  bucket lists say "stadiums". `npx supabase db push --linked --yes` applies it; an agent's
+  permission guard refused to, so it needs Dean.
+- **Every real person gets the same default avatar.** The reference `Avatar` only knows the six
+  demo names and `profiles.avatar_path` is drawn nowhere, so search results and requests cannot
+  be told apart by picture. Photo upload is spec'd (SPEC 8.6) and unbuilt.
+- **`support@example.com` is the support address in the app**, and the privacy text still carries
+  a "Replace Jinx with the final name" line and "(draft)" titles. Fix before external TestFlight.
+- **`games.final_at` is never filled** on hosted (0 of 2,734 finals this season). Check-in falls
+  back to six hours after the start, so nothing breaks, but the column is dead.
 ---
 
 ## 6. Rules that are not negotiable
@@ -200,6 +213,7 @@ last open question and shipped on 2026-09-17.
 | `CLAUDE.md` | Layout, commands, conventions |
 | `docs/progress.md` | Milestone status, with the evidence for each |
 | `docs/interactions.md` | Every control and what it should do |
+| `docs/subpage-style.md` | The design rules for every screen outside the reference, and the shared kit |
 | `docs/verification.md` | External facts checked against live sources, and bugs found that way |
 | `docs/deploy.md` | Accounts, costs, the TestFlight runbook, environment variables |
 | `docs/simulator.md` | Running locally, and why the build is non-standard |

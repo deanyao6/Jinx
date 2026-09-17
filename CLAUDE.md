@@ -31,7 +31,10 @@ of all three environments. Highlights that change how you work:
   36 generated icons, 7 stadium shapes, 65 team palettes and a `TeamTheme` provider live under
   `src/theme/reference/` and `src/components/reference/`. `npm run parity` compares screens against
   `design/reference.html`. The older `src/theme/tokens.ts` still serves screens outside the
-  reference and derives its colours from it.
+  reference and derives its colours from it. Those screens follow
+  [docs/subpage-style.md](docs/subpage-style.md): `useTheme().accent` is the team in scope (the
+  person's own team by default, a game's side under a `TeamTheme`), cards have no outlines, and
+  headings use the condensed heavy cut.
 - **The hosted project is `vekdufflzklfxljqufbq`**, holding every migration, the seed data, games
   from 2016 on, and eight of nine Edge Functions. `bash scripts/hosted-rollout.sh` deploys and
   verifies it. Ticket parsing and storylines work; inbound email waits on a domain.
@@ -45,6 +48,7 @@ of all three environments. Highlights that change how you work:
 | [SPEC.md](SPEC.md) | The product and engineering spec. Authoritative |
 | [docs/progress.md](docs/progress.md) | Milestone status and decisions that differ from the spec |
 | [docs/simulator.md](docs/simulator.md) | Running the app locally, and why the build is non-standard |
+| [docs/subpage-style.md](docs/subpage-style.md) | The design rules and shared kit for every screen outside the reference |
 | [docs/deploy.md](docs/deploy.md) | Accounts, real costs, and the deployment steps |
 | [docs/verification.md](docs/verification.md) | VERIFY items from the spec checked against live sources |
 | [docs/elo-backtest.md](docs/elo-backtest.md) | Elo tuning evidence |
