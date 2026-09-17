@@ -245,8 +245,22 @@ eas env:list production
 #   EXPO_PUBLIC_INBOUND_EMAIL_DOMAIN=in.example.com
 ```
 
-`plaintext` visibility is correct for all three: `EXPO_PUBLIC_*` values are compiled into the
-bundle and are public by design (SPEC.md Section 3). Nothing secret may be added here.
+plus `SENTRY_DISABLE_AUTO_UPLOAD=true`, which is not a runtime value at all. The
+`@sentry/react-native` config plugin runs a source-map upload during the Xcode build and fails
+the whole build when `SENTRY_ORG` and `SENTRY_PROJECT` are unset:
+
+```
+An organization ID or slug is required (provide with --org)
+```
+
+That is what killed the first build. `scripts/ios-sim.sh` has worked around it locally since the
+beginning, for the same reason; EAS needed telling separately. Crash reporting is off anyway
+(`EXPO_PUBLIC_SENTRY_DSN` is unset), so there are no source maps worth uploading. When Sentry is
+turned on, set `SENTRY_ORG`, `SENTRY_PROJECT` and a `SENTRY_AUTH_TOKEN` secret and drop this flag.
+
+`plaintext` visibility is correct for all of these: the `EXPO_PUBLIC_*` values are compiled into
+the bundle and are public by design (SPEC.md Section 3), and the Sentry flag is a boolean.
+Nothing secret may be added here.
 
 `.env` keeps pointing at the local stack, which is what local development wants. The two no
 longer interfere, so there is nothing to put back after a build.
