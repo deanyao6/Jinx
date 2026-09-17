@@ -199,7 +199,9 @@ last open question and shipped on 2026-09-17.
    flags. Use `String.fromCharCode(0x2014)`.
 9. **Simulator: no accessibility permission, so no scripted taps.** Verify with deep links
    (`xcrun simctl openurl booted jinx:///route`) and tests. A deep link to the screen already open
-   does not remount it; terminate and relaunch to see fresh data.
+   does not remount it; terminate and relaunch to see fresh data. Animations have a way in too:
+   `jinx:///you/eggs?play=<flag key>` (add `&sport=nfl` for the confetti) shows one easter egg and
+   starts it, so frames can be screenshotted. Open `jinx:///you/about` between two of them.
 10. **The Supabase CLI prints query JSON two ways**: a bare array in a terminal, `{"rows": [...]}`
     when it detects an agent. Handle both, or a script written by one breaks for a person.
 11. **"Accepted" is not "correct".** The storylines validator accepted "105-73" for the 2025

@@ -30,8 +30,13 @@ import { useEggStore, useEggStoreHydrated } from './store';
 export const RALLY_HOLD_MS = 1000;
 
 /**
- * Turns whatever it wraps upside down, on a spring, about its own horizontal middle: the cap
- * going inside out. Reduce Motion gets the end state at once, with no travel.
+ * Turns whatever it wraps upside down, on a spring, about its own centre: the cap turned over.
+ * Reduce Motion gets the end state at once, with no travel.
+ *
+ * A flat half turn, not a 3D `rotateX`. With a perspective transform iOS composited the wordmark
+ * on its own layer and clipped the text beside it to the wordmark's width, and the letters came
+ * out mirrored rather than upside down. Turned flat, it reads as JINX on its head, which is the
+ * joke, and it leaves its neighbours alone.
  */
 export function Flippable({ flipped, children }: { flipped: boolean; children: React.ReactNode }) {
   const reduceMotion = useReducedMotion();
@@ -45,9 +50,13 @@ export function Flippable({ flipped, children }: { flipped: boolean; children: R
   }, [flipped, reduceMotion, turn]);
 
   const style = useAnimatedStyle(() => ({
-    transform: [{ perspective: 420 }, { rotateX: `${turn.value * 180}deg` }],
+    transform: [
+      { rotate: `${turn.value * 180}deg` },
+      // A small dip through the middle of the turn, so it feels thrown rather than dialled.
+      { scale: 1 - 0.12 * Math.sin(Math.PI * Math.min(Math.max(turn.value, 0), 1)) },
+    ],
   }));
-  return <Animated.View style={style}>{children}</Animated.View>;
+  return <Animated.View style={[{ alignSelf: 'flex-start' }, style]}>{children}</Animated.View>;
 }
 
 /**

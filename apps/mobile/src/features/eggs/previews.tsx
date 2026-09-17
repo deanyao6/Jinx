@@ -39,6 +39,22 @@ const SAMPLE_GAMES: ReplayGame[] = SAMPLE_RESULTS.split('').map((letter, i) => {
   };
 });
 
+/**
+ * `autoPlay` starts the preview by itself shortly after it mounts. The simulator here allows no
+ * scripted taps (STATE.md trap 9), so `jinx:///you/eggs?play=<key>` is how an egg gets looked at.
+ */
+export type PreviewProps = { autoPlay?: boolean; sport?: string };
+
+function useAutoPlay(autoPlay: boolean | undefined, start: () => void) {
+  const startRef = React.useRef(start);
+  startRef.current = start;
+  React.useEffect(() => {
+    if (!autoPlay) return undefined;
+    const timer = setTimeout(() => startRef.current(), 900);
+    return () => clearTimeout(timer);
+  }, [autoPlay]);
+}
+
 const SAMPLE_STEPS = replaySteps(SAMPLE_GAMES);
 const SAMPLE_RECORD = formatTally(SAMPLE_STEPS[SAMPLE_STEPS.length - 1] ?? { w: 0, l: 0, t: 0 });
 
@@ -52,8 +68,9 @@ function MiniHero({ children, label }: { children: React.ReactNode; label: strin
   );
 }
 
-export function RewindPreview() {
+export function RewindPreview({ autoPlay }: PreviewProps) {
   const [playKey, setPlayKey] = React.useState(0);
+  useAutoPlay(autoPlay, () => setPlayKey((n) => n + 1));
   return (
     <View style={s.preview}>
       <MiniHero label="SAMPLE RECORD, 12 GAMES">
@@ -75,9 +92,13 @@ export function RewindPreview() {
   );
 }
 
-export function CursePreview() {
+export function CursePreview({ autoPlay }: PreviewProps) {
   const [run, setRun] = React.useState(0);
   const [playing, setPlaying] = React.useState(false);
+  useAutoPlay(autoPlay, () => {
+    setRun((n) => n + 1);
+    setPlaying(true);
+  });
   return (
     <View style={s.preview}>
       <MiniHero label="LIFETIME RECORD">
@@ -104,9 +125,10 @@ export function CursePreview() {
   );
 }
 
-export function RallyCapPreview() {
+export function RallyCapPreview({ autoPlay }: PreviewProps) {
   const theme = useTheme();
   const [flipped, setFlipped] = React.useState(false);
+  useAutoPlay(autoPlay, () => setFlipped(true));
   return (
     <View style={s.preview}>
       <View style={s.wordmark}>
@@ -127,8 +149,9 @@ export function RallyCapPreview() {
 }
 
 /** One button per sport in the table, so a new sport's pieces are playable the day it is added. */
-export function ConfettiPreview() {
+export function ConfettiPreview({ autoPlay, sport: autoSport }: PreviewProps) {
   const play = useEggPreview((state) => state.playConfetti);
+  useAutoPlay(autoPlay, () => play(autoSport ?? 'mlb'));
   return (
     <View style={[s.preview, { flexDirection: 'row', flexWrap: 'wrap' }]}>
       {Object.entries(EGG_SPORTS).map(([sport, row]) => (

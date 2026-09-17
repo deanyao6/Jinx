@@ -1,7 +1,13 @@
 import type React from 'react';
 
 import type { EggKey } from './flags';
-import { ConfettiPreview, CursePreview, RallyCapPreview, RewindPreview } from './previews';
+import {
+  ConfettiPreview,
+  CursePreview,
+  RallyCapPreview,
+  RewindPreview,
+  type PreviewProps,
+} from './previews';
 
 /**
  * Every easter egg, for the dev page at Settings, About, Easter eggs (`app/you/eggs.tsx`).
@@ -15,7 +21,7 @@ export type EggEntry = {
   key: EggKey;
   title: string;
   how: string;
-  Preview?: React.ComponentType;
+  Preview?: React.ComponentType<PreviewProps>;
 };
 
 export const EGG_CATALOG: readonly EggEntry[] = [

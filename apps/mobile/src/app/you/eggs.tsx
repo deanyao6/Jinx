@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -18,6 +18,8 @@ import { eggs } from '@/features/eggs/flags';
  * the row is gone, and a deep link here finds an empty page.
  */
 export default function EasterEggsScreen() {
+  // `?play=<key>` shows that one egg and starts it, because nothing can tap Play in the simulator.
+  const { play, sport } = useLocalSearchParams<{ play?: string; sport?: string }>();
   if (!__DEV__) {
     return (
       <Screen>
@@ -34,22 +36,24 @@ export default function EasterEggsScreen() {
         title="Easter eggs"
         body="Each one plays here on sample data. The switches are in features/eggs/flags.ts."
       />
-      {EGG_CATALOG.map(({ key, title, how, Preview }) => (
-        <Card key={key}>
-          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 8 }}>
-            <Text variant="bodyStrong" style={{ flex: 1 }}>
-              {title}
+      {EGG_CATALOG.filter((egg) => !play || egg.key === play).map(
+        ({ key, title, how, Preview }) => (
+          <Card key={key}>
+            <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 8 }}>
+              <Text variant="bodyStrong" style={{ flex: 1 }}>
+                {title}
+              </Text>
+              <Text variant="kicker" color={eggs[key] ? 'green' : 'muted'}>
+                {eggs[key] ? 'On' : 'Off'}
+              </Text>
+            </View>
+            <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
+              {how}
             </Text>
-            <Text variant="kicker" color={eggs[key] ? 'green' : 'muted'}>
-              {eggs[key] ? 'On' : 'Off'}
-            </Text>
-          </View>
-          <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
-            {how}
-          </Text>
-          {Preview ? <Preview /> : null}
-        </Card>
-      ))}
+            {Preview ? <Preview autoPlay={play === key} {...(sport ? { sport } : {})} /> : null}
+          </Card>
+        ),
+      )}
     </Screen>
   );
 }
