@@ -66,8 +66,8 @@ const persister = createAsyncStoragePersister({
 });
 
 // relive-photos holds signed URLs that expire in an hour; a copy restored from disk the next day
-// would be a grid of broken images.
-const SKIP_PERSIST = new Set(['checkin', 'imports', 'relive-photos']);
+// would be a grid of broken images. avatar-url is the same thing for profile photos.
+const SKIP_PERSIST = new Set(['checkin', 'imports', 'relive-photos', 'avatar-url']);
 
 const persistOptions = {
   persister,

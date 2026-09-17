@@ -266,3 +266,31 @@ score changing between entries. `ingest/src/verify/relive.ts` compares a story w
 plays in the game feed, a different endpoint from the one the story is built from, and that game
 is one of its ten. Stories built before the fix are wrong in the same way until
 `npx tsx ingest/src/mlb/relive.ts --rebuild` is run against the database that holds them.
+
+## Venue elevations (highest altitude superlative) — FETCHED 2026-09-17
+
+`venues.elevation_ft` is filled by `seed/scripts/fill_elevations.py` into
+`seed/venue_elevations.json`, never from memory:
+
+| Where | Source | Call |
+|---|---|---|
+| USA, Puerto Rico | USGS Elevation Point Query Service (3DEP), free, no key | `https://epqs.nationalmap.gov/v1/json?x=<lng>&y=<lat>&units=Feet&wkid=4326`, field `value` |
+| Everywhere else | Open-Elevation (SRTM), free, no key, metres x 3.280839895 | `https://api.open-elevation.com/api/v1/lookup?locations=<lat>,<lng>`, field `results[0].elevation` |
+
+182 of 224 venues resolved (164 USGS, 18 Open-Elevation). The other 42 have no coordinates in the
+seed, all spring training, minor league and one-off international parks, so they have no
+elevation and can never be a "highest altitude" row. Two of those would matter if anyone logs a
+game there: Security Service Field in Colorado Springs and the El Paso park.
+
+Read against well-known values: Coors Field 5,180 ft, Empower Field at Mile High 5,195, Mile High
+Stadium 5,210, Chase Field 1,085, State Farm Stadium 1,079, Truist Park 965, Oracle Park 13,
+Fenway Park 8, Estadio Banorte (Mexico City) 7,503. Coors reads a little under the 5,200 usually
+quoted because the point is the ground at the seeded coordinates, not the purple row of seats at
+5,280. The Oakland Coliseum reads -17, which is right: its field is below sea level.
+
+The superlative only appears from 1,000 ft, so of current big league homes it can name Denver,
+Phoenix and Glendale; Atlanta's 965 ft is just under on purpose.
+
+The script is resumable and rewrites the file after every answer. Its first run lost 181 answers
+to a rebound dict and the file was rebuilt from that run's own log of fetched values, not from a
+second guess; a rerun now fetches nothing.

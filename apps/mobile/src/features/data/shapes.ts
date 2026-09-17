@@ -107,6 +107,25 @@ export type GuideFixture = {
   tabs: readonly { key: string; label: string }[];
 };
 
+/**
+ * Who an avatar key stands for, when it stands for a real person (SPEC.md 8.6).
+ *
+ * The fixtures carry avatars as bare keys: a fixture name in demo mode, a person or user id in
+ * real data. `Repository.person(key)` resolves a real one to this; in demo mode it returns null
+ * and the screen draws the reference's fixture art instead.
+ */
+export type PersonRef = {
+  /**
+   * A stable id for the person: their account when they have one, else the placeholder's person
+   * id ("Dad"). It seeds the generated colour, so someone is the same colour on every screen.
+   */
+  userId: string | null;
+  name: string | null;
+  handle: string | null;
+  /** `profiles.avatar_path`, or null for the generated default. */
+  avatarPath: string | null;
+};
+
 export type ProfileFixture = {
   team: string;
   handle: string;

@@ -1,6 +1,8 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
 
+import { demoRepository } from '@/features/data/demo';
+import type { Repository } from '@/features/data/types';
 import { renderScreen } from '@/test/renderScreen';
 
 import { PassportScreen } from '../PassportScreen';
@@ -70,6 +72,59 @@ describe('Passport navigation', () => {
     const { getByLabelText } = await renderScreen(<PassportScreen />);
     await fireEvent.press(getByLabelText('Most Seen Player: Bryce Harper'));
     expect(mockPush).toHaveBeenCalledWith('/passport/superlatives');
+  });
+
+  // Real rows say where they go (`superlativeHref`); the demo rows above name no real game.
+  describe('with real superlatives', () => {
+    const repository: Repository = {
+      ...demoRepository,
+      passport: (pill) => ({
+        ...demoRepository.passport(pill),
+        superlatives: [
+          {
+            icon: 'i-user',
+            label: 'Seen Bryce Harper play',
+            value: '14 times',
+            chip: '',
+            href: '/passport/player/p1',
+          },
+          {
+            icon: 'i-thermo',
+            label: 'Coldest game',
+            value: '19°F',
+            chip: 'DAL at PHI, Jan 2024',
+            href: '/games/g1',
+          },
+          { icon: 'i-spark', label: 'Longest win streak', value: '5 games', chip: '' },
+        ],
+      }),
+    };
+
+    it('opens the games you saw the player in from the favourite player row', async () => {
+      const { getByLabelText } = await renderScreen(<PassportScreen />, { repository });
+      await fireEvent.press(getByLabelText('Seen Bryce Harper play: 14 times'));
+      expect(mockPush).toHaveBeenCalledWith('/passport/player/p1');
+    });
+
+    it('opens the game a number is from', async () => {
+      const { getByLabelText } = await renderScreen(<PassportScreen />, { repository });
+      await fireEvent.press(getByLabelText('Coldest game: 19°F'));
+      expect(mockPush).toHaveBeenCalledWith('/games/g1');
+    });
+
+    it('still reaches the full list: from a row about no one game, and from View All', async () => {
+      const { getByLabelText } = await renderScreen(<PassportScreen />, { repository });
+      await fireEvent.press(getByLabelText('Longest win streak: 5 games'));
+      expect(mockPush).toHaveBeenLastCalledWith('/passport/superlatives');
+      await fireEvent.press(getByLabelText('Fan superlatives: View All'));
+      expect(mockPush).toHaveBeenCalledTimes(2);
+      expect(mockPush).toHaveBeenLastCalledWith('/passport/superlatives');
+    });
+  });
+
+  it('keeps the demo header as the reference draws it, with no View All', async () => {
+    const { queryByLabelText } = await renderScreen(<PassportScreen />);
+    expect(queryByLabelText('Fan superlatives: View All')).toBeNull();
   });
 });
 

@@ -62,7 +62,9 @@ record game log) are the source; this is what they imply for everything else. De
 | `Button`, `Chip`, `Segmented`, `TextField`, `CheckRow` | As named. All already borderless and accent-aware |
 | `EmptyState` (`icon`) | Nothing here yet: tile, condensed title, one line, one action |
 | `Notice` | Inline info, success, error |
+| `PersonAvatar` (`ring`) | Every real person, everywhere: their photo, or a generated default that is theirs (initials on a colour from their id). `ring` rings it in the team in scope. The reference `Avatar` below is demo fixture art only |
 | `components/reference/*` | `Seal` for a stadium stamp, `Avatar`, `GameThumb`, `StadiumShape`, `LiveDot`, `TightText`. Reuse these rather than drawing a second version |
+| `features/passport/seals` `VenueSeal` | A real stadium's stamp: `Seal` in the colours of the team that plays there (a favourite first, slate for a closed park), worn by visits and gold after a rare game (`features/eggs/flags.ts`). Use it wherever a seal comes from real data; plain `Seal` with `metal="brass" \| "silver"` is for demo mode and the reference |
 | `theme/color.ts` `alpha()` | A tint of any theme colour |
 
 ## What good looks like

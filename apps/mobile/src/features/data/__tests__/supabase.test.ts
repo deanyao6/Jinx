@@ -73,6 +73,98 @@ const inputs: PassportInputs = {
 };
 
 describe('Supabase passport mapping', () => {
+  describe('superlatives', () => {
+    const game = (id: string, start: string, away: string, home: string) => ({
+      rooting_team_id: null,
+      game: {
+        id,
+        sport_id: 'mlb',
+        status: 'final',
+        scheduled_start: start,
+        home_team_id: 'h',
+        away_team_id: 'a',
+        home_score: 1,
+        away_score: 0,
+        home: { id: 'h', name: home, abbreviation: home },
+        away: { id: 'a', name: away, abbreviation: away },
+        venue: null,
+      },
+      companions: [],
+    });
+    const full: PassportInputs = {
+      ...inputs,
+      attendances: [game('g2', '2025-09-17T02:10:00Z', 'PHI', 'LAD')],
+      stats: {
+        ...stats,
+        superlatives: {
+          most_seen_player: { player_id: 'p9', name: 'Carl Jones', count: 30 },
+          most_seen_favorite_player: { player_id: 'p1', name: 'Bryce Harper', count: 14 },
+          biggest_comeback: { game_id: 'g2', deficit: 4, sport_id: 'mlb', low_win_prob: 0.065 },
+          coldest: { game_id: 'g1', value: 19 },
+          hottest: { game_id: 'g4', value: 98 },
+          largest_crowd: { game_id: 'g2', attendance: 44063 },
+          highest_altitude: {
+            venue_id: 'v5',
+            name: 'Coors Field',
+            elevation_ft: 5180,
+            game_id: 'g3',
+          },
+          farthest_venue: { venue_id: 'v9', name: 'Dodger Stadium', km: 3860, game_id: 'g2' },
+          longest: { game_id: 'g6', minutes: 281, periods: 13 },
+        },
+      },
+    };
+
+    it('shows six, each with its icon, its chip and somewhere to go', () => {
+      expect(passportFromStats(full, 'all').superlatives).toEqual([
+        {
+          icon: 'i-user',
+          label: 'Seen Bryce Harper play',
+          value: '14 times',
+          chip: '',
+          href: '/passport/player/p1',
+        },
+        {
+          icon: 'i-trend',
+          label: 'Biggest comeback, win probability',
+          value: 'Won from 7%',
+          chip: 'PHI at LAD, Sep 2025',
+          href: '/games/g2',
+        },
+        // Not one of the attended games handed in, so no chip rather than a wrong one.
+        { icon: 'i-thermo', label: 'Coldest game', value: '19°F', chip: '', href: '/games/g1' },
+        { icon: 'i-thermo', label: 'Hottest game', value: '98°F', chip: '', href: '/games/g4' },
+        {
+          icon: 'i-users',
+          label: 'Largest crowd',
+          value: '44,063',
+          chip: 'PHI at LAD, Sep 2025',
+          href: '/games/g2',
+        },
+        {
+          icon: 'i-flag',
+          label: 'Highest altitude',
+          value: '5,180 ft',
+          chip: 'Coors Field',
+          href: '/games/g3',
+        },
+      ]);
+    });
+
+    it('never names the most seen player overall', () => {
+      const labels = passportFromStats(full, 'all').superlatives.map((x) => x.label);
+      expect(labels.join(' ')).not.toContain('Carl Jones');
+    });
+
+    it('gives a row about no one game nowhere to go, so it opens the full list', () => {
+      const streaky: PassportInputs = { ...inputs, stats: { ...stats, superlatives: {} } };
+      expect(passportFromStats(streaky, 'all').superlatives).toEqual([
+        { icon: 'i-spark', label: 'Longest win streak', value: '5 games', chip: '' },
+        { icon: 'i-spark', label: 'Longest losing streak', value: '2 games', chip: '' },
+      ]);
+    });
+  });
+
   it('writes records the way the reference does, with spaces around the dash', () => {
     // packages/core writes "31–17" because that form is also produced server-side and on
     // share cards. The spaced form is a display concern of this design.
@@ -90,7 +182,7 @@ describe('Supabase passport mapping', () => {
 
   it('describes a streak in either direction, and no streak at all', () => {
     expect(streakLine(3)).toBe('+3 game win streak');
-    expect(streakLine(-2)).toBe('-2 game losing streak');
+    expect(streakLine(-2)).toBe('2 game losing streak');
     expect(streakLine(0)).toBe('No active streak');
   });
 

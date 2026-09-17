@@ -2,8 +2,8 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 
 import { ICONS } from '@/components/reference/icons';
-import { Seal } from '@/components/reference/Seal';
 import { Text } from '@/components/Text';
+import { VenueSeal } from '@/features/passport/seals';
 import { defaultShapeKey } from '@/features/venues/shapes';
 import { alpha } from '@/theme/color';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -45,8 +45,9 @@ type Props = {
 
 /**
  * The Passport's engraved seals in a three-column grid, with what the rail on the tab has no
- * room for: visit count and the year of the first visit. A closed venue is the same seal,
- * faded, with its caption in grey. A ghost is a dashed ring: on a list, not yet earned.
+ * room for: visit count and the year of the first visit. Each seal is in the colours of the
+ * team that plays there, worn by the visits and gold after a rare game (`VenueSeal`). A closed
+ * venue has no team, so it is slate, faded, with its caption in grey. A ghost is a dashed ring: on a list, not yet earned.
  */
 export function SealGrid({ cells, shapes, onPressCell }: Props) {
   const theme = useTheme();
@@ -62,12 +63,11 @@ export function SealGrid({ cells, shapes, onPressCell }: Props) {
           <View style={{ alignItems: 'center', paddingHorizontal: 4 }}>
             <View style={{ marginBottom: 8, opacity: closed ? 0.45 : 1 }}>
               {stamp ? (
-                <Seal
+                <VenueSeal
+                  venueId={stamp.venue_id}
                   ring={ringLabel(stamp.name)}
                   shapeKey={shapes.get(stamp.venue_id) ?? defaultShapeKey(stamp.sports)}
-                  // The Passport draws every stamp in silver until it knows which venues are
-                  // home (see `stampMetal`), so this does too.
-                  metal="silver"
+                  visits={stamp.visits}
                   size={SEAL}
                   inkColor={c.ink}
                 />

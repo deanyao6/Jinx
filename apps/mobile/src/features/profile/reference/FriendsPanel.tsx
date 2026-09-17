@@ -3,10 +3,10 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Avatar } from '@/components/reference/Avatar';
 import { ICONS } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
-import type { FriendsFixture } from '@/features/data/shapes';
+import { RepositoryAvatar } from '@/features/data/RepositoryAvatar';
+import type { FriendsFixture, PersonRef } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -52,7 +52,8 @@ const EMPTY_TAB: Record<string, string> = {
 
 function Body({ onClose }: { onClose: () => void }) {
   // `friends.tabs` is `as const`, so without widening this infers the literal 'With'.
-  const friends = useRepository().friends();
+  const repository = useRepository();
+  const friends = repository.friends();
   const [tab, setTab] = React.useState<string>(friends.tabs[0] ?? 'With');
   const { base } = useReferenceTheme();
   const insets = useSafeAreaInsets();
@@ -138,7 +139,12 @@ function Body({ onClose }: { onClose: () => void }) {
         <View>
           {people.map((person, i) => (
             <TeamTheme key={person.key} team={person.team}>
-              <FriendRow person={person} first={i === 0} onPress={() => openPerson(person)} />
+              <FriendRow
+                person={person}
+                who={repository.person(person.key)}
+                first={i === 0}
+                onPress={() => openPerson(person)}
+              />
             </TeamTheme>
           ))}
           {people.length === 0 ? (
@@ -175,10 +181,13 @@ function Body({ onClose }: { onClose: () => void }) {
 /** `.fr`: a ringed photo, name with the team dot, and the record in its tone colour. */
 function FriendRow({
   person,
+  who,
   first,
   onPress,
 }: {
   person: Person;
+  /** The real person behind the row, or null for the demo's drawn faces. */
+  who: PersonRef | null;
   first: boolean;
   onPress: () => void;
 }) {
@@ -193,7 +202,7 @@ function FriendRow({
     >
       <View style={[s.frPfp, { borderColor: team.accent }]}>
         <View style={s.frPfpInner}>
-          <Avatar name={person.key} size={38} />
+          <RepositoryAvatar who={person.key} person={who} size={38} />
         </View>
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>

@@ -6,7 +6,12 @@ import {
   type WinLossRecord,
 } from '@jinx/core';
 
-import { superlativeRows } from '@/features/passport/format';
+import {
+  superlativeLabel,
+  superlativeRows,
+  type SuperlativeGame,
+  type SuperlativeRow,
+} from '@/features/passport/format';
 import type { StatsPayload, StatsStamp, StatsTeam } from '@/features/passport/types';
 import { gameDayFromUpcoming, type UpcomingGame } from '@/features/plan/gameDay';
 import { defaultShapeKey } from '@/features/venues/shapes';
@@ -18,6 +23,7 @@ import type {
   GameRowFixture,
   LogRowFixture,
   PassportFixture,
+  PersonRef,
   ProfileFixture,
   RecordCardFixture,
   ShapeKey,
@@ -67,12 +73,16 @@ export function displayRecord(rec: WinLossRecord): string {
   return formatRecord(rec).replace(/–/g, ' – ');
 }
 
-/** `+3 game win streak`, `-2 game losing streak`, or nothing at all when there is none. */
+/**
+ * `+3 game win streak` as the reference writes it, `2 game losing streak`, or a plain line when
+ * there is none. A losing streak takes no minus sign: "losing" already says which way it runs,
+ * and "-1 game losing streak" read as a bug.
+ */
 export function streakLine(current: number): string {
   if (current === 0) return 'No active streak';
   const n = Math.abs(current);
   const kind = current > 0 ? 'win' : 'losing';
-  return `${current > 0 ? '+' : '-'}${n} game ${kind} streak`;
+  return `${current > 0 ? '+' : ''}${n} game ${kind} streak`;
 }
 
 /**
@@ -142,8 +152,12 @@ function toStamp(
     // A venue with no `venue_shapes` row falls back to its sport's family rather than to a
     // ballpark, which is what drew football stadiums as baseball diamonds (SPEC.md 8.5).
     shape: shapes.get(stamp.venue_id) ?? defaultShapeKey(stamp.sports),
+    // Kept for the contract. With `venueId` set the Passport draws the seal in the home team's
+    // colours instead (features/passport/seals), which is what replaced silver.
     metal: stampMetal(stamp, homeVenueIds),
     teams,
+    venueId: stamp.venue_id,
+    visits: stamp.visits,
   };
 }
 
@@ -160,12 +174,14 @@ function teamCard(team: StatsTeam, teams: ReadonlyMap<string, TeamRef>): RecordC
 
 /** The reference's icon for each superlative, keyed by `superlativeRows`' stable key. */
 const SUPERLATIVE_ICONS: Record<string, string> = {
-  most_seen_player: 'i-user',
+  most_seen_favorite_player: 'i-user',
   coldest: 'i-thermo',
   hottest: 'i-thermo',
   longest: 'i-clock',
   walk_offs: 'i-bolt',
   biggest_comeback: 'i-trend',
+  largest_crowd: 'i-users',
+  highest_altitude: 'i-flag',
   highest_scoring: 'i-trend',
   lowest_scoring: 'i-trend',
   most_visited_venue: 'i-speaker',
@@ -173,20 +189,45 @@ const SUPERLATIVE_ICONS: Record<string, string> = {
   first_game: 'i-book',
 };
 
-function toSuperlatives(stats: StatsPayload): SuperlativeFixture[] {
-  // superlativeRows already ranks and labels them; the reference shows three.
-  return superlativeRows(stats.superlatives, stats.moments, stats.streaks)
-    .slice(0, 3)
-    .map((row) => ({
-      // `superlativeRows` carries no icon or context chip, because the earlier screens did
-      // not show them. SUPERLATIVE_ICONS maps its stable `key` onto the reference's icon
-      // set; the chip is left empty until the stats payload carries the context the
-      // reference shows there ("Linc, Jan 2024", "11 Games").
-      icon: SUPERLATIVE_ICONS[row.key] ?? 'i-spark',
-      label: row.title,
-      value: row.value,
-      chip: '',
-    }));
+/** How many the Passport shows; the rest are one tap away on the superlatives screen. */
+export const PASSPORT_SUPERLATIVES = 6;
+
+/**
+ * Where a superlative row goes: the games you saw the player in, or the game the number is from.
+ * A stadium row opens the most recent game there, since the stamps screen has no route per venue.
+ * A row about no one game (a streak, walk-offs) has nowhere better than the full list.
+ */
+export function superlativeHref(row: SuperlativeRow): string | undefined {
+  if (row.playerId) return `/passport/player/${row.playerId}`;
+  if (row.gameId) return `/games/${row.gameId}`;
+  return undefined;
+}
+
+function toSuperlatives(inputs: PassportInputs): SuperlativeFixture[] {
+  const { stats } = inputs;
+  // The attended games are already loaded for the Games tab, and every game a superlative
+  // points at is one of them, so the chip needs no query of its own.
+  const games = new Map<string, SuperlativeGame>();
+  for (const a of inputs.attendances ?? []) {
+    games.set(a.game.id, {
+      scheduled_start: a.game.scheduled_start,
+      away: a.game.away?.abbreviation ?? null,
+      home: a.game.home?.abbreviation ?? null,
+    });
+  }
+  // superlativeRows already ranks and labels them.
+  return superlativeRows(stats.superlatives, stats.moments, stats.streaks, (id) => games.get(id))
+    .slice(0, PASSPORT_SUPERLATIVES)
+    .map((row) => {
+      const href = superlativeHref(row);
+      return {
+        icon: SUPERLATIVE_ICONS[row.key] ?? 'i-spark',
+        label: superlativeLabel(row),
+        value: row.value,
+        chip: row.context ?? '',
+        ...(href ? { href } : {}),
+      };
+    });
 }
 
 /** "48 GAMES ATTENDED", and the singular a user with one game actually sees. */
@@ -245,7 +286,7 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
           log: 'neutral',
         },
       ],
-      superlatives: toSuperlatives(stats),
+      superlatives: toSuperlatives(inputs),
     };
   }
 
@@ -266,7 +307,7 @@ export function passportFromStats(inputs: PassportInputs, pill: string): Passpor
     // the team view shows the one card it can compute honestly rather than three
     // plausible-looking ones. Tracked in OVERNIGHT.md.
     cards: [teamCard(team, teams)],
-    superlatives: toSuperlatives(stats),
+    superlatives: toSuperlatives(inputs),
   };
 }
 
@@ -396,8 +437,10 @@ export type ProfileAccount = {
   handle: string;
   displayName: string;
   homeCity: string | null;
-  /** Avatar key. The user's own id, so Avatar falls back to a generated portrait. */
+  /** Avatar key: the user's own id. `Repository.person` resolves it to the account. */
   avatarKey: string;
+  /** `profiles.avatar_path`: the uploaded photo, or null for the generated default. */
+  avatarPath?: string | null;
   favorites: readonly { id: string; name: string; city: string | null }[];
   followers: number | null;
   following: number | null;
@@ -647,6 +690,10 @@ export function pickASideFromContext(
 export type CompanionRow = {
   person_id: string;
   display_name: string;
+  /** The account behind the person, when they have one. A placeholder ("Dad") has none. */
+  linked_user_id?: string | null;
+  linked_handle?: string | null;
+  linked_avatar_path?: string | null;
   games: number;
   wins: number;
   losses: number;
@@ -806,6 +853,32 @@ export function reliveFromGame(
  * repository does not hold, and the Plan and Guide screens have no backend at all in v1, so
  * each of those screens says so rather than borrowing the reference's sample data.
  */
+/**
+ * The real person behind an avatar key (SPEC.md 8.6). Keys are the signed-in user's own id, or
+ * the id of one of their people; every person they own is in `companion_records`, tagged in a
+ * game or not. A key that matches nobody yet (the list is still loading) is still a real
+ * person, so it gets a generated default rather than fixture art.
+ */
+export function personFromInputs(inputs: PassportInputs, key: string): PersonRef {
+  const account = inputs.account;
+  if (account && key === account.avatarKey) {
+    return {
+      userId: account.avatarKey,
+      name: account.displayName || null,
+      handle: account.handle || null,
+      avatarPath: account.avatarPath ?? null,
+    };
+  }
+  const companion = (inputs.companions ?? []).find((c) => c.person_id === key);
+  return {
+    // The person id seeds a placeholder's colour, so "Dad" keeps his wherever he appears.
+    userId: companion?.linked_user_id ?? key,
+    name: companion?.display_name ?? null,
+    handle: companion?.linked_handle ?? null,
+    avatarPath: companion?.linked_avatar_path ?? null,
+  };
+}
+
 export function supabaseRepository(inputs: PassportInputs): Repository {
   return {
     ...emptyRepository,
@@ -823,6 +896,7 @@ export function supabaseRepository(inputs: PassportInputs): Repository {
         : emptyRepository.profile(),
     friends: () =>
       friendsFromRecords(inputs.companions ?? [], inputs.rivalries ?? [], inputs.overlaps ?? []),
+    person: (key) => personFromInputs(inputs, key),
     // Read at render rather than when the repository is built, so "today" and the lit step
     // in the timeline stay right on a screen left open.
     gameDay: () =>

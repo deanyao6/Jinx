@@ -19,6 +19,13 @@ export type StampFixture = {
   shape: ShapeKey;
   metal: 'brass' | 'silver';
   teams: readonly string[];
+  /**
+   * Real data only. With a venue the seal is drawn by `VenueSeal` in the colours of the team
+   * that plays there, and `metal` is not used. The demo stamps have neither, so they stay the
+   * reference's brass and silver.
+   */
+  venueId?: string;
+  visits?: number;
 };
 
 export type ShapeKey =
@@ -39,6 +46,11 @@ export type SuperlativeFixture = {
   label: string;
   value: string;
   chip: string;
+  /**
+   * Where the row goes: the game, or the games you saw a player in. The demo rows have none,
+   * because they name no real game, and open the superlatives screen instead.
+   */
+  href?: string;
 };
 
 export type PassportFixture = {

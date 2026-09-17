@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { Text } from '@/components/Text';
-import { Seal } from '@/components/reference/Seal';
+import { VenueSeal } from '@/features/passport/seals';
 import { defaultShapeKey, useVenueShapes } from '@/features/venues/shapes';
 import { TeamTheme } from '@/theme/reference/TeamTheme';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -226,13 +226,17 @@ function NewStampSeals({
       style={{ flexDirection: 'row', gap: theme.spacing.md, marginTop: theme.spacing.xl }}
     >
       {venues.slice(0, 3).map((v) => (
-        <Seal
+        <VenueSeal
           key={v.venue_id}
+          venueId={v.venue_id}
           ring={ringLabel(v.name)}
           shapeKey={byVenue.get(v.venue_id) ?? defaultShapeKey([sport])}
-          metal="silver"
           size={86}
           inkColor={ink}
+          // The card is pinned dark whatever the phone is set to, and it gets captured for
+          // sharing, so the seal takes the dark palette and holds its glint still.
+          scheme="dark"
+          still
         />
       ))}
     </View>

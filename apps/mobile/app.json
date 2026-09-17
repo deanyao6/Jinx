@@ -14,8 +14,8 @@
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Jinx uses your location only when you tap Check in, to confirm you are at the stadium. Your coordinates are never stored.",
-        "NSPhotoLibraryUsageDescription": "Jinx reads the ticket screenshots you choose so it can log the game for you.",
-        "NSCameraUsageDescription": "Jinx can photograph a ticket to log the game for you.",
+        "NSPhotoLibraryUsageDescription": "Jinx reads the photos you choose: a ticket screenshot to log a game, pictures from a game you went to, or a profile photo.",
+        "NSCameraUsageDescription": "Jinx uses the camera to photograph a ticket so it can log the game, or to take your profile photo.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "privacyManifests": {
@@ -124,8 +124,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Jinx reads the ticket screenshots you choose so it can log the game for you.",
-          "cameraPermission": "Jinx can photograph a ticket to log the game for you."
+          "photosPermission": "Jinx reads the photos you choose: a ticket screenshot to log a game, pictures from a game you went to, or a profile photo.",
+          "cameraPermission": "Jinx uses the camera to photograph a ticket so it can log the game, or to take your profile photo."
         }
       ],
       "expo-sharing",

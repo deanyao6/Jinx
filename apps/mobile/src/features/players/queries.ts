@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/features/auth/store';
+import { GAME_DETAIL_SELECT, type GameDetail } from '@/features/games/queries';
 import { supabase } from '@/lib/supabase';
 
 import type { FavoritePlayerSeenRow } from './passport';
@@ -27,6 +28,9 @@ export const playerKeys = {
   seen: (userId: string | null) => ['players', 'favorites-seen', userId] as const,
   roster: (teamId: string | undefined, query: string) =>
     ['players', 'roster', teamId, query] as const,
+  player: (playerId: string | undefined) => ['players', 'player', playerId] as const,
+  gamesWith: (userId: string | null, playerId: string | undefined) =>
+    ['players', 'games-with', userId, playerId] as const,
 };
 
 export function useFavoritePlayers() {
@@ -114,6 +118,10 @@ export function useToggleFavoritePlayer() {
     onSettled: () => {
       void queryClient.invalidateQueries({ queryKey: key });
       void queryClient.invalidateQueries({ queryKey: playerKeys.seen(userId) });
+      // The "seen your favourite play" superlative is computed server-side from this list, and a
+      // trigger on user_players has just recomputed it. Spelled out rather than imported from
+      // passport/queries, which would make the two features import each other.
+      void queryClient.invalidateQueries({ queryKey: ['passport', 'stats', userId] });
     },
   });
 }
@@ -139,5 +147,59 @@ export function useTeamRoster(teamId: string | undefined, query: string) {
     },
     enabled: !!teamId,
     staleTime: 10 * 60_000,
+  });
+}
+
+/** One player's name and sport, for the page that lists the games you saw them in. */
+export function usePlayer(playerId: string | undefined) {
+  return useQuery({
+    queryKey: playerKeys.player(playerId),
+    queryFn: async (): Promise<(Player & { sport_id: string }) | null> => {
+      const { data, error } = await supabase
+        .from('players')
+        .select('id, full_name, sport_id')
+        .eq('id', playerId as string)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!playerId,
+    staleTime: 60 * 60_000,
+  });
+}
+
+export type GameWithPlayer = { attendance_id: string; game: GameDetail };
+
+/**
+ * Your attended, final games in which one player appeared, newest first.
+ *
+ * The same games the "seen N times" counts are made of: `attended` and `final`. The player filter
+ * is an inner join on `game_appearances`, so it runs on the server and only matching rows come
+ * back; fetching every attendance and filtering here would hit PostgREST's 1,000 row ceiling
+ * (STATE.md, trap 4). `attendances` RLS plus the explicit user filter keep it to the caller.
+ */
+export function useMyGamesWithPlayer(playerId: string | undefined) {
+  const userId = useAuthStore((s) => s.userId);
+  return useQuery({
+    queryKey: playerKeys.gamesWith(userId, playerId),
+    queryFn: async (): Promise<GameWithPlayer[]> => {
+      const { data, error } = await supabase
+        .from('attendances')
+        .select(
+          `id, game:games!inner(${GAME_DETAIL_SELECT},
+            appearances:game_appearances!inner(player_id))`,
+        )
+        .eq('user_id', userId as string)
+        .eq('status', 'attended')
+        .eq('game.status', 'final')
+        .eq('game.appearances.player_id', playerId as string);
+      if (error) throw error;
+      const rows = data as unknown as { id: string; game: GameDetail }[];
+      return rows
+        .map((r) => ({ attendance_id: r.id, game: r.game }))
+        .sort((a, b) => b.game.scheduled_start.localeCompare(a.game.scheduled_start));
+    },
+    enabled: !!userId && !!playerId,
+    staleTime: 60_000,
   });
 }

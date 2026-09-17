@@ -3,11 +3,11 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Avatar } from '@/components/reference/Avatar';
 import { GameThumb } from '@/components/reference/GameThumb';
 import { ICONS } from '@/components/reference/icons';
 import { useRepository, useRepositoryStatus } from '@/features/data/context';
-import type { GameRowFixture } from '@/features/data/shapes';
+import { RepositoryAvatar } from '@/features/data/RepositoryAvatar';
+import type { GameRowFixture, PersonRef } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -190,6 +190,7 @@ function Body({ initialSegment }: { initialSegment: string }) {
           <TeamTheme key={`${game.title}-${i}`} team={game.team}>
             <GameRowCard
               game={game}
+              personFor={repo.person}
               onPress={() => router.push(`/games/${routeId(game)}` as Href)}
             />
           </TeamTheme>
@@ -326,7 +327,16 @@ function Segmented({
 }
 
 /** `.fx-row`. */
-function GameRowCard({ game, onPress }: { game: GameRow; onPress: () => void }) {
+function GameRowCard({
+  game,
+  personFor,
+  onPress,
+}: {
+  game: GameRow;
+  /** Resolves an avatar key to a real person, or to null for the demo's drawn faces. */
+  personFor: (key: string) => PersonRef | null;
+  onPress: () => void;
+}) {
   const { base } = useReferenceTheme();
   const Check = ICONS['i-check-c'];
   return (
@@ -358,7 +368,7 @@ function GameRowCard({ game, onPress }: { game: GameRow; onPress: () => void }) 
                 // so the avatars overlap and each is ringed in the card colour.
                 style={[s.avatar, { borderColor: base.card }, i > 0 ? { marginLeft: -6 } : null]}
               >
-                <Avatar name={who} size={17} />
+                <RepositoryAvatar who={who} person={personFor(who)} size={17} />
               </View>
             ))}
             <Text style={[s.avatarsText, { color: base.muted }]} numberOfLines={1}>

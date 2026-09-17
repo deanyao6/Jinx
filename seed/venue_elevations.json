@@ -1,0 +1,1461 @@
+{
+  "_comment": "Ground elevation of each venue in whole feet, keyed by the merged venue key. Written by seed/scripts/fill_elevations.py from the USGS Elevation Point Query Service (USA) and Open-Elevation (elsewhere). Do not edit by hand; rerun the script. Source and date are in docs/verification.md.",
+  "venues": {
+    "acrisure-stadium": {
+      "name": "Acrisure Stadium",
+      "lat": 40.44667,
+      "lng": -80.01583,
+      "elevation_ft": 724,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "alamodome": {
+      "name": "Alamodome",
+      "lat": 29.41694,
+      "lng": -98.47889,
+      "elevation_ft": 662,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "allegiant-stadium": {
+      "name": "Allegiant Stadium",
+      "lat": 36.09056,
+      "lng": -115.18389,
+      "elevation_ft": 2184,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "allianz-arena": {
+      "name": "Allianz Arena",
+      "lat": 48.21878,
+      "lng": 11.62475,
+      "elevation_ft": 1608,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "arena-corinthians": {
+      "name": "Neo Química Arena",
+      "lat": -23.54528,
+      "lng": -46.47417,
+      "elevation_ft": 2575,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "arrowhead-stadium": {
+      "name": "Arrowhead Stadium",
+      "lat": 39.04889,
+      "lng": -94.48389,
+      "elevation_ft": 886,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "att-stadium": {
+      "name": "AT&T Stadium",
+      "lat": 32.74778,
+      "lng": -97.09278,
+      "elevation_ft": 567,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "bank-of-america-stadium": {
+      "name": "Bank of America Stadium",
+      "lat": 35.22583,
+      "lng": -80.85278,
+      "elevation_ft": 708,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "caesars-superdome": {
+      "name": "Caesars Superdome",
+      "lat": 29.95083,
+      "lng": -90.08111,
+      "elevation_ft": 2,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "candlestick-park": {
+      "name": "Candlestick Park",
+      "lat": 37.71361,
+      "lng": -122.38611,
+      "elevation_ft": 32,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "deutsche-bank-park": {
+      "name": "Deutsche Bank Park",
+      "lat": 50.06806,
+      "lng": 8.64581,
+      "elevation_ft": 381,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "dignity-health-sports-park": {
+      "name": "Dignity Health Sports Park",
+      "lat": 33.864,
+      "lng": -118.261,
+      "elevation_ft": 49,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "dome-at-americas-center": {
+      "name": "The Dome at America's Center",
+      "lat": 38.63278,
+      "lng": -90.18861,
+      "elevation_ft": 463,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "empower-field-at-mile-high": {
+      "name": "Empower Field at Mile High",
+      "lat": 39.74389,
+      "lng": -105.02,
+      "elevation_ft": 5195,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "estadio-azteca": {
+      "name": "Estadio Banorte",
+      "lat": 19.303,
+      "lng": -99.1505,
+      "elevation_ft": 7503,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "everbank-stadium": {
+      "name": "EverBank Stadium",
+      "lat": 30.32389,
+      "lng": -81.6375,
+      "elevation_ft": 4,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "ford-field": {
+      "name": "Ford Field",
+      "lat": 42.34,
+      "lng": -83.04556,
+      "elevation_ft": 603,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "foxboro-stadium": {
+      "name": "Foxboro Stadium",
+      "lat": 42.09278,
+      "lng": -71.2675,
+      "elevation_ft": 313,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "georgia-dome": {
+      "name": "Georgia Dome",
+      "lat": 33.758,
+      "lng": -84.401,
+      "elevation_ft": 997,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "giants-stadium": {
+      "name": "Giants Stadium",
+      "lat": 40.81222,
+      "lng": -74.07694,
+      "elevation_ft": 9,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "gies-memorial-stadium": {
+      "name": "Gies Memorial Stadium",
+      "lat": 40.09917,
+      "lng": -88.23583,
+      "elevation_ft": 732,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "gillette-stadium": {
+      "name": "Gillette Stadium",
+      "lat": 42.091,
+      "lng": -71.264,
+      "elevation_ft": 260,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "hard-rock-stadium": {
+      "name": "Hard Rock Stadium",
+      "lat": 25.95806,
+      "lng": -80.23889,
+      "elevation_ft": 9,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "highmark-stadium": {
+      "name": "Highmark Stadium",
+      "lat": 42.77306,
+      "lng": -78.79222,
+      "elevation_ft": 761,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "hubert-h-humphrey-metrodome": {
+      "name": "Hubert H. Humphrey Metrodome",
+      "lat": 44.97389,
+      "lng": -93.25806,
+      "elevation_ft": 845,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "huntington-bank-field": {
+      "name": "Huntington Bank Field",
+      "lat": 41.50611,
+      "lng": -81.69944,
+      "elevation_ft": 583,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "huntington-bank-stadium": {
+      "name": "Huntington Bank Stadium",
+      "lat": 44.976,
+      "lng": -93.225,
+      "elevation_ft": 829,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "husky-stadium": {
+      "name": "Husky Stadium",
+      "lat": 47.6503,
+      "lng": -122.3016,
+      "elevation_ft": 32,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "lambeau-field": {
+      "name": "Lambeau Field",
+      "lat": 44.50139,
+      "lng": -88.06222,
+      "elevation_ft": 620,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "levis-stadium": {
+      "name": "Levi's Stadium",
+      "lat": 37.403,
+      "lng": -121.97,
+      "elevation_ft": 13,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "lincoln-financial-field": {
+      "name": "Lincoln Financial Field",
+      "lat": 39.90083,
+      "lng": -75.1675,
+      "elevation_ft": 11,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "los-angeles-memorial-coliseum": {
+      "name": "Los Angeles Memorial Coliseum",
+      "lat": 34.01417,
+      "lng": -118.28778,
+      "elevation_ft": 176,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "lucas-oil-stadium": {
+      "name": "Lucas Oil Stadium",
+      "lat": 39.76006,
+      "lng": -86.16381,
+      "elevation_ft": 709,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "lumen-field": {
+      "name": "Lumen Field",
+      "lat": 47.5952,
+      "lng": -122.3316,
+      "elevation_ft": 18,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "maracana": {
+      "name": "Estádio do Maracanã",
+      "lat": -22.9122,
+      "lng": -43.2303,
+      "elevation_ft": 69,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "melbourne-cricket-ground": {
+      "name": "Melbourne Cricket Ground",
+      "lat": -37.82,
+      "lng": 144.98333,
+      "elevation_ft": 39,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "mercedes-benz-stadium": {
+      "name": "Mercedes-Benz Stadium",
+      "lat": 33.75556,
+      "lng": -84.4,
+      "elevation_ft": 1017,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "metlife-stadium": {
+      "name": "MetLife Stadium",
+      "lat": 40.81353,
+      "lng": -74.07436,
+      "elevation_ft": 6,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mile-high-stadium": {
+      "name": "Mile High Stadium",
+      "lat": 39.74611,
+      "lng": -105.02167,
+      "elevation_ft": 5210,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-american-family-field": {
+      "name": "American Family Field",
+      "lat": 43.02838,
+      "lng": -87.97099,
+      "elevation_ft": 601,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-american-family-fields-of-phoenix": {
+      "name": "American Family Fields of Phoenix",
+      "lat": 33.49202,
+      "lng": -112.1727,
+      "elevation_ft": 1093,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-angel-stadium": {
+      "name": "Angel Stadium",
+      "lat": 33.80019044,
+      "lng": -117.8823996,
+      "elevation_ft": 147,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-arvest-ballpark": {
+      "name": "Arvest Ballpark",
+      "lat": 36.15968,
+      "lng": -94.194624,
+      "elevation_ft": 1310,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-autozone-park": {
+      "name": "AutoZone Park",
+      "lat": 35.14297,
+      "lng": -90.04924,
+      "elevation_ft": 226,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-baycare-ballpark": {
+      "name": "BayCare Ballpark",
+      "lat": 27.97159,
+      "lng": -82.731714,
+      "elevation_ft": 23,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-bb-t-ballpark": {
+      "name": "BB&T Ballpark",
+      "lat": 35.22781,
+      "lng": -80.84823,
+      "elevation_ft": 717,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-bb-t-coastal-federal-field": {
+      "name": "(BB&T) Coastal Federal Field",
+      "lat": 33.711404,
+      "lng": -78.88444,
+      "elevation_ft": 26,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-bristol-motor-speedway": {
+      "name": "Bristol Motor Speedway",
+      "lat": 31.5156,
+      "lng": -82.5269,
+      "elevation_ft": 181,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-busch-stadium": {
+      "name": "Busch Stadium",
+      "lat": 38.62256667,
+      "lng": -90.19286667,
+      "elevation_ft": 438,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-busch-stadium-i": {
+      "name": "Busch Stadium I",
+      "lat": 38.62389,
+      "lng": -90.19222,
+      "elevation_ft": 465,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-cacti-park-of-the-palm-beaches": {
+      "name": "CACTI Park of the Palm Beaches",
+      "lat": 26.75475,
+      "lng": -80.11316,
+      "elevation_ft": 19,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-camelback-ranch": {
+      "name": "Camelback Ranch",
+      "lat": 33.51434,
+      "lng": -112.29612,
+      "elevation_ft": 1021,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-charlotte-sports-park": {
+      "name": "Charlotte Sports Park",
+      "lat": 26.99888,
+      "lng": -82.18212,
+      "elevation_ft": 11,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-chase-field": {
+      "name": "Chase Field",
+      "lat": 33.445302,
+      "lng": -112.066687,
+      "elevation_ft": 1085,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-cheney-stadium": {
+      "name": "Cheney Stadium",
+      "lat": 47.237981,
+      "lng": -122.497643,
+      "elevation_ft": 329,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-chukchansi-park": {
+      "name": "Chukchansi Park",
+      "lat": 36.73256,
+      "lng": -119.79157,
+      "elevation_ft": 290,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-cinergy-field": {
+      "name": "Cinergy Field",
+      "lat": 39.09722,
+      "lng": -84.50833,
+      "elevation_ft": 514,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-citi-field": {
+      "name": "Citi Field",
+      "lat": 40.75753012,
+      "lng": -73.84559155,
+      "elevation_ft": 13,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-citizens-bank-park": {
+      "name": "Citizens Bank Park",
+      "lat": 39.90539086,
+      "lng": -75.16716957,
+      "elevation_ft": 13,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-clover-park": {
+      "name": "Clover Park",
+      "lat": 27.3249268,
+      "lng": -80.4068854,
+      "elevation_ft": 28,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-coca-cola-park": {
+      "name": "Coca-Cola Park",
+      "lat": 40.6253183,
+      "lng": -75.4516154,
+      "elevation_ft": 362,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-comerica-park": {
+      "name": "Comerica Park",
+      "lat": 42.3391151,
+      "lng": -83.048695,
+      "elevation_ft": 577,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-constellation-field": {
+      "name": "Constellation Field",
+      "lat": 29.62275645,
+      "lng": -95.64718344,
+      "elevation_ft": 78,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-coolray-field": {
+      "name": "Coolray Field",
+      "lat": 34.0409586,
+      "lng": -83.9937909,
+      "elevation_ft": 1085,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-cooltoday-park": {
+      "name": "CoolToday Park",
+      "lat": 27.04422,
+      "lng": -82.23593,
+      "elevation_ft": 10,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-coors-field": {
+      "name": "Coors Field",
+      "lat": 39.756042,
+      "lng": -104.994136,
+      "elevation_ft": 5180,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-daikin-park": {
+      "name": "Daikin Park",
+      "lat": 29.756967,
+      "lng": -95.355509,
+      "elevation_ft": 44,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-day-air-ballpark": {
+      "name": "Day Air Ballpark",
+      "lat": 39.764172,
+      "lng": -84.185896,
+      "elevation_ft": 737,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-dr-pepper-ballpark": {
+      "name": "Dr. Pepper Ballpark",
+      "lat": 33.0984,
+      "lng": -96.8197,
+      "elevation_ft": 700,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-durham-bulls-athletic-park": {
+      "name": "Durham Bulls Athletic Park",
+      "lat": 35.99158,
+      "lng": -78.90401,
+      "elevation_ft": 362,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-ed-smith-stadium": {
+      "name": "Ed Smith Stadium",
+      "lat": 27.34795,
+      "lng": -82.5174,
+      "elevation_ft": 34,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-english-field": {
+      "name": "English Field",
+      "lat": 37.2178,
+      "lng": -80.4233,
+      "elevation_ft": 2047,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-estadio-alfredo-harp-helu": {
+      "name": "Estadio Alfredo Harp Helu",
+      "lat": 19.40389,
+      "lng": -99.09028,
+      "elevation_ft": 7336,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "mlb-fenway-park": {
+      "name": "Fenway Park",
+      "lat": 42.346456,
+      "lng": -71.097441,
+      "elevation_ft": 8,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-field-of-dreams": {
+      "name": "Field of Dreams",
+      "lat": 42.498241,
+      "lng": -91.056486,
+      "elevation_ft": 994,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-fifth-third-field": {
+      "name": "Fifth Third Field",
+      "lat": 41.64767,
+      "lng": -83.53838,
+      "elevation_ft": 587,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-first-tennessee-park": {
+      "name": "First Tennessee Park",
+      "lat": 36.173218,
+      "lng": -86.785171,
+      "elevation_ft": 410,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-firstenergy-stadium": {
+      "name": "FirstEnergy Stadium",
+      "lat": 40.365558,
+      "lng": -75.933816,
+      "elevation_ft": 239,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-five-county-stadium": {
+      "name": "Five County Stadium",
+      "lat": 35.81726,
+      "lng": -78.27122,
+      "elevation_ft": 267,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-george-m-steinbrenner-field": {
+      "name": "George M. Steinbrenner Field",
+      "lat": 27.97997,
+      "lng": -82.50702,
+      "elevation_ft": 33,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-globe-life-field": {
+      "name": "Globe Life Field",
+      "lat": 32.747299,
+      "lng": -97.081818,
+      "elevation_ft": 580,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-globe-life-park-in-arlington": {
+      "name": "Globe Life Park in Arlington",
+      "lat": 32.751321,
+      "lng": -97.082682,
+      "elevation_ft": 539,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-gocheok-sky-dome": {
+      "name": "Gocheok Sky Dome",
+      "lat": 37.49833,
+      "lng": 126.86722,
+      "elevation_ft": 46,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "mlb-goodyear-ballpark": {
+      "name": "Goodyear Ballpark",
+      "lat": 33.42892,
+      "lng": -112.39027,
+      "elevation_ft": 951,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-great-american-ball-park": {
+      "name": "Great American Ball Park",
+      "lat": 39.097389,
+      "lng": -84.506611,
+      "elevation_ft": 490,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-harbor-park": {
+      "name": "Harbor Park",
+      "lat": 36.84265,
+      "lng": -76.27803,
+      "elevation_ft": 5,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-hiram-bithorn-stadium": {
+      "name": "Hiram Bithorn Stadium",
+      "lat": 18.4175,
+      "lng": -66.06694,
+      "elevation_ft": 26,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-hohokam-stadium": {
+      "name": "Hohokam Stadium",
+      "lat": 33.43831,
+      "lng": -111.82973,
+      "elevation_ft": 1250,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-huntington-park": {
+      "name": "Huntington Park",
+      "lat": 39.96868,
+      "lng": -83.01102,
+      "elevation_ft": 719,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-isotopes-park": {
+      "name": "Isotopes Park",
+      "lat": 35.06985,
+      "lng": -106.62802,
+      "elevation_ft": 5137,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-jetblue-park": {
+      "name": "JetBlue Park",
+      "lat": 26.55092,
+      "lng": -81.76225,
+      "elevation_ft": 24,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-joseph-p-riley-jr-ballpark": {
+      "name": "Joseph P. Riley, Jr. Ballpark",
+      "lat": 32.790421,
+      "lng": -79.961332,
+      "elevation_ft": 11,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-journey-bank-ballpark": {
+      "name": "Journey Bank Ballpark",
+      "lat": 41.2419845,
+      "lng": -77.0475104,
+      "elevation_ft": 521,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-kauffman-stadium": {
+      "name": "Kauffman Stadium",
+      "lat": 39.051567,
+      "lng": -94.480483,
+      "elevation_ft": 888,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-las-vegas-ballpark": {
+      "name": "Las Vegas Ballpark",
+      "lat": 36.152607,
+      "lng": -115.329888,
+      "elevation_ft": 3010,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-lecom-park": {
+      "name": "LECOM Park",
+      "lat": 27.48553,
+      "lng": -82.57038,
+      "elevation_ft": 21,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-lee-health-sports-complex": {
+      "name": "Lee Health Sports Complex",
+      "lat": 26.537803,
+      "lng": -81.841973,
+      "elevation_ft": 16,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-loandepot-park": {
+      "name": "loanDepot park",
+      "lat": 25.77796236,
+      "lng": -80.21951795,
+      "elevation_ft": 9,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-loanmart-field": {
+      "name": "LoanMart Field",
+      "lat": 34.102721,
+      "lng": -117.54792,
+      "elevation_ft": 1187,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-london-stadium": {
+      "name": "London Stadium",
+      "lat": 51.53861,
+      "lng": -0.01639,
+      "elevation_ft": 46,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "mlb-louisville-slugger-field": {
+      "name": "Louisville Slugger Field",
+      "lat": 38.2557199,
+      "lng": -85.74479,
+      "elevation_ft": 450,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-mgm-park": {
+      "name": "MGM Park",
+      "lat": 30.395421,
+      "lng": -88.893217,
+      "elevation_ft": 22,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-milwaukee-county-stadium": {
+      "name": "Milwaukee County Stadium",
+      "lat": 43.02833,
+      "lng": -87.97417,
+      "elevation_ft": 612,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-montgomery-riverwalk-stadium": {
+      "name": "Montgomery Riverwalk Stadium",
+      "lat": 32.382298,
+      "lng": -86.310592,
+      "elevation_ft": 152,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-nationals-park": {
+      "name": "Nationals Park",
+      "lat": 38.872861,
+      "lng": -77.007501,
+      "elevation_ft": 23,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-nelson-w-wolff-municipal-stadium": {
+      "name": "Nelson W. Wolff Municipal Stadium",
+      "lat": 29.40978,
+      "lng": -98.60189,
+      "elevation_ft": 705,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-newbridge-bank-park": {
+      "name": "NewBridge Bank Park",
+      "lat": 36.07667,
+      "lng": -79.79487,
+      "elevation_ft": 801,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-olympic-stadium": {
+      "name": "Olympic Stadium",
+      "lat": 45.558,
+      "lng": -73.552,
+      "elevation_ft": 220,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "mlb-oneok-field": {
+      "name": "ONEOK Field",
+      "lat": 36.1601215,
+      "lng": -95.9888782,
+      "elevation_ft": 704,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-oracle-park": {
+      "name": "Oracle Park",
+      "lat": 37.778383,
+      "lng": -122.389448,
+      "elevation_ft": 13,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-oriole-park-at-camden-yards": {
+      "name": "Oriole Park at Camden Yards",
+      "lat": 39.283787,
+      "lng": -76.621689,
+      "elevation_ft": 17,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-pensacola-bayfront-stadium": {
+      "name": "Pensacola Bayfront Stadium",
+      "lat": 30.4048409,
+      "lng": -87.2188349,
+      "elevation_ft": 15,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-peoples-natural-gas-field": {
+      "name": "Peoples Natural Gas Field",
+      "lat": 40.473826,
+      "lng": -78.394753,
+      "elevation_ft": 1022,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-peoria-stadium": {
+      "name": "Peoria Stadium",
+      "lat": 33.63187,
+      "lng": -112.23359,
+      "elevation_ft": 1192,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-petco-park": {
+      "name": "Petco Park",
+      "lat": 32.707861,
+      "lng": -117.157278,
+      "elevation_ft": 15,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-pnc-park": {
+      "name": "PNC Park",
+      "lat": 40.446904,
+      "lng": -80.005753,
+      "elevation_ft": 725,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-progressive-field": {
+      "name": "Progressive Field",
+      "lat": 41.495861,
+      "lng": -81.685255,
+      "elevation_ft": 653,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-publix-field-at-joker-marchant-stadium": {
+      "name": "Publix Field at Joker Marchant Stadium",
+      "lat": 28.074822,
+      "lng": -81.9508415,
+      "elevation_ft": 160,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-rate-field": {
+      "name": "Rate Field",
+      "lat": 41.83,
+      "lng": -87.634167,
+      "elevation_ft": 596,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-redhawks-field-at-bricktown": {
+      "name": "RedHawks Field at Bricktown",
+      "lat": 35.46511,
+      "lng": -97.50762,
+      "elevation_ft": 1178,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-regions-field": {
+      "name": "Regions Field",
+      "lat": 33.5077928,
+      "lng": -86.8120366,
+      "elevation_ft": 586,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-rickwood-field": {
+      "name": "Rickwood Field",
+      "lat": 33.5023303,
+      "lng": -86.8563555,
+      "elevation_ft": 550,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-robert-f-kennedy-memorial-stadium": {
+      "name": "Robert F. Kennedy Memorial Stadium",
+      "lat": 38.88972,
+      "lng": -76.97167,
+      "elevation_ft": 11,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-roger-dean-chevrolet-stadium": {
+      "name": "Roger Dean Chevrolet Stadium",
+      "lat": 26.890957,
+      "lng": -80.116365,
+      "elevation_ft": 15,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-route-66-stadium": {
+      "name": "Route 66 Stadium",
+      "lat": 37.21078,
+      "lng": -93.2797,
+      "elevation_ft": 1311,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-sahlen-field": {
+      "name": "Sahlen Field",
+      "lat": 42.880772,
+      "lng": -78.873955,
+      "elevation_ft": 589,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-salt-river-fields-at-talking-stick": {
+      "name": "Salt River Fields at Talking Stick",
+      "lat": 33.54523,
+      "lng": -111.88552,
+      "elevation_ft": 1295,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-scottsdale-stadium": {
+      "name": "Scottsdale Stadium",
+      "lat": 33.48869,
+      "lng": -111.92099,
+      "elevation_ft": 1240,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-shea-stadium": {
+      "name": "Shea Stadium",
+      "lat": 40.75694,
+      "lng": -73.84583,
+      "elevation_ft": 13,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-sloan-park": {
+      "name": "Sloan Park",
+      "lat": 33.43081,
+      "lng": -111.882,
+      "elevation_ft": 1174,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-smith-s-ballpark": {
+      "name": "Smith's Ballpark",
+      "lat": 40.74109,
+      "lng": -111.89256,
+      "elevation_ft": 4233,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-southwest-university-park": {
+      "name": "Southwest University Park",
+      "lat": 31.759277,
+      "lng": -106.492526,
+      "elevation_ft": 3743,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-surprise-stadium": {
+      "name": "Surprise Stadium",
+      "lat": 33.62762,
+      "lng": -112.37849,
+      "elevation_ft": 1201,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-sutter-health-park": {
+      "name": "Sutter Health Park",
+      "lat": 38.57994,
+      "lng": -121.51246,
+      "elevation_ft": 42,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-sydney-cricket-ground": {
+      "name": "Sydney Cricket Ground",
+      "lat": 33.89167,
+      "lng": 151.22472,
+      "elevation_ft": 0,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "mlb-t-mobile-park": {
+      "name": "T-Mobile Park",
+      "lat": 47.591333,
+      "lng": -122.33251,
+      "elevation_ft": 12,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-target-field": {
+      "name": "Target Field",
+      "lat": 44.981829,
+      "lng": -93.277891,
+      "elevation_ft": 826,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-td-ameritrade-park": {
+      "name": "TD Ameritrade Park",
+      "lat": 41.25861,
+      "lng": -95.93779,
+      "elevation_ft": 1056,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-td-ballpark": {
+      "name": "TD Ballpark",
+      "lat": 27.9745812,
+      "lng": -82.7913301,
+      "elevation_ft": 24,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-tempe-diablo-stadium": {
+      "name": "Tempe Diablo Stadium",
+      "lat": 33.40092,
+      "lng": -111.9707,
+      "elevation_ft": 1159,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-the-baseball-grounds-of-jacksonville": {
+      "name": "The Baseball Grounds of Jacksonville",
+      "lat": 30.32533,
+      "lng": -81.64256,
+      "elevation_ft": 7,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-the-dell-diamond": {
+      "name": "The Dell Diamond",
+      "lat": 30.527463,
+      "lng": -97.630397,
+      "elevation_ft": 662,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-the-diamond": {
+      "name": "The Diamond",
+      "lat": 33.654183,
+      "lng": -117.3010675,
+      "elevation_ft": 1277,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-the-stadium-at-the-espn-wide-world-of-sports": {
+      "name": "The Stadium at the ESPN Wide World of Sports",
+      "lat": 28.33725,
+      "lng": -81.55613,
+      "elevation_ft": 103,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-tokyo-dome": {
+      "name": "Tokyo Dome",
+      "lat": 35.70556,
+      "lng": 139.75194,
+      "elevation_ft": 30,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "mlb-tropicana-field": {
+      "name": "Tropicana Field",
+      "lat": 27.767778,
+      "lng": -82.6525,
+      "elevation_ft": 36,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-truist-park": {
+      "name": "Truist Park",
+      "lat": 33.890672,
+      "lng": -84.467641,
+      "elevation_ft": 965,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-trustmark-park": {
+      "name": "Trustmark Park",
+      "lat": 32.274168,
+      "lng": -90.147519,
+      "elevation_ft": 264,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-turner-field": {
+      "name": "Turner Field",
+      "lat": 33.735,
+      "lng": -84.38944,
+      "elevation_ft": 941,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-uniqlo-field-at-dodger-stadium": {
+      "name": "UNIQLO Field at Dodger Stadium",
+      "lat": 34.07368,
+      "lng": -118.24053,
+      "elevation_ft": 502,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-victory-field": {
+      "name": "Victory Field",
+      "lat": 39.7657354,
+      "lng": -86.1682918,
+      "elevation_ft": 706,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-werner-park": {
+      "name": "Werner Park",
+      "lat": 41.1510945,
+      "lng": -96.1057988,
+      "elevation_ft": 1150,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-whataburger-field": {
+      "name": "Whataburger Field",
+      "lat": 27.80995,
+      "lng": -97.39941,
+      "elevation_ft": 14,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-wrigley-field": {
+      "name": "Wrigley Field",
+      "lat": 41.948171,
+      "lng": -87.655503,
+      "elevation_ft": 595,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-yankee-stadium": {
+      "name": "Yankee Stadium",
+      "lat": 40.82919482,
+      "lng": -73.9264977,
+      "elevation_ft": 14,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mlb-yankee-stadium-i": {
+      "name": "Yankee Stadium I",
+      "lat": 40.82667,
+      "lng": -73.92806,
+      "elevation_ft": 21,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mountain-america-stadium": {
+      "name": "Mountain America Stadium",
+      "lat": 33.42639,
+      "lng": -111.9325,
+      "elevation_ft": 1180,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "mt-bank-stadium": {
+      "name": "M&T Bank Stadium",
+      "lat": 39.27806,
+      "lng": -76.62278,
+      "elevation_ft": 10,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "nissan-stadium": {
+      "name": "Nissan Stadium",
+      "lat": 36.16639,
+      "lng": -86.77139,
+      "elevation_ft": 397,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "northwest-stadium": {
+      "name": "Northwest Stadium",
+      "lat": 38.90778,
+      "lng": -76.86444,
+      "elevation_ft": 196,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "oakland-coliseum": {
+      "name": "Oakland-Alameda County Coliseum",
+      "lat": 37.75167,
+      "lng": -122.20056,
+      "elevation_ft": -17,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "paycor-stadium": {
+      "name": "Paycor Stadium",
+      "lat": 39.095,
+      "lng": -84.516,
+      "elevation_ft": 480,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "pontiac-silverdome": {
+      "name": "Pontiac Silverdome",
+      "lat": 42.64583,
+      "lng": -83.255,
+      "elevation_ft": 870,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "ralph-wilson-stadium": {
+      "name": "Ralph Wilson Stadium",
+      "lat": 42.774,
+      "lng": -78.787,
+      "elevation_ft": 720,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "raymond-james-stadium": {
+      "name": "Raymond James Stadium",
+      "lat": 27.97583,
+      "lng": -82.50333,
+      "elevation_ft": 36,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "rca-dome": {
+      "name": "RCA Dome",
+      "lat": 39.76361,
+      "lng": -86.16333,
+      "elevation_ft": 709,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "reliant-stadium": {
+      "name": "Reliant Stadium",
+      "lat": 29.68472,
+      "lng": -95.41083,
+      "elevation_ft": 50,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "rogers-centre": {
+      "name": "Rogers Centre",
+      "lat": 43.64139,
+      "lng": -79.38917,
+      "elevation_ft": 299,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "san-diego-stadium": {
+      "name": "San Diego Stadium",
+      "lat": 32.78306,
+      "lng": -117.11944,
+      "elevation_ft": 53,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "santiago-bernabeu": {
+      "name": "Bernabéu",
+      "lat": 40.45306,
+      "lng": -3.68835,
+      "elevation_ft": 2362,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "sofi-stadium": {
+      "name": "SoFi Stadium",
+      "lat": 33.953,
+      "lng": -118.339,
+      "elevation_ft": 122,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "soldier-field": {
+      "name": "Soldier Field",
+      "lat": 41.8623,
+      "lng": -87.6167,
+      "elevation_ft": 586,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "stade-de-france": {
+      "name": "Stade de France",
+      "lat": 48.9245,
+      "lng": 2.3602,
+      "elevation_ft": 187,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "state-farm-stadium": {
+      "name": "State Farm Stadium",
+      "lat": 33.528,
+      "lng": -112.263,
+      "elevation_ft": 1079,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "texas-stadium": {
+      "name": "Texas Stadium",
+      "lat": 32.83972,
+      "lng": -96.91083,
+      "elevation_ft": 453,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "three-rivers-stadium": {
+      "name": "Three Rivers Stadium",
+      "lat": 40.44667,
+      "lng": -80.01278,
+      "elevation_ft": 731,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "tiger-stadium-lsu": {
+      "name": "Tiger Stadium",
+      "lat": 30.41222,
+      "lng": -91.18389,
+      "elevation_ft": 25,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "tottenham-hotspur-stadium": {
+      "name": "Tottenham Hotspur Stadium",
+      "lat": 51.6044,
+      "lng": -0.0664,
+      "elevation_ft": 43,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "twickenham-stadium": {
+      "name": "Twickenham Stadium",
+      "lat": 51.45583,
+      "lng": -0.34139,
+      "elevation_ft": 66,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    },
+    "us-bank-stadium": {
+      "name": "U.S. Bank Stadium",
+      "lat": 44.974,
+      "lng": -93.258,
+      "elevation_ft": 846,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "veterans-stadium": {
+      "name": "Veterans Stadium",
+      "lat": 39.90667,
+      "lng": -75.17111,
+      "elevation_ft": 21,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-17"
+    },
+    "wembley-stadium": {
+      "name": "Wembley Stadium",
+      "lat": 51.5556,
+      "lng": -0.2794,
+      "elevation_ft": 197,
+      "source": "open-elevation",
+      "fetched": "2026-09-17"
+    }
+  }
+}

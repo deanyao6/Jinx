@@ -2,13 +2,17 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
+import { PersonAvatar } from '@/components/PersonAvatar';
 import { Text } from '@/components/Text';
 import { ShareButton } from '@/features/share/ShareButton';
 import { useTheme } from '@/theme/ThemeProvider';
 import { gamesLabel, recordText, recordTone } from '../copy';
-import { Avatar } from './Avatar';
 
 type Props = {
+  /** A stable id for the person (their account, else the placeholder's id): seeds the avatar. */
+  personId?: string | null;
+  /** The linked account's `avatar_path`. A placeholder ("Dad") has none. */
+  avatarPath?: string | null;
   name: string;
   subtitle?: string | null;
   wins: number;
@@ -24,6 +28,8 @@ type Props = {
 
 /** One line of the "Your record with" list from the mockup: avatar, name, games, colored record. */
 export function CompanionRow({
+  personId,
+  avatarPath,
   name,
   subtitle,
   wins,
@@ -55,7 +61,7 @@ export function CompanionRow({
         opacity: pressed ? 0.6 : 1,
       })}
     >
-      <Avatar name={name} />
+      <PersonAvatar userId={personId} name={name} path={avatarPath} size={38} />
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
           <Text variant="bodyStrong" numberOfLines={1}>

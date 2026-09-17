@@ -161,12 +161,21 @@ function PassportBody({
           />
         ) : null}
         <FavoritePlayers pill={pill} />
-        <SectionHeader title="Fan superlatives" />
-        {/* Each row could open the game, venue or player it names, but the fixture carries
-            only display text for those. So every row opens the superlatives screen. */}
+        {/* A real row opens the game its number is from, or the games you saw the player in, so
+            the full list needs its own way in. The demo rows name no real game: they open the
+            full list, and the header stays as the reference draws it, with no action. */}
+        {data.superlatives.some((item) => item.href) ? (
+          <SectionHeader
+            title="Fan superlatives"
+            action="View All"
+            onActionPress={() => router.push('/passport/superlatives')}
+          />
+        ) : (
+          <SectionHeader title="Fan superlatives" />
+        )}
         <SuperlativeList
           items={data.superlatives}
-          onItemPress={() => router.push('/passport/superlatives')}
+          onItemPress={(item) => router.push((item.href ?? '/passport/superlatives') as Href)}
         />
         {data.superlatives.length === 0 ? (
           <EmptyState
@@ -215,8 +224,9 @@ function FavoritePlayers({ pill }: { pill: string }) {
           chip: i.chip,
         }))}
         onItemPress={(item) => {
+          // Seen: the games you saw them in, the same page their superlative row opens.
           const player = byName.get(item.value);
-          if (player?.lastGameId) router.push(`/games/${player.lastGameId}` as Href);
+          if (player && player.seen > 0) router.push(`/passport/player/${player.playerId}` as Href);
           else router.push('/settings/favorites?tab=players' as Href);
         }}
       />

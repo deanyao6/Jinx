@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Card } from '@/components/Card';
+import { PersonAvatar } from '@/components/PersonAvatar';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
 import {
@@ -13,7 +14,6 @@ import {
   type FeedEvent,
   type ReactionEmoji,
 } from '../copy';
-import { Avatar } from './Avatar';
 
 type Props = {
   event: FeedEvent;
@@ -40,7 +40,13 @@ export function FeedEventCard({ event, onOpen, onOpenActor, onReact }: Props) {
           opacity: pressed ? 0.6 : 1,
         })}
       >
-        <Avatar name={name} size={32} />
+        <PersonAvatar
+          userId={event.actor_user_id}
+          name={event.actor_display_name}
+          handle={event.actor_handle}
+          path={event.actor_avatar_path}
+          size={32}
+        />
         <View style={{ flex: 1 }}>
           <Text variant="bodyStrong" numberOfLines={1}>
             {name}

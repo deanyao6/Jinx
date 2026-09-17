@@ -180,6 +180,18 @@ async function main() {
     });
     if (photoRow) throw new Error(`attendance_photos: ${photoRow.message}`);
 
+    // A profile photo, stored the way the app stores it: <user>/avatar-<timestamp>.<ext>.
+    const avatarPath = `${userId}/avatar-${Date.now()}.png`;
+    const { error: avatarUpload } = await admin.storage
+      .from('avatars')
+      .upload(avatarPath, PNG, { contentType: 'image/png' });
+    if (avatarUpload) throw new Error(`avatar upload: ${avatarUpload.message}`);
+    const { error: avatarRow } = await admin
+      .from('profiles')
+      .update({ avatar_path: avatarPath })
+      .eq('id', userId);
+    if (avatarRow) throw new Error(`profiles.avatar_path: ${avatarRow.message}`);
+
     const anonCall = await fetch(`${URL}/functions/v1/delete-account`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${ANON}` },
@@ -223,10 +235,11 @@ async function main() {
       'the nested attendance photo is gone from storage',
       !(await exists('attendance-photos', photoPath)),
     );
+    check('the profile photo is gone from storage', !(await exists('avatars', avatarPath)));
   } finally {
     if (!deleted) {
       // Leave nothing behind when a check fails midway.
-      for (const bucket of ['ticket-imports', 'attendance-photos']) {
+      for (const bucket of ['ticket-imports', 'attendance-photos', 'avatars']) {
         const { data: top } = await admin.storage.from(bucket).list(userId, { limit: 1000 });
         for (const entry of top ?? []) {
           if (entry.id === null) {

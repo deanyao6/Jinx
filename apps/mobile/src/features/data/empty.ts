@@ -133,4 +133,6 @@ export const emptyRepository: Repository = {
     rivalry: null,
     overlap: null,
   }),
+  // Nobody is known yet, but whoever this is, they are a real person: never fixture art.
+  person: () => ({ userId: null, name: null, handle: null, avatarPath: null }),
 };

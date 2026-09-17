@@ -7,16 +7,18 @@ import { IconChevR, type IconName } from '@/components/reference/icons';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
-import type { SuperlativeRow } from '../format';
+import { superlativeLabel, type SuperlativeRow } from '../format';
 
 /** The reference's icon for each superlative, by the stable `key` of `superlativeRows`. */
 const ICON_BY_KEY: Record<string, IconName> = {
-  most_seen_player: 'i-user',
+  most_seen_favorite_player: 'i-user',
   walk_offs: 'i-bolt',
   coldest: 'i-thermo',
   hottest: 'i-thermo',
   longest: 'i-clock',
   biggest_comeback: 'i-trend',
+  largest_crowd: 'i-users',
+  highest_altitude: 'i-flag',
   highest_scoring: 'i-trend',
   lowest_scoring: 'i-trend',
   longest_win: 'i-trend',
@@ -40,13 +42,15 @@ const GROUP_TITLES: Record<GroupKey, string> = {
   streaks: 'Streaks',
 };
 
-const GROUP_ORDER: GroupKey[] = ['games', 'players', 'places', 'streaks'];
+// Players first: the favourite you have seen most is the row people look for.
+const GROUP_ORDER: GroupKey[] = ['players', 'games', 'places', 'streaks'];
 
 function groupOf(row: SuperlativeRow): GroupKey {
   if (row.key.startsWith('most_seen_')) return 'players';
   if (row.key === 'longest_win' || row.key === 'longest_loss') return 'streaks';
   if (
     row.key === 'most_visited_venue' ||
+    row.key === 'highest_altitude' ||
     row.key === 'farthest_venue' ||
     row.key === 'most_miles_team'
   ) {
@@ -108,7 +112,7 @@ export function SuperlativeCards({ rows, contextFor, onPressRow }: Props) {
                   <IconTile icon={superlativeIcon(row.key)} size={42} />
                   <View style={{ flex: 1, minWidth: 0 }}>
                     <Text variant="label" color="muted" numberOfLines={2}>
-                      {row.title}
+                      {superlativeLabel(row)}
                     </Text>
                     <Text
                       variant="stat"

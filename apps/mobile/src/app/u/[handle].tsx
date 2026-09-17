@@ -9,6 +9,7 @@ import { EmptyState } from '@/components/EmptyState';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
+import { PersonAvatar } from '@/components/PersonAvatar';
 import { IconLock } from '@/components/reference/icons';
 import { Screen } from '@/components/Screen';
 import { StatTile } from '@/components/StatTile';
@@ -25,7 +26,6 @@ import {
 } from '@/features/social/queries';
 import { FollowButton } from '@/features/social/ui/FollowButton';
 import { ProfilePassport } from '@/features/social/ui/ProfilePassport';
-import { RingedAvatar } from '@/features/social/ui/RingedAvatar';
 import { TeamPill } from '@/features/social/ui/TeamPill';
 import { TeamTheme } from '@/theme/reference/TeamTheme';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -215,7 +215,14 @@ function ProfileHeader({ p, name, onEdit }: { p: ProfileView; name: string; onEd
   );
   return (
     <View style={{ alignItems: 'center', marginBottom: theme.spacing.lg }}>
-      <RingedAvatar seed={p.id} size={80} />
+      <PersonAvatar
+        userId={p.id}
+        name={p.display_name}
+        handle={p.handle}
+        path={p.avatar_path}
+        size={80}
+        ring
+      />
       {/* A handle is an identifier, so it keeps its own case inside the kicker's spacing. */}
       {/* With no display name the title below is the handle, so it is not said twice. */}
       {name !== `@${p.handle}` ? (

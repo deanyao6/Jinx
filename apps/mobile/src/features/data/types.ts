@@ -5,6 +5,7 @@ import type {
   GuideFixture,
   GuideRow,
   PassportFixture,
+  PersonRef,
   PickASideFixture,
   ProfileFixture,
   FriendsFixture,
@@ -74,4 +75,9 @@ export type Repository = {
   guideRows(tab: string): readonly GuideRow[];
   profile(): ProfileFixture;
   friends(): FriendsFixture;
+  /**
+   * The real person behind an avatar key, or null when the key names fixture art (demo mode),
+   * in which case the screen draws the reference's `Avatar`.
+   */
+  person(key: string): PersonRef | null;
 };

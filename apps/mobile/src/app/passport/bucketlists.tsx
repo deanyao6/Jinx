@@ -139,9 +139,10 @@ export default function BucketListsScreen() {
                 {visited ? (
                   <SealRow
                     total={ids.length}
-                    visitedShapes={Array.from(visited).map(
-                      (id) => shapeOf.get(id) ?? defaultShapeKey(sport ? [sport] : []),
-                    )}
+                    visited={Array.from(visited).map((venueId) => ({
+                      venueId,
+                      shapeKey: shapeOf.get(venueId) ?? defaultShapeKey(sport ? [sport] : []),
+                    }))}
                   />
                 ) : null}
               </GoalCard>

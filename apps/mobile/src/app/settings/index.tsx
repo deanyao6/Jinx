@@ -136,7 +136,13 @@ export default function SettingsRoute() {
     // Settings is reached from the Profile tab's gear, so Profile is the fallback.
     <SettingsFrame title="Settings" fallback="/profile">
       {me && handle ? (
-        <IdentityCard name={me.display_name ?? ''} handle={handle} note={me.home_city} />
+        <IdentityCard
+          userId={me.id}
+          name={me.display_name ?? ''}
+          handle={handle}
+          avatarPath={me.avatar_path}
+          note={me.home_city}
+        />
       ) : null}
 
       <SectionHeader title="Account" />

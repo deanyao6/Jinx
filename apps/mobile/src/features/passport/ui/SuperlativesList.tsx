@@ -4,7 +4,7 @@ import { Pressable, View } from 'react-native';
 
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
-import type { SuperlativeRow } from '../format';
+import { superlativeLabel, type SuperlativeRow } from '../format';
 
 type Props = {
   rows: SuperlativeRow[];
@@ -22,7 +22,8 @@ export function SuperlativesList({ rows, limit, subtitleFor, onPressRow }: Props
   return (
     <View>
       {shown.map((row, i) => {
-        const subtitle = subtitleFor?.(row) ?? null;
+        // The stadium a row is about lives in its context now, not its title.
+        const subtitle = subtitleFor?.(row) ?? row.context ?? null;
         const pressable = !!onPressRow && !!(row.gameId || row.venueId || row.playerId);
         const body = (
           <View
@@ -36,7 +37,7 @@ export function SuperlativesList({ rows, limit, subtitleFor, onPressRow }: Props
             }}
           >
             <View style={{ flex: 1 }}>
-              <Text variant="body">{row.title}</Text>
+              <Text variant="body">{superlativeLabel(row)}</Text>
               {subtitle ? (
                 <Text variant="caption" color="muted" numberOfLines={1}>
                   {subtitle}

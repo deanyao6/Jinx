@@ -1,26 +1,27 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Seal } from '@/components/reference/Seal';
 import { Text } from '@/components/Text';
+import { VenueSeal } from '@/features/passport/seals';
 import { useTheme } from '@/theme/ThemeProvider';
 import { GhostSeal } from './GhostSeal';
 
 type Props = {
-  /** Shape keys of the venues already visited, in any order. Only the first few are drawn. */
-  visitedShapes: readonly string[];
+  /** The venues already visited, in any order, with their shapes. Only the first few are drawn. */
+  visited: readonly { venueId: string; shapeKey: string }[];
   total: number;
   max?: number;
 };
 
 /**
- * A short run of small seals under a list's bar: one struck seal per venue visited, dashed
+ * A short run of small seals under a list's bar: one struck seal per venue visited, in its
+ * team's colours, dashed
  * ghosts for what is left, and "+25" when the list is longer than the run.
  */
-export function SealRow({ visitedShapes, total, max = 5 }: Props) {
+export function SealRow({ visited, total, max = 5 }: Props) {
   const theme = useTheme();
   const shown = Math.min(max, total);
-  const struck = visitedShapes.slice(0, shown);
+  const struck = visited.slice(0, shown);
   const ghosts = Math.max(0, shown - struck.length);
   const more = total - shown;
   return (
@@ -29,12 +30,12 @@ export function SealRow({ visitedShapes, total, max = 5 }: Props) {
       importantForAccessibility="no-hide-descendants"
       style={{ flexDirection: 'row', alignItems: 'center', gap: theme.spacing.sm }}
     >
-      {struck.map((shapeKey, i) => (
-        <Seal
-          key={`s${i}`}
+      {struck.map((v) => (
+        <VenueSeal
+          key={v.venueId}
+          venueId={v.venueId}
           ring=""
-          shapeKey={shapeKey}
-          metal="silver"
+          shapeKey={v.shapeKey}
           size={34}
           inkColor={theme.colors.ink}
         />

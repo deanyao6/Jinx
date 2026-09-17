@@ -1890,6 +1890,7 @@ export type Database = {
           city: string | null
           closed_year: number | null
           country: string | null
+          elevation_ft: number | null
           geofence_m: number
           id: string
           key: string
@@ -1905,6 +1906,7 @@ export type Database = {
           city?: string | null
           closed_year?: number | null
           country?: string | null
+          elevation_ft?: number | null
           geofence_m?: number
           id?: string
           key: string
@@ -1920,6 +1922,7 @@ export type Database = {
           city?: string | null
           closed_year?: number | null
           country?: string | null
+          elevation_ft?: number | null
           geofence_m?: number
           id?: string
           key?: string
@@ -2002,6 +2005,7 @@ export type Database = {
         Args: { p_photo_id: string }
         Returns: boolean
       }
+      can_view_avatar: { Args: { p_object_name: string }; Returns: boolean }
       can_view_profile: { Args: { target: string }; Returns: boolean }
       can_view_seats: { Args: { p_attendance_id: string }; Returns: boolean }
       can_view_user: { Args: { target: string }; Returns: boolean }
@@ -2028,6 +2032,7 @@ export type Database = {
           display_name: string
           games: number
           last_game: string
+          linked_avatar_path: string
           linked_handle: string
           linked_user_id: string
           losses: number
@@ -2104,6 +2109,7 @@ export type Database = {
       feed: {
         Args: { p_before?: string; p_limit?: number }
         Returns: {
+          actor_avatar_path: string
           actor_display_name: string
           actor_handle: string
           actor_user_id: string
@@ -2329,6 +2335,7 @@ export type Database = {
       search_profiles: {
         Args: { p_limit?: number; p_query: string }
         Returns: {
+          avatar_path: string
           display_name: string
           follow_status: string
           follows_me: boolean

@@ -6,6 +6,7 @@ import Svg, { Defs, LinearGradient, RadialGradient, Rect, Stop } from 'react-nat
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { Seal } from '@/components/reference/Seal';
 import { TightText } from '@/components/reference/TightText';
+import { VenueSeal } from '@/features/passport/seals';
 import { fontFamily } from '@/theme/fonts';
 import { TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, iconSize, radius, screenPadding } from '@/theme/reference/tokens';
@@ -395,6 +396,9 @@ export type StampItem = {
   ring: string;
   shape: string;
   metal: 'brass' | 'silver';
+  /** Real data only: draws the seal in the home team's colours, worn by `visits`. */
+  venueId?: string;
+  visits?: number;
 };
 
 /** `.fx-stamps` and `.fx-stamp`. */
@@ -428,13 +432,24 @@ export function Stamps({
               : {})}
           >
             <View style={{ marginBottom: 6 }}>
-              <Seal
-                ring={stamp.ring}
-                shapeKey={stamp.shape}
-                metal={stamp.metal}
-                size={78}
-                inkColor={base.ink}
-              />
+              {stamp.venueId ? (
+                <VenueSeal
+                  venueId={stamp.venueId}
+                  ring={stamp.ring}
+                  shapeKey={stamp.shape}
+                  visits={stamp.visits}
+                  size={78}
+                  inkColor={base.ink}
+                />
+              ) : (
+                <Seal
+                  ring={stamp.ring}
+                  shapeKey={stamp.shape}
+                  metal={stamp.metal}
+                  size={78}
+                  inkColor={base.ink}
+                />
+              )}
             </View>
             <Text style={[s.stampName, { color: base.ink }]} numberOfLines={1}>
               {stamp.name}
@@ -449,7 +464,14 @@ export function Stamps({
   );
 }
 
-export type Superlative = { icon: string; label: string; value: string; chip: string };
+export type Superlative = {
+  icon: string;
+  label: string;
+  value: string;
+  chip: string;
+  /** Where the row goes, when it names a game or a player. See `superlativeHref`. */
+  href?: string;
+};
 
 /** `.fx-list`, `.fx-li` and `.fx-chip`. */
 export function SuperlativeList({
@@ -485,9 +507,9 @@ export function SuperlativeList({
               <Text style={[s.listLabel, { color: base.muted }]}>{item.label}</Text>
               <Text style={[s.listValue, { color: base.ink }]}>{item.value}</Text>
             </View>
-            {/* Real superlatives carry no context chip yet (see toSuperlatives). An empty
-                chip draws a blank pill, which reads as a broken control rather than an
-                absent one, so it is omitted instead. */}
+            {/* A row about no one game (a streak) has no context. An empty chip draws a blank
+                pill, which reads as a broken control rather than an absent one, so it is
+                omitted instead. */}
             {item.chip ? (
               <View style={[s.chip, { borderColor: base.line, backgroundColor: base.surface }]}>
                 <Text style={[s.chipText, { color: base.ink }]}>{item.chip}</Text>

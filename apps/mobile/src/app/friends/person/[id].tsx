@@ -10,6 +10,7 @@ import { GameRow } from '@/components/GameRow';
 import { Loading } from '@/components/Loading';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Notice, errorMessage } from '@/components/Notice';
+import { PersonAvatar } from '@/components/PersonAvatar';
 import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -25,7 +26,6 @@ import {
 } from '@/features/people/queries';
 import { openShare } from '@/features/share/navigate';
 import { gamesLabel, recordText } from '@/features/social/copy';
-import { RingedAvatar } from '@/features/social/ui/RingedAvatar';
 import { formatScore } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -114,7 +114,14 @@ export default function PersonScreen() {
       {error ? <Notice tone="error">{errorMessage(error)}</Notice> : null}
 
       <View style={{ alignItems: 'center', marginBottom: theme.spacing.lg }}>
-        <RingedAvatar seed={person.linked_user_id ?? person.person_id} size={72} />
+        <PersonAvatar
+          userId={person.linked_user_id ?? person.person_id}
+          name={person.display_name}
+          handle={person.linked_handle}
+          path={person.linked_avatar_path}
+          size={72}
+          ring
+        />
         <Text
           variant="kicker"
           color="accent"

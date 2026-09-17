@@ -71,8 +71,10 @@ export default function FindPeopleScreen() {
               return (
                 <PersonRow
                   key={p.id}
-                  seed={p.id}
+                  userId={p.id}
                   name={name}
+                  handle={p.handle}
+                  avatarPath={p.avatar_path}
                   caption={`@${p.handle}${p.is_private ? ' · Private' : ''}${
                     p.follows_me ? ' · Follows you' : ''
                   }`}

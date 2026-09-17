@@ -90,6 +90,7 @@ export function useSupabaseRepository(): { repository: Repository; status: Repos
           displayName: profileRow.display_name,
           homeCity: profileRow.home_city,
           avatarKey: profileRow.id,
+          avatarPath: profileRow.avatar_path,
           favorites: (favoriteTeams ?? []).map((t) => ({ id: t.id, name: t.name, city: t.city })),
           followers: viewCounts?.followers ?? null,
           following: viewCounts?.following ?? null,

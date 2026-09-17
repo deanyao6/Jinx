@@ -31,10 +31,16 @@ export default function SuperlativesScreen() {
   );
   const games = useGamesByIds(gameIds);
 
-  // The game a row points at: its date on the chip, its matchup under the value.
+  // The game a row points at: its date on the chip, its matchup under the value. A row about a
+  // stadium says which one instead.
   const contextFor = (row: SuperlativeRow): SuperlativeContext | null => {
-    if (!row.gameId) return null;
-    const g = games.data?.get(row.gameId);
+    const g = row.gameId ? games.data?.get(row.gameId) : undefined;
+    if (row.venueId) {
+      return {
+        chip: g ? formatGameDate(g.scheduled_start, { withYear: true }) : null,
+        detail: row.context ?? null,
+      };
+    }
     if (!g) return null;
     return {
       // "First game" already has the date as its value.
@@ -44,9 +50,13 @@ export default function SuperlativesScreen() {
   };
 
   const onPressRow = (row: SuperlativeRow) => {
-    if (row.gameId) router.push(`/games/${row.gameId}`);
-    else if (row.venueId) setVenue(s?.stamps.find((st) => st.venue_id === row.venueId) ?? null);
-    else if (row.playerId) router.push('/passport/players');
+    const stamp = row.venueId ? s?.stamps.find((st) => st.venue_id === row.venueId) : undefined;
+    // A player opens the games you saw them in. The stadium you visit most opens its sheet, which
+    // lists every game there; any other row opens the one game its number is from.
+    if (row.playerId) router.push(`/passport/player/${row.playerId}`);
+    else if (row.key === 'most_visited_venue' && stamp) setVenue(stamp);
+    else if (row.gameId) router.push(`/games/${row.gameId}`);
+    else if (stamp) setVenue(stamp);
   };
 
   return (
@@ -57,7 +67,7 @@ export default function SuperlativesScreen() {
         <EmptyState
           icon="i-spark"
           title="Nothing to brag about yet"
-          body="Coldest game, longest game, biggest comeback and more appear once your attended games have details."
+          body="Coldest game, largest crowd, biggest comeback and more appear once your attended games have details."
         />
       ) : null}
       {s && rows.length > 0 ? (
@@ -76,7 +86,8 @@ export default function SuperlativesScreen() {
           color="muted"
           style={{ marginTop: theme.spacing.xs, marginBottom: theme.spacing.lg }}
         >
-          Games without weather or timing data are skipped. Rows with a game open its detail page.
+          Games without weather, timing or crowd data are skipped. A row opens the game its number
+          is from.
         </Text>
       ) : null}
       {/* The only way into these two. They hung off the old Passport tab, and the reference

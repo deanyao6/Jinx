@@ -46,4 +46,6 @@ export const demoRepository: Repository = {
   guideRows: (tab) => GUIDE_ROWS[tab] ?? GUIDE_ROWS.food ?? [],
   profile: () => PROFILE,
   friends: () => FRIENDS,
+  // Every avatar key here names one of the reference's six drawn faces.
+  person: () => null,
 };

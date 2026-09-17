@@ -104,6 +104,7 @@ node scripts/verify-user-journeys.mjs     # M2, M3, M6, M7, M8 done-whens as rea
 npx tsx ingest/src/verify/relive.ts       # M8.5: 5 MLB + 5 NFL stories against an independent source
 npx tsx ingest/src/mlb/relive.ts --rebuild # regenerate every MLB story after a change to how steps are built
 python3 seed/scripts/build_seed_sql.py   # regenerate supabase/seed.sql from seed/*.json
+python3 seed/scripts/fill_elevations.py  # venue elevations (USGS, Open-Elevation) into seed/venue_elevations.json; resumable
 python3 seed/scripts/check_team_colors.py # audit team_colors.json: coverage, verbatim reference rows, WCAG contrast
 npx tsx ingest/src/mlb/backfill.ts --from 2000 --to 2026   # MLB schedules + finals (needs SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)
 npx tsx ingest/src/mlb/detail.ts --pending                 # MLB details for attended games

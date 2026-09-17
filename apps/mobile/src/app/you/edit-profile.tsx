@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
@@ -10,6 +10,13 @@ import { Notice, errorMessage } from '@/components/Notice';
 import { Row } from '@/components/Row';
 import { SectionHeader } from '@/components/SectionHeader';
 import { TextField } from '@/components/TextField';
+import {
+  pickAvatarFromLibrary,
+  takeAvatarPhoto,
+  useRemoveAvatar,
+  useSetAvatar,
+  type PickedAvatar,
+} from '@/features/account/avatar';
 import { IdentityCard } from '@/features/account/ui/IdentityCard';
 import {
   useHandleAvailable,
@@ -28,6 +35,54 @@ function EditProfileForm({ profile }: { profile: Profile }) {
   const [handle, setHandle] = useState(profile.handle);
   const [name, setName] = useState(profile.display_name);
   const [city, setCity] = useState(profile.home_city ?? '');
+
+  // The photo saves by itself, the moment it is chosen: it is not one of the fields Save sends.
+  const setAvatar = useSetAvatar();
+  const removeAvatar = useRemoveAvatar();
+  const [pickError, setPickError] = useState<string | null>(null);
+  const avatarPath = profile.avatar_path;
+  const avatarBusy = setAvatar.isPending || removeAvatar.isPending;
+
+  const choosePhoto = async (pick: () => Promise<PickedAvatar | null>) => {
+    setPickError(null);
+    setAvatar.reset();
+    removeAvatar.reset();
+    try {
+      const picked = await pick();
+      if (picked) setAvatar.mutate({ picked, oldPath: avatarPath });
+    } catch (err) {
+      setPickError(errorMessage(err));
+    }
+  };
+
+  const onPressAvatar = () => {
+    Alert.alert('Profile photo', undefined, [
+      { text: 'Choose from library', onPress: () => void choosePhoto(pickAvatarFromLibrary) },
+      { text: 'Take photo', onPress: () => void choosePhoto(takeAvatarPhoto) },
+      ...(avatarPath
+        ? [
+            {
+              text: 'Remove photo',
+              style: 'destructive' as const,
+              onPress: () => {
+                setPickError(null);
+                setAvatar.reset();
+                removeAvatar.mutate({ oldPath: avatarPath });
+              },
+            },
+          ]
+        : []),
+      { text: 'Cancel', style: 'cancel' as const },
+    ]);
+  };
+
+  const photoError =
+    pickError ??
+    (setAvatar.error
+      ? `Could not save your photo. ${errorMessage(setAvatar.error)}`
+      : removeAvatar.error
+        ? `Could not remove your photo. ${errorMessage(removeAvatar.error)}`
+        : null);
 
   const handleError = validateHandle(handle);
   const nameError = validateDisplayName(name);
@@ -63,10 +118,15 @@ function EditProfileForm({ profile }: { profile: Profile }) {
   return (
     <FormScreen headerOffset={60}>
       {errorText ? <Notice tone="error">{errorText}</Notice> : null}
+      {photoError ? <Notice tone="error">{photoError}</Notice> : null}
       <IdentityCard
+        userId={profile.id}
         name={name}
         handle={normalizeHandle(handle) || profile.handle}
+        avatarPath={avatarPath}
         note={city.trim() || null}
+        onPressAvatar={onPressAvatar}
+        avatarBusy={avatarBusy}
       />
       <SectionHeader title="Profile" />
       <TextField

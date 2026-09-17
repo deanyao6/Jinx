@@ -38,6 +38,7 @@ function toFeedEvent(row: Rpc<'feed'>[number]): FeedEvent {
     actor_user_id: row.actor_user_id,
     actor_handle: row.actor_handle,
     actor_display_name: row.actor_display_name,
+    actor_avatar_path: row.actor_avatar_path ?? null,
     type: row.type,
     game_id: row.game_id ?? null,
     payload: (row.payload as Record<string, Json | undefined> | null) ?? null,
@@ -200,6 +201,7 @@ export type ProfileHit = {
   is_private: boolean;
   follow_status: FollowStatus;
   follows_me: boolean;
+  avatar_path: string | null;
 };
 
 function asFollowStatus(s: string | null | undefined): FollowStatus {
@@ -214,7 +216,11 @@ export function useSearchProfiles(query: string) {
     queryFn: async (): Promise<ProfileHit[]> => {
       const { data, error } = await supabase.rpc('search_profiles', { p_query: q, p_limit: 30 });
       if (error) throw error;
-      return data.map((r) => ({ ...r, follow_status: asFollowStatus(r.follow_status) }));
+      return data.map((r) => ({
+        ...r,
+        follow_status: asFollowStatus(r.follow_status),
+        avatar_path: r.avatar_path ?? null,
+      }));
     },
     enabled: !!userId && q.length >= 2,
     staleTime: 15_000,
@@ -334,7 +340,7 @@ export function useUnfollow() {
 export type FollowRequest = {
   follower_id: string;
   created_at: string;
-  profile: { id: string; handle: string; display_name: string } | null;
+  profile: { id: string; handle: string; display_name: string; avatar_path: string | null } | null;
 };
 
 export function useFollowRequests() {
@@ -345,7 +351,7 @@ export function useFollowRequests() {
       const { data, error } = await supabase
         .from('follows')
         .select(
-          'follower_id, created_at, profile:profiles!follows_follower_id_fkey(id, handle, display_name)',
+          'follower_id, created_at, profile:profiles!follows_follower_id_fkey(id, handle, display_name, avatar_path)',
         )
         .eq('followee_id', userId as string)
         .eq('status', 'requested')
@@ -392,7 +398,12 @@ export function useDeclineRequest() {
   });
 }
 
-export type FollowedUser = { id: string; handle: string; display_name: string };
+export type FollowedUser = {
+  id: string;
+  handle: string;
+  display_name: string;
+  avatar_path: string | null;
+};
 
 /** People I actively follow, for tagging companions. */
 export function useFollowing() {
@@ -402,7 +413,9 @@ export function useFollowing() {
     queryFn: async (): Promise<FollowedUser[]> => {
       const { data, error } = await supabase
         .from('follows')
-        .select('followee_id, profile:profiles!follows_followee_id_fkey(id, handle, display_name)')
+        .select(
+          'followee_id, profile:profiles!follows_followee_id_fkey(id, handle, display_name, avatar_path)',
+        )
         .eq('follower_id', userId as string)
         .eq('status', 'active');
       if (error) throw error;

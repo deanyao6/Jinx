@@ -13,6 +13,7 @@ export default function PassportStackLayout() {
         <Stack.Screen name="moments" options={{ title: 'Moments' }} />
         <Stack.Screen name="moment/[type]" options={{ title: 'Moment' }} />
         <Stack.Screen name="players" options={{ title: 'Players seen' }} />
+        <Stack.Screen name="player/[id]" options={{ title: 'Player' }} />
         <Stack.Screen name="map" options={{ title: 'Map' }} />
         <Stack.Screen name="goals" options={{ title: 'Goals' }} />
         <Stack.Screen name="new-goal" options={{ title: 'New goal', presentation: 'modal' }} />

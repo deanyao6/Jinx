@@ -5,7 +5,7 @@ _Last updated 2026-09-15. Replace Jinx with the final name before publishing._
 Jinx is a passport for sports fans. This policy explains what we collect and why.
 
 **What we collect**
-- Account: your email address (or Apple ID relay address), handle, display name, optional home city, birth date (used only to confirm you are 13 or older).
+- Account: your email address (or Apple ID relay address), handle, display name, optional home city, an optional profile photo (shown to signed-in users, and hidden from anyone you block or who blocks you), birth date (used only to confirm you are 13 or older).
 - Games you log: the games, venues, seats and notes you enter, companions you tag, teams you follow, goals and lists you create.
 - Check-ins: when you tap Check in, your device sends only the distance and accuracy relative to the stadium. We never receive or store your coordinates.
 - Ticket imports: screenshots, PDFs, or forwarded emails you choose to import. Files are stored privately, sent to an AI model to read the ticket fields, and deleted 7 days after the import is resolved. Extracted fields (teams, date, seat) are kept.

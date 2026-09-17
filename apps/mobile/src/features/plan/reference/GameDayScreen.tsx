@@ -3,10 +3,10 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Avatar } from '@/components/reference/Avatar';
 import { TightText } from '@/components/reference/TightText';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
+import { RepositoryAvatar } from '@/features/data/RepositoryAvatar';
 import { EmptyState } from '@/features/data/EmptyState';
 import type { GameDayFixture } from '@/features/data/shapes';
 import { TabBar } from '@/features/passport/reference/parts';
@@ -37,7 +37,8 @@ export function GameDayScreen() {
 
 function Body() {
   const { base, team } = useReferenceTheme();
-  const plan = useRepository().gameDay();
+  const repository = useRepository();
+  const plan = repository.gameDay();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const Share = ICONS['i-share'];
@@ -128,7 +129,7 @@ function Body() {
               key={who}
               style={[s.avatar, { borderColor: base.scr }, i > 0 ? { marginLeft: -6 } : null]}
             >
-              <Avatar name={who} size={20} />
+              <RepositoryAvatar who={who} person={repository.person(who)} size={20} />
             </View>
           ))}
           <Text style={[s.avatarsText, { color: base.muted }]}>{plan.companionsText}</Text>

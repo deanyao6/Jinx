@@ -1,12 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Seal } from '@/components/reference/Seal';
 import { Text } from '@/components/Text';
+import { VenueSeal } from '@/features/passport/seals';
 import { useTheme } from '@/theme/ThemeProvider';
 import { GhostSeal } from './GhostSeal';
 
 type Props = {
+  venueId: string;
   name: string;
   place: string;
   /** "Closed 2008", for a venue that is gone. */
@@ -19,7 +20,7 @@ type Props = {
  * One venue on a bucket list, a third of a row wide. Visited is the Passport's struck seal;
  * not yet is a quiet dashed ghost of it with the text dimmed.
  */
-export function VenueStamp({ name, place, note, shapeKey, visited }: Props) {
+export function VenueStamp({ venueId, name, place, note, shapeKey, visited }: Props) {
   const theme = useTheme();
   return (
     <View
@@ -31,10 +32,10 @@ export function VenueStamp({ name, place, note, shapeKey, visited }: Props) {
     >
       <View style={{ marginBottom: 6 }}>
         {visited ? (
-          <Seal
+          <VenueSeal
+            venueId={venueId}
             ring={name.toUpperCase()}
             shapeKey={shapeKey}
-            metal="silver"
             size={78}
             inkColor={theme.colors.ink}
           />

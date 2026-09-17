@@ -115,6 +115,7 @@ export default function BucketListDetailScreen() {
   const stamp = (v: VenueLite) => (
     <VenueStamp
       key={v.id}
+      venueId={v.id}
       name={v.name}
       place={[v.city, v.state].filter(Boolean).join(', ')}
       note={v.closed_year ? `Closed ${v.closed_year}` : null}

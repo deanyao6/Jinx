@@ -50,8 +50,10 @@ export default function RequestsScreen() {
               return (
                 <PersonRow
                   key={r.follower_id}
-                  seed={r.follower_id}
+                  userId={r.follower_id}
                   name={name}
+                  handle={r.profile?.handle}
+                  avatarPath={r.profile?.avatar_path}
                   caption={`${r.profile ? `@${r.profile.handle} · ` : ''}${formatGameDate(
                     r.created_at,
                     { withYear: true },

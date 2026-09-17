@@ -1,0 +1,719 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Seal, the reference metals draws a brass seal exactly as the reference does 1`] = `
+<RNSVGSvgView
+  align="xMidYMid"
+  bbHeight={88}
+  bbWidth={88}
+  focusable={false}
+  height={88}
+  meetOrSlice={0}
+  minX={0}
+  minY={0}
+  style={
+    [
+      {
+        "backgroundColor": "transparent",
+        "borderWidth": 0,
+      },
+      {
+        "flex": 0,
+        "height": 88,
+        "width": 88,
+      },
+    ]
+  }
+  vbHeight={100}
+  vbWidth={100}
+  width={88}
+>
+  <RNSVGGroup
+    fill={
+      {
+        "payload": 4278190080,
+        "type": 0,
+      }
+    }
+  >
+    <RNSVGDefs>
+      <RNSVGRadialGradient
+        cx="38%"
+        cy="32%"
+        fx="38%"
+        fy="32%"
+        gradient={
+          [
+            0,
+            -791597,
+            1,
+            -2504804,
+          ]
+        }
+        gradientTransform={null}
+        gradientUnits={0}
+        name="sg_r_1_"
+        rx="75%"
+        ry="75%"
+      />
+      <RNSVGPath
+        d="M22 50a28 28 0 0 1 56 0"
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+        name="sr_r_1_"
+      />
+    </RNSVGDefs>
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+          "strokeDasharray",
+        ]
+      }
+      r="47"
+      stroke={
+        {
+          "payload": 4294046710,
+          "type": 0,
+        }
+      }
+      strokeDasharray={
+        [
+          "3",
+          "2.6",
+        ]
+      }
+      strokeWidth="1.3"
+    />
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={
+        {
+          "brushRef": "sg_r_1_",
+          "type": 1,
+        }
+      }
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      r="40"
+      stroke={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      strokeWidth="1.4"
+    />
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      r="36"
+      stroke={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      strokeWidth="0.8"
+    />
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={null}
+      opacity={0.55}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+          "strokeDasharray",
+        ]
+      }
+      r="24"
+      stroke={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      strokeDasharray={
+        [
+          "0.8",
+          "2.2",
+        ]
+      }
+      strokeWidth="2.5"
+    />
+    <RNSVGText
+      content={null}
+      dx={[]}
+      dy={[]}
+      fill={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      font={
+        {
+          "fontFamily": "Archivo_wdth100_wght800",
+          "fontSize": "6.4",
+          "letterSpacing": "0.5",
+        }
+      }
+      propList={
+        [
+          "fill",
+        ]
+      }
+      rotate={[]}
+      x={[]}
+      y={[]}
+    >
+      <RNSVGTextPath
+        content={null}
+        dx={[]}
+        dy={[]}
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+        font={{}}
+        href="sr_r_1_"
+        rotate={[]}
+        startOffset="50%"
+        x={[]}
+        y={[]}
+      >
+        <RNSVGTSpan
+          content="THE LINC"
+          dx={[]}
+          dy={[]}
+          fill={
+            {
+              "payload": 4278190080,
+              "type": 0,
+            }
+          }
+          font={{}}
+          rotate={[]}
+          x={[]}
+          y={[]}
+        />
+      </RNSVGTextPath>
+    </RNSVGText>
+    <RNSVGGroup
+      color="#6E5A33"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      stroke={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      strokeWidth={3}
+    >
+      <RNSVGGroup
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+        matrix={
+          [
+            0.47,
+            0,
+            0,
+            0.47,
+            35,
+            36,
+          ]
+        }
+      >
+        <RNSVGRect
+          fill={null}
+          height="38"
+          propList={
+            [
+              "fill",
+            ]
+          }
+          rx="17"
+          width="54"
+          x="5"
+          y="13"
+        />
+        <RNSVGRect
+          fill={
+            {
+              "type": 2,
+            }
+          }
+          fillOpacity={0.14}
+          height="20"
+          propList={
+            [
+              "fill",
+              "fillOpacity",
+            ]
+          }
+          rx="2"
+          width="30"
+          x="17"
+          y="22"
+        />
+        <RNSVGPath
+          d="M32 22v20"
+          fill={null}
+          propList={
+            [
+              "fill",
+            ]
+          }
+        />
+      </RNSVGGroup>
+    </RNSVGGroup>
+    <RNSVGPath
+      d="M40 72h20"
+      fill={
+        {
+          "payload": 4278190080,
+          "type": 0,
+        }
+      }
+      propList={
+        [
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      stroke={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      strokeWidth="1"
+    />
+    <RNSVGCircle
+      cx="36"
+      cy="72"
+      fill={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      propList={
+        [
+          "fill",
+        ]
+      }
+      r="1"
+    />
+    <RNSVGCircle
+      cx="64"
+      cy="72"
+      fill={
+        {
+          "payload": 4285422131,
+          "type": 0,
+        }
+      }
+      propList={
+        [
+          "fill",
+        ]
+      }
+      r="1"
+    />
+  </RNSVGGroup>
+</RNSVGSvgView>
+`;
+
+exports[`Seal, the reference metals draws a silver seal exactly as the reference does 1`] = `
+<RNSVGSvgView
+  align="xMidYMid"
+  bbHeight={78}
+  bbWidth={78}
+  focusable={false}
+  height={78}
+  meetOrSlice={0}
+  minX={0}
+  minY={0}
+  style={
+    [
+      {
+        "backgroundColor": "transparent",
+        "borderWidth": 0,
+      },
+      {
+        "flex": 0,
+        "height": 78,
+        "width": 78,
+      },
+    ]
+  }
+  vbHeight={100}
+  vbWidth={100}
+  width={78}
+>
+  <RNSVGGroup
+    fill={
+      {
+        "payload": 4278190080,
+        "type": 0,
+      }
+    }
+  >
+    <RNSVGDefs>
+      <RNSVGRadialGradient
+        cx="38%"
+        cy="32%"
+        fx="38%"
+        fy="32%"
+        gradient={
+          [
+            0,
+            -1117966,
+            1,
+            -3814704,
+          ]
+        }
+        gradientTransform={null}
+        gradientUnits={0}
+        name="sg_r_0_"
+        rx="75%"
+        ry="75%"
+      />
+      <RNSVGPath
+        d="M22 50a28 28 0 0 1 56 0"
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+        name="sr_r_0_"
+      />
+    </RNSVGDefs>
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+          "strokeDasharray",
+        ]
+      }
+      r="47"
+      stroke={
+        {
+          "payload": 4279243544,
+          "type": 0,
+        }
+      }
+      strokeDasharray={
+        [
+          "3",
+          "2.6",
+        ]
+      }
+      strokeWidth="1.3"
+    />
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={
+        {
+          "brushRef": "sg_r_0_",
+          "type": 1,
+        }
+      }
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      r="40"
+      stroke={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      strokeWidth="1.4"
+    />
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      r="36"
+      stroke={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      strokeWidth="0.8"
+    />
+    <RNSVGCircle
+      cx="50"
+      cy="50"
+      fill={null}
+      opacity={0.55}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+          "strokeDasharray",
+        ]
+      }
+      r="24"
+      stroke={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      strokeDasharray={
+        [
+          "0.8",
+          "2.2",
+        ]
+      }
+      strokeWidth="2.5"
+    />
+    <RNSVGText
+      content={null}
+      dx={[]}
+      dy={[]}
+      fill={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      font={
+        {
+          "fontFamily": "Archivo_wdth100_wght800",
+          "fontSize": "6.4",
+          "letterSpacing": "0.5",
+        }
+      }
+      propList={
+        [
+          "fill",
+        ]
+      }
+      rotate={[]}
+      x={[]}
+      y={[]}
+    >
+      <RNSVGTextPath
+        content={null}
+        dx={[]}
+        dy={[]}
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+        font={{}}
+        href="sr_r_0_"
+        rotate={[]}
+        startOffset="50%"
+        x={[]}
+        y={[]}
+      >
+        <RNSVGTSpan
+          content="CITIZENS BANK PARK"
+          dx={[]}
+          dy={[]}
+          fill={
+            {
+              "payload": 4278190080,
+              "type": 0,
+            }
+          }
+          font={{}}
+          rotate={[]}
+          x={[]}
+          y={[]}
+        />
+      </RNSVGTextPath>
+    </RNSVGText>
+    <RNSVGGroup
+      color="#4A5260"
+      fill={null}
+      propList={
+        [
+          "fill",
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      stroke={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      strokeWidth={3}
+    >
+      <RNSVGGroup
+        fill={
+          {
+            "payload": 4278190080,
+            "type": 0,
+          }
+        }
+        matrix={
+          [
+            0.47,
+            0,
+            0,
+            0.47,
+            35,
+            36,
+          ]
+        }
+      >
+        <RNSVGPath
+          d="M32 58 6 35Q8 13 31 8q21 1 27 22l-6 6z"
+          fill={null}
+          propList={
+            [
+              "fill",
+            ]
+          }
+        />
+        <RNSVGPath
+          d="M32 50 16 36q4-14 16-16 12 2 16 16z"
+          fill={
+            {
+              "type": 2,
+            }
+          }
+          fillOpacity={0.14}
+          propList={
+            [
+              "fill",
+              "fillOpacity",
+            ]
+          }
+        />
+        <RNSVGPath
+          d="m32 49-5-5 5-5 5 5z"
+          fill={null}
+          propList={
+            [
+              "fill",
+            ]
+          }
+        />
+      </RNSVGGroup>
+    </RNSVGGroup>
+    <RNSVGPath
+      d="M40 72h20"
+      fill={
+        {
+          "payload": 4278190080,
+          "type": 0,
+        }
+      }
+      propList={
+        [
+          "stroke",
+          "strokeWidth",
+        ]
+      }
+      stroke={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      strokeWidth="1"
+    />
+    <RNSVGCircle
+      cx="36"
+      cy="72"
+      fill={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      propList={
+        [
+          "fill",
+        ]
+      }
+      r="1"
+    />
+    <RNSVGCircle
+      cx="64"
+      cy="72"
+      fill={
+        {
+          "payload": 4283060832,
+          "type": 0,
+        }
+      }
+      propList={
+        [
+          "fill",
+        ]
+      }
+      r="1"
+    />
+  </RNSVGGroup>
+</RNSVGSvgView>
+`;

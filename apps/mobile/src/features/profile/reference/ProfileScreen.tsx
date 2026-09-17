@@ -3,10 +3,10 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Avatar } from '@/components/reference/Avatar';
 import { SlideOver } from '@/components/reference/SlideOver';
 import { ICONS, type IconName } from '@/components/reference/icons';
 import { useRepository } from '@/features/data/context';
+import { RepositoryAvatar } from '@/features/data/RepositoryAvatar';
 import { EmptyState } from '@/features/data/EmptyState';
 import { TabBar } from '@/features/passport/reference/parts';
 
@@ -77,7 +77,8 @@ function wrappedHref(title: string): Href | null {
 
 function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
   const { base, team } = useReferenceTheme();
-  const profile = useRepository().profile();
+  const repository = useRepository();
+  const profile = repository.profile();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const Gear = ICONS['i-gear'];
@@ -160,7 +161,11 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
             style={[s.pfp, { borderColor: team.accent, backgroundColor: base.scr }]}
           >
             <View style={s.pfpInner}>
-              <Avatar name={profile.avatar} size={80} />
+              <RepositoryAvatar
+                who={profile.avatar}
+                person={repository.person(profile.avatar)}
+                size={80}
+              />
             </View>
           </Pressable>
           <Text style={[s.name, { color: base.ink }]}>{profile.name}</Text>
@@ -238,7 +243,7 @@ function Body({ onOpenPanel }: { onOpenPanel: (panel: 'friends') => void }) {
                   <View style={s.facepile}>
                     {profile.facepile.map((who) => (
                       <View key={who} style={[s.face, { borderColor: base.scr }]}>
-                        <Avatar name={who} size={26} />
+                        <RepositoryAvatar who={who} person={repository.person(who)} size={26} />
                       </View>
                     ))}
                   </View>

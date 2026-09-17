@@ -36,6 +36,8 @@ export function WithSegment({ onLog }: { onLog: () => void }) {
         {list.map((p, i) => (
           <CompanionRow
             key={p.person_id}
+            personId={p.linked_user_id ?? p.person_id}
+            avatarPath={p.linked_avatar_path}
             first={i === 0}
             name={p.display_name}
             subtitle={

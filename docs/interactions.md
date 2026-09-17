@@ -221,7 +221,30 @@ pill like the rest of the screen:
   for one you have never seen. A traded player's games add up across teams.
 - **A team pill** lists only favourites you have seen play *for that team*, counted for that team.
   The section disappears when there are none.
-- A row opens the last game you saw that player in; an unseen one opens Settings > Favorites.
-  "Edit" opens the Players tab there.
+- A row opens `/passport/player/[id]`, the games you saw that player in (it opened only the last
+  such game until superlatives v2); an unseen one opens Settings > Favorites. "Edit" opens the
+  Players tab there.
 - Data: `favorite_players_seen()` (scoped to the caller), shaped by `features/players/passport.ts`.
   Demo mode draws no section, so the parity screenshots are unchanged.
+
+### Fan superlatives, second pass (2026-09-17)
+
+Dean: "Seen Carl Jones play, I don't even know who that is", and "down 4" means different things
+in baseball and football. `supabase/migrations/20260917000600_superlatives_v2.sql`.
+
+- **The player row is your favourite player seen most**, ties to the one favourited first. The
+  most seen player overall is no longer a row; the payload keeps `most_seen_player` only for
+  builds already installed. No favourite seen, no row.
+- **Biggest comeback is a win probability**: "From 7%", the lowest chance your side had in a game
+  it won, from `game_wp_timeline`. Without a timeline (no Relive story) it falls back to the
+  deficit in the sport's unit: "Down 4 runs", "Down 14 points", plain "Down 9" for a sport with no
+  unit yet.
+- **New rows**: largest crowd, highest altitude (only from 1,000 ft, `venues.elevation_ft`),
+  farthest from home (needs a home city).
+- **The Passport shows six**, in `superlativeRows` order, each with a context chip ("PHI at LAD,
+  Sep 2025", or the stadium) built from the attended games already loaded. "View All" on the
+  header opens the full list. Demo mode is untouched: three fixture rows, no action.
+- **Every row goes somewhere** (`superlativeHref`): a player row to `/passport/player/[id]`, any
+  row with a game to `/games/[gameId]` (a stadium row carries the most recent game there). On the
+  full list the most visited stadium opens its venue sheet instead, which lists every game there.
+  Rows about no one game (streaks, walk-offs) open the full list.

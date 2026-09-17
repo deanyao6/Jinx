@@ -7,7 +7,7 @@ import { Card } from '@/components/Card';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
-import { Avatar } from '@/components/reference/Avatar';
+import { PersonAvatar } from '@/components/PersonAvatar';
 import { Row } from '@/components/Row';
 import { Screen } from '@/components/Screen';
 import { SectionHeader } from '@/components/SectionHeader';
@@ -42,9 +42,14 @@ export default function BlockedUsersScreen() {
               const name = b.display_name?.trim() || `@${b.handle}`;
               return (
                 <View key={b.user_id} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ width: 38, height: 38, borderRadius: 19, overflow: 'hidden' }}>
-                    <Avatar name={name} size={38} />
-                  </View>
+                  {/* No photo: a block hides each person's picture from the other (SPEC.md 9),
+                      so there is no path here to show. The generated default tells them apart. */}
+                  <PersonAvatar
+                    userId={b.user_id}
+                    name={b.display_name}
+                    handle={b.handle}
+                    size={38}
+                  />
                   <View style={{ flex: 1, marginLeft: 12 }}>
                     <Row
                       title={name}

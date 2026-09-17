@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 /** Every bucket that holds files under a `<user_id>/` prefix. A new bucket must be added here. */
-export const USER_BUCKETS = ['ticket-imports', 'attendance-photos'] as const;
+export const USER_BUCKETS = ['ticket-imports', 'attendance-photos', 'avatars'] as const;
 
 /**
  * Every object path under `prefix`, walking folders.

@@ -31,6 +31,8 @@ export type FeedEvent = {
   actor_user_id: string;
   actor_handle: string;
   actor_display_name: string;
+  /** `profiles.avatar_path` of the actor, or null for the generated default. */
+  actor_avatar_path?: string | null;
   type: FeedEventType | string;
   game_id: string | null;
   payload: Record<string, Json | undefined> | null;
