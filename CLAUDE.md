@@ -38,9 +38,14 @@ anything is unbuilt.
 - **Local backend is the one to develop against.** Supabase on ports 54421-54427, loaded with
   74,951 MLB and 7,289 NFL games. Sign in with "Continue with email", any address, and read the
   code from Mailpit at http://127.0.0.1:54424. Nothing is emailed anywhere.
-- **The hosted Supabase project is linked but empty**: 0 of 15 migrations applied, no function
-  secrets. GitHub Actions secrets are set, so the two scheduled workflows will run and fail until
-  the schema is pushed. [docs/deploy.md](docs/deploy.md) has the accounts, costs and steps.
+- **The hosted Supabase project now carries real data.** All 18 migrations applied to
+  `vekdufflzklfxljqufbq`, the seed reference data loaded (65 teams, 224 venues and shapes, 65
+  palettes), and MLB + NFL games for 2016-2026. Function secrets are still unset, so ticket
+  parsing and email import stay dark. The TestFlight runbook is at the bottom of
+  [docs/deploy.md](docs/deploy.md); three of its steps need an Apple login and are Dean's.
+- **The EAS project is `@deanyao/jinx`** (`ea474a72-1186-4600-90e1-8dffcdbcafa2`). The old
+  `appname-monorepo` project had no builds and is superseded; an Expo slug cannot be renamed,
+  which is why a new one exists. Note `jinx-fan-passport` also exists as an Expo org, unused.
 - **Sign in with Apple and ticket parsing cannot be tested here.** The first needs an Apple Services
   ID in Supabase, the second needs `ANTHROPIC_API_KEY`. Neither is set.
 - **The repo is public** at `deanyao6/Jinx`. No secrets are tracked; keep it that way.

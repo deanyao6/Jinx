@@ -75,13 +75,29 @@ EAS dashboard) and `TICKET_IMAGE_RETENTION_DAYS` (defaults to 7).
 
 ### 2. Apple Developer Program
 
-Enrol at $99/yr. You need this before any device build. It also provides the Services ID and key
-for Sign in with Apple.
+Enrol at $99/yr. You need this before any device build, and before TestFlight. EAS creates and
+manages the certificates and provisioning profiles for you the first time you build; you sign in
+with the Apple ID that holds the membership when it asks.
+
+Sign in with Apple does **not** need anything extra from the portal for this app; see step 3.
 
 ### 3. Auth providers
 
-In the Supabase dashboard, enable Sign in with Apple (Services ID + key) and email OTP. Set the
-site URL to `jinx://` and add it to the redirect URLs.
+**Sign in with Apple needs one field, not a Services ID.** The app signs in natively:
+`features/auth/apple.ts` gets an identity token from `expo-apple-authentication` and hands it to
+`supabase.auth.signInWithIdToken`. That flow never leaves the device for a web redirect, so there
+is no Services ID, no key, no redirect URL and no client secret to generate. Apple validates the
+token against the app's own bundle ID.
+
+In the Supabase dashboard, Authentication > Sign In / Providers > Apple:
+
+1. Toggle **Enable Sign in with Apple** on.
+2. Put `com.deanyao.jinx` in **Client IDs**. That is the bundle ID from `app.json`, and it is the
+   only value required.
+3. Leave Secret Key, Services ID and the redirect fields empty.
+
+Email OTP is separate and only needed if you want the email route as well; it is gated on a real
+sender (step 4), because Supabase's built-in one allows 2 messages per hour.
 
 ### 4. Email delivery (Resend)
 
@@ -175,3 +191,92 @@ Run `bash scripts/check-setup.sh` to see which of these are currently in place.
   listing needs MLBAM permission or a commercial provider behind `SportsDataProvider`.
 - nflverse data is CC-BY-4.0: keep the attribution screen.
 - Fill in the App Privacy nutrition label from the privacy manifest in `apps/mobile/app.json`.
+
+---
+
+# TestFlight runbook
+
+Written 2026-09-16, when the hosted project went from empty to carrying real data. Follow it in
+order; each step says who has to do it, because three of them need an Apple login this machine
+cannot provide.
+
+## What is already done
+
+| | |
+|---|---|
+| Hosted Supabase schema | 18 of 18 migrations applied to `vekdufflzklfxljqufbq` |
+| Reference data | 65 teams, 224 venues, 65 colour palettes, 224 venue shapes |
+| Games | MLB and NFL, 2016 to 2026. See "Why 2016" below |
+| EAS project | `@deanyao/jinx`, `ea474a72-1186-4600-90e1-8dffcdbcafa2` |
+| Release-build guard | `assertEnv()` refuses to start a release build pointing at localhost |
+
+## Why 2016
+
+The local database holds 2000 to 2026. Only 2016 onward was pushed, which is 33.5k of the 82k
+games. It is a product decision, not a technical limit: a game logged before 2016 has nothing to
+attach to. Extending the range is another `backfill` run against the hosted project, not a
+re-ingest, because the local database still has every season.
+
+## 1. Supabase auth  (Dean, 2 minutes, dashboard)
+
+Section 3 above. Enable Apple, put `com.deanyao.jinx` in Client IDs, save. Nothing else.
+
+Without this the app builds and installs and then cannot sign anybody in.
+
+## 2. Point the build at the hosted project  (either of us)
+
+`EXPO_PUBLIC_*` values are inlined into the bundle at build time, and `apps/mobile/.env` points at
+the local stack. `assertEnv()` will now crash a release build that still does, on purpose, but it
+is better not to get that far:
+
+```
+# apps/mobile/.env
+EXPO_PUBLIC_SUPABASE_URL=https://vekdufflzklfxljqufbq.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=<the anon key from `npx supabase projects api-keys`>
+```
+
+Put the local values back afterwards, or local development talks to production.
+
+Better, once this stops being a one-off: move them to EAS environment variables so the profile
+decides, and `.env` stays local-only.
+
+## 3. Build  (Dean, interactive Apple login)
+
+```
+cd apps/mobile
+npx eas-cli build --platform ios --profile production
+```
+
+EAS asks for the Apple ID on the membership, then creates the distribution certificate and
+provisioning profile itself. Answer yes when it offers to. It does not touch anything on this
+machine, and there is no local certificate to manage.
+
+`eas.json`'s `production` profile has `autoIncrement: true`, so the build number rises on its own
+and `app.json`'s `version` (0.1.0) is the one humans see.
+
+## 4. Submit  (Dean)
+
+```
+npx eas-cli submit --platform ios --profile production
+```
+
+First submission also needs an App Store Connect app record. `eas submit` offers to create one;
+the bundle ID is `com.deanyao.jinx` and the name is Jinx. Apple then takes 10 to 30 minutes to
+process the build before it appears in TestFlight.
+
+## 5. First sign-in on the phone
+
+Sign in with Apple creates a **new** account, with its own user id. The three games logged against
+`deanyao6@gmail.com` on the local stack do not follow it, because they belong to a different user
+in a different database. Either log them again on the phone, which also exercises the logging
+flow, or say so and they can be copied across once the new user id exists.
+
+## Not done, and not needed for a UI look
+
+- **Edge Function secrets** (`ANTHROPIC_API_KEY`, `INBOUND_EMAIL_SECRET`, `CRON_SECRET`) and
+  `npm run functions:deploy`. Ticket parsing and email import stay dark without them.
+- **Resend.** Email OTP is unusable on the built-in sender (2 per hour). Sign in with Apple does
+  not need it.
+- **Game detail on the hosted project.** `game_wp_timeline` and `game_story_steps` are filled per
+  game by `ingest/src/{mlb,nfl}/relive.ts`; run them against the hosted project once there are
+  attended games there, or Relive has nothing to show.
