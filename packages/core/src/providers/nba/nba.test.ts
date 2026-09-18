@@ -421,7 +421,7 @@ describe('live state, rosters, scoring copy, Elo, highlights', () => {
     expect(lines[1]).toMatchObject({ note: 'Free throws, B Player', suffix: '2 of 2', awayScore: 5, folded: [4] });
   });
   it('has Elo parameters and a highlights page', () => {
-    expect(ELO_PARAMS.nba).toMatchObject({ k: 20, homeAdv: 100 });
+    expect(ELO_PARAMS.nba).toMatchObject({ k: 8, homeAdv: 50, movMultiplier: true });
     expect(officialHighlightsUrl({ sport: 'nba', providerGameId: '0022400001', season: 2024, gameType: 'regular', awayNickname: 'Hawks', homeNickname: 'Celtics' })).toBe('https://www.nba.com/game/0022400001');
     expect(officialHighlightsUrl({ sport: 'nba', providerGameId: null, season: 2024, gameType: 'regular', awayNickname: null, homeNickname: null })).toBe('https://www.nba.com/watch/');
     expect(highlightsSiteLabel('nba')).toBe('Opens on NBA.com');

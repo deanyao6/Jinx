@@ -41,7 +41,7 @@ export function secondsLeftInGame(period: number, periodSecondsRemaining: number
  * `marginScale` and `priorWeight` were fitted on real games, docs/elo-backtest.md ("NBA
  * in-game model").
  */
-export const NBA_WP_MODEL = { marginScale: 0.14, priorWeight: 1.0 } as const;
+export const NBA_WP_MODEL = { marginScale: 0.1, priorWeight: 1.0 } as const;
 
 function logistic(x: number): number {
   return 1 / (1 + Math.exp(-x));
@@ -61,7 +61,7 @@ export function modelHomeWp(
   margin: number,
   secondsLeft: number,
   homePrior = 0.5,
-  params = NBA_WP_MODEL,
+  params: { marginScale: number; priorWeight: number } = NBA_WP_MODEL,
 ): number {
   if (secondsLeft <= 0 && margin !== 0) return margin > 0 ? 1 : 0;
   const fraction = Math.min(1, secondsLeft / (REGULATION_PERIODS * PERIOD_SECONDS));
