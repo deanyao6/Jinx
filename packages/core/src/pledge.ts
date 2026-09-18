@@ -3,7 +3,7 @@
  *  - Estimated lock: what the app counts down to before the game.
  *  - True lock: computed from play-by-play after the game, used to validate pledges.
  */
-import type { CanonicalGameDetail, LiveState, MlbPlay, NflPlay, Sport } from './types.js';
+import type { CanonicalGameDetail, LiveState, MlbPlay, NbaPlay, NflPlay, Sport } from './types.js';
 
 export const PLEDGE_GRACE_MS = 60_000;
 
@@ -59,8 +59,23 @@ export interface EstimatedLock {
 }
 
 /**
- * Estimated lock for the countdown. MLB uses live state when available (locks immediately on a run or
- * at the end of the first); otherwise scheduled start + 30 minutes. NFL is scheduled start + 12 minutes.
+ * The lock rule per sport, as a table (SPEC 6.4; the NBA row decided 2026-09-17).
+ *
+ *   MLB  the first run or the end of the 1st inning; estimate start + 30 minutes.
+ *   NFL  the first score or 10:00 left in Q1; estimate start + 12 minutes, no live data.
+ *   NBA  the end of the 1st quarter and nothing sooner: a first basket comes within seconds
+ *        and would make picking impossible. Estimate start + 30 minutes.
+ */
+export const LOCK_RULES: Record<Sport, { estimateMinutes: number; firstScoreLocks: boolean; live: boolean }> = {
+  mlb: { estimateMinutes: 30, firstScoreLocks: true, live: true },
+  nfl: { estimateMinutes: 12, firstScoreLocks: true, live: false },
+  nba: { estimateMinutes: 30, firstScoreLocks: false, live: true },
+};
+
+/**
+ * Estimated lock for the countdown. MLB and the NBA use live state when available (MLB locks
+ * on a run or at the end of the first; the NBA at the end of the first period); otherwise
+ * scheduled start plus the sport's estimate. NFL is scheduled start + 12 minutes.
  */
 export function estimatedLock(
   sport: Sport,
@@ -69,24 +84,27 @@ export function estimatedLock(
   now: string,
 ): EstimatedLock {
   const start = Date.parse(scheduledStart);
-  if (sport === 'nfl') {
-    const at = new Date(start + 12 * MIN).toISOString();
-    return { at, locked: Date.parse(now) >= start + 12 * MIN, reason: 'estimate' };
+  const rule = LOCK_RULES[sport] ?? LOCK_RULES.mlb;
+  if (!rule.live) {
+    const at = new Date(start + rule.estimateMinutes * MIN).toISOString();
+    return { at, locked: Date.parse(now) >= start + rule.estimateMinutes * MIN, reason: 'estimate' };
   }
   if (live) {
-    if (live.homeScore > 0 || live.awayScore > 0)
+    if (rule.firstScoreLocks && (live.homeScore > 0 || live.awayScore > 0))
       return { at: live.fetchedAt, locked: true, reason: 'first_score' };
     const pastFirst =
       (live.inning ?? 0) > 1 ||
       ((live.inning ?? 0) === 1 && live.inningState === 'end') ||
       live.status === 'final';
     if (pastFirst) return { at: live.fetchedAt, locked: true, reason: 'end_of_first' };
-    // Still scoreless in the first: keep the fallback timer as the visible target.
-    const at = new Date(Math.max(start + 30 * MIN, Date.parse(live.fetchedAt) + MIN)).toISOString();
+    // Still in the first: keep the fallback timer as the visible target.
+    const at = new Date(
+      Math.max(start + rule.estimateMinutes * MIN, Date.parse(live.fetchedAt) + MIN),
+    ).toISOString();
     return { at, locked: false, reason: 'live_fallback' };
   }
-  const at = new Date(start + 30 * MIN).toISOString();
-  return { at, locked: Date.parse(now) >= start + 30 * MIN, reason: 'estimate' };
+  const at = new Date(start + rule.estimateMinutes * MIN).toISOString();
+  return { at, locked: Date.parse(now) >= start + rule.estimateMinutes * MIN, reason: 'estimate' };
 }
 
 export interface TrueLock {
@@ -154,11 +172,28 @@ function nflTrueLock(plays: NflPlay[]): TrueLock {
   return { at: best.at, reliable: !firstScoreMissing && !tenMinMissing, reason: best.reason };
 }
 
+/**
+ * NBA: the wall-clock time of the last play of the first period, which only the CDN feed
+ * carries. The stats.nba.com feed has no wall clock at all, so a game from it stays valid.
+ */
+function nbaTrueLock(plays: NbaPlay[]): TrueLock {
+  const first = plays.filter((p) => p.period === 1);
+  const last = first[first.length - 1];
+  if (!last) return { at: null, reliable: false, reason: 'unknown' };
+  if (!last.timeActual) return { at: null, reliable: false, reason: 'end_of_first' };
+  return { at: last.timeActual, reliable: true, reason: 'end_of_first' };
+}
+
 /** Authoritative lock time from play-by-play (SPEC 6.5.1). */
 export function trueLock(detail: CanonicalGameDetail): TrueLock {
-  return detail.plays.sport === 'mlb'
-    ? mlbTrueLock(detail.plays.items)
-    : nflTrueLock(detail.plays.items);
+  switch (detail.plays.sport) {
+    case 'mlb':
+      return mlbTrueLock(detail.plays.items);
+    case 'nfl':
+      return nflTrueLock(detail.plays.items);
+    case 'nba':
+      return nbaTrueLock(detail.plays.items);
+  }
 }
 
 export type PledgeValidation =

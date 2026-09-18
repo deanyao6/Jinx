@@ -4,6 +4,7 @@
 Inputs:
   seed/mlb_teams.generated.json, seed/mlb_team_aliases.json
   seed/nfl_teams.json, seed/nfl_teams_colors.csv (nflverse, CC-BY-4.0)
+  seed/nba_teams.json, seed/nba_venues.json
   seed/team_colors.json (light + dark --tf/--t/--t2/--on per team; see check_team_colors.py)
   seed/mlb_venues.generated.json, seed/mlb_venue_overrides.json, seed/nfl_venues.json
   seed/venue_elevations.json (written by fill_elevations.py; see docs/verification.md)
@@ -11,6 +12,7 @@ Output:
   supabase/seed.sql  (run by `supabase db reset`; also safe to psql against production)
 
 Run: python3 seed/scripts/build_seed_sql.py
+     python3 seed/scripts/build_seed_sql.py --only nba   # the NBA statements alone, to stdout, for a migration
 """
 import csv, json, os, sys
 
@@ -62,6 +64,17 @@ for t in load("nfl_teams.json"):
     aliases = set(t["aliases"]) | {full, t["name"], t["city"], t["abbr"]}
     teams.append(("nfl", "nflverse", t["abbr"], t["franchise"], full, t["city"], t["abbr"], colors.get(t["abbr"]), t["active"], aliases, divisions.get(t["abbr"]), ("key", t.get("home_venue_key")), t["name"]))
 
+# NBA: one row per identity, the abbreviation the game log uses for it, the nickname as the name
+# ("Trail Blazers" is two words, so it is never derived by dropping the city).
+for t in load("nba_teams.json")["teams"]:
+    full = f"{t['city']} {t['name']}"
+    aliases = set(t["aliases"]) | {full, t["name"], t["city"], t["abbr"]}
+    teams.append(("nba", "nba", t["provider_team_id"], t["franchise"], full, t["city"], t["abbr"], None, t["active"], aliases, t.get("division"), ("key", t.get("home_venue_key")), t["name"]))
+
+ONLY = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
+if ONLY:
+    teams = [t for t in teams if t[0] == ONLY]
+
 lines.append("-- teams")
 for sport, provider, pid, franchise, name, city, abbr, color, active, aliases, division, _home, nickname in teams:
     lines.append(
@@ -84,6 +97,8 @@ palette_cols = ("fill_hex", "on_fill_hex", "primary_light_hex", "secondary_light
 lines.append("")
 lines.append("-- team colors")
 for p in load("team_colors.json")["teams"]:
+    if ONLY and {"mlb": "mlb", "nfl": "nflverse", "nba": "nba"}[ONLY] != p["provider"]:
+        continue
     lines.append(
         "insert into public.team_colors (team_id, " + ", ".join(palette_cols) + ") select id, "
         + ", ".join(q(p[c]) for c in palette_cols)
@@ -99,6 +114,8 @@ for p in load("team_colors.json")["teams"]:
 # same set of keys and coordinates that this file writes.
 venues = merged_venues()
 elevations = load_elevations()
+if ONLY:
+    venues = {k: v for k, v in venues.items() if ONLY in v["sports"]}
 
 lines.append("")
 lines.append("-- venues")
@@ -150,6 +167,9 @@ def shape_key(v):
             if n in MLB_SHAPES:
                 return MLB_SHAPES[n]
         return "ballparkA"
+    # A building that has only ever hosted basketball is an arena: an oval bowl round a court.
+    if v["sports"] == {"nba"}:
+        return "arena"
     if names & COLONNADE:
         return "colonnade"
     if names & ROOFED:
@@ -178,6 +198,10 @@ for sport, provider, pid, franchise, name, city, abbr, color, active, aliases, _
     lines.append(f"update public.teams set home_venue_id = (select id from public.venues where {cond} limit 1) where provider = {q(provider)} and provider_team_id = {q(pid)};")
 lines.append("")
 lines.append("select public.rebuild_curated_bucket_lists();")
+if ONLY:
+    # The statements alone, for pasting into a migration: no transaction wrapper, no header.
+    print("\n".join(lines[3:-2]))
+    sys.exit(0)
 lines += ["", "commit;", ""]
 out = os.path.join(ROOT, "supabase", "seed.sql")
 with open(out, "w", encoding="utf8") as f:

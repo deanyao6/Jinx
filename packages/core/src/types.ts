@@ -3,7 +3,7 @@
  * Everything here is plain data; no provider-specific shapes leak past the adapters.
  */
 
-export type Sport = 'mlb' | 'nfl';
+export type Sport = 'mlb' | 'nfl' | 'nba';
 
 export type GameStatus = 'scheduled' | 'live' | 'final' | 'postponed' | 'suspended' | 'cancelled';
 
@@ -81,10 +81,10 @@ export interface CanonicalGame {
 export interface ScoringEvent {
   seq: number;
   occurredAt: IsoTimestamp | null;
-  /** Inning or quarter (5+ is overtime in NFL, 10+ extra innings in MLB). */
+  /** Inning or quarter (5+ is overtime in NFL and NBA, 10+ extra innings in MLB). */
   period: number;
   half: 'top' | 'bottom' | null;
-  /** Game clock for NFL (MM:SS remaining), null for MLB. */
+  /** Game clock for NFL and NBA (MM:SS remaining in the period), null for MLB. */
   clock: string | null;
   /** Score after this event. */
   homeScore: number;
@@ -127,7 +127,15 @@ export type MlbScoringKind =
   | 'steal'
   | 'error'
   | 'other';
-export type ScoringKind = NflScoringKind | MlbScoringKind;
+/**
+ * Basketball: every score names the scorer. `and_one` is a made free throw that followed the
+ * same player's made basket (the foul came on the shot), so a list can fold it into the basket
+ * the way an extra point folds into a touchdown. `dunk`, `layup` and `jumper` are two-point
+ * baskets the feed described that way; `two` is any other two-pointer.
+ */
+export type NbaScoringKind =
+  'three' | 'two' | 'dunk' | 'layup' | 'jumper' | 'free_throw' | 'and_one' | 'other';
+export type ScoringKind = NflScoringKind | MlbScoringKind | NbaScoringKind;
 
 export interface Appearance {
   providerPlayerId: string;
@@ -238,6 +246,55 @@ export interface NflPlay {
   twoPointAttempt: boolean;
 }
 
+/**
+ * NBA play, derived from the CDN `liveData` play-by-play (2019-20 on, with wall-clock times)
+ * or stats.nba.com `playbyplayv3` (back to 2000, no wall clock). One row per action the feed
+ * lists: shots, free throws, rebounds, fouls, period markers.
+ */
+export interface NbaPlay {
+  /** The feed's action number; ascending in game order. */
+  actionNumber: number;
+  /** 1-4, 5+ is overtime. */
+  period: number;
+  /** MM:SS remaining in the period, null when the feed had none. */
+  clock: string | null;
+  /** Seconds remaining in the period, to the tenth, null when unknown. */
+  periodSecondsRemaining: number | null;
+  /** Wall-clock time of the action in UTC; only the CDN feed has it. */
+  timeActual: IsoTimestamp | null;
+  /** The feed's actionType: '2pt', '3pt', 'freethrow', 'rebound', 'period', 'game', ... */
+  actionType: string;
+  subType: string | null;
+  description: string;
+  /** Score after the play. */
+  homeScore: number;
+  awayScore: number;
+  isScoringPlay: boolean;
+  /** Side of the team the action belongs to; null for period markers and jump balls. */
+  side: Side | null;
+  playerId: string | null;
+  playerName: string | null;
+  /** 2 or 3 on a made field goal, 1 on a made free throw, 0 otherwise. */
+  points: number;
+  isFieldGoal: boolean;
+  shotMade: boolean | null;
+  /** "1 of 2", "2 of 2", "1 of 1", "Technical" on a free throw; null otherwise. */
+  freeThrowOf: string | null;
+}
+
+/** One player's box score line, for the moment detectors (triple-double, 50 points, 20 boards). */
+export interface NbaBoxLine {
+  playerId: string;
+  playerName: string;
+  side: Side;
+  minutes: number;
+  points: number;
+  rebounds: number;
+  assists: number;
+  steals: number;
+  blocks: number;
+}
+
 export interface CanonicalGameDetail extends CanonicalGame {
   temperatureF: number | null;
   durationMinutes: number | null;
@@ -248,17 +305,31 @@ export interface CanonicalGameDetail extends CanonicalGame {
   timeline: ScoringEvent[];
   /** True when every scoring event and first-inning/first-quarter play carries a wall-clock timestamp. */
   timestampsReliable: boolean;
-  plays: { sport: 'mlb'; items: MlbPlay[] } | { sport: 'nfl'; items: NflPlay[] };
+  plays:
+    | { sport: 'mlb'; items: MlbPlay[] }
+    | { sport: 'nfl'; items: NflPlay[] }
+    | { sport: 'nba'; items: NbaPlay[] };
   /** Hits by side, for no-hitter and cycle detection (MLB). */
   hits?: { home: number; away: number } | undefined;
+  /** Every player's line (NBA), for the box-score moments. */
+  boxLines?: NbaBoxLine[] | undefined;
 }
 
-/** Live state for the pledge lock (MLB only in v1). */
+/**
+ * Live state for the pledge lock (MLB and NBA). The column names are baseball's; the meaning
+ * is a period and where the game stands in it.
+ *
+ *   MLB  `inning` is the inning, `inningState` is top, middle, bottom or end.
+ *   NBA  `inning` is the period (5+ overtime), `inningState` is `live` while the clock runs,
+ *        `end` between periods, `halftime` at the half, and `clock` is the game clock as the
+ *        scoreboard shows it ("2:31"). The end of the first period is what locks a pick.
+ */
 export interface LiveState {
   status: GameStatus;
   inning: number | null;
-  /** 'top' | 'middle' | 'bottom' | 'end' */
-  inningState: 'top' | 'middle' | 'bottom' | 'end' | null;
+  inningState: 'top' | 'middle' | 'bottom' | 'end' | 'live' | 'halftime' | null;
+  /** Game clock remaining in the period (NBA), null for MLB. */
+  clock?: string | null;
   homeScore: number;
   awayScore: number;
   fetchedAt: IsoTimestamp;
@@ -285,7 +356,15 @@ export type MomentType =
   | 'kick_return_td'
   | 'safety'
   | 'long_field_goal'
-  | 'comeback_14';
+  | 'comeback_14'
+  // NBA
+  | 'buzzer_beater'
+  | 'fifty_points'
+  | 'triple_double'
+  | 'quadruple_double'
+  | 'twenty_rebounds'
+  | 'twenty_assists'
+  | 'comeback_20';
 
 export interface GameEvent {
   type: MomentType;

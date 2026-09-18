@@ -1,9 +1,10 @@
 /**
- * mlb-live: polls the MLB live feed for games that have an active check-in and writes
- * `game_live_state` (SPEC.md 6.4). Scheduled every minute by pg_cron, guarded by
- * games_needing_live_poll() so it only runs while someone is at a game.
+ * nba-live: reads the CDN's live scoreboard for NBA games that have an active check-in and
+ * writes `game_live_state` (SPEC.md 6.4; the NBA lock rule is the end of the first quarter).
+ * Scheduled every minute by pg_cron, guarded by games_needing_live_poll() so it only runs
+ * while someone is at a game. One request serves every game on the scoreboard.
  */
-import { MlbProvider, estimatedLock } from '../_shared/core/index.ts';
+import { NbaProvider, estimatedLock } from '../_shared/core/index.ts';
 import { authorizeInternal, json, serviceDb } from '../_shared/db.ts';
 
 interface Row {
@@ -16,18 +17,17 @@ interface Row {
 Deno.serve(async (req) => {
   if (!authorizeInternal(req)) return json({ error: 'unauthorized' }, 401);
   const db = serviceDb();
-  const provider = new MlbProvider();
+  const provider = new NbaProvider();
   const { data, error } = await db.rpc('games_needing_live_poll');
   if (error) return json({ error: error.message }, 500);
-  // The poll function returns every sport with a live feed; nba-live takes the NBA rows.
-  const rows = ((data ?? []) as Row[]).filter((r) => r.sport_id === 'mlb');
+  const rows = ((data ?? []) as Row[]).filter((r) => r.sport_id === 'nba');
   const now = new Date().toISOString();
   const updated: string[] = [];
   const errors: string[] = [];
   for (const g of rows) {
     try {
       const live = await provider.fetchLiveState(g.provider_game_id);
-      const lock = estimatedLock('mlb', g.scheduled_start, live, now);
+      const lock = estimatedLock('nba', g.scheduled_start, live, now);
       await db.from('game_live_state').upsert(
         [
           {
@@ -35,6 +35,7 @@ Deno.serve(async (req) => {
             status: live.status,
             inning: live.inning,
             inning_state: live.inningState,
+            clock: live.clock ?? null,
             home_score: live.homeScore,
             away_score: live.awayScore,
             locked: lock.locked,

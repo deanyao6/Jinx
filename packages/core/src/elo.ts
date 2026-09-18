@@ -5,6 +5,8 @@
  * docs/elo-backtest.md):
  *   MLB: K = 4,  home_adv = 24, regress 1/3 toward 1500 at each new season.
  *   NFL: K = 20, home_adv = 48, regress 1/3 toward 1505 at each new season, margin-of-victory multiplier.
+ *   NBA: K = 20, home_adv = 100, regress 1/4 toward 1500 at each new season, no margin multiplier
+ *        (backtested 2026-09-18 over 2000-2026, docs/elo-backtest.md).
  *   Neutral-site games use home_adv = 0.
  */
 import type { Sport } from './types.js';
@@ -21,6 +23,7 @@ export interface EloParams {
 export const ELO_PARAMS: Record<Sport, EloParams> = {
   mlb: { k: 4, homeAdv: 24, seasonRegression: 1 / 3, base: 1500, movMultiplier: false },
   nfl: { k: 20, homeAdv: 48, seasonRegression: 1 / 3, base: 1505, movMultiplier: true },
+  nba: { k: 20, homeAdv: 100, seasonRegression: 1 / 4, base: 1500, movMultiplier: false },
 };
 
 export interface EloGameInput {

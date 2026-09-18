@@ -105,26 +105,47 @@ export async function loadTeamMap(db: MinimalDb, provider: string): Promise<Map<
 export interface VenueMaps {
   byMlbVenueId: Map<string, string>;
   byNflverseStadiumId: Map<string, string>;
+  /** ESPN venue ids (`provider_ids.espn_venue_ids`), which the NBA schedule carries. */
+  byEspnVenueId: Map<string, string>;
+  /** Every venue name and alias, lower-cased, for feeds that name the building. */
+  byAlias: Map<string, string>;
   byKey: Map<string, string>;
 }
 
 export async function loadVenueMaps(db: MinimalDb): Promise<VenueMaps> {
-  const rows = await selectAll<{ id: string; key: string; provider_ids: Record<string, unknown> }>(
+  const rows = await selectAll<{
+    id: string;
+    key: string;
+    name: string;
+    provider_ids: Record<string, unknown>;
+  }>(db, 'venues', 'id, key, name, provider_ids');
+  const aliases = await selectAll<{ venue_id: string; alias: string }>(
     db,
-    'venues',
-    'id, key, provider_ids',
+    'venue_aliases',
+    'venue_id, alias',
   );
   const maps: VenueMaps = {
     byMlbVenueId: new Map(),
     byNflverseStadiumId: new Map(),
+    byEspnVenueId: new Map(),
+    byAlias: new Map(),
     byKey: new Map(),
   };
   for (const r of rows) {
     maps.byKey.set(r.key, r.id);
+    if (r.name) maps.byAlias.set(r.name.trim().toLowerCase(), r.id);
     const mlb = r.provider_ids['mlb_venue_id'];
     if (mlb !== undefined && mlb !== null) maps.byMlbVenueId.set(String(mlb), r.id);
     const nfl = r.provider_ids['nflverse_stadium_ids'];
     if (Array.isArray(nfl)) for (const id of nfl) maps.byNflverseStadiumId.set(String(id), r.id);
+    const espn = r.provider_ids['espn_venue_ids'];
+    if (Array.isArray(espn)) for (const id of espn) maps.byEspnVenueId.set(String(id), r.id);
+  }
+  // An alias shared by two buildings (a renamed arena's old name reused elsewhere) keeps the
+  // first; the name set above wins over an alias that collides with it.
+  for (const a of aliases) {
+    const k = a.alias.trim().toLowerCase();
+    if (!maps.byAlias.has(k)) maps.byAlias.set(k, a.venue_id);
   }
   return maps;
 }

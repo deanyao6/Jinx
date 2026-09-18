@@ -53,7 +53,7 @@ export async function resolveStepScorers(
 /** Games someone attended that are final, have detail, and have no story yet. */
 export async function reliveTargets(
   db: MinimalDb,
-  provider: 'mlb' | 'nflverse',
+  provider: 'mlb' | 'nflverse' | 'nba',
   limit: number,
 ): Promise<ReliveTarget[]> {
   const { data, error } = await db.rpc('games_needing_relive', {

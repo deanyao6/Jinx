@@ -51,6 +51,16 @@ describe('gameResult', () => {
   });
 });
 
+describe('NBA finals never tie', () => {
+  it('a final with equal scores would be a tie, and the parser never emits one', () => {
+    // isTie is false on every NBA canonical game by construction (parse.ts); records then
+    // score it as a win or a loss like any other final. A synthetic tie is still a tie here,
+    // which is exactly why the parser must never produce one.
+    expect(gameResult(g({ gameId: 'nba-tie', homeScore: 100, awayScore: 100 }), PHI)).toBe('tie');
+    expect(gameResult(g({ gameId: 'nba', homeScore: 117, awayScore: 116 }), PHI)).toBe('win');
+  });
+});
+
 describe('records', () => {
   const games: AttendedGame[] = [
     g({ gameId: 'a', scheduledStart: '2024-04-01T00:00:00Z' }), // PHI win

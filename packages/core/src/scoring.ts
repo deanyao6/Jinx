@@ -12,11 +12,22 @@
  *        "Grand slam", "RBI double, Trea Turner", "Sacrifice fly, Bryce Harper",
  *        "Bases-loaded walk". A run that came home on a wild pitch, a passed ball or a balk
  *        names nobody; a steal of home names the runner.
+ *   NBA  every score names the scorer: "Three, Stephen Curry", "Dunk, Anthony Edwards",
+ *        "Free throws, Joel Embiid (2 of 2)". A made free throw that followed the same
+ *        player's made basket is an and-one and folds into the basket's line.
  *
  * Everything is keyed by sport in a table, so a sport this does not know falls back to the
  * play's own description, shortened. Nothing here does I/O.
  */
-import type { MlbPlay, MlbScoringKind, NflPlay, NflScoringKind, ScoringKind } from './types.js';
+import type {
+  MlbPlay,
+  MlbScoringKind,
+  NbaPlay,
+  NbaScoringKind,
+  NflPlay,
+  NflScoringKind,
+  ScoringKind,
+} from './types.js';
 
 export interface Scorer {
   kind: ScoringKind;
@@ -145,6 +156,47 @@ export function mlbScorer(play: MlbScoringPlay): Scorer {
   return batter(kind);
 }
 
+type NbaScoringPlay = Pick<
+  NbaPlay,
+  'actionType' | 'subType' | 'description' | 'playerId' | 'playerName' | 'isFieldGoal' | 'freeThrowOf' | 'clock' | 'period'
+>;
+
+/** The two-point basket's kind from the feed's subType ("DUNK", "Layup", "Jump Shot", "Hook"). */
+function nbaTwoKind(subType: string | null, description: string): NbaScoringKind {
+  const text = `${subType ?? ''} ${description}`;
+  if (/dunk/i.test(text)) return 'dunk';
+  if (/layup|finger roll|tip shot|tip layup/i.test(text)) return 'layup';
+  if (/jump shot|jumper|hook|bank|fadeaway|fade away|floating|pullup|pull-up|step back|turnaround/i.test(text))
+    return 'jumper';
+  return 'two';
+}
+
+/**
+ * One NBA scoring play. `lastBasket` is the most recent made field goal, so a "1 of 1" free
+ * throw by that shooter at the same clock reads as the and-one it was.
+ */
+export function nbaScorer(play: NbaScoringPlay, lastBasket: NbaScoringPlay | null): Scorer {
+  const named = (kind: NbaScoringKind): Scorer => ({
+    kind,
+    scorerProviderId: play.playerId || null,
+    scorerName: play.playerName || null,
+  });
+  if (play.actionType === '3pt') return named('three');
+  if (play.actionType === '2pt') return named(nbaTwoKind(play.subType, play.description));
+  if (play.actionType === 'freethrow') {
+    const andOne =
+      play.freeThrowOf === '1 of 1' &&
+      lastBasket != null &&
+      lastBasket.playerId != null &&
+      lastBasket.playerId === play.playerId &&
+      lastBasket.period === play.period &&
+      lastBasket.clock === play.clock;
+    return named(andOne ? 'and_one' : 'free_throw');
+  }
+  if (play.isFieldGoal) return named('two');
+  return { kind: 'other', scorerProviderId: null, scorerName: null };
+}
+
 // ---------------------------------------------------------------------------
 // From a stored row to the words on the screen
 // ---------------------------------------------------------------------------
@@ -227,6 +279,27 @@ export function shortDescription(description: string): string {
   return text.replace(/[.\s]+$/, '');
 }
 
+const NBA_KIND_LABEL: Record<NbaScoringKind, string> = {
+  three: 'Three',
+  two: 'Two',
+  dunk: 'Dunk',
+  layup: 'Layup',
+  jumper: 'Jumper',
+  free_throw: 'Free throw',
+  and_one: 'And-one',
+  other: '',
+};
+const NBA_KINDS = new Set<string>(Object.keys(NBA_KIND_LABEL));
+
+/** "Free throws (2 of 2)" when the play says which; a single make is "Free throw". */
+function nbaEvent(kind: NbaScoringKind, description: string): string {
+  if (kind === 'free_throw') {
+    const m = /(\d) of (\d)/.exec(description);
+    if (m && m[2] !== '1') return `Free throw ${m[1]} of ${m[2]}`;
+  }
+  return NBA_KIND_LABEL[kind];
+}
+
 const NFL_KINDS = new Set<string>(Object.keys(NFL_KIND_LABEL));
 const MLB_KINDS = new Set<string>([
   'home_run',
@@ -261,6 +334,10 @@ const EVENT_BY_SPORT: Record<string, (input: ScoringNoteInput) => string> = {
     if (input.kind === 'error' && input.scorerName) return 'Reached on error';
     return event;
   },
+  nba: (input) =>
+    input.kind != null && NBA_KINDS.has(input.kind)
+      ? nbaEvent(input.kind as NbaScoringKind, input.description)
+      : '',
 };
 
 /**
@@ -346,6 +423,30 @@ export function scoringLines(sport: string, rows: readonly ScoringRow[]): Scorin
       last.folded.push(row.seq);
       return;
     }
+    // Basketball's version: the and-one folds into the basket it came with, and a second
+    // free throw folds into the first, so "Free throws, Joel Embiid (2 of 2)" is one line.
+    if (
+      sport === 'nba' &&
+      last &&
+      last.scoringSide === row.scoringSide &&
+      last.scorerPlayerId != null &&
+      last.scorerPlayerId === row.scorerPlayerId &&
+      last.clock === row.clock &&
+      last.period === row.period &&
+      (row.kind === 'and_one' || (row.kind === 'free_throw' && sorted[i - 1]?.kind === 'free_throw'))
+    ) {
+      if (row.kind === 'and_one') last.suffix = 'And-one';
+      else {
+        const made = (last.folded.length + 2);
+        const of = /of (\d)/.exec(row.description)?.[1];
+        last.note = `Free throws, ${row.scorerName ?? ''}`.replace(/, $/, '');
+        last.suffix = of ? `${made} of ${of}` : null;
+      }
+      last.homeScore = row.homeScore;
+      last.awayScore = row.awayScore;
+      last.folded.push(row.seq);
+      return;
+    }
     lines.push({
       seq: row.seq,
       period: row.period,
@@ -378,8 +479,8 @@ const ORDINAL = (n: number): string => {
 
 /**
  * When a line happened, short enough for a kicker: "Top 2nd", "Bot 9th" in baseball;
- * "Q1 1:35", "OT 4:12" in football; the period number alone for a sport this has no
- * words for.
+ * "Q1 1:35", "OT 4:12" in football and basketball; the period number alone for a sport this
+ * has no words for.
  */
 export function scoringWhen(
   sport: string,
@@ -391,7 +492,7 @@ export function scoringWhen(
     const side = half === 'bottom' ? 'Bot' : half === 'top' ? 'Top' : '';
     return `${side} ${ORDINAL(period)}`.trim();
   }
-  if (sport === 'nfl') {
+  if (sport === 'nfl' || sport === 'nba') {
     const q = period <= 4 ? `Q${period}` : period === 5 ? 'OT' : `${period - 4}OT`;
     const time = clock ? clock.replace(/^0(\d:)/, '$1') : null;
     return time ? `${q} ${time}` : q;

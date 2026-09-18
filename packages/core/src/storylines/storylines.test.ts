@@ -244,6 +244,22 @@ describe('numbersIn', () => {
   });
 });
 
+describe('validateStoryline: NBA team names', () => {
+  const sixers = { name: 'Philadelphia 76ers', city: 'Philadelphia', nickname: '76ers' };
+  const blazers = { name: 'Portland Trail Blazers', city: 'Portland', nickname: 'Trail Blazers' };
+  const ctx = { teams: [sixers, blazers] as const, league: [sixers, blazers], subject: sixers };
+  it('the 76 in 76ers is a name, not a number', () => {
+    expect(validateStoryline('The 76ers have won seven of their last ten.', { lastTen: { wins: 7, losses: 3 } }, ctx)).toEqual({ ok: true });
+  });
+  it('a real invented number is still caught', () => {
+    const v = validateStoryline('The 76ers have won 9 of their last ten.', { lastTen: { wins: 7, losses: 3 } }, ctx);
+    expect(v.ok).toBe(false);
+  });
+  it('Trail Blazers is two capitalised words and still one team', () => {
+    expect(validateStoryline('The Trail Blazers visit the 76ers in the Eastern Conference opener.', { season: 2026 }, ctx).ok).toBe(true);
+  });
+});
+
 describe('validateStoryline', () => {
   const phillies: TeamName = { name: 'Philadelphia Phillies', city: 'Philadelphia' };
   const mets: TeamName = { name: 'New York Mets', city: 'New York' };

@@ -1,8 +1,8 @@
 """The merged venue set, shared by build_seed_sql.py and fill_elevations.py.
 
-Venues come from three files (seed/nfl_venues.json, seed/mlb_venues.generated.json and the hand
-overrides), merged so a building two leagues share is one row. Both scripts need exactly the same
-keys and coordinates, so the merge lives here once.
+Venues come from four files (seed/nfl_venues.json, seed/mlb_venues.generated.json, the hand
+overrides and seed/nba_venues.json), merged so a building two leagues share is one row. Both
+scripts need exactly the same keys and coordinates, so the merge lives here once.
 
 Elevations live in seed/venue_elevations.json, keyed by the merged venue key, rather than in the
 venue files: mlb_venues.generated.json is regenerated from the MLB Stats API by gen_mlb_seeds.py
@@ -85,6 +85,24 @@ def merged_venues():
             # Venue not used by MLB since before last season; mark closed for stamp styling unless we know better.
             rec["closed_year"] = v["last_season"]
         venues[key] = rec
+
+    # NBA arenas. The Alamodome is the one building the NFL seed already has: it gains the sport
+    # and the ESPN id rather than a second row.
+    for v in load("nba_venues.json")["venues"]:
+        k = v["key"]
+        if k in venues:
+            rec = venues[k]
+            rec["sports"].add("nba")
+            rec["aliases"] |= set(v.get("aliases", [])) | {v["name"]}
+            rec["provider_ids"]["espn_venue_ids"] = v["provider_ids"].get("espn_venue_ids", [])
+            continue
+        venues[k] = {
+            "key": k, "name": v["name"], "city": v.get("city"), "state": v.get("state"), "country": v.get("country"),
+            "lat": v.get("lat"), "lng": v.get("lng"), "geofence_m": v.get("geofence_m", 250),
+            "opened_year": v.get("opened_year"), "closed_year": v.get("closed_year"), "tz": None,
+            "provider_ids": {"espn_venue_ids": v["provider_ids"].get("espn_venue_ids", [])},
+            "sports": set(v.get("sports", ["nba"])), "aliases": set(v.get("aliases", [])) | {v["name"]},
+        }
     return venues
 
 

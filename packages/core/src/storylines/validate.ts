@@ -127,6 +127,14 @@ const GENERIC = new Set([
   'NLDS',
   'MLB',
   'NFL',
+  'NBA',
+  'Finals',
+  'Conference',
+  'Eastern',
+  'Western',
+  'Cup',
+  'Play',
+  'In',
   'January',
   'February',
   'March',
@@ -251,9 +259,13 @@ export function validateStoryline(text: string, facts: unknown, ctx: ValidationC
     }
   }
 
-  // 3. Numbers.
+  // 3. Numbers. A team whose name carries digits (the 76ers) is not stating one.
   const allowed = allowedNumbers(facts);
-  for (const n of numbersIn(s)) {
+  let numeric = s;
+  for (const t of [...ctx.teams, ...ctx.league]) {
+    for (const n of names(t)) if (/\d/.test(n)) numeric = numeric.replace(new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'), ' ');
+  }
+  for (const n of numbersIn(numeric)) {
     if (!allowed.has(n)) {
       return { ok: false, reason: `It states ${n}, which is not in the facts.` };
     }

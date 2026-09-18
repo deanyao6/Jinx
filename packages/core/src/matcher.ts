@@ -5,7 +5,7 @@
 import type { GameStatus, Sport } from './types.js';
 
 export interface ParsedTicket {
-  sport: 'mlb' | 'nfl' | 'unknown';
+  sport: 'mlb' | 'nfl' | 'nba' | 'unknown';
   home_team: string;
   away_team: string;
   /** YYYY-MM-DD in the venue's local time, or null. */

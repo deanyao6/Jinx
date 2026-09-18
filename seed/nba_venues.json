@@ -1,0 +1,2093 @@
+{
+ "_comment": [
+  "NBA arenas since 2000: the 30 current home arenas, every former home arena in the range, and the neutral, international and preseason venues ESPN lists five or more games at.",
+  "Coordinates are from OpenStreetMap Nominatim (coords_source nominatim, queried 2026-09-18) or the Wikipedia infobox where Nominatim could not place the building.",
+  "provider_ids.espn_venue_ids are the ids ESPN's scoreboard gives the building (docs/verification.md); the CDN schedule names arenas, which resolve through aliases.",
+  "home_by_season fills the venue of a historical game ESPN has no venue for (Reunion Arena, Compaq Center, the Pyramid, GM Place): the home team's arena in that season, by the team abbreviation in seed/nba_teams.json.",
+  "The Alamodome, which the Spurs used through 2001-02, is the NFL seed's row; the migration adds nba to its sports and its ESPN id.",
+  "geofence_m is 250: an arena is a smaller building than a stadium."
+ ],
+ "venues": [
+  {
+   "key": "state-farm-arena",
+   "name": "State Farm Arena",
+   "city": "Atlanta",
+   "state": "GA",
+   "country": "USA",
+   "lat": 33.75737,
+   "lng": -84.39638,
+   "geofence_m": 250,
+   "opened_year": 1999,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1827"
+    ]
+   },
+   "aliases": [
+    "Philips Arena",
+    "State Farm Arena"
+   ],
+   "home_teams": [
+    "ATL"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "td-garden",
+   "name": "TD Garden",
+   "city": "Boston",
+   "state": "MA",
+   "country": "USA",
+   "lat": 42.3663,
+   "lng": -71.06216,
+   "geofence_m": 250,
+   "opened_year": 1995,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1824"
+    ]
+   },
+   "aliases": [
+    "FleetCenter",
+    "TD Banknorth Garden",
+    "TD Garden"
+   ],
+   "home_teams": [
+    "BOS"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "barclays-center",
+   "name": "Barclays Center",
+   "city": "Brooklyn",
+   "state": "NY",
+   "country": "USA",
+   "lat": 40.68251,
+   "lng": -73.97525,
+   "geofence_m": 250,
+   "opened_year": 2012,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3559"
+    ]
+   },
+   "aliases": [
+    "Barclays Center"
+   ],
+   "home_teams": [
+    "BKN"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "spectrum-center",
+   "name": "Spectrum Center",
+   "city": "Charlotte",
+   "state": "NC",
+   "country": "USA",
+   "lat": 35.2251,
+   "lng": -80.83915,
+   "geofence_m": 250,
+   "opened_year": 2005,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1893"
+    ]
+   },
+   "aliases": [
+    "Charlotte Bobcats Arena",
+    "Spectrum Center",
+    "Time Warner Cable Arena"
+   ],
+   "home_teams": [
+    "CHA"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "united-center",
+   "name": "United Center",
+   "city": "Chicago",
+   "state": "IL",
+   "country": "USA",
+   "lat": 41.88068,
+   "lng": -87.67419,
+   "geofence_m": 250,
+   "opened_year": 1994,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1847"
+    ]
+   },
+   "aliases": [
+    "United Center"
+   ],
+   "home_teams": [
+    "CHI"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "rocket-arena",
+   "name": "Rocket Arena",
+   "city": "Cleveland",
+   "state": "OH",
+   "country": "USA",
+   "lat": 41.49669,
+   "lng": -81.68858,
+   "geofence_m": 250,
+   "opened_year": 1994,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3417"
+    ]
+   },
+   "aliases": [
+    "Gund Arena",
+    "Quicken Loans Arena",
+    "Rocket Arena",
+    "Rocket Mortgage FieldHouse",
+    "The Q"
+   ],
+   "home_teams": [
+    "CLE"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "american-airlines-center",
+   "name": "American Airlines Center",
+   "city": "Dallas",
+   "state": "TX",
+   "country": "USA",
+   "lat": 32.79049,
+   "lng": -96.81028,
+   "geofence_m": 250,
+   "opened_year": 2001,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "516"
+    ]
+   },
+   "aliases": [
+    "AAC",
+    "American Airlines Center"
+   ],
+   "home_teams": [
+    "DAL"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "ball-arena",
+   "name": "Ball Arena",
+   "city": "Denver",
+   "state": "CO",
+   "country": "USA",
+   "lat": 39.74868,
+   "lng": -105.00754,
+   "geofence_m": 250,
+   "opened_year": 1999,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "892"
+    ]
+   },
+   "aliases": [
+    "Ball Arena",
+    "Pepsi Center"
+   ],
+   "home_teams": [
+    "DEN"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "little-caesars-arena",
+   "name": "Little Caesars Arena",
+   "city": "Detroit",
+   "state": "MI",
+   "country": "USA",
+   "lat": 42.34098,
+   "lng": -83.05495,
+   "geofence_m": 250,
+   "opened_year": 2017,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "5404"
+    ]
+   },
+   "aliases": [
+    "Little Caesars Arena"
+   ],
+   "home_teams": [
+    "DET"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "chase-center",
+   "name": "Chase Center",
+   "city": "San Francisco",
+   "state": "CA",
+   "country": "USA",
+   "lat": 37.7679,
+   "lng": -122.38742,
+   "geofence_m": 250,
+   "opened_year": 2019,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "6270"
+    ]
+   },
+   "aliases": [
+    "Chase Center"
+   ],
+   "home_teams": [
+    "GSW"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "toyota-center",
+   "name": "Toyota Center",
+   "city": "Houston",
+   "state": "TX",
+   "country": "USA",
+   "lat": 29.75075,
+   "lng": -95.36223,
+   "geofence_m": 250,
+   "opened_year": 2003,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1394"
+    ]
+   },
+   "aliases": [
+    "Toyota Center",
+    "Toyota Center (Houston)"
+   ],
+   "home_teams": [
+    "HOU"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "gainbridge-fieldhouse",
+   "name": "Gainbridge Fieldhouse",
+   "city": "Indianapolis",
+   "state": "IN",
+   "country": "USA",
+   "lat": 39.76393,
+   "lng": -86.1555,
+   "geofence_m": 250,
+   "opened_year": 1999,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2183"
+    ]
+   },
+   "aliases": [
+    "Bankers Life Fieldhouse",
+    "Conseco Fieldhouse",
+    "Gainbridge Fieldhouse"
+   ],
+   "home_teams": [
+    "IND"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "intuit-dome",
+   "name": "Intuit Dome",
+   "city": "Inglewood",
+   "state": "CA",
+   "country": "USA",
+   "lat": 33.94426,
+   "lng": -118.34217,
+   "geofence_m": 250,
+   "opened_year": 2024,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "10642"
+    ]
+   },
+   "aliases": [
+    "Intuit Dome"
+   ],
+   "home_teams": [
+    "LAC"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "crypto-com-arena",
+   "name": "Crypto.com Arena",
+   "city": "Los Angeles",
+   "state": "CA",
+   "country": "USA",
+   "lat": 34.043,
+   "lng": -118.26714,
+   "geofence_m": 250,
+   "opened_year": 1999,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1841"
+    ]
+   },
+   "aliases": [
+    "Crypto.com Arena",
+    "Staples Center",
+    "crypto.com Arena"
+   ],
+   "home_teams": [
+    "LAL"
+   ],
+   "home_by_season": [
+    {
+     "abbr": "LAC",
+     "first": 2000,
+     "last": 2023
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "fedexforum",
+   "name": "FedExForum",
+   "city": "Memphis",
+   "state": "TN",
+   "country": "USA",
+   "lat": 35.13823,
+   "lng": -90.05077,
+   "geofence_m": 250,
+   "opened_year": 2004,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1392"
+    ]
+   },
+   "aliases": [
+    "FedEx Forum",
+    "FedExForum"
+   ],
+   "home_teams": [
+    "MEM"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "kaseya-center",
+   "name": "Kaseya Center",
+   "city": "Miami",
+   "state": "FL",
+   "country": "USA",
+   "lat": 25.78136,
+   "lng": -80.18794,
+   "geofence_m": 250,
+   "opened_year": 1999,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3438"
+    ]
+   },
+   "aliases": [
+    "American Airlines Arena",
+    "AmericanAirlines Arena",
+    "FTX Arena",
+    "Kaseya Center",
+    "Miami-Dade Arena"
+   ],
+   "home_teams": [
+    "MIA"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "fiserv-forum",
+   "name": "Fiserv Forum",
+   "city": "Milwaukee",
+   "state": "WI",
+   "country": "USA",
+   "lat": 43.04501,
+   "lng": -87.91749,
+   "geofence_m": 250,
+   "opened_year": 2018,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "5777"
+    ]
+   },
+   "aliases": [
+    "Fiserv Forum"
+   ],
+   "home_teams": [
+    "MIL"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "target-center",
+   "name": "Target Center",
+   "city": "Minneapolis",
+   "state": "MN",
+   "country": "USA",
+   "lat": 44.97959,
+   "lng": -93.27598,
+   "geofence_m": 250,
+   "opened_year": 1990,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2029"
+    ]
+   },
+   "aliases": [
+    "Target Center"
+   ],
+   "home_teams": [
+    "MIN"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "smoothie-king-center",
+   "name": "Smoothie King Center",
+   "city": "New Orleans",
+   "state": "LA",
+   "country": "USA",
+   "lat": 29.94904,
+   "lng": -90.08207,
+   "geofence_m": 250,
+   "opened_year": 1999,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "985"
+    ]
+   },
+   "aliases": [
+    "New Orleans Arena",
+    "Smoothie King Center"
+   ],
+   "home_teams": [
+    "NOP"
+   ],
+   "home_by_season": [
+    {
+     "abbr": "NOH",
+     "first": 2002,
+     "last": 2012
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "madison-square-garden",
+   "name": "Madison Square Garden",
+   "city": "New York",
+   "state": "NY",
+   "country": "USA",
+   "lat": 40.75051,
+   "lng": -73.99352,
+   "geofence_m": 250,
+   "opened_year": 1968,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1830"
+    ]
+   },
+   "aliases": [
+    "MSG",
+    "Madison Square Garden",
+    "The Garden"
+   ],
+   "home_teams": [
+    "NYK"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "paycom-center",
+   "name": "Paycom Center",
+   "city": "Oklahoma City",
+   "state": "OK",
+   "country": "USA",
+   "lat": 35.4634,
+   "lng": -97.51508,
+   "geofence_m": 250,
+   "opened_year": 2002,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2559"
+    ]
+   },
+   "aliases": [
+    "Chesapeake Energy Arena",
+    "Ford Center",
+    "Oklahoma City Arena",
+    "Paycom Center"
+   ],
+   "home_teams": [
+    "OKC"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "kia-center",
+   "name": "Kia Center",
+   "city": "Orlando",
+   "state": "FL",
+   "country": "USA",
+   "lat": 28.53929,
+   "lng": -81.38389,
+   "geofence_m": 250,
+   "opened_year": 2010,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3432"
+    ]
+   },
+   "aliases": [
+    "Amway Center",
+    "Kia Center"
+   ],
+   "home_teams": [
+    "ORL"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "xfinity-mobile-arena",
+   "name": "Xfinity Mobile Arena",
+   "city": "Philadelphia",
+   "state": "PA",
+   "country": "USA",
+   "lat": 39.9011,
+   "lng": -75.17202,
+   "geofence_m": 250,
+   "opened_year": 1996,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1845"
+    ]
+   },
+   "aliases": [
+    "First Union Center",
+    "Wachovia Center",
+    "Wells Fargo Center",
+    "Xfinity Mobile Arena"
+   ],
+   "home_teams": [
+    "PHI"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "mortgage-matchup-center",
+   "name": "Mortgage Matchup Center",
+   "city": "Phoenix",
+   "state": "AZ",
+   "country": "USA",
+   "lat": 33.44604,
+   "lng": -112.0711,
+   "geofence_m": 250,
+   "opened_year": 1992,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1949"
+    ]
+   },
+   "aliases": [
+    "America West Arena",
+    "Footprint Center",
+    "Mortgage Matchup Center",
+    "PHX Arena",
+    "Phoenix Suns Arena",
+    "Talking Stick Resort Arena",
+    "US Airways Center"
+   ],
+   "home_teams": [
+    "PHX"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "moda-center",
+   "name": "Moda Center",
+   "city": "Portland",
+   "state": "OR",
+   "country": "USA",
+   "lat": 45.53167,
+   "lng": -122.66667,
+   "geofence_m": 250,
+   "opened_year": 1995,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3423"
+    ]
+   },
+   "aliases": [
+    "Moda Center",
+    "Rose Garden",
+    "Rose Garden Arena"
+   ],
+   "home_teams": [
+    "POR"
+   ],
+   "coords_source": "wikipedia"
+  },
+  {
+   "key": "golden-1-center",
+   "name": "Golden 1 Center",
+   "city": "Sacramento",
+   "state": "CA",
+   "country": "USA",
+   "lat": 38.58014,
+   "lng": -121.4995,
+   "geofence_m": 250,
+   "opened_year": 2016,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "5310"
+    ]
+   },
+   "aliases": [
+    "Golden 1 Center"
+   ],
+   "home_teams": [
+    "SAC"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "frost-bank-center",
+   "name": "Frost Bank Center",
+   "city": "San Antonio",
+   "state": "TX",
+   "country": "USA",
+   "lat": 29.42692,
+   "lng": -98.43751,
+   "geofence_m": 250,
+   "opened_year": 2002,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "780"
+    ]
+   },
+   "aliases": [
+    "AT&T Center",
+    "Frost Bank Center",
+    "SBC Center"
+   ],
+   "home_teams": [
+    "SAS"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "scotiabank-arena",
+   "name": "Scotiabank Arena",
+   "city": "Toronto",
+   "state": "ON",
+   "country": "Canada",
+   "lat": 43.64343,
+   "lng": -79.37908,
+   "geofence_m": 250,
+   "opened_year": 1999,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1838"
+    ]
+   },
+   "aliases": [
+    "Air Canada Center",
+    "Air Canada Centre",
+    "Scotiabank Arena"
+   ],
+   "home_teams": [
+    "TOR"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "delta-center",
+   "name": "Delta Center",
+   "city": "Salt Lake City",
+   "state": "UT",
+   "country": "USA",
+   "lat": 40.76833,
+   "lng": -111.90106,
+   "geofence_m": 250,
+   "opened_year": 1991,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3093"
+    ]
+   },
+   "aliases": [
+    "Delta Center",
+    "EnergySolutions Arena",
+    "Vivint Arena",
+    "Vivint Smart Home Arena"
+   ],
+   "home_teams": [
+    "UTA"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "capital-one-arena",
+   "name": "Capital One Arena",
+   "city": "Washington",
+   "state": "DC",
+   "country": "USA",
+   "lat": 38.89819,
+   "lng": -77.02094,
+   "geofence_m": 250,
+   "opened_year": 1997,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1823"
+    ]
+   },
+   "aliases": [
+    "Capital One Arena",
+    "MCI Center",
+    "Verizon Center"
+   ],
+   "home_teams": [
+    "WAS"
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "oracle-arena",
+   "name": "Oracle Arena",
+   "city": "Oakland",
+   "state": "CA",
+   "country": "USA",
+   "lat": 37.75027,
+   "lng": -122.20293,
+   "geofence_m": 250,
+   "opened_year": 1966,
+   "closed_year": 2019,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2465"
+    ]
+   },
+   "aliases": [
+    "Oakland Arena",
+    "Oakland-Alameda County Coliseum Arena",
+    "Oracle Arena",
+    "The Arena in Oakland"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "GSW",
+     "first": 2000,
+     "last": 2018
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "the-palace-of-auburn-hills",
+   "name": "The Palace of Auburn Hills",
+   "city": "Auburn Hills",
+   "state": "MI",
+   "country": "USA",
+   "lat": 42.69667,
+   "lng": -83.24556,
+   "geofence_m": 250,
+   "opened_year": 1988,
+   "closed_year": 2017,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3419"
+    ]
+   },
+   "aliases": [
+    "The Palace",
+    "The Palace of Auburn Hills"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "DET",
+     "first": 2000,
+     "last": 2016
+    }
+   ],
+   "coords_source": "wikipedia"
+  },
+  {
+   "key": "bradley-center",
+   "name": "Bradley Center",
+   "city": "Milwaukee",
+   "state": "WI",
+   "country": "USA",
+   "lat": 43.04305,
+   "lng": -87.91611,
+   "geofence_m": 250,
+   "opened_year": 1988,
+   "closed_year": 2018,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2099"
+    ]
+   },
+   "aliases": [
+    "BMO Harris Bradley Center",
+    "Bradley Center"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "MIL",
+     "first": 2000,
+     "last": 2017
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "sleep-train-arena",
+   "name": "Sleep Train Arena",
+   "city": "Sacramento",
+   "state": "CA",
+   "country": "USA",
+   "lat": 38.64745,
+   "lng": -121.49905,
+   "geofence_m": 250,
+   "opened_year": 1988,
+   "closed_year": 2016,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2247"
+    ]
+   },
+   "aliases": [
+    "ARCO Arena",
+    "Power Balance Pavilion",
+    "Sleep Train Arena"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "SAC",
+     "first": 2000,
+     "last": 2015
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "amway-arena",
+   "name": "Amway Arena",
+   "city": "Orlando",
+   "state": "FL",
+   "country": "USA",
+   "lat": 28.5497,
+   "lng": -81.38632,
+   "geofence_m": 250,
+   "opened_year": 1989,
+   "closed_year": 2010,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "4042"
+    ]
+   },
+   "aliases": [
+    "Amway Arena",
+    "Orlando Arena",
+    "TD Waterhouse Centre"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "ORL",
+     "first": 2000,
+     "last": 2009
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "izod-center",
+   "name": "IZOD Center",
+   "city": "East Rutherford",
+   "state": "NJ",
+   "country": "USA",
+   "lat": 40.8116,
+   "lng": -74.0676,
+   "geofence_m": 250,
+   "opened_year": 1981,
+   "closed_year": 2015,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2562"
+    ]
+   },
+   "aliases": [
+    "Brendan Byrne Arena",
+    "Continental Airlines Arena",
+    "IZOD Center",
+    "Meadowlands Arena"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "NJN",
+     "first": 2000,
+     "last": 2009
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "prudential-center",
+   "name": "Prudential Center",
+   "city": "Newark",
+   "state": "NJ",
+   "country": "USA",
+   "lat": 40.73343,
+   "lng": -74.17115,
+   "geofence_m": 250,
+   "opened_year": 2007,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1826"
+    ]
+   },
+   "aliases": [
+    "Prudential Center",
+    "The Rock"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "NJN",
+     "first": 2010,
+     "last": 2011
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "keyarena",
+   "name": "KeyArena",
+   "city": "Seattle",
+   "state": "WA",
+   "country": "USA",
+   "lat": 47.6219,
+   "lng": -122.35399,
+   "geofence_m": 250,
+   "opened_year": 1962,
+   "closed_year": 2018,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2184"
+    ]
+   },
+   "aliases": [
+    "Key Arena",
+    "KeyArena",
+    "Seattle Center Coliseum"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "SEA",
+     "first": 2000,
+     "last": 2007
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "charlotte-coliseum",
+   "name": "Charlotte Coliseum",
+   "city": "Charlotte",
+   "state": "NC",
+   "country": "USA",
+   "lat": 35.20239,
+   "lng": -80.7952,
+   "geofence_m": 250,
+   "opened_year": 1988,
+   "closed_year": 2005,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "4043"
+    ]
+   },
+   "aliases": [
+    "Charlotte Coliseum"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "CHH",
+     "first": 2000,
+     "last": 2001
+    },
+    {
+     "abbr": "CHA",
+     "first": 2004,
+     "last": 2004
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "reunion-arena",
+   "name": "Reunion Arena",
+   "city": "Dallas",
+   "state": "TX",
+   "country": "USA",
+   "lat": 32.77355,
+   "lng": -96.80904,
+   "geofence_m": 250,
+   "opened_year": 1980,
+   "closed_year": 2008,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": []
+   },
+   "aliases": [
+    "Reunion Arena"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "DAL",
+     "first": 2000,
+     "last": 2000
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "compaq-center",
+   "name": "Compaq Center",
+   "city": "Houston",
+   "state": "TX",
+   "country": "USA",
+   "lat": 29.73036,
+   "lng": -95.43472,
+   "geofence_m": 250,
+   "opened_year": 1975,
+   "closed_year": 2003,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": []
+   },
+   "aliases": [
+    "Compaq Center",
+    "Lakewood Church Central Campus",
+    "The Summit"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "HOU",
+     "first": 2000,
+     "last": 2002
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "pyramid-arena",
+   "name": "Pyramid Arena",
+   "city": "Memphis",
+   "state": "TN",
+   "country": "USA",
+   "lat": 35.15545,
+   "lng": -90.05198,
+   "geofence_m": 250,
+   "opened_year": 1991,
+   "closed_year": 2004,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": []
+   },
+   "aliases": [
+    "Bass Pro Shops at the Pyramid",
+    "Pyramid Arena",
+    "The Pyramid"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "MEM",
+     "first": 2001,
+     "last": 2003
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "rogers-arena",
+   "name": "Rogers Arena",
+   "city": "Vancouver",
+   "state": "BC",
+   "country": "Canada",
+   "lat": 49.27791,
+   "lng": -123.10894,
+   "geofence_m": 250,
+   "opened_year": 1995,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1833"
+    ]
+   },
+   "aliases": [
+    "GM Place",
+    "General Motors Place",
+    "Rogers Arena"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "VAN",
+     "first": 2000,
+     "last": 2000
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "benchmark-international-arena",
+   "name": "Benchmark International Arena",
+   "city": "Tampa",
+   "state": "FL",
+   "country": "USA",
+   "lat": 27.9427,
+   "lng": -82.45189,
+   "geofence_m": 250,
+   "opened_year": 1996,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1396"
+    ]
+   },
+   "aliases": [
+    "Amalie Arena",
+    "Benchmark International Arena",
+    "Ice Palace",
+    "St. Pete Times Forum",
+    "Tampa Bay Times Forum"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "TOR",
+     "first": 2020,
+     "last": 2020
+    }
+   ],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "espn-wide-world-of-sports",
+   "name": "ESPN Wide World of Sports Complex",
+   "city": "Lake Buena Vista",
+   "state": "FL",
+   "country": "USA",
+   "lat": 28.33767,
+   "lng": -81.55752,
+   "geofence_m": 250,
+   "opened_year": 1997,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "4066"
+    ]
+   },
+   "aliases": [
+    "AdventHealth Arena",
+    "ESPN Wide World of Sports Complex",
+    "HP Field House",
+    "The Arena at ESPN Wide World of Sports",
+    "Visa Athletic Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "t-mobile-arena",
+   "name": "T-Mobile Arena",
+   "city": "Las Vegas",
+   "state": "NV",
+   "country": "USA",
+   "lat": 36.10268,
+   "lng": -115.17822,
+   "geofence_m": 250,
+   "opened_year": 2016,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "5060"
+    ]
+   },
+   "aliases": [
+    "T-Mobile Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "arena-cdmx",
+   "name": "Arena CDMX",
+   "city": "Mexico City",
+   "state": null,
+   "country": "Mexico",
+   "lat": 19.49761,
+   "lng": -99.1752,
+   "geofence_m": 250,
+   "opened_year": 2012,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "4008",
+     "5779"
+    ]
+   },
+   "aliases": [
+    "Arena CDMX",
+    "Arena Ciudad de Mexico",
+    "Arena Ciudad de México",
+    "Mexico City Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "the-o2-arena",
+   "name": "The O2 Arena",
+   "city": "London",
+   "state": null,
+   "country": "England",
+   "lat": 51.50293,
+   "lng": 0.00318,
+   "geofence_m": 250,
+   "opened_year": 2007,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2590",
+     "6272"
+    ]
+   },
+   "aliases": [
+    "O2 Arena",
+    "O2 Arena (ENG)",
+    "The O2",
+    "The O2 Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "accor-arena",
+   "name": "Accor Arena",
+   "city": "Paris",
+   "state": null,
+   "country": "France",
+   "lat": 48.83871,
+   "lng": 2.37877,
+   "geofence_m": 250,
+   "opened_year": 1984,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "6271",
+     "10660"
+    ]
+   },
+   "aliases": [
+    "Accor Arena",
+    "AccorHotels Arena",
+    "Bercy Arena",
+    "Palais Omnisports de Paris-Bercy"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "etihad-arena",
+   "name": "Etihad Arena",
+   "city": "Abu Dhabi",
+   "state": null,
+   "country": "United Arab Emirates",
+   "lat": 24.46036,
+   "lng": 54.60422,
+   "geofence_m": 250,
+   "opened_year": 2021,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "7126"
+    ]
+   },
+   "aliases": [
+    "Etihad Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "moody-center",
+   "name": "Moody Center",
+   "city": "Austin",
+   "state": "TX",
+   "country": "USA",
+   "lat": 30.28094,
+   "lng": -97.73065,
+   "geofence_m": 250,
+   "opened_year": 2022,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "7317"
+    ]
+   },
+   "aliases": [
+    "Moody Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "honda-center",
+   "name": "Honda Center",
+   "city": "Anaheim",
+   "state": "CA",
+   "country": "USA",
+   "lat": 33.80783,
+   "lng": -117.87653,
+   "geofence_m": 250,
+   "opened_year": 1993,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1842"
+    ]
+   },
+   "aliases": [
+    "Arrowhead Pond",
+    "Honda Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "saitama-super-arena",
+   "name": "Saitama Super Arena",
+   "city": "Saitama",
+   "state": null,
+   "country": "Japan",
+   "lat": 35.89512,
+   "lng": 139.63075,
+   "geofence_m": 250,
+   "opened_year": 2000,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2577"
+    ]
+   },
+   "aliases": [
+    "Saitama Super Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "mercedes-benz-arena-shanghai",
+   "name": "Mercedes-Benz Arena",
+   "city": "Shanghai",
+   "state": null,
+   "country": "China",
+   "lat": 31.19093,
+   "lng": 121.4887,
+   "geofence_m": 250,
+   "opened_year": 2010,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "4011"
+    ]
+   },
+   "aliases": [
+    "Mercedes-Benz Arena",
+    "Mercedes-Benz Arena Shanghai"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "climate-pledge-arena",
+   "name": "Climate Pledge Arena",
+   "city": "Seattle",
+   "state": "WA",
+   "country": "USA",
+   "lat": 47.6219,
+   "lng": -122.35399,
+   "geofence_m": 250,
+   "opened_year": 2021,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "7224"
+    ]
+   },
+   "aliases": [
+    "Climate Pledge Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "bok-center",
+   "name": "BOK Center",
+   "city": "Tulsa",
+   "state": "OK",
+   "country": "USA",
+   "lat": 36.15267,
+   "lng": -95.99637,
+   "geofence_m": 250,
+   "opened_year": 2008,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1911"
+    ]
+   },
+   "aliases": [
+    "BOK Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "co-op-live",
+   "name": "Co-op Live",
+   "city": "Manchester",
+   "state": null,
+   "country": "England",
+   "lat": 53.48641,
+   "lng": -2.2,
+   "geofence_m": 250,
+   "opened_year": 2024,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": []
+   },
+   "aliases": [
+    "Co-op Live"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "hinkle-fieldhouse",
+   "name": "Hinkle Fieldhouse",
+   "city": "Indianapolis",
+   "state": "IN",
+   "country": "USA",
+   "lat": 39.8436,
+   "lng": -86.16743,
+   "geofence_m": 250,
+   "opened_year": 1928,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": []
+   },
+   "aliases": [
+    "Hinkle Fieldhouse"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "stan-sheriff-center",
+   "name": "Stan Sheriff Center",
+   "city": "Honolulu",
+   "state": "HI",
+   "country": "USA",
+   "lat": 21.29431,
+   "lng": -157.81892,
+   "geofence_m": 250,
+   "opened_year": 1994,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "540"
+    ]
+   },
+   "aliases": [
+    "Stan Sheriff Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "toyota-arena-ontario",
+   "name": "Toyota Arena",
+   "city": "Ontario",
+   "state": "CA",
+   "country": "USA",
+   "lat": 34.07302,
+   "lng": -117.56632,
+   "geofence_m": 250,
+   "opened_year": 2008,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2494"
+    ]
+   },
+   "aliases": [
+    "Citizens Business Bank Arena",
+    "Toyota Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "bell-centre",
+   "name": "Bell Centre",
+   "city": "Montreal",
+   "state": "QC",
+   "country": "Canada",
+   "lat": 45.49604,
+   "lng": -73.5692,
+   "geofence_m": 250,
+   "opened_year": 1996,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1831"
+    ]
+   },
+   "aliases": [
+    "Bell Centre",
+    "Centre Bell"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "thomas-and-mack-center",
+   "name": "Thomas & Mack Center",
+   "city": "Las Vegas",
+   "state": "NV",
+   "country": "USA",
+   "lat": 36.10492,
+   "lng": -115.14427,
+   "geofence_m": 250,
+   "opened_year": 1983,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2083"
+    ]
+   },
+   "aliases": [
+    "Thomas & Mack Center",
+    "Thomas and Mack Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "uber-arena",
+   "name": "Uber Arena",
+   "city": "Berlin",
+   "state": null,
+   "country": "Germany",
+   "lat": 52.50637,
+   "lng": 13.44377,
+   "geofence_m": 250,
+   "opened_year": 2008,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2215",
+     "11593"
+    ]
+   },
+   "aliases": [
+    "Mercedes-Benz Arena Berlin",
+    "O2 World",
+    "O2 World (Berlin)",
+    "Uber Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "first-horizon-coliseum",
+   "name": "First Horizon Coliseum",
+   "city": "Greensboro",
+   "state": "NC",
+   "country": "USA",
+   "lat": 36.05608,
+   "lng": -79.82501,
+   "geofence_m": 250,
+   "opened_year": 1959,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "349"
+    ]
+   },
+   "aliases": [
+    "First Horizon Coliseum",
+    "Greensboro Coliseum"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "mohegan-sun-arena",
+   "name": "Mohegan Sun Arena",
+   "city": "Uncasville",
+   "state": "CT",
+   "country": "USA",
+   "lat": 41.49111,
+   "lng": -72.08974,
+   "geofence_m": 250,
+   "opened_year": 2001,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2160"
+    ]
+   },
+   "aliases": [
+    "Mohegan Sun Arena"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "t-mobile-center",
+   "name": "T-Mobile Center",
+   "city": "Kansas City",
+   "state": "MO",
+   "country": "USA",
+   "lat": 39.0973,
+   "lng": -94.57995,
+   "geofence_m": 250,
+   "opened_year": 2007,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "2561"
+    ]
+   },
+   "aliases": [
+    "Sprint Center",
+    "T-Mobile Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "schottenstein-center",
+   "name": "Schottenstein Center",
+   "city": "Columbus",
+   "state": "OH",
+   "country": "USA",
+   "lat": 40.0076,
+   "lng": -83.02496,
+   "geofence_m": 250,
+   "opened_year": 1998,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "317",
+     "316"
+    ]
+   },
+   "aliases": [
+    "Schottenstein Center",
+    "Value City Arena",
+    "Value City Arena at Schottenstein Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "resch-center",
+   "name": "Resch Center",
+   "city": "Ashwaubenon",
+   "state": "WI",
+   "country": "USA",
+   "lat": 44.49949,
+   "lng": -88.05504,
+   "geofence_m": 250,
+   "opened_year": 2002,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "522"
+    ]
+   },
+   "aliases": [
+    "Resch Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "pechanga-arena",
+   "name": "Pechanga Arena",
+   "city": "San Diego",
+   "state": "CA",
+   "country": "USA",
+   "lat": 32.7553,
+   "lng": -117.21227,
+   "geofence_m": 250,
+   "opened_year": 1966,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "697"
+    ]
+   },
+   "aliases": [
+    "Pechanga Arena",
+    "San Diego Sports Arena",
+    "Valley View Casino Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "jma-wireless-dome",
+   "name": "JMA Wireless Dome",
+   "city": "Syracuse",
+   "state": "NY",
+   "country": "USA",
+   "lat": 43.03628,
+   "lng": -76.13636,
+   "geofence_m": 250,
+   "opened_year": 1980,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "1964"
+    ]
+   },
+   "aliases": [
+    "Carrier Dome",
+    "JMA Wireless Dome"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "save-mart-center",
+   "name": "Save Mart Center",
+   "city": "Fresno",
+   "state": "CA",
+   "country": "USA",
+   "lat": 36.80969,
+   "lng": -119.73851,
+   "geofence_m": 250,
+   "opened_year": 2003,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "914"
+    ]
+   },
+   "aliases": [
+    "Save Mart Center"
+   ],
+   "home_teams": [],
+   "coords_source": "nominatim"
+  },
+  {
+   "key": "alamodome",
+   "name": "Alamodome",
+   "city": "San Antonio",
+   "state": "TX",
+   "country": "USA",
+   "lat": 29.41694,
+   "lng": -98.47889,
+   "geofence_m": 400,
+   "opened_year": 1993,
+   "closed_year": null,
+   "sports": [
+    "nba"
+   ],
+   "provider_ids": {
+    "espn_venue_ids": [
+     "3604"
+    ]
+   },
+   "aliases": [
+    "Alamodome",
+    "Alamo Dome"
+   ],
+   "home_teams": [],
+   "home_by_season": [
+    {
+     "abbr": "SAS",
+     "first": 2000,
+     "last": 2001
+    }
+   ],
+   "coords_source": "nfl seed row (shared building)"
+  }
+ ]
+}

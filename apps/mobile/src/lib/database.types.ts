@@ -692,6 +692,7 @@ export type Database = {
       game_live_state: {
         Row: {
           away_score: number
+          clock: string | null
           fetched_at: string
           game_id: string
           home_score: number
@@ -703,6 +704,7 @@ export type Database = {
         }
         Insert: {
           away_score?: number
+          clock?: string | null
           fetched_at?: string
           game_id: string
           home_score?: number
@@ -714,6 +716,7 @@ export type Database = {
         }
         Update: {
           away_score?: number
+          clock?: string | null
           fetched_at?: string
           game_id?: string
           home_score?: number
@@ -2973,6 +2976,10 @@ export type Database = {
       validate_pledges_for_game: {
         Args: { p_game_id: string }
         Returns: number
+      }
+      venue_noun: {
+        Args: { p_plural?: boolean; p_sport: string }
+        Returns: string
       }
     }
     Enums: {

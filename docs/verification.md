@@ -415,6 +415,73 @@ Fixtures in `ingest/fixtures/nba/`, each named with the date fetched.
 - **Licensing**: unofficial, undocumented feeds, same posture as the MLB Stats API (SPEC 4.2):
   hobby and TestFlight use now, revisit before any public launch. ESPN's terms likewise.
 
+### NBA: the VERIFY items resolved while building (2026-09-18)
+
+All with real fetches from Node, fixtures under `ingest/fixtures/nba/` where the shape matters.
+
+- **SeasonType strings** for `leaguegamelog`: `Regular Season`, `Playoffs`, `PlayIn`, `IST`,
+  `Pre Season`, `All Star`. Any other spelling (`Play In`, `Play-In`, `In-Season Tournament`)
+  is a 400. `PlayIn` gives ids `005` (12 rows = 6 games in 2023-24 and 2024-25). `IST` gives
+  the tournament's group games (already `002`, in Regular Season) plus the one `006` row pair,
+  the Cup final (2023-12-09 for 2023-24), which is the only row taken from it.
+- **Game type `006` is the in-season tournament final**: the CDN schedule labels
+  `0062600001` "Emirates NBA Cup / Championship" at Hinkle Fieldhouse, Indianapolis, with
+  `isNeutral: true`. It does not count in the standings; the app stores it as `regular` and
+  neutral. Playoff ids are `004` (164 rows = 82 games in 2023-24, 168 = 84 in 2024-25).
+- **Team ids and identities** from the game log itself, one row per (id, abbreviation, name)
+  across every regular season 2000-01 to 2025-26: the NBA keeps one team id across a move
+  or rename, so `1610612760` is SEA 2000-2007 then OKC; `1610612751` NJN 2000-2011 then BKN;
+  `1610612763` VAN 2000 then MEM; `1610612740` NOH 2002-2012 (NOK "New Orleans/Oklahoma City
+  Hornets" 2005-2006 on the same id) then NOP; `1610612766` CHH 2000-2001, CHA "Charlotte
+  Bobcats" 2004-2013, CHA "Charlotte Hornets" 2014 on; `1610612746` "Los Angeles Clippers"
+  to 2014 then "LA Clippers". Lakers are 1610612747. `commonteamyears` lists the 30 current
+  ids with MIN_YEAR/MAX_YEAR and 15 defunct pre-1955 ids with no abbreviation.
+  `packages/core/src/providers/nba/ids.ts` (`NBA_TEAM_ERAS`) holds the eras; a test checks
+  them against `seed/nba_teams.json`.
+- **Neutral-site games print `@` on both game-log rows** (Mexico City 2024-11-02 WAS-MIA,
+  Paris 2025-01-23 and 01-25 IND-SAS, the Cup semifinals in Las Vegas 2024-12-14). The parser
+  flags them and ESPN's `homeAway` decides the designated home side; they are stored neutral.
+- **The game log has no venue, no start time.** ESPN's scoreboard accepts a whole month:
+  `scoreboard?dates=YYYYMM&limit=1000` (147 events for 201610, 209 for 200011); a date
+  range with a hyphen is a 400. Per event: `date` (ISO UTC), `competitions[0].venue.id`,
+  `venue.fullName` (the building's CURRENT name even for 2000: "Rocket Arena", "Kaseya
+  Center"), `attendance`, `neutralSite`, `competitors[].homeAway`, `team.name` (the nickname:
+  "Trail Blazers", "76ers", "SuperSonics"), `season.year` (the END year: 2001 is 2000-01).
+  ESPN ids differ from NBA ids (ESPN files the 2000 Charlotte Hornets under id 3, today's
+  Pelicans), so games are matched by Eastern date plus the two nicknames' last word. 158
+  distinct ESPN venues appear 2000-2026; `seed/nba_venues.json` carries the 30 current
+  arenas, every former home arena, and the neutral, international and preseason venues with
+  five or more games (71 rows, plus the Alamodome shared with the NFL seed). Games ESPN
+  has no venue for (Reunion Arena 2000-01, the Compaq Center 2000-03, the Pyramid 2001-04,
+  GM Place 2000-01, the Alamodome 2000-02) take the home team's arena of that season from
+  `home_by_season` in the venue seed. After the backfill every non-preseason game has a
+  venue; 114 preseason exhibitions at one-off sites have none.
+- **CDN liveData coverage**: `boxscore_{id}.json` and `playbyplay_{id}.json` answer 200 for
+  2019-20 on (`0021900001`: 680 actions, `timeActual` present, attendance 20,787, duration
+  170) and 403 for 2018-19 and earlier. `todaysScoreboard_00.json` has `scoreboard.gameDate`
+  and `games[]` with `gameStatus` (1 scheduled, 2 live, 3 final), `gameStatusText` ("Q2 5:31",
+  "Halftime", "End of 1st Qtr", "Final"), `period`, `gameClock` (ISO duration), team scores.
+  The CDN schedule has no arena id, only `arenaName`/`arenaCity`/`arenaState`; the boxscore
+  has `arena.arenaId`. Arena names resolve through venue aliases.
+- **stats.nba.com history**: `boxscoresummaryv2?GameID=` works back to 2000 and carries
+  `GameInfo` (ATTENDANCE, GAME_TIME "2:22"), `LineScore` (PTS per team) and
+  `GameSummary.GAME_STATUS_ID`, so an old game's context columns are real. `playbyplayv3`
+  prints `"0"` for both scores on a missed free throw and other non-scoring rows; the parser
+  never lets a score go backwards. Its period markers carry a wall clock only as text in the
+  description ("End of 1st Period (8:03 PM EST)", labelled EST in October), not used.
+- **ESPN `summary?event=` win probability** exists from 2017-18 on (479 points for
+  400974437 on 2017-10-17; 497 for 2018-10-16; 577 for 2019-10-22) and is empty for 2016-17.
+  Its `plays[]` carry `wallclock` from 2017 on. The in-game model in
+  `packages/core/src/providers/nba/winprob.ts` covers what ESPN lacks.
+- **nba.com game pages**: `https://www.nba.com/game/{gameId}` answers 200 for real ids
+  (`0021600001`, `0022400001`) and redirects (303 to `/games`) for a made-up one, so it is a
+  page about the game. Used as the official highlights link.
+- **Coordinates** for the arenas came from OpenStreetMap Nominatim (queried 2026-09-18, one
+  request a second, `seed/nba_venues.json` `coords_source`), except Moda Center and The
+  Palace of Auburn Hills, which Nominatim could not place and which carry their Wikipedia
+  infobox coordinates. Elevations from USGS EPQS through `fill_elevations.py` (70 of 71;
+  Accor Arena, in Paris, is outside USGS coverage and Open-Elevation returned nothing).
+
 ## Famous games, superstars and personal badges — VERIFIED 2026-09-17/18
 
 Every VERIFY item in `docs/prompts/famous-games.md`, checked against the live source. Real

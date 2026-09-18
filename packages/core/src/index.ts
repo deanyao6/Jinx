@@ -7,6 +7,7 @@ export * from './providers/mlb/parse.js';
 export * from './providers/mlb/moments.js';
 export * from './providers/mlb/winprob.js';
 export * from './providers/nfl/index.js';
+export * from './providers/nba/index.js';
 export * from './ingest/index.js';
 export * from './rooting.js';
 export * from './famous.js';

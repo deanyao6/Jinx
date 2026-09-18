@@ -7,14 +7,16 @@
  *
  *   MLB  https://www.mlb.com/gameday/{gamePk}/final/video
  *   NFL  https://www.nfl.com/games/{away}-at-{home}-{season}-{reg|post}-{week}
+ *   NBA  https://www.nba.com/game/{gameId}  (checked 2026-09-18: a real id answers 200, a
+ *        made-up one is redirected to /games, so it is a page about the game)
  *
  * When a piece is missing the league's video hub is returned instead. A hub is a weaker link,
  * but it opens; a guessed per-game URL that 404s is a broken button.
  */
 
 export interface HighlightsGame {
-  sport: 'mlb' | 'nfl' | string;
-  /** MLB gamePk, or the nflverse id such as `2025_13_CHI_PHI`. */
+  sport: 'mlb' | 'nfl' | 'nba' | string;
+  /** MLB gamePk, the nflverse id such as `2025_13_CHI_PHI`, or the NBA id such as `0022400001`. */
   providerGameId: string | null | undefined;
   season: number | null | undefined;
   gameType: 'preseason' | 'regular' | 'postseason' | string | null | undefined;
@@ -24,6 +26,7 @@ export interface HighlightsGame {
 
 export const MLB_VIDEO_HUB = 'https://www.mlb.com/video';
 export const NFL_VIDEO_HUB = 'https://www.nfl.com/videos/';
+export const NBA_VIDEO_HUB = 'https://www.nba.com/watch/';
 
 /** "49ers" -> "49ers", "Football Team" -> "football-team". */
 function slug(name: string): string {
@@ -77,10 +80,20 @@ export function officialHighlightsUrl(game: HighlightsGame): string {
     if (!away || !home || !game.season || !weekSlug) return NFL_VIDEO_HUB;
     return `https://www.nfl.com/games/${away}-at-${home}-${game.season}-${weekSlug}`;
   }
+  if (game.sport === 'nba') {
+    const id = (game.providerGameId ?? '').trim();
+    return /^\d{10}$/.test(id) ? `https://www.nba.com/game/${id}` : NBA_VIDEO_HUB;
+  }
   return MLB_VIDEO_HUB;
 }
 
+const SITE_LABEL: Record<string, string> = {
+  mlb: 'Opens on MLB.com',
+  nfl: 'Opens on NFL.com',
+  nba: 'Opens on NBA.com',
+};
+
 /** What the row under the link says, so it never promises MLB's site for an NFL game. */
 export function highlightsSiteLabel(sport: string): string {
-  return sport === 'nfl' ? 'Opens on NFL.com' : 'Opens on MLB.com';
+  return SITE_LABEL[sport] ?? SITE_LABEL['mlb']!;
 }

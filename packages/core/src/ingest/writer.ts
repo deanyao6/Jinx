@@ -2,6 +2,8 @@
  * Writes canonical games and game details through a MinimalDb. Shared by Node and Deno.
  */
 import { detectMlbMoments } from '../providers/mlb/moments.js';
+import { detectNbaMoments } from '../providers/nba/moments.js';
+import { detectNflMoments } from '../providers/nfl/moments.js';
 import {
   appearanceRows,
   detailGameRow,
@@ -20,13 +22,24 @@ export interface GameWriteContext {
   teamMap: Map<string, string>;
   venueMaps: VenueMaps;
   /** Which provider_ids key to resolve venues by. */
-  venueLookup: 'mlb' | 'nflverse';
+  venueLookup: 'mlb' | 'nflverse' | 'nba';
 }
 
 export function resolveVenue(ctx: GameWriteContext): RowContext['resolveVenue'] {
   return (providerVenueId, season) => {
     if (!providerVenueId) return null;
     if (ctx.venueLookup === 'mlb') return ctx.venueMaps.byMlbVenueId.get(providerVenueId) ?? null;
+    if (ctx.venueLookup === 'nba') {
+      // The NBA parser tags what it has: an ESPN venue id for history, the CDN's arena name
+      // for the current season (resolved through venue aliases, so a renamed arena still
+      // lands), or a venue row's own id when the caller already knew it.
+      if (providerVenueId.startsWith('espn:'))
+        return ctx.venueMaps.byEspnVenueId.get(providerVenueId.slice(5)) ?? null;
+      if (providerVenueId.startsWith('name:'))
+        return ctx.venueMaps.byAlias.get(providerVenueId.slice(5).trim().toLowerCase()) ?? null;
+      if (providerVenueId.startsWith('venue:')) return providerVenueId.slice(6);
+      return ctx.venueMaps.byAlias.get(providerVenueId.trim().toLowerCase()) ?? null;
+    }
     // nflverse reuses BUF00 for the new Buffalo stadium from 2026 (docs/verification.md).
     if (providerVenueId === 'BUF00' && season >= 2026) {
       return (
@@ -155,15 +168,22 @@ export interface DetailWriteResult {
   events: number;
 }
 
+/** The moment detectors, by the sport the plays belong to. */
+export const MOMENT_DETECTORS: Record<'mlb' | 'nfl' | 'nba', (d: CanonicalGameDetail) => GameEvent[]> = {
+  mlb: detectMlbMoments,
+  nfl: detectNflMoments,
+  nba: detectNbaMoments,
+};
+
 /**
  * Writes a game's detail: context columns, players + appearances, scoring timeline, and moments.
- * `detectMoments` defaults to the MLB detectors; NFL callers pass `detectNflMoments`.
+ * `detectMoments` defaults to the detectors for the sport of the plays.
  */
 export async function upsertGameDetail(
   db: MinimalDb,
   detail: CanonicalGameDetail,
   ctx: GameWriteContext,
-  detectMoments: (d: CanonicalGameDetail) => GameEvent[] = detectMlbMoments,
+  detectMoments: (d: CanonicalGameDetail) => GameEvent[] = MOMENT_DETECTORS[detail.plays.sport],
 ): Promise<DetailWriteResult> {
   const rc = rowCtx(ctx);
   await upsertRows(

@@ -33,6 +33,30 @@
       "source": "open-elevation",
       "fetched": "2026-09-17"
     },
+    "american-airlines-center": {
+      "name": "American Airlines Center",
+      "lat": 32.79049,
+      "lng": -96.81028,
+      "elevation_ft": 426,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "amway-arena": {
+      "name": "Amway Arena",
+      "lat": 28.5497,
+      "lng": -81.38632,
+      "elevation_ft": 112,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "arena-cdmx": {
+      "name": "Arena CDMX",
+      "lat": 19.49761,
+      "lng": -99.1752,
+      "elevation_ft": 7372,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
     "arena-corinthians": {
       "name": "Neo Química Arena",
       "lat": -23.54528,
@@ -57,6 +81,14 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "ball-arena": {
+      "name": "Ball Arena",
+      "lat": 39.74868,
+      "lng": -105.00754,
+      "elevation_ft": 5191,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "bank-of-america-stadium": {
       "name": "Bank of America Stadium",
       "lat": 35.22583,
@@ -64,6 +96,46 @@
       "elevation_ft": 708,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "barclays-center": {
+      "name": "Barclays Center",
+      "lat": 40.68251,
+      "lng": -73.97525,
+      "elevation_ft": 46,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "bell-centre": {
+      "name": "Bell Centre",
+      "lat": 45.49604,
+      "lng": -73.5692,
+      "elevation_ft": 138,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
+    "benchmark-international-arena": {
+      "name": "Benchmark International Arena",
+      "lat": 27.9427,
+      "lng": -82.45189,
+      "elevation_ft": 15,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "bok-center": {
+      "name": "BOK Center",
+      "lat": 36.15267,
+      "lng": -95.99637,
+      "elevation_ft": 693,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "bradley-center": {
+      "name": "Bradley Center",
+      "lat": 43.04305,
+      "lng": -87.91611,
+      "elevation_ft": 590,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "caesars-superdome": {
       "name": "Caesars Superdome",
@@ -80,6 +152,70 @@
       "elevation_ft": 32,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "capital-one-arena": {
+      "name": "Capital One Arena",
+      "lat": 38.89819,
+      "lng": -77.02094,
+      "elevation_ft": 45,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "charlotte-coliseum": {
+      "name": "Charlotte Coliseum",
+      "lat": 35.20239,
+      "lng": -80.7952,
+      "elevation_ft": 706,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "chase-center": {
+      "name": "Chase Center",
+      "lat": 37.7679,
+      "lng": -122.38742,
+      "elevation_ft": 11,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "climate-pledge-arena": {
+      "name": "Climate Pledge Arena",
+      "lat": 47.6219,
+      "lng": -122.35399,
+      "elevation_ft": 123,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "co-op-live": {
+      "name": "Co-op Live",
+      "lat": 53.48641,
+      "lng": -2.2,
+      "elevation_ft": 197,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
+    "compaq-center": {
+      "name": "Compaq Center",
+      "lat": 29.73036,
+      "lng": -95.43472,
+      "elevation_ft": 59,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "crypto-com-arena": {
+      "name": "Crypto.com Arena",
+      "lat": 34.043,
+      "lng": -118.26714,
+      "elevation_ft": 240,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "delta-center": {
+      "name": "Delta Center",
+      "lat": 40.76833,
+      "lng": -111.90106,
+      "elevation_ft": 4264,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "deutsche-bank-park": {
       "name": "Deutsche Bank Park",
@@ -113,6 +249,14 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "espn-wide-world-of-sports": {
+      "name": "ESPN Wide World of Sports Complex",
+      "lat": 28.33767,
+      "lng": -81.55752,
+      "elevation_ft": 104,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "estadio-azteca": {
       "name": "Estadio Banorte",
       "lat": 19.303,
@@ -121,6 +265,14 @@
       "source": "open-elevation",
       "fetched": "2026-09-17"
     },
+    "etihad-arena": {
+      "name": "Etihad Arena",
+      "lat": 24.46036,
+      "lng": 54.60422,
+      "elevation_ft": 0,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
     "everbank-stadium": {
       "name": "EverBank Stadium",
       "lat": 30.32389,
@@ -128,6 +280,30 @@
       "elevation_ft": 4,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "fedexforum": {
+      "name": "FedExForum",
+      "lat": 35.13823,
+      "lng": -90.05077,
+      "elevation_ft": 249,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "first-horizon-coliseum": {
+      "name": "First Horizon Coliseum",
+      "lat": 36.05608,
+      "lng": -79.82501,
+      "elevation_ft": 862,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "fiserv-forum": {
+      "name": "Fiserv Forum",
+      "lat": 43.04501,
+      "lng": -87.91749,
+      "elevation_ft": 594,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "ford-field": {
       "name": "Ford Field",
@@ -144,6 +320,22 @@
       "elevation_ft": 313,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "frost-bank-center": {
+      "name": "Frost Bank Center",
+      "lat": 29.42692,
+      "lng": -98.43751,
+      "elevation_ft": 639,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "gainbridge-fieldhouse": {
+      "name": "Gainbridge Fieldhouse",
+      "lat": 39.76393,
+      "lng": -86.1555,
+      "elevation_ft": 706,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "georgia-dome": {
       "name": "Georgia Dome",
@@ -177,6 +369,14 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "golden-1-center": {
+      "name": "Golden 1 Center",
+      "lat": 38.58014,
+      "lng": -121.4995,
+      "elevation_ft": 30,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "hard-rock-stadium": {
       "name": "Hard Rock Stadium",
       "lat": 25.95806,
@@ -192,6 +392,22 @@
       "elevation_ft": 761,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "hinkle-fieldhouse": {
+      "name": "Hinkle Fieldhouse",
+      "lat": 39.8436,
+      "lng": -86.16743,
+      "elevation_ft": 759,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "honda-center": {
+      "name": "Honda Center",
+      "lat": 33.80783,
+      "lng": -117.87653,
+      "elevation_ft": 167,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "hubert-h-humphrey-metrodome": {
       "name": "Hubert H. Humphrey Metrodome",
@@ -225,6 +441,54 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "intuit-dome": {
+      "name": "Intuit Dome",
+      "lat": 33.94426,
+      "lng": -118.34217,
+      "elevation_ft": 90,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "izod-center": {
+      "name": "IZOD Center",
+      "lat": 40.8116,
+      "lng": -74.0676,
+      "elevation_ft": 10,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "jma-wireless-dome": {
+      "name": "JMA Wireless Dome",
+      "lat": 43.03628,
+      "lng": -76.13636,
+      "elevation_ft": 554,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "kaseya-center": {
+      "name": "Kaseya Center",
+      "lat": 25.78136,
+      "lng": -80.18794,
+      "elevation_ft": 13,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "keyarena": {
+      "name": "KeyArena",
+      "lat": 47.6219,
+      "lng": -122.35399,
+      "elevation_ft": 123,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "kia-center": {
+      "name": "Kia Center",
+      "lat": 28.53929,
+      "lng": -81.38389,
+      "elevation_ft": 108,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "lambeau-field": {
       "name": "Lambeau Field",
       "lat": 44.50139,
@@ -248,6 +512,14 @@
       "elevation_ft": 11,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "little-caesars-arena": {
+      "name": "Little Caesars Arena",
+      "lat": 42.34098,
+      "lng": -83.05495,
+      "elevation_ft": 611,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "los-angeles-memorial-coliseum": {
       "name": "Los Angeles Memorial Coliseum",
@@ -273,6 +545,14 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "madison-square-garden": {
+      "name": "Madison Square Garden",
+      "lat": 40.75051,
+      "lng": -73.99352,
+      "elevation_ft": 35,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "maracana": {
       "name": "Estádio do Maracanã",
       "lat": -22.9122,
@@ -288,6 +568,14 @@
       "elevation_ft": 39,
       "source": "open-elevation",
       "fetched": "2026-09-17"
+    },
+    "mercedes-benz-arena-shanghai": {
+      "name": "Mercedes-Benz Arena",
+      "lat": 31.19093,
+      "lng": 121.4887,
+      "elevation_ft": 26,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
     },
     "mercedes-benz-stadium": {
       "name": "Mercedes-Benz Stadium",
@@ -1249,6 +1537,38 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "moda-center": {
+      "name": "Moda Center",
+      "lat": 45.53167,
+      "lng": -122.66667,
+      "elevation_ft": 92,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "mohegan-sun-arena": {
+      "name": "Mohegan Sun Arena",
+      "lat": 41.49111,
+      "lng": -72.08974,
+      "elevation_ft": 39,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "moody-center": {
+      "name": "Moody Center",
+      "lat": 30.28094,
+      "lng": -97.73065,
+      "elevation_ft": 557,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "mortgage-matchup-center": {
+      "name": "Mortgage Matchup Center",
+      "lat": 33.44604,
+      "lng": -112.0711,
+      "elevation_ft": 1087,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "mountain-america-stadium": {
       "name": "Mountain America Stadium",
       "lat": 33.42639,
@@ -1289,6 +1609,22 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "oracle-arena": {
+      "name": "Oracle Arena",
+      "lat": 37.75027,
+      "lng": -122.20293,
+      "elevation_ft": 22,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "paycom-center": {
+      "name": "Paycom Center",
+      "lat": 35.4634,
+      "lng": -97.51508,
+      "elevation_ft": 1197,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "paycor-stadium": {
       "name": "Paycor Stadium",
       "lat": 39.095,
@@ -1297,6 +1633,14 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "pechanga-arena": {
+      "name": "Pechanga Arena",
+      "lat": 32.7553,
+      "lng": -117.21227,
+      "elevation_ft": 19,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "pontiac-silverdome": {
       "name": "Pontiac Silverdome",
       "lat": 42.64583,
@@ -1304,6 +1648,22 @@
       "elevation_ft": 870,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "prudential-center": {
+      "name": "Prudential Center",
+      "lat": 40.73343,
+      "lng": -74.17115,
+      "elevation_ft": 31,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "pyramid-arena": {
+      "name": "Pyramid Arena",
+      "lat": 35.15545,
+      "lng": -90.05198,
+      "elevation_ft": 224,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "ralph-wilson-stadium": {
       "name": "Ralph Wilson Stadium",
@@ -1337,6 +1697,38 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "resch-center": {
+      "name": "Resch Center",
+      "lat": 44.49949,
+      "lng": -88.05504,
+      "elevation_ft": 612,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "reunion-arena": {
+      "name": "Reunion Arena",
+      "lat": 32.77355,
+      "lng": -96.80904,
+      "elevation_ft": 410,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "rocket-arena": {
+      "name": "Rocket Arena",
+      "lat": 41.49669,
+      "lng": -81.68858,
+      "elevation_ft": 669,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "rogers-arena": {
+      "name": "Rogers Arena",
+      "lat": 49.27791,
+      "lng": -123.10894,
+      "elevation_ft": 72,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
     "rogers-centre": {
       "name": "Rogers Centre",
       "lat": 43.64139,
@@ -1344,6 +1736,14 @@
       "elevation_ft": 299,
       "source": "open-elevation",
       "fetched": "2026-09-17"
+    },
+    "saitama-super-arena": {
+      "name": "Saitama Super Arena",
+      "lat": 35.89512,
+      "lng": 139.63075,
+      "elevation_ft": 138,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
     },
     "san-diego-stadium": {
       "name": "San Diego Stadium",
@@ -1361,6 +1761,46 @@
       "source": "open-elevation",
       "fetched": "2026-09-17"
     },
+    "save-mart-center": {
+      "name": "Save Mart Center",
+      "lat": 36.80969,
+      "lng": -119.73851,
+      "elevation_ft": 346,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "schottenstein-center": {
+      "name": "Schottenstein Center",
+      "lat": 40.0076,
+      "lng": -83.02496,
+      "elevation_ft": 747,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "scotiabank-arena": {
+      "name": "Scotiabank Arena",
+      "lat": 43.64343,
+      "lng": -79.37908,
+      "elevation_ft": 266,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
+    "sleep-train-arena": {
+      "name": "Sleep Train Arena",
+      "lat": 38.64745,
+      "lng": -121.49905,
+      "elevation_ft": 15,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "smoothie-king-center": {
+      "name": "Smoothie King Center",
+      "lat": 29.94904,
+      "lng": -90.08207,
+      "elevation_ft": 2,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "sofi-stadium": {
       "name": "SoFi Stadium",
       "lat": 33.953,
@@ -1377,6 +1817,14 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "spectrum-center": {
+      "name": "Spectrum Center",
+      "lat": 35.2251,
+      "lng": -80.83915,
+      "elevation_ft": 729,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "stade-de-france": {
       "name": "Stade de France",
       "lat": 48.9245,
@@ -1384,6 +1832,22 @@
       "elevation_ft": 187,
       "source": "open-elevation",
       "fetched": "2026-09-17"
+    },
+    "stan-sheriff-center": {
+      "name": "Stan Sheriff Center",
+      "lat": 21.29431,
+      "lng": -157.81892,
+      "elevation_ft": 15,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "state-farm-arena": {
+      "name": "State Farm Arena",
+      "lat": 33.75737,
+      "lng": -84.39638,
+      "elevation_ft": 1038,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "state-farm-stadium": {
       "name": "State Farm Stadium",
@@ -1393,6 +1857,38 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "t-mobile-arena": {
+      "name": "T-Mobile Arena",
+      "lat": 36.10268,
+      "lng": -115.17822,
+      "elevation_ft": 2134,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "t-mobile-center": {
+      "name": "T-Mobile Center",
+      "lat": 39.0973,
+      "lng": -94.57995,
+      "elevation_ft": 865,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "target-center": {
+      "name": "Target Center",
+      "lat": 44.97959,
+      "lng": -93.27598,
+      "elevation_ft": 842,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "td-garden": {
+      "name": "TD Garden",
+      "lat": 42.3663,
+      "lng": -71.06216,
+      "elevation_ft": 8,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "texas-stadium": {
       "name": "Texas Stadium",
       "lat": 32.83972,
@@ -1400,6 +1896,30 @@
       "elevation_ft": 453,
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
+    },
+    "the-o2-arena": {
+      "name": "The O2 Arena",
+      "lat": 51.50293,
+      "lng": 0.00318,
+      "elevation_ft": 62,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
+    "the-palace-of-auburn-hills": {
+      "name": "The Palace of Auburn Hills",
+      "lat": 42.69667,
+      "lng": -83.24556,
+      "elevation_ft": 965,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "thomas-and-mack-center": {
+      "name": "Thomas & Mack Center",
+      "lat": 36.10492,
+      "lng": -115.14427,
+      "elevation_ft": 2048,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "three-rivers-stadium": {
       "name": "Three Rivers Stadium",
@@ -1425,6 +1945,22 @@
       "source": "open-elevation",
       "fetched": "2026-09-17"
     },
+    "toyota-arena-ontario": {
+      "name": "Toyota Arena",
+      "lat": 34.07302,
+      "lng": -117.56632,
+      "elevation_ft": 1013,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
+    "toyota-center": {
+      "name": "Toyota Center",
+      "lat": 29.75075,
+      "lng": -95.36223,
+      "elevation_ft": 45,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
+    },
     "twickenham-stadium": {
       "name": "Twickenham Stadium",
       "lat": 51.45583,
@@ -1432,6 +1968,22 @@
       "elevation_ft": 66,
       "source": "open-elevation",
       "fetched": "2026-09-17"
+    },
+    "uber-arena": {
+      "name": "Uber Arena",
+      "lat": 52.50637,
+      "lng": 13.44377,
+      "elevation_ft": 102,
+      "source": "open-elevation",
+      "fetched": "2026-09-18"
+    },
+    "united-center": {
+      "name": "United Center",
+      "lat": 41.88068,
+      "lng": -87.67419,
+      "elevation_ft": 595,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     },
     "us-bank-stadium": {
       "name": "U.S. Bank Stadium",
@@ -1456,6 +2008,14 @@
       "elevation_ft": 197,
       "source": "open-elevation",
       "fetched": "2026-09-17"
+    },
+    "xfinity-mobile-arena": {
+      "name": "Xfinity Mobile Arena",
+      "lat": 39.9011,
+      "lng": -75.17202,
+      "elevation_ft": 23,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-18"
     }
   }
 }

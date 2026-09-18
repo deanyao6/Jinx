@@ -19,7 +19,7 @@ import {
 // ---------------------------------------------------------------------------
 const team = (
   id: string,
-  sport: 'mlb' | 'nfl',
+  sport: 'mlb' | 'nfl' | 'nba',
   city: string,
   name: string,
   abbr: string,
@@ -44,6 +44,12 @@ const teams: TeamRef[] = [
   team('bears', 'nfl', 'Chicago', 'Bears', 'CHI', ['Da Bears']),
   team('packers', 'nfl', 'Green Bay', 'Packers', 'GB', ['GNB', 'Pack']),
   team('cowboys', 'nfl', 'Dallas', 'Cowboys', 'DAL'),
+  team('lakers', 'nba', 'Los Angeles', 'Lakers', 'LAL', ['LA Lakers']),
+  team('clippers', 'nba', 'Los Angeles', 'Clippers', 'LAC', ['LA Clippers', 'Clips']),
+  team('sixers', 'nba', 'Philadelphia', '76ers', 'PHI', ['Sixers', 'Philly']),
+  team('celtics', 'nba', 'Boston', 'Celtics', 'BOS'),
+  team('blazers', 'nba', 'Portland', 'Trail Blazers', 'POR', ['Blazers', 'Rip City']),
+  team('cavs', 'nba', 'Cleveland', 'Cavaliers', 'CLE', ['Cavs']),
 ];
 const venues: VenueRef[] = [
   { id: 'cbp', name: 'Citizens Bank Park', aliases: ['CBP', 'The Bank'], tz: 'America/New_York' },
@@ -66,6 +72,10 @@ const venues: VenueRef[] = [
     aliases: ['Jerry World', 'Cowboys Stadium'],
     tz: 'America/Chicago',
   },
+  { id: 'crypto', name: 'Crypto.com Arena', aliases: ['Staples Center'], tz: 'America/Los_Angeles' },
+  { id: 'xfinity', name: 'Xfinity Mobile Arena', aliases: ['Wells Fargo Center', 'Wachovia Center'], tz: 'America/New_York' },
+  { id: 'moda', name: 'Moda Center', aliases: ['Rose Garden'], tz: 'America/Los_Angeles' },
+  { id: 'rocket', name: 'Rocket Arena', aliases: ['Rocket Mortgage FieldHouse', 'Quicken Loans Arena'], tz: 'America/New_York' },
 ];
 const ctx: MatchContext = { teams, venues };
 
@@ -76,7 +86,7 @@ const game = (
     homeTeamId: string;
     awayTeamId: string;
     venueId: string;
-    sport: 'mlb' | 'nfl';
+    sport: 'mlb' | 'nfl' | 'nba';
   },
 ): CandidateGame => ({
   id: p.id ?? `g${++seq}`,
@@ -228,6 +238,48 @@ const G = {
     awayTeamId: 'nym',
     venueId: 'cbp',
   }),
+  // NBA: a Lakers-Celtics game, the Clippers at the same building the night before, a Sixers
+  // home game, a Blazers home game and a Cavs home game, each on its own date.
+  lalBos1225: game({
+    id: 'lal-bos-1225',
+    sport: 'nba',
+    scheduledStart: '2024-12-26T01:00:00Z',
+    homeTeamId: 'lakers',
+    awayTeamId: 'celtics',
+    venueId: 'crypto',
+  }),
+  lacBos1224: game({
+    id: 'lac-bos-1224',
+    sport: 'nba',
+    scheduledStart: '2024-12-25T03:30:00Z',
+    homeTeamId: 'clippers',
+    awayTeamId: 'celtics',
+    venueId: 'crypto',
+  }),
+  phiCle0115: game({
+    id: 'phi-cle-0115',
+    sport: 'nba',
+    scheduledStart: '2025-01-16T00:00:00Z',
+    homeTeamId: 'sixers',
+    awayTeamId: 'cavs',
+    venueId: 'xfinity',
+  }),
+  porLal0201: game({
+    id: 'por-lal-0201',
+    sport: 'nba',
+    scheduledStart: '2025-02-02T03:00:00Z',
+    homeTeamId: 'blazers',
+    awayTeamId: 'lakers',
+    venueId: 'moda',
+  }),
+  clePhi0310: game({
+    id: 'cle-phi-0310',
+    sport: 'nba',
+    scheduledStart: '2025-03-11T00:00:00Z',
+    homeTeamId: 'cavs',
+    awayTeamId: 'sixers',
+    venueId: 'rocket',
+  }),
 };
 const pool = Object.values(G);
 
@@ -256,6 +308,81 @@ interface Case {
 }
 
 const cases: Case[] = [
+  {
+    name: 'NBA Ticketmaster: Lakers vs Celtics at Crypto.com Arena',
+    ticket: ticket({
+      sport: 'nba',
+      home_team: 'Los Angeles Lakers',
+      away_team: 'Boston Celtics',
+      date_local: '2024-12-25',
+      time_local: '17:00',
+      venue: 'Crypto.com Arena',
+    }),
+    expect: 'lal-bos-1225',
+    decision: 'matched',
+  },
+  {
+    name: 'NBA SeatGeek: LA Clippers, Staples Center as the naming-rights alias',
+    ticket: ticket({
+      sport: 'nba',
+      home_team: 'LA Clippers',
+      away_team: 'Boston Celtics',
+      date_local: '2024-12-24',
+      venue: 'Staples Center',
+    }),
+    expect: 'lac-bos-1224',
+    decision: 'matched',
+  },
+  {
+    name: 'NBA StubHub: nickname only, Sixers',
+    ticket: ticket({
+      sport: 'nba',
+      home_team: 'Sixers',
+      away_team: 'Cavs',
+      date_local: '2025-01-15',
+      venue: 'Wells Fargo Center',
+    }),
+    expect: 'phi-cle-0115',
+    decision: 'matched',
+  },
+  {
+    name: 'NBA: two-word nickname, Trail Blazers, with the old arena name',
+    ticket: ticket({
+      sport: 'nba',
+      home_team: 'Portland Trail Blazers',
+      away_team: 'Los Angeles Lakers',
+      date_local: '2025-02-01',
+      time_local: '19:00',
+      venue: 'Rose Garden',
+    }),
+    expect: 'por-lal-0201',
+    decision: 'matched',
+  },
+  {
+    name: 'NBA: sport unknown, Cavaliers vs 76ers at Rocket Mortgage FieldHouse',
+    ticket: ticket({
+      sport: 'unknown',
+      home_team: 'Cleveland Cavaliers',
+      away_team: 'Philadelphia 76ers',
+      date_local: '2025-03-10',
+      venue: 'Rocket Mortgage FieldHouse',
+    }),
+    expect: 'cle-phi-0310',
+    decision: 'matched',
+  },
+  {
+    name: 'NBA: abbreviations and a late West Coast tip that is the next day in UTC',
+    ticket: ticket({
+      sport: 'nba',
+      home_team: 'LAL',
+      away_team: 'BOS',
+      date_local: '2024-12-25',
+      time_local: '17:00',
+      venue: '',
+    }),
+    expect: 'lal-bos-1225',
+    decision: 'matched',
+  },
   {
     name: 'clean Ticketmaster',
     ticket: ticket({

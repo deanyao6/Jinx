@@ -126,6 +126,11 @@ def main():
     expected.update(
         {("nflverse", t["abbr"]): f"{t['city']} {t['name']}" for t in load("nfl_teams.json")}
     )
+    # NBA: one palette per franchise, keyed by the current identity's NBA team id; a historical
+    # identity (the SuperSonics, the Bobcats) shares its franchise's palette through the team id.
+    expected.update(
+        {("nba", t["provider_team_id"]): f"{t['city']} {t['name']}" for t in load("nba_teams.json")["teams"] if t["active"]}
+    )
     for key, name in sorted(expected.items()):
         if key not in seen:
             problems.append(f"no palette for {name} ({key[0]}/{key[1]})")

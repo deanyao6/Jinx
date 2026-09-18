@@ -1,0 +1,728 @@
+{
+ "_comment": [
+  "NBA teams since 2000, one row per identity (docs/verification.md: the game log keeps one team id across a move or a rename, so an identity that changed inside the range is its own row on the same franchise, told apart by season).",
+  "provider_team_id is the NBA team id for the current identity and id-SUFFIX for an earlier one; packages/core/src/providers/nba/ids.ts (NBA_TEAM_ERAS) must agree with first/last here, and a test checks that it does.",
+  "The New Orleans/Oklahoma City Hornets of 2005-06 and 2006-07 are the New Orleans Hornets row (alias NOK).",
+  "division is the current division name; historical identities carry the division they last played in."
+ ],
+ "teams": [
+  {
+   "abbr": "ATL",
+   "team_id": "1610612737",
+   "provider_team_id": "1610612737",
+   "city": "Atlanta",
+   "name": "Hawks",
+   "franchise": "nba-1610612737",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Hawks",
+    "ATL",
+    "Atlanta"
+   ],
+   "home_venue_key": "state-farm-arena",
+   "conference": "East",
+   "division": "Southeast Division"
+  },
+  {
+   "abbr": "BOS",
+   "team_id": "1610612738",
+   "provider_team_id": "1610612738",
+   "city": "Boston",
+   "name": "Celtics",
+   "franchise": "nba-1610612738",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Celtics",
+    "BOS",
+    "Boston",
+    "C's"
+   ],
+   "home_venue_key": "td-garden",
+   "conference": "East",
+   "division": "Atlantic Division"
+  },
+  {
+   "abbr": "BKN",
+   "team_id": "1610612751",
+   "provider_team_id": "1610612751",
+   "city": "Brooklyn",
+   "name": "Nets",
+   "franchise": "nba-1610612751",
+   "active": true,
+   "first": 2012,
+   "last": null,
+   "aliases": [
+    "Nets",
+    "BKN",
+    "Brooklyn"
+   ],
+   "home_venue_key": "barclays-center",
+   "conference": "East",
+   "division": "Atlantic Division"
+  },
+  {
+   "abbr": "NJN",
+   "team_id": "1610612751",
+   "provider_team_id": "1610612751-NJN",
+   "city": "New Jersey",
+   "name": "Nets",
+   "franchise": "nba-1610612751",
+   "active": false,
+   "first": 2000,
+   "last": 2011,
+   "aliases": [
+    "New Jersey Nets",
+    "NJN",
+    "NJ Nets",
+    "New Jersey"
+   ],
+   "home_venue_key": null,
+   "conference": "East",
+   "division": "Atlantic Division"
+  },
+  {
+   "abbr": "CHA",
+   "team_id": "1610612766",
+   "provider_team_id": "1610612766",
+   "city": "Charlotte",
+   "name": "Hornets",
+   "franchise": "nba-1610612766",
+   "active": true,
+   "first": 2014,
+   "last": null,
+   "aliases": [
+    "Hornets",
+    "CHA",
+    "Charlotte",
+    "Buzz City"
+   ],
+   "home_venue_key": "spectrum-center",
+   "conference": "East",
+   "division": "Southeast Division"
+  },
+  {
+   "abbr": "CHA",
+   "team_id": "1610612766",
+   "provider_team_id": "1610612766-CHA-bobcats",
+   "city": "Charlotte",
+   "name": "Bobcats",
+   "franchise": "nba-1610612766",
+   "active": false,
+   "first": 2004,
+   "last": 2013,
+   "aliases": [
+    "Bobcats",
+    "Charlotte Bobcats",
+    "Cats"
+   ],
+   "home_venue_key": null,
+   "conference": "East",
+   "division": "Southeast Division"
+  },
+  {
+   "abbr": "CHH",
+   "team_id": "1610612766",
+   "provider_team_id": "1610612766-CHH",
+   "city": "Charlotte",
+   "name": "Hornets",
+   "franchise": "nba-1610612766",
+   "active": false,
+   "first": 2000,
+   "last": 2001,
+   "aliases": [
+    "Charlotte Hornets",
+    "CHH"
+   ],
+   "home_venue_key": null,
+   "conference": "East",
+   "division": "Central Division"
+  },
+  {
+   "abbr": "CHI",
+   "team_id": "1610612741",
+   "provider_team_id": "1610612741",
+   "city": "Chicago",
+   "name": "Bulls",
+   "franchise": "nba-1610612741",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Bulls",
+    "CHI",
+    "Chicago"
+   ],
+   "home_venue_key": "united-center",
+   "conference": "East",
+   "division": "Central Division"
+  },
+  {
+   "abbr": "CLE",
+   "team_id": "1610612739",
+   "provider_team_id": "1610612739",
+   "city": "Cleveland",
+   "name": "Cavaliers",
+   "franchise": "nba-1610612739",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Cavaliers",
+    "Cavs",
+    "CLE",
+    "Cleveland"
+   ],
+   "home_venue_key": "rocket-arena",
+   "conference": "East",
+   "division": "Central Division"
+  },
+  {
+   "abbr": "DAL",
+   "team_id": "1610612742",
+   "provider_team_id": "1610612742",
+   "city": "Dallas",
+   "name": "Mavericks",
+   "franchise": "nba-1610612742",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Mavericks",
+    "Mavs",
+    "DAL",
+    "Dallas"
+   ],
+   "home_venue_key": "american-airlines-center",
+   "conference": "West",
+   "division": "Southwest Division"
+  },
+  {
+   "abbr": "DEN",
+   "team_id": "1610612743",
+   "provider_team_id": "1610612743",
+   "city": "Denver",
+   "name": "Nuggets",
+   "franchise": "nba-1610612743",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Nuggets",
+    "Nugs",
+    "DEN",
+    "Denver"
+   ],
+   "home_venue_key": "ball-arena",
+   "conference": "West",
+   "division": "Northwest Division"
+  },
+  {
+   "abbr": "DET",
+   "team_id": "1610612765",
+   "provider_team_id": "1610612765",
+   "city": "Detroit",
+   "name": "Pistons",
+   "franchise": "nba-1610612765",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Pistons",
+    "DET",
+    "Detroit"
+   ],
+   "home_venue_key": "little-caesars-arena",
+   "conference": "East",
+   "division": "Central Division"
+  },
+  {
+   "abbr": "GSW",
+   "team_id": "1610612744",
+   "provider_team_id": "1610612744",
+   "city": "Golden State",
+   "name": "Warriors",
+   "franchise": "nba-1610612744",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Warriors",
+    "Dubs",
+    "GSW",
+    "GS",
+    "Golden State",
+    "San Francisco Warriors"
+   ],
+   "home_venue_key": "chase-center",
+   "conference": "West",
+   "division": "Pacific Division"
+  },
+  {
+   "abbr": "HOU",
+   "team_id": "1610612745",
+   "provider_team_id": "1610612745",
+   "city": "Houston",
+   "name": "Rockets",
+   "franchise": "nba-1610612745",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Rockets",
+    "HOU",
+    "Houston"
+   ],
+   "home_venue_key": "toyota-center",
+   "conference": "West",
+   "division": "Southwest Division"
+  },
+  {
+   "abbr": "IND",
+   "team_id": "1610612754",
+   "provider_team_id": "1610612754",
+   "city": "Indiana",
+   "name": "Pacers",
+   "franchise": "nba-1610612754",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Pacers",
+    "IND",
+    "Indiana",
+    "Indianapolis"
+   ],
+   "home_venue_key": "gainbridge-fieldhouse",
+   "conference": "East",
+   "division": "Central Division"
+  },
+  {
+   "abbr": "LAC",
+   "team_id": "1610612746",
+   "provider_team_id": "1610612746",
+   "city": "Los Angeles",
+   "name": "Clippers",
+   "franchise": "nba-1610612746",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Clippers",
+    "Clips",
+    "LAC",
+    "LA Clippers",
+    "Los Angeles Clippers"
+   ],
+   "home_venue_key": "intuit-dome",
+   "conference": "West",
+   "division": "Pacific Division"
+  },
+  {
+   "abbr": "LAL",
+   "team_id": "1610612747",
+   "provider_team_id": "1610612747",
+   "city": "Los Angeles",
+   "name": "Lakers",
+   "franchise": "nba-1610612747",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Lakers",
+    "LAL",
+    "LA Lakers",
+    "Los Angeles Lakers"
+   ],
+   "home_venue_key": "crypto-com-arena",
+   "conference": "West",
+   "division": "Pacific Division"
+  },
+  {
+   "abbr": "MEM",
+   "team_id": "1610612763",
+   "provider_team_id": "1610612763",
+   "city": "Memphis",
+   "name": "Grizzlies",
+   "franchise": "nba-1610612763",
+   "active": true,
+   "first": 2001,
+   "last": null,
+   "aliases": [
+    "Grizzlies",
+    "Grizz",
+    "MEM",
+    "Memphis"
+   ],
+   "home_venue_key": "fedexforum",
+   "conference": "West",
+   "division": "Southwest Division"
+  },
+  {
+   "abbr": "VAN",
+   "team_id": "1610612763",
+   "provider_team_id": "1610612763-VAN",
+   "city": "Vancouver",
+   "name": "Grizzlies",
+   "franchise": "nba-1610612763",
+   "active": false,
+   "first": 2000,
+   "last": 2000,
+   "aliases": [
+    "Vancouver Grizzlies",
+    "VAN",
+    "Vancouver"
+   ],
+   "home_venue_key": null,
+   "conference": "West",
+   "division": "Midwest Division"
+  },
+  {
+   "abbr": "MIA",
+   "team_id": "1610612748",
+   "provider_team_id": "1610612748",
+   "city": "Miami",
+   "name": "Heat",
+   "franchise": "nba-1610612748",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Heat",
+    "MIA",
+    "Miami"
+   ],
+   "home_venue_key": "kaseya-center",
+   "conference": "East",
+   "division": "Southeast Division"
+  },
+  {
+   "abbr": "MIL",
+   "team_id": "1610612749",
+   "provider_team_id": "1610612749",
+   "city": "Milwaukee",
+   "name": "Bucks",
+   "franchise": "nba-1610612749",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Bucks",
+    "MIL",
+    "Milwaukee"
+   ],
+   "home_venue_key": "fiserv-forum",
+   "conference": "East",
+   "division": "Central Division"
+  },
+  {
+   "abbr": "MIN",
+   "team_id": "1610612750",
+   "provider_team_id": "1610612750",
+   "city": "Minnesota",
+   "name": "Timberwolves",
+   "franchise": "nba-1610612750",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Timberwolves",
+    "Wolves",
+    "T-Wolves",
+    "MIN",
+    "Minnesota",
+    "Minneapolis"
+   ],
+   "home_venue_key": "target-center",
+   "conference": "West",
+   "division": "Northwest Division"
+  },
+  {
+   "abbr": "NOP",
+   "team_id": "1610612740",
+   "provider_team_id": "1610612740",
+   "city": "New Orleans",
+   "name": "Pelicans",
+   "franchise": "nba-1610612740",
+   "active": true,
+   "first": 2013,
+   "last": null,
+   "aliases": [
+    "Pelicans",
+    "Pels",
+    "NOP",
+    "NO",
+    "New Orleans"
+   ],
+   "home_venue_key": "smoothie-king-center",
+   "conference": "West",
+   "division": "Southwest Division"
+  },
+  {
+   "abbr": "NOH",
+   "team_id": "1610612740",
+   "provider_team_id": "1610612740-NOH",
+   "city": "New Orleans",
+   "name": "Hornets",
+   "franchise": "nba-1610612740",
+   "active": false,
+   "first": 2002,
+   "last": 2012,
+   "aliases": [
+    "New Orleans Hornets",
+    "NOH",
+    "NOK",
+    "New Orleans/Oklahoma City Hornets"
+   ],
+   "home_venue_key": null,
+   "conference": "West",
+   "division": "Southwest Division"
+  },
+  {
+   "abbr": "NYK",
+   "team_id": "1610612752",
+   "provider_team_id": "1610612752",
+   "city": "New York",
+   "name": "Knicks",
+   "franchise": "nba-1610612752",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Knicks",
+    "Knickerbockers",
+    "NYK",
+    "NY",
+    "New York"
+   ],
+   "home_venue_key": "madison-square-garden",
+   "conference": "East",
+   "division": "Atlantic Division"
+  },
+  {
+   "abbr": "OKC",
+   "team_id": "1610612760",
+   "provider_team_id": "1610612760",
+   "city": "Oklahoma City",
+   "name": "Thunder",
+   "franchise": "nba-1610612760",
+   "active": true,
+   "first": 2008,
+   "last": null,
+   "aliases": [
+    "Thunder",
+    "OKC",
+    "Oklahoma City"
+   ],
+   "home_venue_key": "paycom-center",
+   "conference": "West",
+   "division": "Northwest Division"
+  },
+  {
+   "abbr": "SEA",
+   "team_id": "1610612760",
+   "provider_team_id": "1610612760-SEA",
+   "city": "Seattle",
+   "name": "SuperSonics",
+   "franchise": "nba-1610612760",
+   "active": false,
+   "first": 2000,
+   "last": 2007,
+   "aliases": [
+    "Seattle SuperSonics",
+    "Sonics",
+    "SEA",
+    "Seattle",
+    "Supersonics"
+   ],
+   "home_venue_key": null,
+   "conference": "West",
+   "division": "Northwest Division"
+  },
+  {
+   "abbr": "ORL",
+   "team_id": "1610612753",
+   "provider_team_id": "1610612753",
+   "city": "Orlando",
+   "name": "Magic",
+   "franchise": "nba-1610612753",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Magic",
+    "ORL",
+    "Orlando"
+   ],
+   "home_venue_key": "kia-center",
+   "conference": "East",
+   "division": "Southeast Division"
+  },
+  {
+   "abbr": "PHI",
+   "team_id": "1610612755",
+   "provider_team_id": "1610612755",
+   "city": "Philadelphia",
+   "name": "76ers",
+   "franchise": "nba-1610612755",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "76ers",
+    "Sixers",
+    "PHI",
+    "Philadelphia",
+    "Philly"
+   ],
+   "home_venue_key": "xfinity-mobile-arena",
+   "conference": "East",
+   "division": "Atlantic Division"
+  },
+  {
+   "abbr": "PHX",
+   "team_id": "1610612756",
+   "provider_team_id": "1610612756",
+   "city": "Phoenix",
+   "name": "Suns",
+   "franchise": "nba-1610612756",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Suns",
+    "PHX",
+    "PHO",
+    "Phoenix"
+   ],
+   "home_venue_key": "mortgage-matchup-center",
+   "conference": "West",
+   "division": "Pacific Division"
+  },
+  {
+   "abbr": "POR",
+   "team_id": "1610612757",
+   "provider_team_id": "1610612757",
+   "city": "Portland",
+   "name": "Trail Blazers",
+   "franchise": "nba-1610612757",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Trail Blazers",
+    "Blazers",
+    "Rip City",
+    "POR",
+    "Portland"
+   ],
+   "home_venue_key": "moda-center",
+   "conference": "West",
+   "division": "Northwest Division"
+  },
+  {
+   "abbr": "SAC",
+   "team_id": "1610612758",
+   "provider_team_id": "1610612758",
+   "city": "Sacramento",
+   "name": "Kings",
+   "franchise": "nba-1610612758",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Kings",
+    "SAC",
+    "Sacramento"
+   ],
+   "home_venue_key": "golden-1-center",
+   "conference": "West",
+   "division": "Pacific Division"
+  },
+  {
+   "abbr": "SAS",
+   "team_id": "1610612759",
+   "provider_team_id": "1610612759",
+   "city": "San Antonio",
+   "name": "Spurs",
+   "franchise": "nba-1610612759",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Spurs",
+    "SAS",
+    "SA",
+    "San Antonio"
+   ],
+   "home_venue_key": "frost-bank-center",
+   "conference": "West",
+   "division": "Southwest Division"
+  },
+  {
+   "abbr": "TOR",
+   "team_id": "1610612761",
+   "provider_team_id": "1610612761",
+   "city": "Toronto",
+   "name": "Raptors",
+   "franchise": "nba-1610612761",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Raptors",
+    "Raps",
+    "TOR",
+    "Toronto"
+   ],
+   "home_venue_key": "scotiabank-arena",
+   "conference": "East",
+   "division": "Atlantic Division"
+  },
+  {
+   "abbr": "UTA",
+   "team_id": "1610612762",
+   "provider_team_id": "1610612762",
+   "city": "Utah",
+   "name": "Jazz",
+   "franchise": "nba-1610612762",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Jazz",
+    "UTA",
+    "UTAH",
+    "Utah",
+    "Salt Lake City"
+   ],
+   "home_venue_key": "delta-center",
+   "conference": "West",
+   "division": "Northwest Division"
+  },
+  {
+   "abbr": "WAS",
+   "team_id": "1610612764",
+   "provider_team_id": "1610612764",
+   "city": "Washington",
+   "name": "Wizards",
+   "franchise": "nba-1610612764",
+   "active": true,
+   "first": 2000,
+   "last": null,
+   "aliases": [
+    "Wizards",
+    "Wiz",
+    "WAS",
+    "WSH",
+    "Washington"
+   ],
+   "home_venue_key": "capital-one-arena",
+   "conference": "East",
+   "division": "Southeast Division"
+  }
+ ]
+}
