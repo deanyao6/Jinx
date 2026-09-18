@@ -124,8 +124,8 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 
 **Famous games, superstars and personal badges are built and verified on local (2026-09-18),
 not yet on hosted.** Brief: `docs/prompts/famous-games.md`; evidence: `docs/progress.md` and
-`docs/evidence/famous/`; facts: `docs/verification.md`. Two migrations (`20260918000100`,
-`20260918000200`), nine ingest scripts wired into the daily workflows. What needs Dean:
+`docs/evidence/famous/`; facts: `docs/verification.md`. Three migrations (`20260918000100`,
+`20260918000200`, `20260918100100`), nine ingest scripts wired into the daily workflows. What needs Dean:
 
 1. **The hosted rollout.** The agent's `db push` was refused by the permission check on
    2026-09-18, so hosted has none of it. Run, in order, verifying each by reading hosted:
@@ -144,8 +144,8 @@ not yet on hosted.** Brief: `docs/prompts/famous-games.md`; evidence: `docs/prog
    No Edge Function changed behaviour, so no function deploy is needed.
 2. **Edit `seed/franchise_players.json`.** It is an agent's first draft: ten transcendent names
    and one to three per team per era. Rerun `ingest/src/famous/franchise.ts` after.
-3. **Skim `seed/nfl_awards.json`.** 442 rows for 2023-2025 from public record (sources in
-   `docs/verification.md`). Pro Bowl includes replacements.
+3. **Skim `seed/nfl_awards.json`.** 107 rows for 2023-2025 from public record (sources in
+   `docs/verification.md`): MVP, MVP top five and first-team All-Pro. No Pro Bowl, by Dean's call.
 4. **See it in the app.** The screens are only in the next build.
 
 The NBA is next, from

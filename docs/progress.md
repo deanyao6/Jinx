@@ -140,7 +140,7 @@ Built from `docs/prompts/famous-games.md`. Local only; hosted is not rolled out 
 |---|---|
 | Championship and the two games before it, from the schedule, both sports | `rebuild_schedule_famous_games()`: 156 rows, exactly 3 for every complete postseason 2000-2025. 2024 includes KC 22 at PHI 40, Super Bowl LIX |
 | The curated list resolves by local date and refuses ambiguity | `npx tsx ingest/src/famous/curated.ts`: 21 of 21 entries, one game each. It refused twice before two entries were corrected against the data (Super Bowl LVII home side, Judge's doubleheader) |
-| Superstars from awards, window of 3 seasons | `is_superstar` for Bryce Harper in 2025 is true, from his 2024 All-Star selection. 2,724 honor rows, 101 franchise players |
+| Superstars from awards, window of 3 seasons | `is_superstar` for Bryce Harper in 2025 is true, from his 2024 All-Star selection. 2,389 honor rows (2,282 MLB, 107 NFL), 101 franchise players |
 | Personal badges for favourite players | pgTAP 018 fires all four rules. On real data, with Cooper DeJean favourited and Super Bowl LIX logged: rookie season and first touchdown (his pick six), count 1, 2 personal |
 | Dean's three attended games | 0 famous rows, count 0: none is famous, which is the right answer |
 | Feed event | Logging Super Bowl LIX wrote `famous_game` with title "Super Bowl LIX"; a row added later writes it too (pgTAP) |
@@ -155,4 +155,5 @@ Decisions made during the build:
   said to drop the NFL scoring lines, so they were kept.
 - **A game famous two ways shows one card**, curated over schedule.
 - **MLB has no voting placements**, so its bar is winners plus All-Stars.
+- **The NFL bar is MVP, MVP top five and first-team All-Pro, not the Pro Bowl** (Dean, 2026-09-18).
 - **NFL "first touchdown" is a touchdown scored, not thrown.**

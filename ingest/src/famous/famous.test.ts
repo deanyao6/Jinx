@@ -99,14 +99,14 @@ describe('seed/nfl_awards.json', () => {
       '2025 Matthew Stafford',
     ]);
   });
-  it('tells the two Josh Allens apart', () => {
+  it('holds MVP, MVP top five and first-team All-Pro only, no Pro Bowl', () => {
     const rows = load<NflAwardRow[]>(NFL_AWARDS_FILE);
-    const allen = (season: number) =>
-      rows.filter((r) => r.name === 'Josh Allen' && r.season === season && r.honor === 'pro_bowl').map((r) => r.gsis_id);
-    // 2023: the Jaguars edge rusher (now Josh Hines-Allen); the Bills quarterback was not picked.
-    expect(allen(2023)).toEqual(['00-0035642']);
-    // 2024: the Bills quarterback.
-    expect(allen(2024)).toEqual(['00-0034857']);
+    expect(new Set(rows.map((r) => r.honor))).toEqual(new Set(['mvp', 'mvp_top5', 'all_pro_1st']));
+    expect(validateNflAwards([{ season: 2024, honor: 'pro_bowl', gsis_id: '00-0034857', name: 'Josh Allen' }])).toHaveLength(1);
+  });
+  it('names the quarterback Lamar Jackson, not the cornerback', () => {
+    const rows = load<NflAwardRow[]>(NFL_AWARDS_FILE);
+    expect(new Set(rows.filter((r) => r.name === 'Lamar Jackson').map((r) => r.gsis_id))).toEqual(new Set(['00-0034796']));
   });
 });
 

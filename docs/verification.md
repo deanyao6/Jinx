@@ -460,13 +460,15 @@ responses are saved in `ingest/fixtures/mlb/` and parsed by `ingest/src/famous/f
   nextgen_stats, injuries, depth_charts, combine. None is awards.
 - `players.csv` has no Pro Bowl or All-Pro column (it has `rookie_season`, `last_season`,
   `draft_year`). `misc/pfr_rosters.csv` has none either and stops at 2022.
-- So `seed/nfl_awards.json` is kept by hand: 442 rows for 2023-2025. Sources, per season:
-  first-team All-Pro from Wikipedia's "2023/2024/2025 All-Pro Team" (AP first team only); Pro
-  Bowl from "2024/2025/2026 Pro Bowl Games" (originals and replacements, both officially Pro
-  Bowlers); MVP and the rest of the top five from NFL.com and ESPN: 2023 Jackson, then
-  Prescott, McCaffrey, Purdy, Allen; 2024 Allen, then Jackson, Barkley, Burrow, Goff; 2025
-  Stafford, then the other finalists Maye, McCaffrey, Allen, Lawrence (only Maye's second place
-  is published in order; the AP's five finalists are the top five). Each row carries its URL.
+- So `seed/nfl_awards.json` is kept by hand: 107 rows for 2023-2025. Sources, per season:
+  first-team All-Pro from Wikipedia's "2023/2024/2025 All-Pro Team" (AP first team only); MVP and
+  the rest of the top five from NFL.com and ESPN: 2023 Jackson, then Prescott, McCaffrey, Purdy,
+  Allen; 2024 Allen, then Jackson, Barkley, Burrow, Goff; 2025 Stafford, then the other
+  finalists Maye, McCaffrey, Allen, Lawrence (only Maye's second place is published in order;
+  the AP's five finalists are the top five). Each row carries its URL.
+- **No Pro Bowl.** Dean, 2026-09-18: "dont include pro bowl, only all pro teams". The first
+  load had 335 Pro Bowl rows (originals and replacements, from Wikipedia's Pro Bowl Games pages);
+  `20260918100100_no_pro_bowl.sql` removes them and the `pro_bowl` honor kind.
 - Names resolved to gsis ids through `players.csv`. Five needed a hand choice: Lamar Jackson
   (QB 00-0034796, not the CB), Josh Allen of Jacksonville (00-0035642, now "Josh Hines-Allen"),
   Connor McGovern of Buffalo (00-0035679), Byron Murphy the CB (00-0035236), Byron Young of the

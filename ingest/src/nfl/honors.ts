@@ -6,8 +6,9 @@
  * No free structured source carries NFL awards: nflverse has no awards release and its
  * players, rosters and pfr_rosters files carry no Pro Bowl or All-Pro flag (checked
  * 2026-09-17, docs/verification.md). So the file is kept by hand from public record: MVP, the
- * rest of the MVP top five, AP first-team All-Pro, and Pro Bowl selections including
- * replacements. Each row names the player by gsis id, the same id game_appearances uses.
+ * rest of the MVP top five, and AP first-team All-Pro. Not the Pro Bowl: Dean, 2026-09-18,
+ * "only all pro teams". Each row names the player by gsis id, the same id game_appearances
+ * uses. The file's rows replace what the last run loaded, so deleting a line removes the honor.
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -20,7 +21,7 @@ import { ensurePlayers, refreshAllStats } from '../famous/players.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 export const NFL_AWARDS_FILE = path.join(ROOT, 'seed', 'nfl_awards.json');
-export const NFL_HONORS: ReadonlySet<string> = new Set(['mvp', 'mvp_top5', 'all_pro_1st', 'pro_bowl']);
+export const NFL_HONORS: ReadonlySet<string> = new Set(['mvp', 'mvp_top5', 'all_pro_1st']);
 
 export interface NflAwardRow {
   season: number;
@@ -63,6 +64,8 @@ async function main(): Promise<void> {
       source: 'seed/nfl_awards.json',
     });
   }
+  const { error } = await db.from('player_honors').delete().eq('source', 'seed/nfl_awards.json');
+  if (error) throw new Error(`clear NFL honors: ${error.message}`);
   await upsertRows(db, 'player_honors', [...out.values()], 'player_id,season,honor');
   console.log(`${out.size} NFL honor rows`);
   await refreshAllStats(db);
