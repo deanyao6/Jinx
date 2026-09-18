@@ -248,3 +248,19 @@ in baseball and football. `supabase/migrations/20260917000600_superlatives_v2.sq
   row with a game to `/games/[gameId]` (a stadium row carries the most recent game there). On the
   full list the most visited stadium opens its venue sheet instead, which lists every game there.
   Rows about no one game (streaks, walk-offs) open the full list.
+
+## Update, 2026-09-18: Famous games
+
+- **Passport, Fan superlatives, "Famous games"** (gold icon, the count, a "2 personal" chip) opens
+  `/passport/famous`. It leads the list whenever there is a famous game or a badge. The full
+  superlatives list has the same row in Games, with the chip.
+- **`/passport/famous`**: the count, then a section per league and a card per team; each row opens
+  `/games/[gameId]`. Empty state says what counts.
+- **Game page**: a badge card under the scoreboard per famous row (curated over schedule) and per
+  personal badge. A personal badge ("Yours") is a button: tapping shows or hides why it counts.
+- **Gold mark** beside the title of a famous game in History, the Games tab and the record game
+  log. Never in demo mode.
+- **Players seen** names superstars with their honor ("2024 All-Star") and leaves out an ordinary
+  RBI unless the batter is a star.
+- **Feed**: "Dean was at Super Bowl LIX." **Another person's profile**: a "Famous games" tile when
+  the count is above zero and their stats are visible.

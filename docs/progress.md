@@ -131,3 +131,28 @@ Each of these was live, and none was visible from the outside.
   M1's 150 MB. A season's play-by-play is one file, so ingesting all of it costs nothing extra in
   requests, and it is what makes a logged NFL game complete immediately instead of overnight.
   Trimming `game_appearances` to attended games would bring it under; that is Dean's call.
+
+## Famous games, superstars and personal badges (2026-09-18)
+
+Built from `docs/prompts/famous-games.md`. Local only; hosted is not rolled out yet (STATE.md 5).
+
+| Done when | Evidence |
+|---|---|
+| Championship and the two games before it, from the schedule, both sports | `rebuild_schedule_famous_games()`: 156 rows, exactly 3 for every complete postseason 2000-2025. 2024 includes KC 22 at PHI 40, Super Bowl LIX |
+| The curated list resolves by local date and refuses ambiguity | `npx tsx ingest/src/famous/curated.ts`: 21 of 21 entries, one game each. It refused twice before two entries were corrected against the data (Super Bowl LVII home side, Judge's doubleheader) |
+| Superstars from awards, window of 3 seasons | `is_superstar` for Bryce Harper in 2025 is true, from his 2024 All-Star selection. 2,724 honor rows, 101 franchise players |
+| Personal badges for favourite players | pgTAP 018 fires all four rules. On real data, with Cooper DeJean favourited and Super Bowl LIX logged: rookie season and first touchdown (his pick six), count 1, 2 personal |
+| Dean's three attended games | 0 famous rows, count 0: none is famous, which is the right answer |
+| Feed event | Logging Super Bowl LIX wrote `famous_game` with title "Super Bowl LIX"; a row added later writes it too (pgTAP) |
+| App | Simulator screens in `docs/evidence/famous/`: game page badge, famous page, Passport row, full list, Games tab mark |
+| Tests | pgTAP 018 (36 checks), core `famous.test.ts` (16), ingest `famous.test.ts` (14), app famous tests (9) plus notable, copy and format additions. Full app suite: 885 of 886 pass; the one failure is `sealColors.test.ts`, caused by the concurrent NBA session's uncommitted `seed/team_colors.json` (95 palettes, the test expects 65) |
+
+Decisions made during the build:
+- **The count is games, each once**, personal badges included, as the brief says; a game with a
+  famous row and a badge is one. `personal_count` counts badges.
+- **"Drove in a run" is dropped for non-stars; touchdowns, field goals and moments stay.** The
+  brief's rule is "home runs plus superstars" with RBIs out unless the batter is a star; nothing
+  said to drop the NFL scoring lines, so they were kept.
+- **A game famous two ways shows one card**, curated over schedule.
+- **MLB has no voting placements**, so its bar is winners plus All-Stars.
+- **NFL "first touchdown" is a touchdown scored, not thrown.**
