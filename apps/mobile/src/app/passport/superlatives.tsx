@@ -41,7 +41,8 @@ export default function SuperlativesScreen() {
         detail: row.context ?? null,
       };
     }
-    if (!g) return null;
+    // A row about no one game (famous games) carries its own chip: "2 personal".
+    if (!g) return row.context ? { chip: row.context } : null;
     return {
       // "First game" already has the date as its value.
       chip: row.key === 'first_game' ? null : formatGameDate(g.scheduled_start, { withYear: true }),
