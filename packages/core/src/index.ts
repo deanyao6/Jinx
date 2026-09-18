@@ -2,6 +2,7 @@
 export * from './types.js';
 export * from './elo.js';
 export * from './rows.js';
+export * from './scoring.js';
 export * from './providers/mlb/parse.js';
 export * from './providers/mlb/moments.js';
 export * from './providers/mlb/winprob.js';

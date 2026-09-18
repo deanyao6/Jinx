@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import React from 'react';
 
 import { EmptyState } from '@/components/EmptyState';
@@ -7,10 +7,18 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { TextField } from '@/components/TextField';
 import { PickRow } from '@/features/account/ui/PickRow';
 import { SettingsFrame } from '@/features/account/ui/SettingsFrame';
+import { shortTeamName } from '@/features/data/names';
 import { useFavoriteTeams, useSetFavoriteTeams } from '@/features/profile/queries';
 import { useTeams, type Team } from '@/features/teams/queries';
 import { sportLabel } from '@/lib/format';
 import { TeamTheme } from '@/theme/reference/TeamTheme';
+
+/** The roster picker as the "any favorite players?" question for one just-added team. */
+export function rosterPromptHref(team: Team): Href {
+  const name = encodeURIComponent(team.name);
+  const nick = encodeURIComponent(shortTeamName(team.name, team));
+  return `/settings/favorites/roster?teamId=${team.id}&name=${name}&nick=${nick}&sport=${team.sport_id}&prompt=1`;
+}
 
 /**
  * Step two of the team picker: choose a team in one league, and that is the whole flow.
@@ -21,9 +29,14 @@ import { TeamTheme } from '@/theme/reference/TeamTheme';
  *
  * Every row sits in its own team's colours: a plain row with a coloured tile until you pick
  * it, and filled with the colour once you have.
+ *
+ * Adding a team asks straight away whether any of its players are favourites too (Dean,
+ * 2026-09-17): the roster picker opens in its prompt form, and Back or Not now return here.
+ * Removing a team asks nothing.
  */
 export default function TeamsRoute() {
   const { sport } = useLocalSearchParams<{ sport?: string }>();
+  const router = useRouter();
   const [query, setQuery] = React.useState('');
 
   const teams = useTeams(true);
@@ -52,6 +65,7 @@ export default function TeamsRoute() {
       setFavorites.mutate(favoriteList.filter((t) => t.id !== team.id));
     } else {
       setFavorites.mutate([...favoriteList, team]);
+      router.push(rosterPromptHref(team));
     }
   };
 

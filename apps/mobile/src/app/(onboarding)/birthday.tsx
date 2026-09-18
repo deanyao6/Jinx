@@ -50,7 +50,7 @@ function BirthdayForm({ initial }: { initial: string | null }) {
   return (
     <FormScreen>
       <StepIntro
-        step={4}
+        step={5}
         title="Your birthday"
         body="Jinx is for fans 13 and up. We never show your birthday to anyone."
         onBack={() => router.back()}

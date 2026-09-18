@@ -1,4 +1,4 @@
-import { highlightsSiteLabel, officialHighlightsUrl } from '@jinx/core';
+import { highlightsSiteLabel, officialHighlightsUrl, scoringNote } from '@jinx/core';
 import { useMemo } from 'react';
 
 import { useMyAttendanceForGame } from '@/features/attendances/queries';
@@ -114,9 +114,30 @@ export function useReliveGame(gameId: string | undefined): ReliveGameData {
     });
   }, [g, a, companions.data, stats.data]);
 
+  // Each scoring step gets its note, "Touchdown, A.J. Brown", by the same rule as the game
+  // page's Scoring section: the touchdown scorer and the field goal kicker are named, an extra
+  // point is not; in baseball it is the batter and the event.
+  const sport = g?.sport_id;
   const storySteps = useMemo(
-    () => withPersonalLine(steps.data ?? [], personal),
-    [steps.data, personal],
+    () =>
+      withPersonalLine(
+        (steps.data ?? []).map((s) =>
+          s.kind && sport
+            ? {
+                ...s,
+                note: scoringNote({
+                  sport,
+                  kind: s.kind,
+                  scorerName: s.scorerName ?? null,
+                  description: s.text,
+                  runs: s.runs ?? 0,
+                }),
+              }
+            : s,
+        ),
+        personal,
+      ),
+    [steps.data, personal, sport],
   );
 
   const highlights = useMemo(

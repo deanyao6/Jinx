@@ -8,6 +8,7 @@ export default function OnboardingLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="teams" />
+      <Stack.Screen name="players" />
       <Stack.Screen name="city" />
       <Stack.Screen name="birthday" />
       <Stack.Screen name="past-games" />

@@ -21,6 +21,10 @@ jobs:
       - run: npm ci
       - name: Current MLB season schedule refresh
         run: npx tsx ingest/src/mlb/backfill.ts --from $(date +%Y) --to $(date +%Y) --force
+      # The favourite-player picker shows each team's real roster (team_rosters), so a trade
+      # or a call-up shows up the next morning. 30 requests, one per team.
+      - name: MLB current rosters
+        run: npx tsx ingest/src/mlb/rosters.ts
       - name: MLB details for attended games lacking detail
         run: npx tsx ingest/src/mlb/detail.ts --pending --limit 300
       - name: Elo (MLB)

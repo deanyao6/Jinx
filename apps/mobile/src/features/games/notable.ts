@@ -14,9 +14,9 @@ import type { AppearanceRow, GameEventRow } from './queries';
  *
  * - `game_events` holds the RARE moments (SPEC.md 6.7) — a pick six, a 50-yard field goal,
  *   a home run, a no-hitter. MLB's carry their player; NFL's now do too.
- * - `game_story_steps` holds every SCORING PLAY, and nflverse names the scorer on each, so
- *   an ordinary touchdown or field goal is named. MLB's feed describes a scoring play in
- *   prose with no player id, which is why its home runs come from the first source.
+ * - `game_story_steps` holds every SCORING PLAY with its scorer by the rule in
+ *   `@jinx/core` scoring.ts: the touchdown scorer, the field goal kicker, the batter with
+ *   the RBI. An extra point names nobody, so a kicker is named for his field goals only.
  *
  * Together they answer what was actually asked for: who scored a touchdown or hit a home
  * run. "Star player" in the wider sense — an all-star, a franchise great — is deliberately
@@ -60,9 +60,10 @@ export function notablePlayers(
   };
 
   // Scoring plays first, so an ordinary touchdown reads before the rarer moment that may
-  // also describe it.
+  // also describe it. The step's kind says what it was; a step from before kinds were
+  // stored just says they scored.
   for (const step of steps) {
-    if (step.scorerId) add(step.scorerId, 'Scored');
+    if (step.scorerId) add(step.scorerId, scoredLabel(step.kind ?? null));
   }
   for (const e of events) {
     const id = e.player?.id;
@@ -91,6 +92,28 @@ export function notablePlayers(
     group.others.sort((a, b) => a.localeCompare(b));
   }
   return [...byTeam.values()];
+}
+
+/** What a scoring step says a player did: "Touchdown", "Home run", "Drove in a run". */
+const SCORED_LABEL: Record<string, string> = {
+  touchdown: 'Touchdown',
+  field_goal: 'Field goal',
+  home_run: 'Home run',
+  single: 'Drove in a run',
+  double: 'Drove in a run',
+  triple: 'Drove in a run',
+  sac_fly: 'Drove in a run',
+  sac_bunt: 'Drove in a run',
+  walk: 'Drove in a run',
+  hit_by_pitch: 'Drove in a run',
+  groundout: 'Drove in a run',
+  flyout: 'Drove in a run',
+  fielders_choice: 'Drove in a run',
+  steal: 'Stole home',
+};
+
+export function scoredLabel(kind: string | null): string {
+  return (kind && SCORED_LABEL[kind]) || 'Scored';
 }
 
 /** "and 23 others", or nothing at all when everyone who played is already named. */

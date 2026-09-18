@@ -290,7 +290,11 @@ function Body({
           </Pressable>
           <View style={[s.storyCard, { backgroundColor: base.surface }]}>
             <Text style={[s.storyLabel, { color: base.muted }]}>
-              {index === 0 ? relive.idleHint : current.label}
+              {index === 0
+                ? relive.idleHint
+                : current.note
+                  ? `${current.label} · ${current.note}`
+                  : current.label}
             </Text>
             <Text style={[s.storyText, { color: base.ink }]}>{current.text}</Text>
           </View>

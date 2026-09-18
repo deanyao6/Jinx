@@ -92,12 +92,59 @@ export interface ScoringEvent {
   /** Which side scored. */
   scoringSide: Side;
   description: string;
+  /**
+   * What the score was and who it belongs to (`scoring.ts`). Optional so a timeline built
+   * before these existed still type-checks; the writer stores null for each when absent.
+   */
+  kind?: ScoringKind;
+  scorerProviderId?: string | null;
+  scorerName?: string | null;
 }
+
+/**
+ * A closed vocabulary per sport for `game_scoring_timeline.kind`. Football first; then
+ * baseball, where the kind is the batter's event when a run came home on it (a home run,
+ * an RBI single, a sacrifice fly, a bases-loaded walk) or the thing the run came home on
+ * when it did not (a wild pitch, a balk, a steal of home). `other` is anything else.
+ */
+export type NflScoringKind =
+  'touchdown' | 'field_goal' | 'extra_point' | 'two_point' | 'safety' | 'other';
+export type MlbScoringKind =
+  | 'home_run'
+  | 'single'
+  | 'double'
+  | 'triple'
+  | 'sac_fly'
+  | 'sac_bunt'
+  | 'walk'
+  | 'hit_by_pitch'
+  | 'groundout'
+  | 'flyout'
+  | 'fielders_choice'
+  | 'wild_pitch'
+  | 'passed_ball'
+  | 'balk'
+  | 'steal'
+  | 'error'
+  | 'other';
+export type ScoringKind = NflScoringKind | MlbScoringKind;
 
 export interface Appearance {
   providerPlayerId: string;
   fullName: string;
   providerTeamId: string;
+}
+
+/** One player on a team's current roster, as the provider lists them today. */
+export interface RosterEntry {
+  providerPlayerId: string;
+  fullName: string;
+  /** Provider position abbreviation (MLB `SS`, `P`; nflverse `QB`, `OL`), null when unknown. */
+  position: string | null;
+  /** Jersey number as text (providers leave it empty for some new arrivals). */
+  jersey: string | null;
+  /** Provider status code verbatim (MLB `A`, `D15`, `D60`; nflverse `ACT`, `RES`, `DEV`). */
+  status: string | null;
 }
 
 /** MLB plate appearance, derived from liveData.plays.allPlays. */
@@ -131,6 +178,21 @@ export interface MlbPlay {
   allStrikes: boolean;
   /** Number of runners on base when the play started (0-3). */
   runnersOnStart: number;
+  /**
+   * When a run came home on something other than the plate appearance's result (a wild
+   * pitch, a passed ball, a balk, a steal of home), that event and the runner, from the
+   * feed's `runners[].details`. Null when the result itself scored the run, or when the
+   * feed does not say. Optional because older fixtures and tests build plays without it.
+   */
+  runScoredOn?: RunScoredOn | null;
+}
+
+/** The non-batter event a run came home on, and who ran it in. */
+export interface RunScoredOn {
+  eventType: string;
+  event: string;
+  runnerId: string;
+  runnerName: string;
 }
 
 /** NFL play, derived from nflverse play-by-play. */
@@ -241,4 +303,6 @@ export interface SportsDataProvider {
   fetchSchedule(range: DateRange): Promise<CanonicalGame[]>;
   fetchGameDetail(providerGameId: string): Promise<CanonicalGameDetail>;
   fetchLiveState?(providerGameId: string): Promise<LiveState>;
+  /** The team's current roster. Absent for providers that publish rosters as season files. */
+  fetchRoster?(providerTeamId: string): Promise<RosterEntry[]>;
 }

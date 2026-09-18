@@ -9,6 +9,8 @@ import {
   gameRow,
   playerRows,
   timelineRows,
+  timelineScorerIds,
+  type PlayerRef,
   type RowContext,
 } from '../rows.js';
 import type { CanonicalGame, CanonicalGameDetail, GameEvent } from '../types.js';
@@ -111,6 +113,41 @@ export async function upsertGames(
   }
 }
 
+/** `players` rows for these provider ids, keyed by provider id. Missing ids are simply absent. */
+export async function lookupPlayers(
+  db: MinimalDb,
+  provider: string,
+  providerPlayerIds: readonly string[],
+): Promise<Map<string, PlayerRef>> {
+  const out = new Map<string, PlayerRef>();
+  for (const part of chunk([...new Set(providerPlayerIds)], 500)) {
+    const { data, error } = await db
+      .from('players')
+      .select('id, provider_player_id, full_name')
+      .eq('provider', provider)
+      .in('provider_player_id', part);
+    if (error) throw new Error(error.message);
+    for (const p of (data ?? []) as { id: string; provider_player_id: string; full_name: string }[])
+      out.set(p.provider_player_id, { id: p.id, fullName: p.full_name });
+  }
+  return out;
+}
+
+/** Replaces a game's scoring timeline. Rows carry the kind and the scorer (`scoring.ts`). */
+export async function writeTimeline(
+  db: MinimalDb,
+  detail: CanonicalGameDetail,
+  gameId: string,
+  players?: ReadonlyMap<string, PlayerRef>,
+): Promise<number> {
+  const known = players ?? (await lookupPlayers(db, detail.provider, timelineScorerIds(detail)));
+  const { error } = await db.from('game_scoring_timeline').delete().eq('game_id', gameId);
+  if (error) throw new Error(`game_scoring_timeline: ${error.message}`);
+  const rows = timelineRows(detail, gameId, known);
+  await upsertRows(db, 'game_scoring_timeline', rows, 'game_id,seq');
+  return rows.length;
+}
+
 export interface DetailWriteResult {
   gameId: string;
   appearances: number;
@@ -145,24 +182,20 @@ export async function upsertGameDetail(
   const game = gameData as { id: string; home_team_id: string; away_team_id: string };
 
   await upsertRows(db, 'players', playerRows(detail), 'provider,provider_player_id');
+  // Scorers are looked up with the lineup: a touchdown scorer without a snap count, which the
+  // older stats-based seasons can produce, keeps the provider's name and no player id.
+  const players = await lookupPlayers(db, detail.provider, [
+    ...detail.appearances.map((a) => a.providerPlayerId),
+    ...timelineScorerIds(detail),
+  ]);
   const playerIdByProvider = new Map<string, string>();
-  for (const part of chunk([...new Set(detail.appearances.map((a) => a.providerPlayerId))], 500)) {
-    const { data, error } = await db
-      .from('players')
-      .select('id, provider_player_id')
-      .eq('provider', detail.provider)
-      .in('provider_player_id', part);
-    if (error) throw new Error(error.message);
-    for (const p of (data ?? []) as { id: string; provider_player_id: string }[])
-      playerIdByProvider.set(p.provider_player_id, p.id);
-  }
+  for (const [providerId, p] of players) playerIdByProvider.set(providerId, p.id);
 
   const appearances = appearanceRows(detail, game.id, ctx.teamMap, playerIdByProvider);
   await db.from('game_appearances').delete().eq('game_id', game.id);
   await upsertRows(db, 'game_appearances', appearances, 'game_id,player_id');
 
-  await db.from('game_scoring_timeline').delete().eq('game_id', game.id);
-  await upsertRows(db, 'game_scoring_timeline', timelineRows(detail, game.id), 'game_id,seq');
+  await writeTimeline(db, detail, game.id, players);
 
   const events = eventRows(
     detectMoments(detail),

@@ -1,6 +1,6 @@
 /**
  * MLB Stats API -> canonical types. Pure functions over the JSON documents returned by
- * `v1/schedule`, `v1.1/game/{gamePk}/feed/live`, and `v1/teams`.
+ * `v1/schedule`, `v1.1/game/{gamePk}/feed/live`, `v1/teams`, and `v1/teams/{id}/roster`.
  * Field names are verified in docs/verification.md.
  */
 import type {
@@ -12,9 +12,12 @@ import type {
   GameType,
   LiveState,
   MlbPlay,
+  RosterEntry,
+  RunScoredOn,
   ScoringEvent,
   Side,
 } from '../../types.js';
+import { mlbScorer } from '../../scoring.js';
 
 // ---------------------------------------------------------------------------
 // Minimal shapes of the provider documents (only the fields we read)
@@ -70,6 +73,20 @@ export interface MlbTeamsResponse {
   }[];
 }
 
+/** `v1/teams/{teamId}/roster?rosterType=40Man` (docs/verification.md). */
+export interface MlbRosterResponse {
+  teamId?: number;
+  rosterType?: string;
+  roster: {
+    person: { id: number; fullName: string };
+    jerseyNumber?: string;
+    position?: { code?: string; name?: string; type?: string; abbreviation?: string };
+    status?: { code?: string; description?: string };
+    parentTeamId?: number;
+    note?: string;
+  }[];
+}
+
 export interface MlbPlayEvent {
   isPitch?: boolean;
   type?: string;
@@ -106,6 +123,19 @@ export interface MlbAllPlay {
   };
   playEvents?: MlbPlayEvent[];
   playEndTime?: string;
+  runners?: MlbRunner[];
+}
+
+/** One runner movement on a play; a run that scored mid-plate-appearance is found here. */
+export interface MlbRunner {
+  movement?: { start?: string | null; end?: string | null; isOut?: boolean };
+  details?: {
+    event?: string;
+    eventType?: string;
+    runner?: { id: number; fullName: string };
+    isScoringEvent?: boolean;
+    rbi?: boolean;
+  };
 }
 
 export interface MlbBoxscoreTeam {
@@ -314,12 +344,35 @@ export function parseMlbPlays(feed: MlbFeed): MlbPlay[] {
       allStrikes:
         eventType === 'strikeout' && pitches.length === 3 && pitches.every((e) => isStrikePitch(e)),
       runnersOnStart: runnersOnAfterPrev,
+      runScoredOn: runScoredOn(p),
     });
     const m = p.matchup;
     runnersOnAfterPrev =
       (m?.postOnFirst ? 1 : 0) + (m?.postOnSecond ? 1 : 0) + (m?.postOnThird ? 1 : 0);
   }
   return out;
+}
+
+/**
+ * The event a run came home on when it was not the plate appearance's own result: the
+ * scoring runner movement whose event differs from the play's. "Matt Carpenter strikes out
+ * swinging" under a changed score was a wild pitch; this is where the feed says so.
+ */
+export function runScoredOn(p: Pick<MlbAllPlay, 'result' | 'runners'>): RunScoredOn | null {
+  const own = p.result.eventType ?? '';
+  for (const r of p.runners ?? []) {
+    const d = r.details;
+    if (!d || d.isScoringEvent !== true || r.movement?.end !== 'score') continue;
+    const eventType = d.eventType ?? '';
+    if (eventType === own) continue;
+    return {
+      eventType,
+      event: d.event ?? '',
+      runnerId: d.runner ? String(d.runner.id) : '',
+      runnerName: d.runner?.fullName ?? '',
+    };
+  }
+  return null;
 }
 
 export function buildMlbTimeline(plays: MlbPlay[]): ScoringEvent[] {
@@ -341,6 +394,7 @@ export function buildMlbTimeline(plays: MlbPlay[]): ScoringEvent[] {
       awayScore: away,
       scoringSide,
       description: p.description,
+      ...mlbScorer(p),
     });
   }
   return events;
@@ -432,4 +486,36 @@ export function parseMlbLiveState(feed: MlbFeed, fetchedAt: string): LiveState {
     awayScore: ls?.teams?.away?.runs ?? 0,
     fetchedAt,
   };
+}
+
+/**
+ * Status codes that mean "on the big-league team today": active, or on an injured list (D7,
+ * D10, D15, D60). The 40-man also carries `RM` (reassigned to minors) and `NYR` (not yet
+ * reported), who are under contract but not on the team a fan watches, so they are left out.
+ */
+export function isMlbRosterStatus(code: string | null | undefined): boolean {
+  if (!code) return false;
+  return code === 'A' || /^D\d+$/.test(code);
+}
+
+/** The 40-man roster document, kept to active and injured players. */
+export function parseMlbRoster(doc: MlbRosterResponse): RosterEntry[] {
+  const out: RosterEntry[] = [];
+  const seen = new Set<string>();
+  for (const r of doc.roster ?? []) {
+    const status = r.status?.code ?? null;
+    if (!isMlbRosterStatus(status)) continue;
+    const id = String(r.person.id);
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const jersey = r.jerseyNumber?.trim();
+    out.push({
+      providerPlayerId: id,
+      fullName: r.person.fullName,
+      position: r.position?.abbreviation ?? null,
+      jersey: jersey ? jersey : null,
+      status,
+    });
+  }
+  return out;
 }

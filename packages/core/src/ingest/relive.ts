@@ -6,11 +6,11 @@
  * built a story for any sport, so a newly logged game never got one.
  */
 import { buildStorySteps, parseWinProbability } from '../providers/mlb/winprob.js';
-import type { StoryStep, WpPoint } from '../providers/mlb/winprob.js';
+import type { RawEntry, StoryStep, WpPoint } from '../providers/mlb/winprob.js';
 import type { CanonicalGameDetail } from '../types.js';
 import type { MinimalDb } from './db.js';
 import type { MlbClient } from './mlbClient.js';
-import { upsertGameDetail, type GameWriteContext } from './writer.js';
+import { lookupPlayers, upsertGameDetail, type GameWriteContext } from './writer.js';
 
 /** A row of `games_needing_relive`. */
 export interface ReliveTarget {
@@ -23,11 +23,32 @@ export interface ReliveTarget {
   away_name: string;
 }
 
-/** A story step as stored; NFL steps carry a scorer, MLB steps do not. */
+/** A story step as stored: the scorer resolved to a `players` row where there is one. */
 export type ReliveStepRow = StoryStep & {
   scorerPlayerId?: string | null;
   scorerName?: string | null;
 };
+
+/**
+ * Resolves each step's provider player id to our `players` row, and takes that row's full
+ * name over the provider's short form. A scorer we have no row for keeps the name alone.
+ */
+export async function resolveStepScorers(
+  db: MinimalDb,
+  provider: string,
+  steps: readonly (StoryStep & { scorerProviderId?: string | null })[],
+): Promise<ReliveStepRow[]> {
+  const ids = steps.map((s) => s.scorerProviderId).filter((id): id is string => !!id);
+  const players = ids.length > 0 ? await lookupPlayers(db, provider, ids) : new Map();
+  return steps.map((s) => {
+    const known = s.scorerProviderId ? players.get(s.scorerProviderId) : undefined;
+    return {
+      ...s,
+      scorerPlayerId: known?.id ?? null,
+      scorerName: known?.fullName ?? s.scorerName ?? null,
+    };
+  });
+}
 
 /** Games someone attended that are final, have detail, and have no story yet. */
 export async function reliveTargets(
@@ -83,6 +104,7 @@ export async function writeRelive(
       home_score: s.homeScore,
       label: s.label,
       text: s.text,
+      kind: s.kind ?? null,
       scorer_player_id: s.scorerPlayerId ?? null,
       scorer_name: s.scorerName ?? null,
     })),
@@ -100,20 +122,24 @@ export async function buildMlbRelive(
   client: MlbClient,
   game: ReliveTarget,
 ): Promise<{ points: number; steps: number } | null> {
-  const entries = await client.getJson<unknown[]>(
+  const entries = await client.getJson<RawEntry[]>(
     `v1/game/${game.provider_game_id}/winProbability`,
   );
-  const points = parseWinProbability(entries as never[]);
+  const points = parseWinProbability(entries);
   if (points.length === 0) {
     await markReliveChecked(db, game.game_id);
     return null;
   }
-  const steps = buildStorySteps(entries as never[], points, {
-    awayScore: game.away_score ?? 0,
-    homeScore: game.home_score ?? 0,
-    awayName: game.away_name,
-    homeName: game.home_name,
-  });
+  const steps = await resolveStepScorers(
+    db,
+    'mlb',
+    buildStorySteps(entries, points, {
+      awayScore: game.away_score ?? 0,
+      homeScore: game.home_score ?? 0,
+      awayName: game.away_name,
+      homeName: game.home_name,
+    }),
+  );
   await writeRelive(db, game.game_id, points, steps);
   return { points: points.length, steps: steps.length };
 }

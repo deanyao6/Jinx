@@ -18,7 +18,7 @@ type Props = {
 
 /**
  * The top of an onboarding step: Back, a pill per step with the ones reached filled in the
- * accent, then the page intro with "Step 2 of 5" as its kicker. The accent is ink until the
+ * accent, then the page intro with "Step 2 of 6" as its kicker. The accent is ink until the
  * teams step saves a favourite, and that team's colour from then on.
  */
 export function StepIntro({ step, title, body, onBack }: Props) {

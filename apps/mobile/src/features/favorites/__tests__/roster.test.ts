@@ -30,3 +30,37 @@ describe('rosterMeta', () => {
     expect(rosterMeta({ seen_by_you: 0, appearances: 300 })).not.toMatch(/seen/i);
   });
 });
+
+describe('rosterMeta with a real roster', () => {
+  // The `team_roster` RPC now says who is on the roster today and where they play. Before that
+  // migration lands the two fields are absent, and every line above still reads the same.
+  it('leads with the position', () => {
+    expect(rosterMeta({ seen_by_you: 2, appearances: 5, position: 'SS' })).toBe(
+      'SS · Seen 2 times',
+    );
+    expect(rosterMeta({ seen_by_you: 0, appearances: 5, position: 'QB' })).toBe(
+      'QB · In 5 games on record',
+    );
+  });
+
+  it('says only the position for a current player with no games on record', () => {
+    expect(rosterMeta({ seen_by_you: 0, appearances: 0, position: 'SP' })).toBe('SP');
+    expect(rosterMeta({ seen_by_you: 0, appearances: 0 })).toBe('');
+  });
+
+  it('marks someone who has left the team', () => {
+    expect(rosterMeta({ seen_by_you: 1, appearances: 5, on_roster: false })).toBe(
+      'Former · Seen once',
+    );
+    expect(rosterMeta({ seen_by_you: 1, appearances: 5, on_roster: false, position: 'C' })).toBe(
+      'Former C · Seen once',
+    );
+    expect(rosterMeta({ seen_by_you: 3, appearances: 5, on_roster: true })).toBe('Seen 3 times');
+  });
+
+  it('never uses an em dash to join the parts', () => {
+    expect(rosterMeta({ seen_by_you: 2, appearances: 5, position: 'SS' })).not.toContain(
+      String.fromCharCode(0x2014),
+    );
+  });
+});

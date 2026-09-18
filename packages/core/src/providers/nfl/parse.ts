@@ -10,6 +10,7 @@ import type {
   ScoringEvent,
   Side,
 } from '../../types.js';
+import { nflScorer } from '../../scoring.js';
 import { easternToUtcIso } from './eastern.js';
 import type { NflverseGameRow, NflversePbpRow } from './rows.js';
 
@@ -158,6 +159,7 @@ export function parseNflGame(game: NflverseGameRow, plays: NflversePbpRow[]): Ca
         awayScore: totalAway,
         scoringSide,
         description,
+        ...nflScorer(play),
       });
     }
     runningHome = totalHome;

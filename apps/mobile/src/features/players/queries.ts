@@ -21,6 +21,13 @@ export type RosterPlayer = Player & {
   appearances: number;
   /** Of those, how many the signed-in user was at. The reason to follow someone. */
   seen_by_you: number;
+  /**
+   * False for someone who no longer plays for the team but is listed because you saw them.
+   * Absent until the `team_roster` migration that carries real current rosters is applied.
+   */
+  on_roster?: boolean;
+  /** "SS", "QB". Null when the roster source does not say; absent before that migration. */
+  position?: string | null;
 };
 
 export const playerKeys = {

@@ -57,29 +57,37 @@ export function useGameStorySteps(gameId: string | undefined) {
     queryFn: async (): Promise<ReliveStep[]> => {
       const { data, error } = await supabase
         .from('game_story_steps')
-        .select('seq, wp_seq, away_score, home_score, label, text, scorer_player_id, scorer_name')
+        .select(
+          'seq, wp_seq, away_score, home_score, label, text, kind, scorer_player_id, scorer_name',
+        )
         .eq('game_id', gameId as string)
         .order('seq');
       if (error) throw error;
-      return (
-        data as {
-          wp_seq: number;
-          away_score: number;
-          home_score: number;
-          label: string;
-          text: string;
-          scorer_player_id: string | null;
-          scorer_name: string | null;
-        }[]
-      ).map((row) => ({
-        wp: row.wp_seq,
-        // The reference writes the score with spaces around the dash, as it does records.
-        score: `${row.away_score} – ${row.home_score}`,
-        label: row.label,
-        text: row.text,
-        scorerId: row.scorer_player_id,
-        scorerName: row.scorer_name,
-      }));
+      const rows = data as {
+        wp_seq: number;
+        away_score: number;
+        home_score: number;
+        label: string;
+        text: string;
+        kind: string | null;
+        scorer_player_id: string | null;
+        scorer_name: string | null;
+      }[];
+      return rows.map((row, i) => {
+        const prev = rows[i - 1];
+        const before = prev ? prev.away_score + prev.home_score : 0;
+        return {
+          wp: row.wp_seq,
+          // The reference writes the score with spaces around the dash, as it does records.
+          score: `${row.away_score} – ${row.home_score}`,
+          label: row.label,
+          text: row.text,
+          scorerId: row.scorer_player_id,
+          scorerName: row.scorer_name,
+          kind: row.kind,
+          runs: Math.max(0, row.away_score + row.home_score - before),
+        };
+      });
     },
     enabled: !!gameId,
     staleTime: (query) => reliveStaleTime(query.state.data),

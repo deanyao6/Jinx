@@ -8,15 +8,19 @@
  *   npx tsx ingest/src/nfl/relive.ts --attended            # games someone logged, any season
  *   npx tsx ingest/src/nfl/relive.ts --season 2025
  *   npx tsx ingest/src/nfl/relive.ts --game 2025_13_CHI_PHI
+ *   npx tsx ingest/src/nfl/relive.ts --rebuild              # every existing NFL story, after a
+ *                                                           # change to how steps are built
  *
- * Existing stories are left alone unless --game names one or --force is passed, so a rerun
- * is cheap.
+ * Existing stories are left alone unless --game names one, --rebuild or --force is passed, so
+ * a rerun is cheap.
  */
 import {
   buildPbpStorySteps,
   markReliveChecked,
   parsePbpWinProbability,
   reliveTargets,
+  resolveStepScorers,
+  selectAll,
   writeRelive,
   type PbpWpRow,
 } from '@jinx/core';
@@ -53,6 +57,26 @@ async function targets(db: Db): Promise<GameRow[]> {
   const select =
     'id, provider_game_id, season, home_score, away_score, home:home_team_id(name), away:away_team_id(name)';
 
+  // --rebuild: the games that already have a story, paged and filtered on the server.
+  if (process.argv.includes('--rebuild')) {
+    const withStory = await selectAll<{ game_id: string }>(db, 'game_story_steps', 'game_id', (q) =>
+      q.eq('seq', 1),
+    );
+    const out: GameRow[] = [];
+    const ids = withStory.map((r) => r.game_id);
+    for (let i = 0; i < ids.length; i += 200) {
+      const res = await db
+        .from('games')
+        .select(select)
+        .eq('provider', 'nflverse')
+        .eq('status', 'final')
+        .in('id', ids.slice(i, i + 200));
+      if (res.error) throw new Error(res.error.message);
+      out.push(...((res.data ?? []) as unknown as GameRow[]));
+    }
+    return out;
+  }
+
   // The attended set comes from one server-side function, games_needing_relive, never from
   // "read attendances, then filter in memory": PostgREST returns at most 1000 rows per request,
   // and that pattern silently dropped a real game once. The function also skips games that
@@ -78,33 +102,6 @@ async function targets(db: Db): Promise<GameRow[]> {
   return (data ?? []) as unknown as GameRow[];
 }
 
-/**
- * gsis id -> our `players.id`, for the scorers in a batch of steps.
- *
- * nflverse names a scorer by gsis id, which is what `game_appearances` is keyed by, so a
- * scorer resolves to the same row the lineup does. An id we have never seen — a player who
- * scored but recorded no snap, which the older stats-based seasons can produce — maps to
- * null and the step keeps only the name.
- */
-async function resolvePlayers(db: Db, gsisIds: readonly string[]): Promise<Map<string, string>> {
-  const unique = [...new Set(gsisIds)];
-  const out = new Map<string, string>();
-  // PostgREST caps a response at 1000 rows; a game has at most a dozen scorers, but chunk
-  // anyway so this stays correct if it is ever pointed at a whole season.
-  for (let i = 0; i < unique.length; i += 500) {
-    const { data, error } = await db
-      .from('players')
-      .select('id, provider_player_id')
-      .eq('provider', 'nflverse')
-      .in('provider_player_id', unique.slice(i, i + 500));
-    if (error) throw error;
-    for (const row of (data ?? []) as { id: string; provider_player_id: string }[]) {
-      out.set(row.provider_player_id, row.id);
-    }
-  }
-  return out;
-}
-
 /** One season's plays, keyed by nflverse game id, keeping only the columns Relive reads. */
 async function loadSeason(season: number, force: boolean): Promise<Map<string, PbpWpRow[]>> {
   const byGame = new Map<string, PbpWpRow[]>();
@@ -123,9 +120,16 @@ async function loadSeason(season: number, force: boolean): Promise<Map<string, P
       time_of_day: row.time_of_day,
       // The touchdown scorer first: it is set for a rushing, receiving, pick six, fumble
       // return and kick return alike. The kicker only matters when nobody reached the end
-      // zone, which is a field goal or an extra point.
+      // zone, which is a field goal or an extra point; the flags below let the story builder
+      // keep the kicker's name on a field goal and drop it on an extra point (scoring.ts).
       scorer_player_id: row.td_player_id || row.kicker_player_id || null,
       scorer_name: row.td_player_name || row.kicker_player_name || null,
+      touchdown: row.touchdown,
+      td_team: row.td_team ?? null,
+      field_goal_result: row.field_goal_result,
+      extra_point_attempt: row.extra_point_attempt,
+      two_point_attempt: row.two_point_attempt,
+      safety: row.safety,
     });
     byGame.set(row.game_id, list);
   }
@@ -134,6 +138,7 @@ async function loadSeason(season: number, force: boolean): Promise<Map<string, P
 
 async function main() {
   const force = process.argv.includes('--force');
+  const rebuild = process.argv.includes('--rebuild');
   const onlyGame = arg('game');
   const db = createDb();
 
@@ -157,7 +162,7 @@ async function main() {
     // Skip the download entirely when every game in the season already has a story.
     const pending: GameRow[] = [];
     for (const g of seasonGames) {
-      if (force || onlyGame) {
+      if (force || onlyGame || rebuild) {
         pending.push(g);
         continue;
       }
@@ -196,19 +201,11 @@ async function main() {
         homeName: g.home?.name ?? 'Home',
       });
 
-      const players = await resolvePlayers(
-        db,
-        steps.map((s) => s.scorerProviderId).filter((id): id is string => !!id),
-      );
-      await writeRelive(
-        db,
-        g.id,
-        points,
-        steps.map((s) => ({
-          ...s,
-          scorerPlayerId: s.scorerProviderId ? (players.get(s.scorerProviderId) ?? null) : null,
-        })),
-      );
+      // nflverse names a scorer by gsis id, which is what `game_appearances` is keyed by, so
+      // a scorer resolves to the same `players` row the lineup does, and takes its full name
+      // ("A.J. Brown" for "A.Brown"). An id we have never seen, a player who scored but
+      // recorded no snap, which the older stats-based seasons can produce, keeps the name alone.
+      await writeRelive(db, g.id, points, await resolveStepScorers(db, 'nflverse', steps));
       done += 1;
       const named = steps.filter((s) => s.scorerName).length;
       console.log(

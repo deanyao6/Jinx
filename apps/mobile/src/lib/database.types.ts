@@ -616,8 +616,11 @@ export type Database = {
           game_id: string
           half: string | null
           home_score: number
+          kind: string | null
           occurred_at: string | null
           period: number
+          scorer_name: string | null
+          scorer_player_id: string | null
           scoring_side: string
           seq: number
         }
@@ -628,8 +631,11 @@ export type Database = {
           game_id: string
           half?: string | null
           home_score: number
+          kind?: string | null
           occurred_at?: string | null
           period: number
+          scorer_name?: string | null
+          scorer_player_id?: string | null
           scoring_side: string
           seq: number
         }
@@ -640,8 +646,11 @@ export type Database = {
           game_id?: string
           half?: string | null
           home_score?: number
+          kind?: string | null
           occurred_at?: string | null
           period?: number
+          scorer_name?: string | null
+          scorer_player_id?: string | null
           scoring_side?: string
           seq?: number
         }
@@ -653,6 +662,13 @@ export type Database = {
             referencedRelation: "games"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "game_scoring_timeline_scorer_player_id_fkey"
+            columns: ["scorer_player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
         ]
       }
       game_story_steps: {
@@ -660,6 +676,7 @@ export type Database = {
           away_score: number
           game_id: string
           home_score: number
+          kind: string | null
           label: string
           scorer_name: string | null
           scorer_player_id: string | null
@@ -671,6 +688,7 @@ export type Database = {
           away_score: number
           game_id: string
           home_score: number
+          kind?: string | null
           label: string
           scorer_name?: string | null
           scorer_player_id?: string | null
@@ -682,6 +700,7 @@ export type Database = {
           away_score?: number
           game_id?: string
           home_score?: number
+          kind?: string | null
           label?: string
           scorer_name?: string | null
           scorer_player_id?: string | null
@@ -1581,6 +1600,51 @@ export type Database = {
           },
         ]
       }
+      team_rosters: {
+        Row: {
+          jersey: string | null
+          player_id: string
+          position: string | null
+          season: number
+          status: string | null
+          team_id: string
+          updated_at: string
+        }
+        Insert: {
+          jersey?: string | null
+          player_id: string
+          position?: string | null
+          season: number
+          status?: string | null
+          team_id: string
+          updated_at?: string
+        }
+        Update: {
+          jersey?: string | null
+          player_id?: string
+          position?: string | null
+          season?: number
+          status?: string | null
+          team_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_rosters_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_rosters_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       teams: {
         Row: {
           abbreviation: string
@@ -2210,6 +2274,14 @@ export type Database = {
           season: number
         }[]
       }
+      games_needing_scorers: {
+        Args: { p_limit?: number; p_provider: string }
+        Returns: {
+          game_id: string
+          provider_game_id: string
+          season: number
+        }[]
+      }
       generate_wrapped: {
         Args: { p_season: number; p_sport: string; p_user: string }
         Returns: Json
@@ -2461,6 +2533,8 @@ export type Database = {
           appearances: number
           full_name: string
           id: string
+          on_roster: boolean
+          position: string
           seen_by_you: number
         }[]
       }

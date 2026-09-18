@@ -5,6 +5,9 @@
  * docs/verification.md: the probabilities are percentages, not fractions, and the series
  * ends at 100 for the winner. No state-based model is needed for MLB.
  */
+import { mlbScorer, type Scorer } from '../../scoring.js';
+import type { ScoringKind } from '../../types.js';
+import { runScoredOn, type MlbRunner } from './parse.js';
 
 export type WpPoint = {
   seq: number;
@@ -25,19 +28,43 @@ export type StoryStep = {
   label: string;
   /** Templated from play-by-play. Never model-written (SPEC 6.18 keeps generation separate). */
   text: string;
+  /** What the score was (`scoring.ts`), on the steps that are a score. Null or absent otherwise. */
+  kind?: ScoringKind | null;
+  /** Who it belongs to, by the same rule as the scoring timeline: the batter, the touchdown scorer, the field goal kicker. */
+  scorerProviderId?: string | null;
+  scorerName?: string | null;
 };
 
-type RawEntry = {
+/**
+ * One entry of `/winProbability`: the same play object as `liveData.plays.allPlays`, plus the
+ * probability (verified against the live endpoint, docs/verification.md).
+ */
+export type RawEntry = {
   about?: { inning?: number; halfInning?: string; startTime?: string };
   result?: {
     description?: string;
     event?: string;
+    eventType?: string;
     rbi?: number;
     awayScore?: number;
     homeScore?: number;
   };
+  matchup?: { batter?: { id: number; fullName: string } };
+  runners?: MlbRunner[];
   homeTeamWinProbability?: number;
 };
+
+/** The scorer of a scoring entry, by the timeline's rule (`mlbScorer`). */
+function entryScorer(e: RawEntry): Scorer {
+  return mlbScorer({
+    eventType: e.result?.eventType ?? '',
+    description: e.result?.description ?? '',
+    rbi: e.result?.rbi ?? 0,
+    batterId: e.matchup?.batter ? String(e.matchup.batter.id) : '',
+    batterName: e.matchup?.batter?.fullName ?? '',
+    runScoredOn: runScoredOn({ result: e.result ?? {}, runners: e.runners ?? [] }),
+  });
+}
 
 const ORDINALS = ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th'];
 
@@ -150,6 +177,7 @@ export function buildStorySteps(
         runs,
         scoredForAway ? final.awayName : final.homeName,
       ),
+      ...entryScorer(e),
     });
   }
 

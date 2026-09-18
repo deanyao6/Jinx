@@ -101,19 +101,44 @@ export function appearanceRows(
   return out;
 }
 
-export function timelineRows(d: CanonicalGameDetail, gameId: string): GameRow[] {
-  return d.timeline.map((e) => ({
-    game_id: gameId,
-    seq: e.seq,
-    occurred_at: e.occurredAt,
-    period: e.period,
-    half: e.half,
-    clock: e.clock,
-    home_score: e.homeScore,
-    away_score: e.awayScore,
-    scoring_side: e.scoringSide,
-    description: e.description,
-  }));
+/** A `players` row the writer has looked up, by provider player id. */
+export type PlayerRef = { id: string; fullName: string };
+
+/** Provider player ids named as a scorer anywhere on the timeline. */
+export function timelineScorerIds(d: CanonicalGameDetail): string[] {
+  const ids = new Set<string>();
+  for (const e of d.timeline) if (e.scorerProviderId) ids.add(e.scorerProviderId);
+  return [...ids];
+}
+
+/**
+ * The scorer resolves to our `players` row when we have one, and its full name replaces the
+ * provider's short form ("A.Brown" becomes "A.J. Brown"). A scorer we have never seen keeps
+ * the provider's name and no id.
+ */
+export function timelineRows(
+  d: CanonicalGameDetail,
+  gameId: string,
+  players: ReadonlyMap<string, PlayerRef> = new Map(),
+): GameRow[] {
+  return d.timeline.map((e) => {
+    const known = e.scorerProviderId ? players.get(e.scorerProviderId) : undefined;
+    return {
+      game_id: gameId,
+      seq: e.seq,
+      occurred_at: e.occurredAt,
+      period: e.period,
+      half: e.half,
+      clock: e.clock,
+      home_score: e.homeScore,
+      away_score: e.awayScore,
+      scoring_side: e.scoringSide,
+      description: e.description,
+      kind: e.kind ?? null,
+      scorer_player_id: known?.id ?? null,
+      scorer_name: known?.fullName ?? e.scorerName ?? null,
+    };
+  });
 }
 
 export function eventRows(

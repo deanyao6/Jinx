@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 15:40 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 20:20 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -137,15 +137,24 @@ last open question and shipped on 2026-09-17.
   another person's profile. **Not yet looked at on a device or simulator:** light mode, the
   signed-out screens (welcome, email, code, onboarding), and the screens that need data the local
   account lacks (a bucket list with progress, notifications, companions, imports with matches).
-- **Hosted is four migrations behind local: `20260917000500`, `000600`, `000700`, `000800`.** An
-  agent's permission guard refuses a hosted `db push`, so this needs Dean, in this order:
+- **Hosted is six migrations behind local: `20260917000500` to `001000`.** An agent's permission
+  guard refuses a hosted `db push` and refuses to grant itself the permission, so this needs
+  Dean, either by running it or by adding a `Bash(npx supabase db push --linked --yes)` allow
+  rule in `.claude/settings.json`. In this order:
   1. `npx supabase db push --linked --yes` (NFL list titles; superlatives v2 with
-     `venues.elevation_ft`; the `avatars` bucket and its policies; the `handshakes` table and RPCs).
-  2. `npm run functions:sync && npx supabase functions deploy delete-account --project-ref vekdufflzklfxljqufbq`
-     so account deletion also removes the avatar. Do it AFTER step 1: the function walks the
-     `avatars` bucket, which must exist first.
-  Until then the TestFlight build keeps working as it does today, because the old payload keys
-  are still written and nothing in a shipped build reads the new ones.
+     `venues.elevation_ft`; the `avatars` bucket; `handshakes`; `team_rosters` and the new
+     `team_roster` RPC; scorer columns on `game_scoring_timeline` and `game_story_steps`).
+  2. `npm run functions:sync && npx supabase functions deploy delete-account mlb-sync --project-ref vekdufflzklfxljqufbq`
+     AFTER step 1: delete-account walks the `avatars` bucket and mlb-sync's writer fills the
+     scorer columns, so neither may go out before the migration.
+  3. With `/tmp/hosted.env` loaded: `npx tsx ingest/src/mlb/rosters.ts` and
+     `npx tsx ingest/src/nfl/rosters.ts` (the picker is empty for most MLB teams until then;
+     the daily GitHub jobs repeat them), then `npx tsx ingest/src/mlb/detail.ts --rescore`,
+     `npx tsx ingest/src/nfl/rescore.ts`, `npx tsx ingest/src/mlb/relive.ts --rebuild`,
+     `npx tsx ingest/src/nfl/relive.ts --rebuild` so existing games get scorer notes. Until
+     then old rows show the play's own words; nothing breaks.
+  The TestFlight build keeps working throughout: old payload keys are still written and nothing
+  in a shipped build reads the new ones.
 - **Easter eggs are built and unseen by Dean.** Eight, each behind a flag in
   `apps/mobile/src/features/eggs/flags.ts`: worn stamps, golden stamps, record rewind, curse
   breaker, rally cap, stretch confetti, certified jinx, secret handshake. Settings > About has a

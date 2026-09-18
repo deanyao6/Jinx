@@ -45,7 +45,7 @@ export default function PastGamesStep() {
   return (
     <Screen>
       <StepIntro
-        step={5}
+        step={6}
         title="Add past games"
         // Forwarding is switched off until there is an inbound domain, and then there are two.
         body={`${features.forwarding ? 'Three' : 'Two'} ways to fill your passport. You can do this any time from the Games tab.`}

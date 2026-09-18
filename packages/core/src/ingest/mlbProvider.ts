@@ -1,6 +1,7 @@
 import {
   parseMlbFeed,
   parseMlbLiveState,
+  parseMlbRoster,
   parseMlbSchedule,
   parseMlbTeams,
 } from '../providers/mlb/parse.js';
@@ -10,6 +11,7 @@ import type {
   CanonicalTeam,
   DateRange,
   LiveState,
+  RosterEntry,
   SportsDataProvider,
 } from '../types.js';
 import { MlbClient } from './mlbClient.js';
@@ -52,5 +54,9 @@ export class MlbProvider implements SportsDataProvider {
 
   async fetchLiveState(providerGameId: string): Promise<LiveState> {
     return parseMlbLiveState(await this.client.feed(providerGameId), new Date().toISOString());
+  }
+
+  async fetchRoster(providerTeamId: string): Promise<RosterEntry[]> {
+    return parseMlbRoster(await this.client.roster(providerTeamId));
   }
 }

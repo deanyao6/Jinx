@@ -49,6 +49,11 @@ export const statsPlayerWeekAsset = (season: number): AssetRef => ({
   file: `stats_player_week_${season}.csv.gz`,
 });
 export const playersAsset = (): AssetRef => ({ tag: 'players', file: 'players.csv.gz' });
+/** One row per player per week, with team, position, jersey and status (docs/verification.md). */
+export const weeklyRostersAsset = (season: number): AssetRef => ({
+  tag: 'weekly_rosters',
+  file: `roster_weekly_${season}.csv.gz`,
+});
 
 export function assetUrl(ref: AssetRef): string {
   return `${NFLVERSE_BASE}/${ref.tag}/${ref.file}`;

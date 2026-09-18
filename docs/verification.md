@@ -81,6 +81,18 @@ Per entry:
 - `result.rbi > 0` identifies the scoring plays. For 823191 that is exactly 5, matching the
   5 rows already in `game_scoring_timeline`.
 - The series ends at `100.0` for the winner, so the final point needs no special case.
+- **Each entry is the full play object** from `liveData.plays.allPlays`, plus the probability
+  fields (checked 2026-09-17 on gamePk 775300: keys `result`, `about`, `count`, `matchup`,
+  `runners`, `playEvents`, `credits`, `flags`, `playEndTime`, `atBatIndex`, and the four
+  probability fields). So `result.eventType`, `matchup.batter.{id,fullName}` and `runners[]`
+  are there, and a Relive step names its scorer by the same rule as the timeline
+  (`packages/core/src/scoring.ts`). The repo's `winprob_*.json` fixtures are trimmed to
+  `about`, `result` and `homeTeamWinProbability`, so they carry no batter.
+- A run that comes home mid-plate-appearance (wild pitch, passed ball, balk, steal of home)
+  is not in `result`: it is the runner in `runners[]` with `details.isScoringEvent = true`
+  and `movement.end = 'score'`, whose `details.eventType` names the event (`wild_pitch`,
+  `passed_ball`, ...). Fixtures 745164 (Carpenter strikeout, Burleson scores on a wild pitch)
+  and 745844 (Canha walk, Urshela scores on a wild pitch) show it.
 
 This settles the open question in SPEC 4.3b for MLB: **no state-based model is needed.** The
 spec's fallback ("build a state-based model, or scoring-play-only steps with no line") applies
@@ -294,3 +306,54 @@ Phoenix and Glendale; Atlanta's 965 ft is just under on purpose.
 The script is resumable and rewrites the file after every answer. Its first run lost 181 answers
 to a rebound dict and the file was rebuilt from that run's own log of fetched values, not from a
 second guess; a rerun now fetches nothing.
+
+## Current rosters (favourite-player picker) — VERIFIED 2026-09-17
+
+`team_rosters` (migration `20260917000900`) holds each team's current roster; `team_roster` reads
+the latest season present for the team and adds anyone the caller has seen appear for it. Both
+sources checked live on 2026-09-17, one real response snapshotted per sport, and the loaded
+Phillies (both) compared row for row against a fresh fetch afterwards: 34 of 34 and 77 of 77
+matched on id, position, jersey and status.
+
+### MLB `v1/teams/{teamId}/roster?rosterType=40Man`
+- No season parameter needed; it is today's roster. `rosterType=active` gives the 26 (28 from
+  September 1: 840 rows across 30 teams), `40Man` gives those plus the injured lists and players
+  optioned to the minors (1,120 rows, 39 to 56 per team).
+- Per entry: `person.{id,fullName,link}`, `jerseyNumber` (string; empty for 32 of 1,120,
+  mostly new arrivals), `position.{code,name,type,abbreviation}` (abbreviation is `P`, `C`,
+  `1B`, `2B`, `3B`, `SS`, `LF`, `CF`, `RF`, `DH`), `status.{code,description}`,
+  `parentTeamId`, and `note` on 246 rows (an injury description).
+- Status codes seen across all 30 teams: `A` Active 840, `RM` Reassigned to Minors 260,
+  `D60` 172, `D15` 52, `D10` 40, `D7` 1, `NYR` Not Yet Reported 1. The parser keeps `A` and
+  `D\d+` (a fan wants to follow a star on the 60-day IL) and drops `RM` and `NYR`, which gave
+  1,105 rows for 2026.
+- Fixture: `ingest/fixtures/mlb/roster_143_PHI_40man_2026-09-17.json` (45 rows: 28 A, 5 D60,
+  1 D15, 10 RM, 1 NYR).
+- Ingest: `npx tsx ingest/src/mlb/rosters.ts`, one request per active team through `MlbClient`
+  (250 ms apart), daily in `daily-jobs.yml` after the schedule refresh.
+
+### nflverse tag `weekly_rosters`, file `roster_weekly_{season}.csv.gz`
+- One row per player per week. Columns: `season, team, position, depth_chart_position,
+  jersey_number, status, full_name, first_name, last_name, birth_date, height, weight,
+  college, gsis_id, espn_id, sportradar_id, yahoo_id, rotowire_id, pff_id, pfr_id,
+  fantasy_data_id, sleeper_id, years_exp, headshot_url, ngs_position, week, game_type,
+  status_description_abbr, football_name, esb_id, gsis_it_id, smart_id, entry_year,
+  rookie_year, draft_club, draft_number`.
+- `team` is the current franchise abbreviation (LV, LA, LAC), i.e. exactly
+  `teams.provider_team_id` for the 32 active teams. `gsis_id` is the same id the appearance
+  pipeline keys `players` by; 2 of 5,484 rows in 2026 have none (one practice-squad player).
+- The 2026 file had weeks 1 and 2 (REG) on 2026-09-17, so the file is updated during the week
+  after a game weekend. The 2025 file runs through week 22 (SB), so the previous season's last
+  week is a sensible roster until the new file appears; the script falls back to it on a 404.
+- `status` vocabulary (2025 full season): `ACT` 27,377, `DEV` practice squad 8,783, `RES`
+  reserve/IR 5,763, `INA` inactive 3,593, `CUT` 951, `RET` 361, `EXE` exempt 7, `TRD` 7,
+  `TRC` 7. The parser keeps `ACT`, `INA`, `RES`, `DEV`, `EXE` (under contract with the team)
+  and drops `CUT`, `RET`, `TRD`, `TRC`. Week 2 of 2026: 2,521 rows, 2,481 kept, 71 to 85 per
+  team. No player appears twice in a week.
+- The `rosters` tag (`roster_{season}.csv.gz`) is the same shape with one row per player for
+  the season (2,978 rows for 2026); the weekly file is the one that says who is on the team
+  this week.
+- Fixture: `ingest/fixtures/nfl/roster_weekly_2026_PHI_sample.json` (174 rows: every Eagles
+  row for weeks 1 and 2, five Raiders week-2 rows, and the two rows without a gsis id).
+- Ingest: `npx tsx ingest/src/nfl/rosters.ts`, daily in `nfl-ingest.yml` after the detail
+  pass, through the same ETag cache as the other assets.

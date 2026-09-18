@@ -591,6 +591,12 @@ export type ReliveStep = {
    */
   scorerId?: string | null;
   scorerName?: string | null;
+  /** What the score was (`@jinx/core` scoring kinds), on the steps that are a score. */
+  kind?: string | null;
+  /** Points or runs the step put on the board, from the step before it. */
+  runs?: number;
+  /** "Touchdown, A.J. Brown": the scoring note, worked out with the sport (useReliveGame). */
+  note?: string | null;
 };
 
 /** `STEPS` in the reference. */

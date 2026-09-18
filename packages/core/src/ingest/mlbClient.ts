@@ -2,7 +2,12 @@
  * Thin, rate-limited HTTP client for the MLB Stats API (docs/verification.md).
  * Never call this from the app; ingestion only.
  */
-import type { MlbFeed, MlbScheduleResponse, MlbTeamsResponse } from '../providers/mlb/parse.js';
+import type {
+  MlbFeed,
+  MlbRosterResponse,
+  MlbScheduleResponse,
+  MlbTeamsResponse,
+} from '../providers/mlb/parse.js';
 
 export interface MlbVenuesResponse {
   venues: { id: number; name: string }[];
@@ -63,5 +68,14 @@ export class MlbClient {
 
   teams(season: number): Promise<MlbTeamsResponse & { teams: { venue?: { id: number } }[] }> {
     return this.getJson(`v1/teams?sportId=1&season=${season}`);
+  }
+
+  /**
+   * The 40-man roster: the active 26 (28 in September) plus every injured list, plus players
+   * optioned to the minors; parseMlbRoster keeps the first two. `active` would miss a star on
+   * the 60-day IL, who is exactly who a fan wants to follow.
+   */
+  roster(teamId: string | number, rosterType = '40Man'): Promise<MlbRosterResponse> {
+    return this.getJson(`v1/teams/${teamId}/roster?rosterType=${rosterType}`);
   }
 }

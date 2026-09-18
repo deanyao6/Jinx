@@ -1,3 +1,4 @@
+import type { ScoringRow } from '@jinx/core';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { supabase, type Rpc } from '@/lib/supabase';
@@ -72,6 +73,7 @@ export const gameKeys = {
   upcoming: (teamIds: string[]) => ['games', 'upcoming', [...teamIds].sort()] as const,
   events: (id: string) => ['games', 'events', id] as const,
   appearances: (id: string) => ['games', 'appearances', id] as const,
+  scoring: (id: string) => ['games', 'scoring', id] as const,
 };
 
 export async function fetchGame(gameId: string): Promise<GameDetail> {
@@ -209,5 +211,41 @@ export function useGameAppearances(gameId: string | undefined) {
     },
     enabled: !!gameId,
     staleTime: 10 * 60_000,
+  });
+}
+
+/**
+ * Every scoring play of a game, oldest first, with who scored (SPEC.md 5.1). Written by the
+ * detail worker; empty until then, and an empty answer is not cached for long, for the reason
+ * given in features/relive/queries.ts.
+ */
+export function useGameScoring(gameId: string | undefined) {
+  return useQuery({
+    queryKey: gameKeys.scoring(gameId ?? ''),
+    queryFn: async (): Promise<ScoringRow[]> => {
+      const { data, error } = await supabase
+        .from('game_scoring_timeline')
+        .select(
+          'seq, period, half, clock, home_score, away_score, scoring_side, description, kind, scorer_player_id, scorer_name',
+        )
+        .eq('game_id', gameId as string)
+        .order('seq');
+      if (error) throw error;
+      return data.map((row) => ({
+        seq: row.seq,
+        period: row.period,
+        half: row.half === 'top' || row.half === 'bottom' ? row.half : null,
+        clock: row.clock,
+        homeScore: row.home_score,
+        awayScore: row.away_score,
+        scoringSide: row.scoring_side === 'home' ? 'home' : 'away',
+        description: row.description,
+        kind: row.kind,
+        scorerPlayerId: row.scorer_player_id,
+        scorerName: row.scorer_name,
+      }));
+    },
+    enabled: !!gameId,
+    staleTime: (query) => ((query.state.data?.length ?? 0) > 0 ? 24 * 60 * 60_000 : 30_000),
   });
 }

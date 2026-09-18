@@ -25,6 +25,7 @@ import {
   useGame,
   useGameAppearances,
   useGameEvents,
+  useGameScoring,
   type GameTeam,
 } from '@/features/games/queries';
 import {
@@ -34,6 +35,7 @@ import {
   type ResultTone,
 } from '@/features/games/ui/detailParts';
 import { Scoreboard } from '@/features/games/ui/Scoreboard';
+import { ScoringSection } from '@/features/games/ui/ScoringSection';
 import { SideTheme } from '@/features/games/ui/SideTheme';
 import { useGameStorySteps } from '@/features/relive/queries';
 import { storylineCards, useStorylines } from '@/features/storylines/queries';
@@ -81,6 +83,8 @@ export default function GameDetailScreen() {
   const attendance = useMyAttendanceForGame(gameId);
   const events = useGameEvents(gameId);
   const appearances = useGameAppearances(gameId);
+  // Who scored, play by play. Empty until the detail worker has been (SPEC.md 4.7).
+  const scoring = useGameScoring(gameId);
   const pledge = usePledgeForGame(gameId);
   // Relive only exists for a game whose play-by-play has been turned into story steps.
   const story = useGameStorySteps(gameId);
@@ -271,6 +275,15 @@ export default function GameDetailScreen() {
             ))}
           </View>
         ) : null}
+
+        {/* The note on who scored, in the colour of the side that did. Nothing until the
+            timeline exists, so a game without detail shows no empty section. */}
+        <ScoringSection
+          sport={g.sport_id}
+          rows={scoring.data ?? []}
+          homeTeamId={g.home?.id ?? g.home_team_id}
+          awayTeamId={g.away?.id ?? g.away_team_id}
+        />
 
         {canCheckIn ? (
           <Card tone="accent">

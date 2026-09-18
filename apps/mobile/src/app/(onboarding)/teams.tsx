@@ -23,7 +23,9 @@ function TeamsForm({ initial }: { initial: Team[] }) {
   const onNext = async () => {
     try {
       await save.mutateAsync(selected);
-      router.push('/(onboarding)/city');
+      // The players step lists the picked teams' rosters, so with no team there is nothing
+      // for it to ask.
+      router.push(selected.length ? '/(onboarding)/players' : '/(onboarding)/city');
     } catch {
       // surfaced below
     }

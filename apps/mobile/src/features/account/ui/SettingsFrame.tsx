@@ -12,6 +12,8 @@ type Props = {
   /** Where Back goes when the screen was opened cold. */
   fallback: Href;
   children: React.ReactNode;
+  /** Actions that stay in reach under a long list, above the home indicator. */
+  footer?: React.ReactNode;
 };
 
 /**
@@ -34,7 +36,7 @@ export function SettingsFrame(props: Props) {
   );
 }
 
-function Frame({ title, fallback, children }: Props) {
+function Frame({ title, fallback, children, footer }: Props) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   return (
@@ -50,10 +52,23 @@ function Frame({ title, fallback, children }: Props) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: insets.bottom + theme.spacing.xl }}
+        contentContainerStyle={{
+          paddingBottom: footer ? theme.spacing.md : insets.bottom + theme.spacing.xl,
+        }}
       >
         {children}
       </ScrollView>
+      {footer ? (
+        <View
+          style={{
+            paddingTop: theme.spacing.md,
+            paddingBottom: insets.bottom + theme.spacing.md,
+            gap: theme.spacing.sm,
+          }}
+        >
+          {footer}
+        </View>
+      ) : null}
     </View>
   );
 }

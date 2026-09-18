@@ -59,7 +59,7 @@ function CityForm({ initialCity }: { initialCity: string }) {
   return (
     <FormScreen>
       <StepIntro
-        step={3}
+        step={4}
         title="Home city"
         body="Used for miles traveled and your map. Optional."
         onBack={() => router.back()}

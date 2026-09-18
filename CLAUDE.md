@@ -108,7 +108,9 @@ python3 seed/scripts/fill_elevations.py  # venue elevations (USGS, Open-Elevatio
 python3 seed/scripts/check_team_colors.py # audit team_colors.json: coverage, verbatim reference rows, WCAG contrast
 npx tsx ingest/src/mlb/backfill.ts --from 2000 --to 2026   # MLB schedules + finals (needs SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)
 npx tsx ingest/src/mlb/detail.ts --pending                 # MLB details for attended games
+npx tsx ingest/src/mlb/rosters.ts                          # MLB current rosters (40-man, active + injured) into team_rosters
 npx tsx ingest/src/nfl/run.ts --from 2000 --to 2026        # NFL schedules, play-by-play, appearances
+npx tsx ingest/src/nfl/rosters.ts                          # NFL current rosters (latest nflverse week) into team_rosters
 npx tsx ingest/src/mlb/relive.ts --attended                 # MLB win probability + story steps
 npx tsx ingest/src/nfl/relive.ts --attended                # NFL ditto, from the nflverse play-by-play
 # storylines: an Edge Function, not a script; see docs/deploy.md for the curl
