@@ -264,3 +264,16 @@ in baseball and football. `supabase/migrations/20260917000600_superlatives_v2.sq
   RBI unless the batter is a star.
 - **Feed**: "Dean was at Super Bowl LIX." **Another person's profile**: a "Famous games" tile when
   the count is above zero and their stats are visible.
+
+
+## The NBA (2026-09-18)
+
+No new control. The NBA rides on the controls above: the league picker lists it because
+teams are grouped by `sport_id` from the database; Pick a side reads `game_live_state` for
+NBA games the way it does for MLB (the lock is the end of the first quarter, and the
+countdown copy says so); the game page's Scoring section folds an and-one into its basket
+and a second free throw into the first; Relive's chart is labelled Tip-off, Halftime, Final.
+Every venue noun outside the reference screens goes through `VENUE_NOUN` in
+`packages/core/src/venue.ts`: "arenas" when everything on screen is basketball, "venues"
+when the set mixes sports. The reference screens keep the reference's own words
+("Stadium stamps"), because `npm run parity` compares them to `design/reference.html`.

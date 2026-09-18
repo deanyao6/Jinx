@@ -64,7 +64,7 @@ describe('ShareCard', () => {
     expect(getByText('12–5')).toBeTruthy();
     expect(getByText('Philadelphia Phillies')).toBeTruthy();
     expect(getByText('Pledged, +2.4 vs expected')).toBeTruthy();
-    expect(getByText(/48 games, 14 stadiums, 3 states/)).toBeTruthy();
+    expect(getByText(/48 games, 14 venues, 3 states/)).toBeTruthy();
     expect(getByLabelText('Share card, light')).toBeTruthy();
   });
 

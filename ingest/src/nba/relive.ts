@@ -32,17 +32,32 @@ type Row = {
   away: { name: string } | null;
 };
 
-async function existingGames(db: Db, gameId: string | null): Promise<(ReliveTarget & { scheduled_start: string })[]> {
+async function existingGames(
+  db: Db,
+  gameId: string | null,
+): Promise<(ReliveTarget & { scheduled_start: string })[]> {
   let data: unknown[] = [];
   if (gameId) {
-    const res = await db.from('games').select(GAME_COLUMNS).eq('provider', 'nba').eq('status', 'final').eq('provider_game_id', gameId);
+    const res = await db
+      .from('games')
+      .select(GAME_COLUMNS)
+      .eq('provider', 'nba')
+      .eq('status', 'final')
+      .eq('provider_game_id', gameId);
     if (res.error) throw new Error(res.error.message);
     data = res.data ?? [];
   } else {
-    const withStory = await selectAll<{ game_id: string }>(db, 'game_story_steps', 'game_id', (q) => q.eq('seq', 1));
+    const withStory = await selectAll<{ game_id: string }>(db, 'game_story_steps', 'game_id', (q) =>
+      q.eq('seq', 1),
+    );
     const ids = withStory.map((r) => r.game_id);
     for (let i = 0; i < ids.length; i += 200) {
-      const res = await db.from('games').select(GAME_COLUMNS).eq('provider', 'nba').eq('status', 'final').in('id', ids.slice(i, i + 200));
+      const res = await db
+        .from('games')
+        .select(GAME_COLUMNS)
+        .eq('provider', 'nba')
+        .eq('status', 'final')
+        .in('id', ids.slice(i, i + 200));
       if (res.error) throw new Error(res.error.message);
       data.push(...(res.data ?? []));
     }
@@ -64,7 +79,10 @@ async function main() {
   const db = createDb();
   const client = nbaProvider().client;
   const rebuild = process.argv.includes('--rebuild');
-  const games = onlyGame || rebuild ? await existingGames(db, onlyGame) : await reliveTargets(db, 'nba', Number(arg('limit') ?? '300'));
+  const games =
+    onlyGame || rebuild
+      ? await existingGames(db, onlyGame)
+      : await reliveTargets(db, 'nba', Number(arg('limit') ?? '300'));
   if (games.length === 0) {
     console.log('no attended final NBA games are missing a story');
     return;
@@ -77,7 +95,9 @@ async function main() {
       continue;
     }
     done += 1;
-    console.log(`${g.provider_game_id}: ${built.points} probability points (${built.source}), ${built.steps} story steps`);
+    console.log(
+      `${g.provider_game_id}: ${built.points} probability points (${built.source}), ${built.steps} story steps`,
+    );
   }
   console.log(`done: ${done} game(s)`);
 }

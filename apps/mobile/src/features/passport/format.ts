@@ -117,9 +117,9 @@ function plural(n: number, one: string, many = `${one}s`): string {
   return `${n} ${n === 1 ? one : many}`;
 }
 
-/** "48 games, 14 stadiums, 3 states" */
+/** "48 games, 14 venues, 3 states" */
 export function totalsLine(t: StatsPayload['totals']): string {
-  const parts = [plural(t.games, 'game'), plural(t.venues, 'stadium'), plural(t.states, 'state')];
+  const parts = [plural(t.games, 'game'), plural(t.venues, 'venue'), plural(t.states, 'state')];
   if (t.countries > 1) parts.push(plural(t.countries, 'country', 'countries'));
   return parts.join(', ');
 }
@@ -230,7 +230,7 @@ export function comebackValue(c: NonNullable<Superlatives['biggest_comeback']>):
     return pct < 1 ? 'Won from under 1%' : `Won from ${pct}%`;
   }
   if (c.sport_id === 'mlb') return `Down ${plural(c.deficit, 'run')}`;
-  if (c.sport_id === 'nfl') return `Down ${plural(c.deficit, 'point')}`;
+  if (c.sport_id === 'nfl' || c.sport_id === 'nba') return `Down ${plural(c.deficit, 'point')}`;
   return `Down ${c.deficit}`;
 }
 
@@ -388,7 +388,7 @@ export function superlativeRows(
   if (s.most_visited_venue) {
     push({
       key: 'most_visited_venue',
-      title: 'Most visited stadium',
+      title: 'Most visited venue',
       value: visitsLabel(s.most_visited_venue.visits),
       context: s.most_visited_venue.name,
       gameId: s.most_visited_venue.game_id,

@@ -2,6 +2,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { estimateLock, formatCountdown, lockRuleCopy, pctLabel } from '@/features/checkin/lock';
+import { hasLiveFeed } from '@/features/eggs/live';
 import { useLiveState, useMakePledge, type GameContext } from '@/features/checkin/queries';
 import { useSeasonRecords } from '@/features/checkin/records';
 import { pickASideFromContext, type TeamRef } from '@/features/data/supabase';
@@ -77,9 +78,10 @@ function Live({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
 
   const p = ctx.pledge;
   const gameOver = ctx.status === 'final';
-  // MLB has a live feed, polled every 60s while checked in, and locks the moment it shows a run
-  // or the end of the 1st. NFL has none in v1, so its timer is an estimate (SPEC 6.4.4).
-  const live = useLiveState(gameId, ctx.sport_id === 'mlb' && !gameOver);
+  // MLB and the NBA have a live feed, polled every 60s while checked in: MLB locks the moment
+  // it shows a run or the end of the 1st, the NBA at the end of the 1st quarter. NFL has none
+  // in v1, so its timer is an estimate (SPEC 6.4.4).
+  const live = useLiveState(gameId, hasLiveFeed(ctx.sport_id) && !gameOver);
   const lock = estimateLock(
     ctx.sport_id,
     ctx.scheduled_start,

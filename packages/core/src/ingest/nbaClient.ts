@@ -278,10 +278,21 @@ export class NbaClient {
   // -------------------------------------------------------------------------
 
   /** One row per team per game for a season and SeasonType (`SEASON_TYPES` in providers/nba/ids). */
-  leagueGameLog(season: string, seasonType: string, opts: { cache?: boolean } = {}): Promise<StatsResponse> {
+  leagueGameLog(
+    season: string,
+    seasonType: string,
+    opts: { cache?: boolean } = {},
+  ): Promise<StatsResponse> {
     const url = `${STATS_BASE}leaguegamelog?Counter=0&Direction=ASC&LeagueID=00&PlayerOrTeam=T&Season=${season}&SeasonType=${encodeURIComponent(seasonType)}&Sorter=DATE`;
-    const key = opts.cache === false ? undefined : `stats_leaguegamelog_${season}_${seasonType.replace(/\W+/g, '_')}`;
-    return this.getJson(url, { headers: STATS_HEADERS, host: 'nba', ...(key ? { cacheKey: key } : {}) });
+    const key =
+      opts.cache === false
+        ? undefined
+        : `stats_leaguegamelog_${season}_${seasonType.replace(/\W+/g, '_')}`;
+    return this.getJson(url, {
+      headers: STATS_HEADERS,
+      host: 'nba',
+      ...(key ? { cacheKey: key } : {}),
+    });
   }
 
   /** Attendance, game time and the line score for any game since 2000. */

@@ -144,7 +144,7 @@ export function feedEventCopy(e: FeedEvent): string {
       return `${possessive} pledge to the ${team} ${e.type === 'pledge_won' ? 'won' : 'lost'}`;
     }
     case 'new_stamp':
-      return `New stamp: ${str(p['venue_name']) ?? 'a new stadium'}`;
+      return `New stamp: ${str(p['venue_name']) ?? 'a new venue'}`;
     case 'goal_completed':
       return `Goal completed: ${str(p['title']) ?? 'a goal'}`;
     case 'milestone': {

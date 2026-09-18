@@ -45,7 +45,7 @@ describe('stampWear', () => {
 
 describe('rare moments', () => {
   it('has a row per sport in v1', () => {
-    expect(Object.keys(RARE_MOMENTS).sort()).toEqual(['mlb', 'nfl']);
+    expect(Object.keys(RARE_MOMENTS).sort()).toEqual(['mlb', 'nba', 'nfl']);
   });
 
   it.each([
@@ -85,17 +85,24 @@ describe('rare moments', () => {
   it('keeps each sport to its own row', () => {
     expect(isRareMoment('nfl', 'no_hitter', 'win')).toBe(false);
     expect(isRareMoment('mlb', 'comeback_14', 'win')).toBe(false);
-    expect(isRareMoment('nba', 'overtime', 'win')).toBe(false);
+    expect(isRareMoment('nba', 'no_hitter', 'win')).toBe(false);
+    // Basketball counts an overtime win too, and a buzzer-beater whichever way it went.
+    expect(isRareMoment('nba', 'overtime', 'win')).toBe(true);
+    expect(isRareMoment('nba', 'overtime', 'loss')).toBe(false);
+    expect(isRareMoment('nba', 'buzzer_beater', 'loss')).toBe(true);
   });
 
   it('lists every type once, for the query', () => {
     expect(RARE_MOMENT_TYPES).toEqual([
+      'buzzer_beater',
       'comeback_14',
       'cycle',
+      'fifty_points',
       'immaculate_inning',
       'no_hitter',
       'overtime',
       'perfect_game',
+      'quadruple_double',
       'walk_off',
       'walk_off_home_run',
       'walk_off_score',

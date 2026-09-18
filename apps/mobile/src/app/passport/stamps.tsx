@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import { venueNounFor } from '@jinx/core';
+
 import { Chip } from '@/components/Chip';
 import { EmptyState } from '@/components/EmptyState';
 import { Loading } from '@/components/Loading';
@@ -54,12 +56,11 @@ export default function StampsScreen() {
   const states = distinct(filtered.map((s) => s.state));
   const cities = distinct(filtered.map((s) => [s.city, s.state].filter(Boolean).join(', ')));
 
-  // "Ballpark" only when every venue on screen is known to be baseball and nothing else.
-  const baseball =
-    filtered.length > 0 &&
-    filtered.every((s) => s.sports.length > 0 && s.sports.every((sp) => sp === 'mlb'));
-  const one = baseball ? 'ballpark' : 'stadium';
-  const many = baseball ? 'ballparks' : 'stadiums';
+  // The sport's own word only when every venue on screen is one sport and nothing else:
+  // "ballparks", "stadiums", "arenas"; a mixed set is "venues" (VENUE_NOUN in packages/core).
+  const sportsOnScreen = filtered.flatMap((s) => (s.sports.length > 0 ? s.sports : ['?']));
+  const one = venueNounFor(sportsOnScreen);
+  const many = venueNounFor(sportsOnScreen, true);
 
   const cells = useMemo(() => stampCells(filtered, sport ? [] : ghosts), [filtered, sport, ghosts]);
   const visitedCells = cells.filter((cell) => cell.stamp);

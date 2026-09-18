@@ -78,9 +78,9 @@ describe('parseStats', () => {
 
 describe('display helpers', () => {
   it('formats the totals line and the possessive header', () => {
-    expect(totalsLine(parseStats(payload).totals)).toBe('48 games, 14 stadiums, 3 states');
+    expect(totalsLine(parseStats(payload).totals)).toBe('48 games, 14 venues, 3 states');
     expect(totalsLine({ games: 1, venues: 1, states: 1, countries: 2 })).toBe(
-      '1 game, 1 stadium, 1 state, 2 countries',
+      '1 game, 1 venue, 1 state, 2 countries',
     );
     expect(possessive('Dean')).toBe('Dean’s');
     expect(possessive('Charles')).toBe('Charles’');
@@ -187,7 +187,7 @@ describe('display helpers', () => {
       expect(row({ game_id: 'g2', deficit: 4, sport_id: 'mlb' })?.value).toBe('Down 4 runs');
       expect(row({ game_id: 'g2', deficit: 1, sport_id: 'mlb' })?.value).toBe('Down 1 run');
       expect(row({ game_id: 'g2', deficit: 14, sport_id: 'nfl' })?.value).toBe('Down 14 points');
-      expect(row({ game_id: 'g2', deficit: 9, sport_id: 'nba' })?.value).toBe('Down 9');
+      expect(row({ game_id: 'g2', deficit: 9, sport_id: 'nba' })?.value).toBe('Down 9 points');
       // A payload cached before superlatives v2 has no sport at all.
       expect(row({ game_id: 'g2', deficit: 17 })?.value).toBe('Down 17');
       expect(row({ game_id: 'g2', deficit: 17 })?.detail).toBeUndefined();
@@ -221,7 +221,7 @@ describe('display helpers', () => {
       },
       {
         key: 'most_visited_venue',
-        title: 'Most visited stadium',
+        title: 'Most visited venue',
         value: '17 visits',
         context: 'Citizens Bank Park',
         gameId: 'g6',
@@ -267,7 +267,10 @@ describe('display helpers', () => {
 
 describe('the famous games superlative', () => {
   it('leads the list, counts games, says how many are personal, and opens its page', () => {
-    const rows = superlativeRows({ famous_games: { count: 3, personal_count: 2 }, coldest: { game_id: 'g1', value: 19 } });
+    const rows = superlativeRows({
+      famous_games: { count: 3, personal_count: 2 },
+      coldest: { game_id: 'g1', value: 19 },
+    });
     expect(rows[0]).toEqual({
       key: 'famous_games',
       title: 'Famous games',
@@ -278,7 +281,9 @@ describe('the famous games superlative', () => {
     });
   });
   it('has no chip without personal badges, and no row with nothing famous', () => {
-    expect(superlativeRows({ famous_games: { count: 1, personal_count: 0 } })[0]?.context).toBeUndefined();
+    expect(
+      superlativeRows({ famous_games: { count: 1, personal_count: 0 } })[0]?.context,
+    ).toBeUndefined();
     expect(superlativeRows({ famous_games: { count: 0, personal_count: 0 } })).toEqual([]);
   });
 });

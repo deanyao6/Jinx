@@ -46,7 +46,7 @@ const EVENTS = [
 
 const CUSTOM_TYPES: { key: CustomGoalType; label: string }[] = [
   { key: 'count', label: 'Games' },
-  { key: 'distinct_venues', label: 'Stadiums' },
+  { key: 'distinct_venues', label: 'Venues' },
   { key: 'exists', label: 'Once' },
 ];
 
@@ -225,7 +225,7 @@ export default function NewGoalScreen() {
               {custom.type === 'count'
                 ? 'Number of games that match.'
                 : custom.type === 'distinct_venues'
-                  ? 'Number of different stadiums with a matching game.'
+                  ? 'Number of different venues with a matching game.'
                   : 'Done the first time a matching game goes final.'}
             </Text>
           </Card>
@@ -238,7 +238,7 @@ export default function NewGoalScreen() {
                 selected={custom.sport === null}
                 onPress={() => patch({ sport: null })}
               />
-              {(['mlb', 'nfl'] as Sport[]).map((sp) => (
+              {(['mlb', 'nfl', 'nba'] as Sport[]).map((sp) => (
                 <Chip
                   key={sp}
                   label={sportLabel(sp)}
@@ -293,7 +293,7 @@ export default function NewGoalScreen() {
                 onToggle={() => patch({ road: !custom.road })}
               />
               <CheckRow
-                title="New stadium"
+                title="New venue"
                 subtitle="Your first visit to the venue"
                 checked={custom.newVenue}
                 onToggle={() => patch({ newVenue: !custom.newVenue })}

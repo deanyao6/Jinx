@@ -324,7 +324,7 @@ function ProfileTiles({ stats }: { stats: unknown }) {
   const famous = s.superlatives.famous_games?.count ?? 0;
   const tiles = [
     { label: 'Games', value: s.totals.games, accent: true },
-    { label: 'Stadiums', value: s.totals.venues },
+    { label: 'Venues', value: s.totals.venues },
     ...(s.players_seen ? [{ label: 'Players seen', value: s.players_seen }] : []),
     ...(famous > 0 ? [{ label: 'Famous games', value: famous }] : []),
   ];

@@ -19,8 +19,20 @@ export function IconTile({ icon, size = 38, solid = false, gold = false }: Props
   const Icon = ICONS[icon];
   const goldColor = theme.colors.gold;
   const goldWash = alpha(goldColor, theme.scheme === 'dark' ? 0.18 : 0.14);
-  const background = gold ? (solid ? goldColor : goldWash) : solid ? theme.accent.fill : theme.accent.wash;
-  const ink = gold ? (solid ? theme.colors.onInk : goldColor) : solid ? theme.accent.onFill : theme.accent.text;
+  const background = gold
+    ? solid
+      ? goldColor
+      : goldWash
+    : solid
+      ? theme.accent.fill
+      : theme.accent.wash;
+  const ink = gold
+    ? solid
+      ? theme.colors.onInk
+      : goldColor
+    : solid
+      ? theme.accent.onFill
+      : theme.accent.text;
   return (
     <View
       style={{

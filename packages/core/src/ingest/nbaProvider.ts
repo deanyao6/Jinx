@@ -66,7 +66,11 @@ export class NbaProvider implements SportsDataProvider {
       for (const g of date.games) {
         for (const t of [g.homeTeam, g.awayTeam]) {
           if (!t.teamId || seen.has(String(t.teamId))) continue;
-          if (!NBA_TEAM_ERAS.some((e) => e.teamId === String(t.teamId)) && !/^16106127\d\d$/.test(String(t.teamId))) continue;
+          if (
+            !NBA_TEAM_ERAS.some((e) => e.teamId === String(t.teamId)) &&
+            !/^16106127\d\d$/.test(String(t.teamId))
+          )
+            continue;
           seen.set(String(t.teamId), {
             provider: 'nba',
             providerTeamId: String(t.teamId),
@@ -102,7 +106,13 @@ export class NbaProvider implements SportsDataProvider {
     const s = seasonString(season);
     const out: LogGame[] = [];
     const current = season >= (await this.currentSeason()) - 1;
-    for (const type of [SEASON_TYPES.preseason, SEASON_TYPES.regular, SEASON_TYPES.playIn, SEASON_TYPES.playoffs, SEASON_TYPES.cup]) {
+    for (const type of [
+      SEASON_TYPES.preseason,
+      SEASON_TYPES.regular,
+      SEASON_TYPES.playIn,
+      SEASON_TYPES.playoffs,
+      SEASON_TYPES.cup,
+    ]) {
       let doc;
       try {
         // A season still being played changes daily and is not cached.
@@ -112,7 +122,9 @@ export class NbaProvider implements SportsDataProvider {
         throw err;
       }
       const games = parseGameLog(doc);
-      out.push(...(type === SEASON_TYPES.cup ? games.filter((g) => g.gameId.startsWith('006')) : games));
+      out.push(
+        ...(type === SEASON_TYPES.cup ? games.filter((g) => g.gameId.startsWith('006')) : games),
+      );
     }
     const byId = new Map<string, LogGame>();
     for (const g of out) byId.set(g.gameId, g);
@@ -136,7 +148,15 @@ export class NbaProvider implements SportsDataProvider {
         const flipped = espn.get(espnKey(g.date, g.awayName, g.homeName));
         if (flipped) {
           info = flipped;
-          g = { ...g, homeTeamId: g.awayTeamId, awayTeamId: g.homeTeamId, homeName: g.awayName, awayName: g.homeName, homeScore: g.awayScore, awayScore: g.homeScore };
+          g = {
+            ...g,
+            homeTeamId: g.awayTeamId,
+            awayTeamId: g.homeTeamId,
+            homeName: g.awayName,
+            awayName: g.homeName,
+            homeScore: g.awayScore,
+            awayScore: g.homeScore,
+          };
         }
       }
       const canonical = logGameToCanonical(g, info);
@@ -159,7 +179,10 @@ export class NbaProvider implements SportsDataProvider {
    * rewrite of the games row keeps them; without it the CDN box supplies the start and arena
    * name, and the stats path supplies neither.
    */
-  async fetchGameDetail(providerGameId: string, ctx?: Partial<DetailContext>): Promise<CanonicalGameDetail> {
+  async fetchGameDetail(
+    providerGameId: string,
+    ctx?: Partial<DetailContext>,
+  ): Promise<CanonicalGameDetail> {
     try {
       const [box, pbp] = await Promise.all([
         this.client.cdnBoxScore(providerGameId),
@@ -168,7 +191,8 @@ export class NbaProvider implements SportsDataProvider {
       const arena = box.game.arena?.arenaName;
       return parseCdnDetail(box, pbp, {
         providerGameId,
-        scheduledStart: ctx?.scheduledStart ?? new Date(Date.parse(box.game.gameTimeUTC)).toISOString(),
+        scheduledStart:
+          ctx?.scheduledStart ?? new Date(Date.parse(box.game.gameTimeUTC)).toISOString(),
         providerVenueId: ctx?.providerVenueId ?? (arena ? `name:${arena}` : null),
         venueName: ctx?.venueName ?? arena ?? null,
         isNeutralSite: ctx?.isNeutralSite ?? false,
@@ -195,13 +219,24 @@ export class NbaProvider implements SportsDataProvider {
     const fetchedAt = new Date().toISOString();
     const doc = await this.client.cdnScoreboard();
     const g = doc.scoreboard.games.find((x) => x.gameId === providerGameId);
-    if (!g) return { status: 'scheduled', inning: null, inningState: null, clock: null, homeScore: 0, awayScore: 0, fetchedAt };
+    if (!g)
+      return {
+        status: 'scheduled',
+        inning: null,
+        inningState: null,
+        clock: null,
+        homeScore: 0,
+        awayScore: 0,
+        fetchedAt,
+      };
     return parseCdnLiveState(g, fetchedAt);
   }
 
   /** The team's roster today, from stats.nba.com, for the season in progress. */
   async fetchRoster(providerTeamId: string): Promise<RosterEntry[]> {
     const season = seasonForDate(new Date().toISOString().slice(0, 10));
-    return parseNbaRoster(await this.client.commonTeamRoster(providerTeamId.split('-')[0]!, seasonString(season)));
+    return parseNbaRoster(
+      await this.client.commonTeamRoster(providerTeamId.split('-')[0]!, seasonString(season)),
+    );
   }
 }

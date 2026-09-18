@@ -120,8 +120,8 @@ describe('sealColors', () => {
     );
   });
 
-  it('holds for every one of the 65 seeded palettes, and for slate, in both appearances', () => {
-    expect(seeded.length).toBe(65);
+  it('holds for every one of the 95 seeded palettes, and for slate, in both appearances', () => {
+    expect(seeded.length).toBe(95);
     const tints = [
       ...seeded.map((row) => ({
         name: `${row.provider} ${row.abbr}`,

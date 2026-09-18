@@ -79,8 +79,9 @@ export function statusLabel(status: string): string {
   }
 }
 
+/** "MLB", "NFL", "NBA": every league is its id upper-cased. */
 export function sportLabel(sportId: string): string {
-  return sportId === 'mlb' ? 'MLB' : sportId === 'nfl' ? 'NFL' : sportId.toUpperCase();
+  return sportId.toUpperCase();
 }
 
 export function doubleheaderLabel(n: number | null | undefined): string | null {

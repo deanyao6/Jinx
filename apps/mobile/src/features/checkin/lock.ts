@@ -2,7 +2,24 @@
  * Pledge lock rules for the countdown (SPEC.md 6.3, 6.4). Mirrors packages/core/src/pledge.ts;
  * a local copy because Metro does not resolve the workspace package's `.js` source imports.
  */
-export type Sport = 'mlb' | 'nfl' | string;
+export type Sport = 'mlb' | 'nfl' | 'nba' | string;
+
+/**
+ * The lock rule per sport (SPEC 6.4; the NBA row decided 2026-09-17), mirroring LOCK_RULES in
+ * packages/core/src/pledge.ts: how many minutes after the start the estimate sits, whether
+ * a first score locks it, and whether there is live state to read.
+ */
+const LOCK_RULES: Readonly<
+  Record<string, { estimateMinutes: number; firstScoreLocks: boolean; live: boolean }>
+> = {
+  mlb: { estimateMinutes: 30, firstScoreLocks: true, live: true },
+  nfl: { estimateMinutes: 12, firstScoreLocks: true, live: false },
+  nba: { estimateMinutes: 30, firstScoreLocks: false, live: true },
+};
+
+function rule(sport: Sport) {
+  return LOCK_RULES[sport] ?? LOCK_RULES['mlb']!;
+}
 
 export type LiveState = {
   status: string;
@@ -57,8 +74,9 @@ export function isWithinCheckInWindow(
 }
 
 /**
- * Estimated lock for the countdown. MLB uses live state when available (locks on a run or at the end
- * of the first); otherwise scheduled start + 30 minutes. NFL is scheduled start + 12 minutes.
+ * Estimated lock for the countdown. MLB and the NBA use live state when available (MLB locks
+ * on a run or at the end of the first; the NBA at the end of the first quarter); otherwise
+ * scheduled start + 30 minutes. NFL is scheduled start + 12 minutes.
  */
 export function estimateLock(
   sport: Sport,
@@ -68,13 +86,13 @@ export function estimateLock(
   serverEstimate?: string | null,
 ): LockEstimate {
   const start = Date.parse(scheduledStart);
-  const fallbackAt =
-    serverEstimate ?? new Date(start + (sport === 'nfl' ? 12 : 30) * MIN).toISOString();
-  if (sport === 'nfl' || !live) {
+  const r = rule(sport);
+  const fallbackAt = serverEstimate ?? new Date(start + r.estimateMinutes * MIN).toISOString();
+  if (!r.live || !live) {
     return { at: fallbackAt, locked: nowMs >= Date.parse(fallbackAt), reason: 'estimate' };
   }
   if (live.locked) return { at: live.fetched_at, locked: true, reason: 'live_locked' };
-  if (live.home_score > 0 || live.away_score > 0) {
+  if (r.firstScoreLocks && (live.home_score > 0 || live.away_score > 0)) {
     return { at: live.fetched_at, locked: true, reason: 'first_score' };
   }
   const inning = live.inning ?? 0;
@@ -97,16 +115,26 @@ export function formatCountdown(targetIso: string, nowMs: number): string {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
+const LOCK_RULE_COPY: Readonly<Record<string, string>> = {
+  mlb: 'Locks at the end of the 1st or the first run',
+  nfl: 'Locks at the first score or 10:00 left in Q1 (estimated)',
+  nba: 'Locks at the end of the 1st quarter',
+};
+
+const LOCK_NOTE_COPY: Readonly<Record<string, string>> = {
+  mlb: 'or the moment anyone scores a run',
+  nfl: 'or the moment anyone scores',
+  nba: 'about 30 minutes after tip-off',
+};
+
 /** Plain-language lock rule for the sport. */
 export function lockRuleCopy(sport: Sport): string {
-  return sport === 'nfl'
-    ? 'Locks at the first score or 10:00 left in Q1 (estimated)'
-    : 'Locks at the end of the 1st or the first run';
+  return LOCK_RULE_COPY[sport] ?? LOCK_RULE_COPY['mlb']!;
 }
 
 /** Short note under the clock. */
 export function lockNoteCopy(sport: Sport): string {
-  return sport === 'nfl' ? 'or the moment anyone scores' : 'or the moment anyone scores a run';
+  return LOCK_NOTE_COPY[sport] ?? LOCK_NOTE_COPY['mlb']!;
 }
 
 export function pctLabel(prob: number | null | undefined): string {
@@ -144,7 +172,7 @@ export function checkInFailureCopy(
         : `You're not close enough to ${detail.venueName ?? 'the venue'} yet.`;
     }
     case 'outside_window':
-      return 'Check-in opens 3 hours before first pitch or kickoff and closes an hour after the final.';
+      return 'Check-in opens 3 hours before the start and closes an hour after the final.';
     case 'not_playing':
       return 'This game was postponed or cancelled, so there is nothing to check in to.';
     case 'venue_unknown':

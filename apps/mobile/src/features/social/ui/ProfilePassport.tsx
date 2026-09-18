@@ -25,7 +25,7 @@ export function ProfilePassport({ stats, name }: Props) {
   return (
     <>
       <PassportRecordCard overall={s.overall} teams={s.teams} pledge={s.pledge} />
-      <Card label={`Stadium stamps · ${s.stamps.length}`}>
+      <Card label={`Venue stamps · ${s.stamps.length}`}>
         <StampsGrid stamps={s.stamps} limit={12} />
       </Card>
       {superlatives.length > 0 ? (
@@ -41,7 +41,7 @@ export function ProfilePassport({ stats, name }: Props) {
       ) : null}
       <Text variant="caption" color="muted">
         {s.totals.games === 1 ? '1 game' : `${s.totals.games} games`} at {s.totals.venues}{' '}
-        {s.totals.venues === 1 ? 'stadium' : 'stadiums'}
+        {s.totals.venues === 1 ? 'venue' : 'venues'}
         {s.players_seen ? ` · ${s.players_seen} players seen` : ''}
       </Text>
     </>

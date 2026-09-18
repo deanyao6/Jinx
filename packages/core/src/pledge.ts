@@ -66,7 +66,10 @@ export interface EstimatedLock {
  *   NBA  the end of the 1st quarter and nothing sooner: a first basket comes within seconds
  *        and would make picking impossible. Estimate start + 30 minutes.
  */
-export const LOCK_RULES: Record<Sport, { estimateMinutes: number; firstScoreLocks: boolean; live: boolean }> = {
+export const LOCK_RULES: Record<
+  Sport,
+  { estimateMinutes: number; firstScoreLocks: boolean; live: boolean }
+> = {
   mlb: { estimateMinutes: 30, firstScoreLocks: true, live: true },
   nfl: { estimateMinutes: 12, firstScoreLocks: true, live: false },
   nba: { estimateMinutes: 30, firstScoreLocks: false, live: true },
@@ -87,7 +90,11 @@ export function estimatedLock(
   const rule = LOCK_RULES[sport] ?? LOCK_RULES.mlb;
   if (!rule.live) {
     const at = new Date(start + rule.estimateMinutes * MIN).toISOString();
-    return { at, locked: Date.parse(now) >= start + rule.estimateMinutes * MIN, reason: 'estimate' };
+    return {
+      at,
+      locked: Date.parse(now) >= start + rule.estimateMinutes * MIN,
+      reason: 'estimate',
+    };
   }
   if (live) {
     if (rule.firstScoreLocks && (live.homeScore > 0 || live.awayScore > 0))

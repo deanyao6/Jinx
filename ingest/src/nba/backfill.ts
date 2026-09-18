@@ -27,13 +27,23 @@ function arg(name: string, fallback: string): string {
 }
 
 type SeedVenue = { key: string; home_by_season?: { abbr: string; first: number; last: number }[] };
-type SeedTeam = { abbr: string; provider_team_id: string; home_venue_key: string | null; first: number; last: number | null };
+type SeedTeam = {
+  abbr: string;
+  provider_team_id: string;
+  home_venue_key: string | null;
+  first: number;
+  last: number | null;
+};
 
 /** provider team id + season -> venue key, from the seeds: the current arena, or the era's. */
-export async function homeArenaRule(): Promise<(providerTeamId: string, season: number) => string | null> {
+export async function homeArenaRule(): Promise<
+  (providerTeamId: string, season: number) => string | null
+> {
   const seed = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../seed');
-  const venues = JSON.parse(await readFile(path.join(seed, 'nba_venues.json'), 'utf8')).venues as SeedVenue[];
-  const teams = JSON.parse(await readFile(path.join(seed, 'nba_teams.json'), 'utf8')).teams as SeedTeam[];
+  const venues = JSON.parse(await readFile(path.join(seed, 'nba_venues.json'), 'utf8'))
+    .venues as SeedVenue[];
+  const teams = JSON.parse(await readFile(path.join(seed, 'nba_teams.json'), 'utf8'))
+    .teams as SeedTeam[];
   const byAbbr = new Map<string, SeedTeam[]>();
   for (const t of teams) byAbbr.set(t.abbr, [...(byAbbr.get(t.abbr) ?? []), t]);
   const eras: { providerTeamId: string; first: number; last: number; key: string }[] = [];
@@ -41,14 +51,24 @@ export async function homeArenaRule(): Promise<(providerTeamId: string, season: 
     for (const h of v.home_by_season ?? []) {
       // The abbreviation names an identity; the Bobcats and the Hornets both print CHA, so the
       // season decides which row.
-      const team = (byAbbr.get(h.abbr) ?? []).find((t) => h.first >= t.first && (t.last == null || h.first <= t.last));
-      if (team) eras.push({ providerTeamId: team.provider_team_id, first: h.first, last: h.last, key: v.key });
+      const team = (byAbbr.get(h.abbr) ?? []).find(
+        (t) => h.first >= t.first && (t.last == null || h.first <= t.last),
+      );
+      if (team)
+        eras.push({
+          providerTeamId: team.provider_team_id,
+          first: h.first,
+          last: h.last,
+          key: v.key,
+        });
     }
   }
   const current = new Map<string, string>();
   for (const t of teams) if (t.home_venue_key) current.set(t.provider_team_id, t.home_venue_key);
   return (providerTeamId, season) => {
-    const era = eras.find((e) => e.providerTeamId === providerTeamId && season >= e.first && season <= e.last);
+    const era = eras.find(
+      (e) => e.providerTeamId === providerTeamId && season >= e.first && season <= e.last,
+    );
     return era?.key ?? current.get(providerTeamId) ?? null;
   };
 }
@@ -82,8 +102,10 @@ async function main(): Promise<void> {
       const withVenues: CanonicalGame[] = known.map((g) => {
         const resolved =
           g.providerVenueId &&
-          ((g.providerVenueId.startsWith('espn:') && venueMaps.byEspnVenueId.has(g.providerVenueId.slice(5))) ||
-            (g.providerVenueId.startsWith('name:') && venueMaps.byAlias.has(g.providerVenueId.slice(5).toLowerCase())));
+          ((g.providerVenueId.startsWith('espn:') &&
+            venueMaps.byEspnVenueId.has(g.providerVenueId.slice(5))) ||
+            (g.providerVenueId.startsWith('name:') &&
+              venueMaps.byAlias.has(g.providerVenueId.slice(5).toLowerCase())));
         if (resolved || g.isNeutralSite) {
           if (!resolved) unresolved += 1;
           return g;
@@ -115,7 +137,11 @@ async function main(): Promise<void> {
       throw err;
     }
   }
-  console.log('nba backfill done. Provider team ids are seeded by season, see providers/nba/ids.ts; use', nbaProviderTeamId('1610612760', 2005), 'for the 2005 Sonics.');
+  console.log(
+    'nba backfill done. Provider team ids are seeded by season, see providers/nba/ids.ts; use',
+    nbaProviderTeamId('1610612760', 2005),
+    'for the 2005 Sonics.',
+  );
 }
 
 const isEntrypoint = process.argv[1] != null && /[\\/]backfill\.ts$/.test(process.argv[1]);

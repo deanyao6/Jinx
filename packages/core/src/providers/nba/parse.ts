@@ -379,7 +379,12 @@ export function buildPlays(
     const side: Side | null = a.teamId == null ? null : a.teamId === homeTeamId ? 'home' : 'away';
     const madeShot = a.shotResult === 'Made';
     const isFt = a.actionType === 'freethrow';
-    const points = scored ? h + aw - (plays[plays.length - 1]?.homeScore ?? 0) - (plays[plays.length - 1]?.awayScore ?? 0) : 0;
+    const points = scored
+      ? h +
+        aw -
+        (plays[plays.length - 1]?.homeScore ?? 0) -
+        (plays[plays.length - 1]?.awayScore ?? 0)
+      : 0;
     plays.push({
       actionNumber: a.actionNumber,
       period: a.period,
@@ -566,9 +571,7 @@ function assemble(
   const timeline = timelineFromPlays(plays);
   const periods = plays.reduce((m, p) => Math.max(m, p.period), 0) || null;
   const timestampsReliable =
-    plays.length > 0 &&
-    endOfFirstReliable(plays) &&
-    timeline.every((e) => e.occurredAt != null);
+    plays.length > 0 && endOfFirstReliable(plays) && timeline.every((e) => e.occurredAt != null);
   return {
     provider: NBA_PROVIDER,
     providerGameId: ctx.providerGameId,
@@ -649,13 +652,13 @@ export function parseStatsDetail(
   const names = new Map(people.map((p) => [p.id, p.name]));
   const plays = buildPlays(pbp.game.actions.map(fromStats), String(box.homeTeamId), names);
   const last = plays[plays.length - 1];
-  const info = summary ? statsRows<{ ATTENDANCE: number; GAME_TIME: string }>(summary, 'GameInfo')[0] : undefined;
+  const info = summary
+    ? statsRows<{ ATTENDANCE: number; GAME_TIME: string }>(summary, 'GameInfo')[0]
+    : undefined;
   const summaryRow = summary
     ? statsRows<{ GAME_STATUS_ID: number }>(summary, 'GameSummary')[0]
     : undefined;
-  const lines = summary
-    ? statsRows<{ TEAM_ID: number; PTS: number }>(summary, 'LineScore')
-    : [];
+  const lines = summary ? statsRows<{ TEAM_ID: number; PTS: number }>(summary, 'LineScore') : [];
   const lineFor = (teamId: number): number | null =>
     lines.find((l) => l.TEAM_ID === teamId)?.PTS ?? null;
   const homeScore = lineFor(box.homeTeamId) ?? last?.homeScore ?? 0;
@@ -683,7 +686,8 @@ export function parseStatsDetail(
 
 /** One game of `todaysScoreboard_00.json` as the pledge countdown reads it. */
 export function parseCdnLiveState(g: CdnScoreboardGame, fetchedAt: string): LiveState {
-  const status: GameStatus = g.gameStatus === 3 ? 'final' : g.gameStatus === 2 ? 'live' : 'scheduled';
+  const status: GameStatus =
+    g.gameStatus === 3 ? 'final' : g.gameStatus === 2 ? 'live' : 'scheduled';
   const text = g.gameStatusText ?? '';
   let inningState: LiveState['inningState'] = null;
   if (status === 'final') inningState = 'end';

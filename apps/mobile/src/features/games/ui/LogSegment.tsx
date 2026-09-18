@@ -17,7 +17,7 @@ import { isIsoDate, seasonOptions, sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useDebounced } from './useDebounced';
 
-const SPORTS = ['mlb', 'nfl'] as const;
+const SPORTS = ['mlb', 'nfl', 'nba'] as const;
 
 type Props = {
   /** Prefill from an import that could not be matched (teams and the ticket date). */
@@ -164,7 +164,7 @@ export function LogSegment({ initialQuery = '', initialDate = '' }: Props) {
       {!active ? (
         <EmptyState
           title="Find a game"
-          body="Try “Phillies 2019”, “Eagles at Cowboys”, or a stadium name. Filters narrow it down."
+          body="Try “Phillies 2019”, “Eagles at Cowboys”, or a venue name. Filters narrow it down."
         />
       ) : results.isPending ? (
         <Loading label="Searching" />

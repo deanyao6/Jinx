@@ -11,6 +11,8 @@ import {
   type GoalProgress,
   type GoalTemplate,
   type Sport,
+  capitalise,
+  venueNoun,
 } from '@jinx/core';
 
 import { momentLabel } from '@/features/attendances/moments';
@@ -26,6 +28,7 @@ export const TEMPLATES_WITH_N = new Set([
   'win_pledges',
   'people',
   'hr_ballparks',
+  'arenas',
 ]);
 
 export function templateByKey(key: string): GoalTemplate | undefined {
@@ -96,12 +99,13 @@ export function customGoalFilter(input: CustomGoalInput, year: number): GoalFilt
 function sportWord(sport: Sport | null, plural: boolean): string {
   if (sport === 'mlb') return plural ? 'MLB games' : 'an MLB game';
   if (sport === 'nfl') return plural ? 'NFL games' : 'an NFL game';
+  if (sport === 'nba') return plural ? 'NBA games' : 'an NBA game';
   return plural ? 'games' : 'a game';
 }
 
+/** "3 ballparks", "1 arena", "5 venues": the sport's word, or the generic one for any sport. */
 function venueWord(sport: Sport | null, n: number): string {
-  const one = sport === 'mlb' ? 'ballpark' : 'stadium';
-  return `${n} ${n === 1 ? one : `${one}s`}`;
+  return `${n} ${venueNoun(sport, n !== 1)}`;
 }
 
 export function customGoalTitle(input: CustomGoalInput): string {
@@ -113,11 +117,11 @@ export function customGoalTitle(input: CustomGoalInput): string {
   const target = Math.max(1, Math.round(input.target));
   switch (input.type) {
     case 'count':
-      return `Attend ${target} ${input.newVenue ? 'new-stadium ' : ''}${sportWord(input.sport, true)}${tail}`;
+      return `Attend ${target} ${input.newVenue ? `new-${venueNoun(input.sport)} ` : ''}${sportWord(input.sport, true)}${tail}`;
     case 'distinct_venues':
-      return `${input.newVenue ? 'New ' : ''}${input.sport === 'mlb' ? 'Ballparks' : 'Stadiums'}: ${venueWord(input.sport, target)}${tail}`;
+      return `${input.newVenue ? 'New ' : ''}${capitalise(venueNoun(input.sport, true))}: ${venueWord(input.sport, target)}${tail}`;
     case 'exists':
-      return `See ${input.newVenue ? 'a new stadium at ' : ''}${sportWord(input.sport, false)}${tail}`;
+      return `See ${input.newVenue ? `a new ${venueNoun(input.sport)} at ` : ''}${sportWord(input.sport, false)}${tail}`;
   }
 }
 

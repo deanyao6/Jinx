@@ -29,7 +29,7 @@ export type StampFixture = {
 };
 
 export type ShapeKey =
-  'ballparkA' | 'dodger' | 'wrigley' | 'oracle' | 'bowl' | 'canopy' | 'colonnade';
+  'ballparkA' | 'dodger' | 'wrigley' | 'oracle' | 'bowl' | 'canopy' | 'colonnade' | 'arena';
 
 export type RecordCardFixture = {
   name: string;

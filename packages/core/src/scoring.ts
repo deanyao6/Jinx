@@ -158,7 +158,15 @@ export function mlbScorer(play: MlbScoringPlay): Scorer {
 
 type NbaScoringPlay = Pick<
   NbaPlay,
-  'actionType' | 'subType' | 'description' | 'playerId' | 'playerName' | 'isFieldGoal' | 'freeThrowOf' | 'clock' | 'period'
+  | 'actionType'
+  | 'subType'
+  | 'description'
+  | 'playerId'
+  | 'playerName'
+  | 'isFieldGoal'
+  | 'freeThrowOf'
+  | 'clock'
+  | 'period'
 >;
 
 /** The two-point basket's kind from the feed's subType ("DUNK", "Layup", "Jump Shot", "Hook"). */
@@ -166,7 +174,11 @@ function nbaTwoKind(subType: string | null, description: string): NbaScoringKind
   const text = `${subType ?? ''} ${description}`;
   if (/dunk/i.test(text)) return 'dunk';
   if (/layup|finger roll|tip shot|tip layup/i.test(text)) return 'layup';
-  if (/jump shot|jumper|hook|bank|fadeaway|fade away|floating|pullup|pull-up|step back|turnaround/i.test(text))
+  if (
+    /jump shot|jumper|hook|bank|fadeaway|fade away|floating|pullup|pull-up|step back|turnaround/i.test(
+      text,
+    )
+  )
     return 'jumper';
   return 'two';
 }
@@ -433,11 +445,12 @@ export function scoringLines(sport: string, rows: readonly ScoringRow[]): Scorin
       last.scorerPlayerId === row.scorerPlayerId &&
       last.clock === row.clock &&
       last.period === row.period &&
-      (row.kind === 'and_one' || (row.kind === 'free_throw' && sorted[i - 1]?.kind === 'free_throw'))
+      (row.kind === 'and_one' ||
+        (row.kind === 'free_throw' && sorted[i - 1]?.kind === 'free_throw'))
     ) {
       if (row.kind === 'and_one') last.suffix = 'And-one';
       else {
-        const made = (last.folded.length + 2);
+        const made = last.folded.length + 2;
         const of = /of (\d)/.exec(row.description)?.[1];
         last.note = `Free throws, ${row.scorerName ?? ''}`.replace(/, $/, '');
         last.suffix = of ? `${made} of ${of}` : null;

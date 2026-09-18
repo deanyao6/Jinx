@@ -66,12 +66,16 @@ export function modelHomeWp(
   if (secondsLeft <= 0 && margin !== 0) return margin > 0 ? 1 : 0;
   const fraction = Math.min(1, secondsLeft / (REGULATION_PERIODS * PERIOD_SECONDS));
   const spread = Math.sqrt(Math.max(secondsLeft, 1) / (REGULATION_PERIODS * PERIOD_SECONDS));
-  const x = (params.marginScale * margin) / spread + params.priorWeight * fraction * logit(homePrior);
+  const x =
+    (params.marginScale * margin) / spread + params.priorWeight * fraction * logit(homePrior);
   return Math.min(1, Math.max(0, logistic(x)));
 }
 
 /** What the model reads off a scoring row: the same columns `game_scoring_timeline` holds. */
-export type ScoreState = Pick<ScoringEvent, 'period' | 'clock' | 'homeScore' | 'awayScore' | 'occurredAt'>;
+export type ScoreState = Pick<
+  ScoringEvent,
+  'period' | 'clock' | 'homeScore' | 'awayScore' | 'occurredAt'
+>;
 
 /** One point per scoring row from the model, a pregame point first, ending decided. */
 export function modelWinProbability(rows: readonly ScoreState[], homePrior = 0.5): WpPoint[] {
@@ -194,7 +198,9 @@ const RANK: Record<StepReason, number> = {
 };
 
 /** The rows the rule keeps, in game order, at most MAX_STEPS. */
-export function selectStepRows(rows: readonly ScoringEvent[]): { event: ScoringEvent; reason: StepReason }[] {
+export function selectStepRows(
+  rows: readonly ScoringEvent[],
+): { event: ScoringEvent; reason: StepReason }[] {
   const candidates: StepCandidate[] = [];
   rows.forEach((event, i) => {
     const prev = rows[i - 1];
@@ -301,7 +307,9 @@ export function espnPointFinder(points: readonly EspnWpPoint[]): (event: Scoring
 }
 
 /** Which model point a scoring row sits on: the pregame point is seq 1, row i is seq i + 2. */
-export function modelPointFinder(points: readonly WpPoint[]): (event: ScoringEvent, index: number) => number {
+export function modelPointFinder(
+  points: readonly WpPoint[],
+): (event: ScoringEvent, index: number) => number {
   return (_event, index) => Math.min(index + 2, points.length);
 }
 

@@ -509,7 +509,7 @@ export function profileFromAccount(
     teamChips: chips,
     stats: [
       { value: String(stats.totals.games), label: 'Games' },
-      { value: String(stats.totals.venues), label: 'Stadiums' },
+      { value: String(stats.totals.venues), label: 'Venues' },
       { value: statValue(account.followers), label: 'Followers' },
       { value: statValue(account.following), label: 'Following' },
     ],
@@ -526,9 +526,9 @@ function goalsLine(goals: ProfileAccount['goals']): string {
 
 function mapLine(stats: StatsPayload): string {
   const { venues, countries } = stats.totals;
-  if (venues === 0) return 'No stadiums yet';
+  if (venues === 0) return 'No venues yet';
   const country = `${countries} ${countries === 1 ? 'country' : 'countries'}`;
-  return `${venues} stadium${venues === 1 ? '' : 's'}, ${country}`;
+  return `${venues} venue${venues === 1 ? '' : 's'}, ${country}`;
 }
 
 export type AttendanceRow = {

@@ -201,7 +201,7 @@ export const GOAL_TEMPLATES: GoalTemplate[] = [
   },
   {
     key: 'new_stadiums',
-    title: (n) => `Visit ${n} new stadiums`,
+    title: (n) => `Visit ${n} new venues`,
     defaultN: 2,
     build: (n, year) => ({ type: 'distinct_venues', target: n, filter: { year, new_venue: true } }),
   },
@@ -254,6 +254,22 @@ export const GOAL_TEMPLATES: GoalTemplate[] = [
       type: 'distinct_venues',
       target: n,
       filter: { year, event: 'home_run', sport: 'mlb' },
+    }),
+  },
+  {
+    key: 'arenas',
+    title: (n) => `Visit ${n} NBA arenas`,
+    defaultN: 3,
+    build: (n, year) => ({ type: 'distinct_venues', target: n, filter: { year, sport: 'nba' } }),
+  },
+  {
+    key: 'buzzer_beater',
+    title: () => 'See a buzzer-beater',
+    defaultN: 1,
+    build: (_n, year) => ({
+      type: 'count',
+      target: 1,
+      filter: { year, event: 'buzzer_beater', sport: 'nba' },
     }),
   },
 ];

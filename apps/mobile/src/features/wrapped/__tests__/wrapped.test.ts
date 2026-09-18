@@ -128,6 +128,7 @@ describe('seasons', () => {
     );
     expect(opts.map((o) => `${o.sport_id}-${o.season}`)).toEqual([
       'mlb-2026',
+      'nba-2026',
       'nfl-2026',
       'mlb-2025',
     ]);

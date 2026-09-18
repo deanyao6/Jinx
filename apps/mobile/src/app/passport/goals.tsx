@@ -86,7 +86,7 @@ export default function GoalsScreen() {
         <EmptyState
           icon="i-target"
           title="No goals yet"
-          body="Attend more games, visit new stadiums, see your team on the road, or build your own. Tap New goal below to start."
+          body="Attend more games, visit new venues, see your team on the road, or build your own. Tap New goal below to start."
         />
       ) : null}
 
@@ -154,7 +154,7 @@ export default function GoalsScreen() {
         <Row
           icon="i-map"
           title="Bucket lists"
-          subtitle="Every stadium in a league, a division, or a list of your own"
+          subtitle="Every venue in a league, a division, or a list of your own"
           first
           chevron
           onPress={() => router.push('/passport/bucketlists')}

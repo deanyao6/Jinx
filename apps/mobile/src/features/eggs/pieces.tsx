@@ -97,6 +97,38 @@ function YardFlag(props: PieceProps) {
   );
 }
 
+/** A ball with its seams: one round the middle, two curving over the top and bottom. */
+function Basketball(props: PieceProps) {
+  return (
+    <Frame {...props}>
+      <Circle cx="12" cy="12" r="8.5" fill={props.fill} />
+      <Path d="M3.5 12h17M12 3.5v17" />
+      <Path d="M6 6c3.4 3.4 3.4 8.6 0 12M18 6c-3.4 3.4-3.4 8.6 0 12" />
+    </Frame>
+  );
+}
+
+/** A high-top from the side: the sole, the toe box, the laces. No mark. */
+function Sneaker(props: PieceProps) {
+  return (
+    <Frame {...props}>
+      <Path d="M4 17.5V9.2l2.8-1.4 3 4.4 2.2-6.7 2.6 1.1v5.2l5.6 2.8V17.5z" fill={props.fill} />
+      <Path d="M4 17.5h16.2M4 14.8h16.2" />
+      <Path d="M8.6 10.6l2.2-1M9.6 12.4l2.2-1" />
+    </Frame>
+  );
+}
+
+/** A towel over the shoulder: a folded rectangle with the loose end hanging. */
+function Towel(props: PieceProps) {
+  return (
+    <Frame {...props}>
+      <Path d="M6 4.5h12v10.4q-3-1.2-6 0t-6 0z" fill={props.fill} />
+      <Path d="M9.5 14.6v5M14.5 14.6v5M6 8.2h12M6 11h12" />
+    </Frame>
+  );
+}
+
 export const PIECES: Readonly<Record<PieceKind, (props: PieceProps) => React.ReactElement>> = {
   peanut: Peanut,
   snackBox: SnackBox,
@@ -104,4 +136,7 @@ export const PIECES: Readonly<Record<PieceKind, (props: PieceProps) => React.Rea
   football: Football,
   whistle: Whistle,
   yardFlag: YardFlag,
+  basketball: Basketball,
+  sneaker: Sneaker,
+  towel: Towel,
 };

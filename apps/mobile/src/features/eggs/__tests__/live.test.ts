@@ -23,8 +23,8 @@ const live = (over: Partial<EggLive> = {}): EggLive => ({
 });
 
 describe('the sport table', () => {
-  it('has a complete row for each sport, and only MLB has a live feed today', () => {
-    expect(Object.keys(EGG_SPORTS).sort()).toEqual(['mlb', 'nfl']);
+  it('has a complete row for each sport, and MLB and the NBA have a live feed today', () => {
+    expect(Object.keys(EGG_SPORTS).sort()).toEqual(['mlb', 'nba', 'nfl']);
     for (const row of Object.values(EGG_SPORTS)) {
       expect(row.lateFrom).toBeGreaterThan(0);
       expect(row.signatureBreak.periods.length).toBeGreaterThan(0);

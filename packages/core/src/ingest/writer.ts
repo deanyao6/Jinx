@@ -169,7 +169,10 @@ export interface DetailWriteResult {
 }
 
 /** The moment detectors, by the sport the plays belong to. */
-export const MOMENT_DETECTORS: Record<'mlb' | 'nfl' | 'nba', (d: CanonicalGameDetail) => GameEvent[]> = {
+export const MOMENT_DETECTORS: Record<
+  'mlb' | 'nfl' | 'nba',
+  (d: CanonicalGameDetail) => GameEvent[]
+> = {
   mlb: detectMlbMoments,
   nfl: detectNflMoments,
   nba: detectNbaMoments,

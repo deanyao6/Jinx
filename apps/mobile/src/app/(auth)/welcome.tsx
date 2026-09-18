@@ -61,7 +61,7 @@ export default function WelcomeScreen() {
           A passport for every game you attend.
         </Text>
         <Text variant="sub" color="muted" style={{ marginTop: theme.spacing.sm, maxWidth: 320 }}>
-          Log the games you have been to, keep your record, and collect stadium stamps.
+          Log the games you have been to, keep your record, and collect venue stamps.
         </Text>
       </View>
       <View style={{ gap: theme.spacing.md, paddingBottom: theme.spacing.lg }}>

@@ -219,7 +219,7 @@ export default function MapScreen() {
           initialRegion={initialRegion}
           userInterfaceStyle={theme.scheme}
           showsPointsOfInterests={false}
-          accessibilityLabel="Map of stadiums you have visited"
+          accessibilityLabel="Map of venues you have visited"
         >
           {lines && home
             ? markers

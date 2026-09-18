@@ -39,7 +39,7 @@ type GroupKey = 'games' | 'players' | 'places' | 'streaks';
 const GROUP_TITLES: Record<GroupKey, string> = {
   games: 'Games',
   players: 'Players',
-  places: 'Stadiums and travel',
+  places: 'Venues and travel',
   streaks: 'Streaks',
 };
 
@@ -100,7 +100,8 @@ export function SuperlativeCards({ rows, contextFor, onPressRow }: Props) {
           <Card style={{ paddingVertical: theme.spacing.xs + 2 }}>
             {group.rows.map((row) => {
               const context = contextFor?.(row) ?? null;
-              const pressable = !!onPressRow && !!(row.gameId || row.venueId || row.playerId || row.href);
+              const pressable =
+                !!onPressRow && !!(row.gameId || row.venueId || row.playerId || row.href);
               const body = (
                 <View
                   style={{

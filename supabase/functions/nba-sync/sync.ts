@@ -17,7 +17,13 @@ import {
   type GameWriteContext,
   type MinimalDb,
 } from '../_shared/core/index.ts';
-import { dueForRecheck, loggedGameIds, syncWindow, type RecheckRow, type SyncResult } from '../mlb-sync/sync.ts';
+import {
+  dueForRecheck,
+  loggedGameIds,
+  syncWindow,
+  type RecheckRow,
+  type SyncResult,
+} from '../mlb-sync/sync.ts';
 
 export async function runNbaSync(
   db: MinimalDb,
@@ -51,7 +57,10 @@ export async function runNbaSync(
   if (error) throw new Error(error.message);
 
   const due = ((data ?? []) as RecheckRow[]).filter((g) => dueForRecheck(g, now));
-  const logged = await loggedGameIds(db, due.map((g) => g.id));
+  const logged = await loggedGameIds(
+    db,
+    due.map((g) => g.id),
+  );
 
   for (const g of due) {
     if (!logged.has(g.id)) continue;

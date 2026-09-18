@@ -22,7 +22,16 @@
  * NFL games must already have a story (ingest/src/nfl/relive.ts --game <id>). Exits non-zero on
  * any mismatch.
  */
-import { MlbClient, NbaClient, buildStorySteps, clockToSeconds, easternDateOf, espnKey, parseEspnScoreboard, parseWinProbability } from '@jinx/core';
+import {
+  MlbClient,
+  NbaClient,
+  buildStorySteps,
+  clockToSeconds,
+  easternDateOf,
+  espnKey,
+  parseEspnScoreboard,
+  parseWinProbability,
+} from '@jinx/core';
 
 import { createDb } from '../db.js';
 import { diskCache } from '../nba/cache.js';
@@ -176,24 +185,42 @@ async function checkNfl(db: ReturnType<typeof createDb>, id: string): Promise<vo
   );
 }
 
-async function checkNba(db: ReturnType<typeof createDb>, nba: NbaClient, id: string): Promise<void> {
+async function checkNba(
+  db: ReturnType<typeof createDb>,
+  nba: NbaClient,
+  id: string,
+): Promise<void> {
   const { data, error } = await db
     .from('games')
-    .select('id, home_score, away_score, innings_or_periods, scheduled_start, home:home_team_id(name), away:away_team_id(name)')
+    .select(
+      'id, home_score, away_score, innings_or_periods, scheduled_start, home:home_team_id(name), away:away_team_id(name)',
+    )
     .eq('provider', 'nba')
     .eq('provider_game_id', id);
   if (error) throw new Error(error.message);
   const g = (data ?? [])[0] as
-    | { id: string; home_score: number; away_score: number; innings_or_periods: number | null; scheduled_start: string; home: { name: string }; away: { name: string } }
+    | {
+        id: string;
+        home_score: number;
+        away_score: number;
+        innings_or_periods: number | null;
+        scheduled_start: string;
+        home: { name: string };
+        away: { name: string };
+      }
     | undefined;
   if (!g) return fail(id, 'not in the database');
-  console.log(`${id} ${g.away.name} ${g.away_score}, ${g.home.name} ${g.home_score} (${g.innings_or_periods ?? '?'} periods)`);
+  console.log(
+    `${id} ${g.away.name} ${g.away_score}, ${g.home.name} ${g.home_score} (${g.innings_or_periods ?? '?'} periods)`,
+  );
 
   // ESPN's play list, found by date and nicknames: a provider the story was not built from.
   const etDate = easternDateOf(g.scheduled_start);
   const month = await nba.espnScoreboardMonth(etDate.slice(0, 7).replace('-', ''));
   const key = espnKey(etDate, g.home.name, g.away.name);
-  const event = parseEspnScoreboard(month.events ?? []).find((i) => `${i.etDate}|${i.homeNick}|${i.awayNick}` === key);
+  const event = parseEspnScoreboard(month.events ?? []).find(
+    (i) => `${i.etDate}|${i.homeNick}|${i.awayNick}` === key,
+  );
   if (!event) return fail(id, 'ESPN has no event for it');
   const summary = await nba.espnSummary(event.eventId);
   const scoring = (summary.plays ?? []).filter((p) => p.scoringPlay);
@@ -212,7 +239,10 @@ async function checkNba(db: ReturnType<typeof createDb>, nba: NbaClient, id: str
     let a = prevAway;
     let h = prevHome;
     let j = i;
-    while (j < scoring.length && `${scoring[j]!.period?.number}|${scoring[j]!.clock?.displayValue}` === key) {
+    while (
+      j < scoring.length &&
+      `${scoring[j]!.period?.number}|${scoring[j]!.clock?.displayValue}` === key
+    ) {
       const q = scoring[j]!;
       group.push({ da: (q.awayScore ?? 0) - a, dh: (q.homeScore ?? 0) - h });
       a = q.awayScore ?? 0;
@@ -237,32 +267,73 @@ async function checkNba(db: ReturnType<typeof createDb>, nba: NbaClient, id: str
     i = j;
   }
 
-  const steps = ((await db.from('game_story_steps').select('seq, wp_seq, away_score, home_score, label').eq('game_id', g.id).order('seq')).data ?? []) as { seq: number; wp_seq: number; away_score: number; home_score: number; label: string }[];
-  const rows = ((await db.from('game_scoring_timeline').select('seq, period, clock, away_score, home_score').eq('game_id', g.id).order('seq')).data ?? []) as { seq: number; period: number; clock: string | null; away_score: number; home_score: number }[];
-  const wp = ((await db.from('game_wp_timeline').select('seq, home_wp').eq('game_id', g.id).order('seq')).data ?? []) as { seq: number; home_wp: number }[];
-  const events = ((await db.from('game_events').select('type').eq('game_id', g.id)).data ?? []) as { type: string }[];
+  const steps = ((
+    await db
+      .from('game_story_steps')
+      .select('seq, wp_seq, away_score, home_score, label')
+      .eq('game_id', g.id)
+      .order('seq')
+  ).data ?? []) as {
+    seq: number;
+    wp_seq: number;
+    away_score: number;
+    home_score: number;
+    label: string;
+  }[];
+  const rows = ((
+    await db
+      .from('game_scoring_timeline')
+      .select('seq, period, clock, away_score, home_score')
+      .eq('game_id', g.id)
+      .order('seq')
+  ).data ?? []) as {
+    seq: number;
+    period: number;
+    clock: string | null;
+    away_score: number;
+    home_score: number;
+  }[];
+  const wp = ((
+    await db.from('game_wp_timeline').select('seq, home_wp').eq('game_id', g.id).order('seq')
+  ).data ?? []) as { seq: number; home_wp: number }[];
+  const events = ((await db.from('game_events').select('type').eq('game_id', g.id)).data ?? []) as {
+    type: string;
+  }[];
   if (steps.length === 0) return fail(id, 'no story; run ingest/src/nba/relive.ts --game first');
 
   const story = steps.slice(1, -1).map((s) => `${s.away_score}-${s.home_score}`);
   const invented = story.filter((s) => !espnSet.has(s));
   if (invented.length) fail(id, `scores ESPN never saw: ${invented.join(' ')}`);
-  const late = rows.filter((r) => r.period >= 5 || (r.period === 4 && (clockToSeconds(r.clock) ?? 999) <= 180));
+  const late = rows.filter(
+    (r) => r.period >= 5 || (r.period === 4 && (clockToSeconds(r.clock) ?? 999) <= 180),
+  );
   const shown = new Set(story);
   const missingLate = late.filter((r) => !shown.has(`${r.away_score}-${r.home_score}`));
-  if (missingLate.length) fail(id, `late scores not shown: ${missingLate.map((r) => `${r.away_score}-${r.home_score}`).join(' ')}`);
-  if (story.at(-1) !== `${g.away_score}-${g.home_score}`) fail(id, `last scoring step ${story.at(-1)} is not the final`);
-  if (espnStates.at(-1) !== `${g.away_score}-${g.home_score}`) fail(id, `ESPN's final ${espnStates.at(-1)} differs from ours`);
+  if (missingLate.length)
+    fail(
+      id,
+      `late scores not shown: ${missingLate.map((r) => `${r.away_score}-${r.home_score}`).join(' ')}`,
+    );
+  if (story.at(-1) !== `${g.away_score}-${g.home_score}`)
+    fail(id, `last scoring step ${story.at(-1)} is not the final`);
+  if (espnStates.at(-1) !== `${g.away_score}-${g.home_score}`)
+    fail(id, `ESPN's final ${espnStates.at(-1)} differs from ours`);
   const seqs = new Set(wp.map((p) => p.seq));
   if (!steps.every((s) => seqs.has(s.wp_seq))) fail(id, 'a step points at no probability point');
   const end = Number(wp.at(-1)?.home_wp);
   const homeWon = g.home_score > g.away_score;
-  if (homeWon ? end < 0.9 : end > 0.1) fail(id, `the line ends at ${end} but the ${homeWon ? 'home' : 'away'} team won`);
+  if (homeWon ? end < 0.9 : end > 0.1)
+    fail(id, `the line ends at ${end} but the ${homeWon ? 'home' : 'away'} team won`);
   if (NBA_OVERTIME.has(id)) {
-    if (!steps.some((s) => /overtime/i.test(s.label))) fail(id, 'overtime, and no step is labelled with it');
+    if (!steps.some((s) => /overtime/i.test(s.label)))
+      fail(id, 'overtime, and no step is labelled with it');
     if (!events.some((e) => e.type === 'overtime')) fail(id, 'overtime, and no overtime moment');
   }
-  if (NBA_BUZZER.has(id) && !events.some((e) => e.type === 'buzzer_beater')) fail(id, 'a buzzer-beater, and no buzzer_beater moment');
-  console.log(`  ${wp.length} points, ${steps.length} steps, ${story.length} of ${espnStates.length} ESPN states shown, ${events.map((e) => e.type).join(', ') || 'no moments'}`);
+  if (NBA_BUZZER.has(id) && !events.some((e) => e.type === 'buzzer_beater'))
+    fail(id, 'a buzzer-beater, and no buzzer_beater moment');
+  console.log(
+    `  ${wp.length} points, ${steps.length} steps, ${story.length} of ${espnStates.length} ESPN states shown, ${events.map((e) => e.type).join(', ') || 'no moments'}`,
+  );
 }
 
 async function main() {
@@ -272,7 +343,7 @@ async function main() {
   console.log('\nNFL, story vs game_scoring_timeline');
   const db = createDb();
   for (const id of NFL) await checkNfl(db, id);
-  console.log('\nNBA, story vs ESPN\'s play list');
+  console.log("\nNBA, story vs ESPN's play list");
   const nba = new NbaClient({ cache: diskCache() });
   for (const id of NBA) await checkNba(db, nba, id);
   console.log(

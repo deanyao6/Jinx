@@ -163,9 +163,11 @@ describe('records and rival labels', () => {
 
 describe('the famous game feed event', () => {
   it('says who was at which famous game', () => {
-    expect(feedEventCopy({ ...base, type: 'famous_game', payload: { title: 'Super Bowl LIX' } })).toBe(
-      'Maya was at Super Bowl LIX',
+    expect(
+      feedEventCopy({ ...base, type: 'famous_game', payload: { title: 'Super Bowl LIX' } }),
+    ).toBe('Maya was at Super Bowl LIX');
+    expect(feedEventCopy({ ...base, type: 'famous_game', payload: {} })).toBe(
+      'Maya was at a famous game',
     );
-    expect(feedEventCopy({ ...base, type: 'famous_game', payload: {} })).toBe('Maya was at a famous game');
   });
 });

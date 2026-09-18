@@ -230,7 +230,7 @@ export default function PassportScreen() {
 
             <Card>
               <CardHeader
-                label="Stadium stamps"
+                label="Venue stamps"
                 action={`All ${s.stamps.length}`}
                 onPress={() => router.push('/passport/stamps')}
               />
@@ -288,7 +288,7 @@ export default function PassportScreen() {
               <Row
                 chevron
                 title="Map"
-                subtitle={`${s.totals.venues} ${s.totals.venues === 1 ? 'stadium' : 'stadiums'} in ${
+                subtitle={`${s.totals.venues} ${s.totals.venues === 1 ? 'venue' : 'venues'} in ${
                   s.totals.states
                 } ${s.totals.states === 1 ? 'state' : 'states'}`}
                 onPress={() => router.push('/passport/map')}
@@ -323,7 +323,7 @@ export default function PassportScreen() {
             <Row
               chevron
               title="Bucket lists"
-              subtitle="Every ballpark, every division, and the rare stuff"
+              subtitle="Every venue, every division, and the rare stuff"
               right={
                 joinedLists.data ? (
                   <Text variant="caption" color="muted">

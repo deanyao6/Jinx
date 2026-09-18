@@ -28,12 +28,12 @@ export const EGG_CATALOG: readonly EggEntry[] = [
   {
     key: 'wornStamps',
     title: 'Worn stamps',
-    how: 'A stadium visited 5 times wears its stamp down, and 10 times wears it right through.',
+    how: 'A venue visited 5 times wears its stamp down, and 10 times wears it right through.',
   },
   {
     key: 'goldenStamps',
     title: 'Golden stamps',
-    how: 'A stadium where you saw something rare is struck in gold.',
+    how: 'A venue where you saw something rare is struck in gold.',
   },
   {
     key: 'recordRewind',

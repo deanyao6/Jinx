@@ -38,7 +38,11 @@ function playDetail(play: NbaPlay, extra: Record<string, unknown> = {}): Record<
   };
 }
 
-function lineEvent(type: GameEvent['type'], line: NbaBoxLine, extra: Record<string, unknown>): GameEvent {
+function lineEvent(
+  type: GameEvent['type'],
+  line: NbaBoxLine,
+  extra: Record<string, unknown>,
+): GameEvent {
   return {
     type,
     side: line.side,

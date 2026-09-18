@@ -45,7 +45,7 @@ export default function NewBucketListScreen() {
       {create.isError ? <Notice tone="error">{errorMessage(create.error)}</Notice> : null}
       <TextField
         label="Title"
-        placeholder="Every stadium on the East Coast"
+        placeholder="Every venue on the East Coast"
         value={title}
         onChangeText={setTitle}
         maxLength={80}
@@ -59,13 +59,13 @@ export default function NewBucketListScreen() {
       />
       <TextField
         label="Venues"
-        placeholder="Search stadiums"
+        placeholder="Search venues"
         value={query}
         onChangeText={setQuery}
         autoCapitalize="none"
         autoCorrect={false}
         clearButtonMode="while-editing"
-        hint={picked.length ? null : 'Pick at least one stadium.'}
+        hint={picked.length ? null : 'Pick at least one venue.'}
       />
       {picked.length ? (
         <View style={{ marginBottom: theme.spacing.sm }}>
@@ -74,7 +74,7 @@ export default function NewBucketListScreen() {
               {picked.length}
             </Text>
             <Text variant="kicker" color="muted">
-              {picked.length === 1 ? 'stadium on the list' : 'stadiums on the list'}
+              {picked.length === 1 ? 'venue on the list' : 'venues on the list'}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>

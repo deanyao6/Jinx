@@ -263,7 +263,12 @@ export function validateStoryline(text: string, facts: unknown, ctx: ValidationC
   const allowed = allowedNumbers(facts);
   let numeric = s;
   for (const t of [...ctx.teams, ...ctx.league]) {
-    for (const n of names(t)) if (/\d/.test(n)) numeric = numeric.replace(new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'), ' ');
+    for (const n of names(t))
+      if (/\d/.test(n))
+        numeric = numeric.replace(
+          new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'),
+          ' ',
+        );
   }
   for (const n of numbersIn(numeric)) {
     if (!allowed.has(n)) {

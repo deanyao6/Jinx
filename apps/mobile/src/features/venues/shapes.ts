@@ -4,7 +4,7 @@ import type { ShapeKey } from '@/features/data/shapes';
 import { supabase } from '@/lib/supabase';
 
 /**
- * Stadium outlines from `venue_shapes` (SPEC.md 8.5).
+ * Venue outlines from `venue_shapes` (SPEC.md 8.5).
  *
  * v1 stores the reference's placeholder shape key per venue; a later pass traces real
  * OpenStreetMap footprints into `svg_path`. Only the key is read here, because that is
@@ -38,5 +38,7 @@ export function useVenueShapes() {
  * a single game's sport id.
  */
 export function defaultShapeKey(sports: readonly string[]): ShapeKey {
-  return sports.includes('mlb') ? 'ballparkA' : 'bowl';
+  if (sports.includes('mlb')) return 'ballparkA';
+  if (sports.length > 0 && sports.every((s) => s === 'nba')) return 'arena';
+  return 'bowl';
 }

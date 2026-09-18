@@ -13,25 +13,33 @@ import { useTheme } from '@/theme/ThemeProvider';
  * belongs to and an icon from the reference set. `home_run` is left out because the stats
  * payload leaves it out: it is an event, not a trophy.
  */
-const CATALOGUE: readonly { type: string; sport: 'mlb' | 'nfl'; icon: IconName }[] = [
-  { type: 'walk_off', sport: 'mlb', icon: 'i-bolt' },
-  { type: 'walk_off_home_run', sport: 'mlb', icon: 'i-bolt' },
-  { type: 'grand_slam', sport: 'mlb', icon: 'i-spark' },
-  { type: 'cycle', sport: 'mlb', icon: 'i-route' },
-  { type: 'no_hitter', sport: 'mlb', icon: 'i-lock' },
-  { type: 'perfect_game', sport: 'mlb', icon: 'i-verified' },
-  { type: 'extra_innings', sport: 'mlb', icon: 'i-clock' },
-  { type: 'shutout', sport: 'mlb', icon: 'i-lock' },
-  { type: 'immaculate_inning', sport: 'mlb', icon: 'i-spark' },
-  { type: 'overtime', sport: 'nfl', icon: 'i-clock' },
-  { type: 'late_go_ahead_score', sport: 'nfl', icon: 'i-trend' },
-  { type: 'walk_off_score', sport: 'nfl', icon: 'i-bolt' },
-  { type: 'pick_six', sport: 'nfl', icon: 'i-swords' },
-  { type: 'fumble_return_td', sport: 'nfl', icon: 'i-swords' },
-  { type: 'kick_return_td', sport: 'nfl', icon: 'i-route' },
-  { type: 'safety', sport: 'nfl', icon: 'i-flag' },
-  { type: 'long_field_goal', sport: 'nfl', icon: 'i-target' },
-  { type: 'comeback_14', sport: 'nfl', icon: 'i-trend' },
+const CATALOGUE: readonly { type: string; sports: readonly string[]; icon: IconName }[] = [
+  { type: 'walk_off', sports: ['mlb'], icon: 'i-bolt' },
+  { type: 'walk_off_home_run', sports: ['mlb'], icon: 'i-bolt' },
+  { type: 'grand_slam', sports: ['mlb'], icon: 'i-spark' },
+  { type: 'cycle', sports: ['mlb'], icon: 'i-route' },
+  { type: 'no_hitter', sports: ['mlb'], icon: 'i-lock' },
+  { type: 'perfect_game', sports: ['mlb'], icon: 'i-verified' },
+  { type: 'extra_innings', sports: ['mlb'], icon: 'i-clock' },
+  { type: 'shutout', sports: ['mlb'], icon: 'i-lock' },
+  { type: 'immaculate_inning', sports: ['mlb'], icon: 'i-spark' },
+  // Overtime is one moment type for football and basketball alike.
+  { type: 'overtime', sports: ['nfl', 'nba'], icon: 'i-clock' },
+  { type: 'late_go_ahead_score', sports: ['nfl'], icon: 'i-trend' },
+  { type: 'walk_off_score', sports: ['nfl'], icon: 'i-bolt' },
+  { type: 'pick_six', sports: ['nfl'], icon: 'i-swords' },
+  { type: 'fumble_return_td', sports: ['nfl'], icon: 'i-swords' },
+  { type: 'kick_return_td', sports: ['nfl'], icon: 'i-route' },
+  { type: 'safety', sports: ['nfl'], icon: 'i-flag' },
+  { type: 'long_field_goal', sports: ['nfl'], icon: 'i-target' },
+  { type: 'comeback_14', sports: ['nfl'], icon: 'i-trend' },
+  { type: 'buzzer_beater', sports: ['nba'], icon: 'i-bolt' },
+  { type: 'fifty_points', sports: ['nba'], icon: 'i-spark' },
+  { type: 'triple_double', sports: ['nba'], icon: 'i-target' },
+  { type: 'quadruple_double', sports: ['nba'], icon: 'i-verified' },
+  { type: 'twenty_rebounds', sports: ['nba'], icon: 'i-route' },
+  { type: 'twenty_assists', sports: ['nba'], icon: 'i-users' },
+  { type: 'comeback_20', sports: ['nba'], icon: 'i-trend' },
 ];
 
 export function momentIcon(type: string): IconName {
@@ -47,7 +55,9 @@ export function unearnedMoments(
   sports: readonly string[],
 ): { type: string; label: string }[] {
   const have = new Set(earned);
-  const inScope = CATALOGUE.filter((m) => sports.length === 0 || sports.includes(m.sport));
+  const inScope = CATALOGUE.filter(
+    (m) => sports.length === 0 || m.sports.some((s) => sports.includes(s)),
+  );
   return inScope
     .filter((m) => !have.has(m.type))
     .map((m) => ({ type: m.type, label: momentLabel(m.type) }));

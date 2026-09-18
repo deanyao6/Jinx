@@ -20,7 +20,7 @@ export function WelcomeSeals() {
     <View
       accessible
       accessibilityRole="image"
-      accessibilityLabel="Three stadium stamps"
+      accessibilityLabel="Three venue stamps"
       style={{ flexDirection: 'row', alignItems: 'flex-end', height: 112 }}
     >
       <View style={{ transform: [{ rotate: '-11deg' }] }}>

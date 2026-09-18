@@ -73,9 +73,9 @@ export function wrappedCardCopy(card: WrappedCard, sport: string, season: number
     case 'stamps': {
       const fresh = card.stamps.new;
       return {
-        label: 'Stadiums',
+        label: 'Venues',
         headline: String(card.stamps.venues),
-        body: `${card.stamps.venues === 1 ? 'stadium' : 'stadiums'} this season, ${plural(fresh.length, 'new stamp')}.`,
+        body: `${card.stamps.venues === 1 ? 'venue' : 'venues'} this season, ${plural(fresh.length, 'new stamp')}.`,
         lines: fresh.map((v) => v.name),
         accent: 'green',
       };
@@ -159,7 +159,7 @@ export function wrappedCardCopy(card: WrappedCard, sport: string, season: number
         return {
           label: 'Miles traveled',
           headline: '–',
-          body: 'Add a home city in the You tab to count the miles to every stadium.',
+          body: 'Add a home city in the You tab to count the miles to every venue.',
           lines: [],
           accent: 'gold',
         };

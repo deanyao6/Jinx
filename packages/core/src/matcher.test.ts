@@ -72,10 +72,25 @@ const venues: VenueRef[] = [
     aliases: ['Jerry World', 'Cowboys Stadium'],
     tz: 'America/Chicago',
   },
-  { id: 'crypto', name: 'Crypto.com Arena', aliases: ['Staples Center'], tz: 'America/Los_Angeles' },
-  { id: 'xfinity', name: 'Xfinity Mobile Arena', aliases: ['Wells Fargo Center', 'Wachovia Center'], tz: 'America/New_York' },
+  {
+    id: 'crypto',
+    name: 'Crypto.com Arena',
+    aliases: ['Staples Center'],
+    tz: 'America/Los_Angeles',
+  },
+  {
+    id: 'xfinity',
+    name: 'Xfinity Mobile Arena',
+    aliases: ['Wells Fargo Center', 'Wachovia Center'],
+    tz: 'America/New_York',
+  },
   { id: 'moda', name: 'Moda Center', aliases: ['Rose Garden'], tz: 'America/Los_Angeles' },
-  { id: 'rocket', name: 'Rocket Arena', aliases: ['Rocket Mortgage FieldHouse', 'Quicken Loans Arena'], tz: 'America/New_York' },
+  {
+    id: 'rocket',
+    name: 'Rocket Arena',
+    aliases: ['Rocket Mortgage FieldHouse', 'Quicken Loans Arena'],
+    tz: 'America/New_York',
+  },
 ];
 const ctx: MatchContext = { teams, venues };
 

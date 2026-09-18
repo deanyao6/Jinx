@@ -735,11 +735,11 @@ describe('Profile mapping', () => {
     expect(p.avatar).toBe('user-1');
   });
 
-  it('counts games and stadiums from the stats payload', () => {
+  it('counts games and venues from the stats payload', () => {
     const p = profileFromAccount(account, stats, []);
     expect(p.stats).toEqual([
       { value: '48', label: 'Games' },
-      { value: '14', label: 'Stadiums' },
+      { value: '14', label: 'Venues' },
       { value: '0', label: 'Followers' },
       { value: '0', label: 'Following' },
     ]);
@@ -769,7 +769,7 @@ describe('Profile mapping', () => {
   it('describes goals and the map from real counts', () => {
     const p = profileFromAccount(account, stats, []);
     expect(p.rows[1]?.meta).toBe('1 of 3 done');
-    expect(p.rows[2]?.meta).toBe('14 stadiums, 1 country');
+    expect(p.rows[2]?.meta).toBe('14 venues, 1 country');
     const fresh = profileFromAccount(
       { ...account, goals: { total: 0, done: 0 } },
       {
@@ -779,7 +779,7 @@ describe('Profile mapping', () => {
       [],
     );
     expect(fresh.rows[1]?.meta).toBe('None set yet');
-    expect(fresh.rows[2]?.meta).toBe('No stadiums yet');
+    expect(fresh.rows[2]?.meta).toBe('No venues yet');
   });
 
   it('puts your companions on the Friends row', () => {

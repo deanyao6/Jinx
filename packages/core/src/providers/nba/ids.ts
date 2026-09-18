@@ -135,6 +135,7 @@ export function clockLabel(clock: string | null | undefined): string | null {
   if (s == null) return null;
   const m = Math.floor(s / 60);
   const rest = s - m * 60;
-  if (m === 0 && rest < 60 && !Number.isInteger(rest)) return `0:${rest.toFixed(1).padStart(4, '0')}`;
+  if (m === 0 && rest < 60 && !Number.isInteger(rest))
+    return `0:${rest.toFixed(1).padStart(4, '0')}`;
   return `${m}:${String(Math.floor(rest)).padStart(2, '0')}`;
 }

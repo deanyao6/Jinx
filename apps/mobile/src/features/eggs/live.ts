@@ -8,7 +8,16 @@
  */
 
 /** The small drawn things that fall. Drawn in `pieces.tsx`, one component per kind. */
-export type PieceKind = 'peanut' | 'snackBox' | 'baseball' | 'football' | 'whistle' | 'yardFlag';
+export type PieceKind =
+  | 'peanut'
+  | 'snackBox'
+  | 'baseball'
+  | 'football'
+  | 'whistle'
+  | 'yardFlag'
+  | 'basketball'
+  | 'sneaker'
+  | 'towel';
 
 export type EggSport = {
   /**
@@ -49,6 +58,14 @@ export const EGG_SPORTS: Readonly<Record<string, EggSport>> = {
       states: ['two_minute_warning'],
     },
     pieces: ['football', 'whistle', 'yardFlag'],
+  },
+  nba: {
+    // nba-live writes game_live_state every minute while someone is checked in: the period in
+    // `inning`, and `inning_state` is `live`, `end` (between periods) or `halftime`.
+    liveFeed: true,
+    lateFrom: 4,
+    signatureBreak: { name: 'Halftime', periods: [2], states: ['halftime'] },
+    pieces: ['basketball', 'sneaker', 'towel'],
   },
 };
 

@@ -51,7 +51,9 @@ interface TimelineRow {
 async function timelineRows(db: MinimalDb, gameId: string): Promise<ScoringEvent[]> {
   const { data, error } = await db
     .from('game_scoring_timeline')
-    .select('seq, occurred_at, period, clock, home_score, away_score, scoring_side, description, kind, scorer_player_id, scorer_name')
+    .select(
+      'seq, occurred_at, period, clock, home_score, away_score, scoring_side, description, kind, scorer_player_id, scorer_name',
+    )
     .eq('game_id', gameId)
     .order('seq');
   if (error) throw new Error(`game_scoring_timeline: ${error.message}`);
@@ -115,8 +117,13 @@ export async function buildNbaRelive(
   }
   let start = game.scheduled_start;
   if (!start) {
-    const { data } = await db.from('games').select('scheduled_start').eq('id', game.game_id).single();
-    start = (data as { scheduled_start: string } | null)?.scheduled_start ?? new Date().toISOString();
+    const { data } = await db
+      .from('games')
+      .select('scheduled_start')
+      .eq('id', game.game_id)
+      .single();
+    start =
+      (data as { scheduled_start: string } | null)?.scheduled_start ?? new Date().toISOString();
   }
   const final = {
     awayScore: game.away_score ?? rows[rows.length - 1]!.awayScore,
@@ -128,12 +135,22 @@ export async function buildNbaRelive(
   let points: WpPoint[] = [];
   let source: 'espn' | 'model' = 'model';
   let pointFor: (event: ScoringEvent, index: number) => number;
-  const eventId = await espnEventIdFor(client, { scheduled_start: start, home_name: game.home_name, away_name: game.away_name }).catch(() => null);
+  const eventId = await espnEventIdFor(client, {
+    scheduled_start: start,
+    home_name: game.home_name,
+    away_name: game.away_name,
+  }).catch(() => null);
   if (eventId) {
     const summary = await client.espnSummary(eventId).catch(() => null);
     const espnPoints = summary ? parseEspnWinProbability(summary) : [];
     if (espnPoints.length > 10) {
-      points = espnPoints.map(({ seq, period, half, homeWp, occurredAt }) => ({ seq, period, half, homeWp, occurredAt }));
+      points = espnPoints.map(({ seq, period, half, homeWp, occurredAt }) => ({
+        seq,
+        period,
+        half,
+        homeWp,
+        occurredAt,
+      }));
       source = 'espn';
       const find = espnPointFinder(espnPoints);
       pointFor = (event) => find(event);
@@ -145,7 +162,9 @@ export async function buildNbaRelive(
   }
   const steps = buildNbaStorySteps(rows, points, final, pointFor!).map((s) => ({
     ...s,
-    scorerPlayerId: (rows.find((r) => r.seq === s.seq) as { scorerPlayerId?: string } | undefined)?.scorerPlayerId ?? null,
+    scorerPlayerId:
+      (rows.find((r) => r.seq === s.seq) as { scorerPlayerId?: string } | undefined)
+        ?.scorerPlayerId ?? null,
   }));
   // Steps carry the timeline's resolved scorer where they came from a row; the pregame and
   // final steps name nobody. resolveStepScorers is for provider ids, which the rows lost.
@@ -156,24 +175,37 @@ export async function buildNbaRelive(
 }
 
 /** The players row of the scoring row a step was built from, by matching score and period. */
-function stepScorerId(rows: readonly (ScoringEvent & { scorerPlayerId?: string })[], step: { homeScore: number; awayScore: number; label: string; scorerName: string | null }): string | null {
+function stepScorerId(
+  rows: readonly (ScoringEvent & { scorerPlayerId?: string })[],
+  step: { homeScore: number; awayScore: number; label: string; scorerName: string | null },
+): string | null {
   if (!step.scorerName) return null;
   const row = rows.find(
-    (r) => r.homeScore === step.homeScore && r.awayScore === step.awayScore && r.scorerName === step.scorerName,
+    (r) =>
+      r.homeScore === step.homeScore &&
+      r.awayScore === step.awayScore &&
+      r.scorerName === step.scorerName,
   );
   return row?.scorerPlayerId ?? null;
 }
 
 /** A game's schedule-row context, so a detail rewrite keeps its start, venue and neutral flag. */
-export async function detailContextFor(db: MinimalDb, gameId: string, providerGameId: string): Promise<DetailContext> {
+export async function detailContextFor(
+  db: MinimalDb,
+  gameId: string,
+  providerGameId: string,
+): Promise<DetailContext> {
   const { data } = await db
     .from('games')
     .select('scheduled_start, venue_id, is_neutral_site, venue:venue_id(name)')
     .eq('id', gameId)
     .single();
-  const row = data as
-    | { scheduled_start: string; venue_id: string | null; is_neutral_site: boolean; venue: { name: string } | null }
-    | null;
+  const row = data as {
+    scheduled_start: string;
+    venue_id: string | null;
+    is_neutral_site: boolean;
+    venue: { name: string } | null;
+  } | null;
   return {
     providerGameId,
     scheduledStart: row?.scheduled_start ?? new Date().toISOString(),
@@ -184,7 +216,10 @@ export async function detailContextFor(db: MinimalDb, gameId: string, providerGa
 }
 
 export interface NbaDetailProvider {
-  fetchGameDetail(providerGameId: string, ctx?: Partial<DetailContext>): Promise<CanonicalGameDetail>;
+  fetchGameDetail(
+    providerGameId: string,
+    ctx?: Partial<DetailContext>,
+  ): Promise<CanonicalGameDetail>;
 }
 
 /**

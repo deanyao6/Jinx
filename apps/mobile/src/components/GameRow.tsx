@@ -31,7 +31,14 @@ type Props = {
 };
 
 /** "date · away at home · venue · score" list row used by search, history, and upcoming. */
-export function GameRow({ game, onPress, right, badge, badgeTone = 'accent', famous = false }: Props) {
+export function GameRow({
+  game,
+  onPress,
+  right,
+  badge,
+  badgeTone = 'accent',
+  famous = false,
+}: Props) {
   const score = formatScore({
     homeScore: game.home_score,
     awayScore: game.away_score,

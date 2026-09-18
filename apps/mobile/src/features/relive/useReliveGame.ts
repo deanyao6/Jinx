@@ -46,10 +46,14 @@ export type ReliveGameData = {
  * so the middle one follows the sport rather than being hardcoded; the outer two are the
  * start and end of any game.
  */
+const CHART_LABELS: Readonly<Record<string, ReliveFixture['chartLabels']>> = {
+  mlb: { left: 'First pitch', middle: '7th inning', right: 'Final' },
+  nfl: { left: 'Kickoff', middle: 'Halftime', right: 'Final' },
+  nba: { left: 'Tip-off', middle: 'Halftime', right: 'Final' },
+};
+
 export function chartLabelsForSport(sportId: string): ReliveFixture['chartLabels'] {
-  return sportId === 'mlb'
-    ? { left: 'First pitch', middle: '7th inning', right: 'Final' }
-    : { left: 'Kickoff', middle: 'Halftime', right: 'Final' };
+  return CHART_LABELS[sportId] ?? CHART_LABELS['nfl']!;
 }
 
 export function useReliveGame(gameId: string | undefined): ReliveGameData {

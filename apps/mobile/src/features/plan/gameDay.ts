@@ -1,3 +1,5 @@
+import { venueNoun } from '@jinx/core';
+
 import type { GameDayFixture } from '@/features/data/shapes';
 import { listSentence, shortTeamName, type TeamRef } from '@/features/data/names';
 
@@ -102,13 +104,39 @@ export function whenLine(startMs: number, now: number, timeZone?: string): strin
 
 type TimelineItem = GameDayFixture['timeline'][number];
 
+/** How each sport's game begins. */
+const START_WORD: Readonly<Record<string, string>> = {
+  mlb: 'First pitch',
+  nfl: 'Kickoff',
+  nba: 'Tip-off',
+};
+
+/** The lock rule per sport, worded as SPEC 6.4 words it, and the estimate it is ordered by. */
+const LOCK_STEP: Readonly<Record<string, { time: string; text: string; minutes: number }>> = {
+  mlb: {
+    time: 'End of the 1st',
+    text: 'Picks lock at the first run or the end of the 1st, whichever comes first.',
+    minutes: 30,
+  },
+  nfl: {
+    time: '10:00 in Q1',
+    text: 'Picks lock at the first score or 10:00 in the 1st quarter.',
+    minutes: 12,
+  },
+  nba: {
+    time: 'End of Q1',
+    text: 'Picks lock at the end of the 1st quarter.',
+    minutes: 30,
+  },
+};
+
 /**
  * The day, as the app will actually run it.
  *
  * `order` is when each step happens, used only to decide which one is "now". Two of them
  * have no clock time to show: a pick locks on the first score, which nobody can schedule,
  * so its label is the rule rather than a made-up time. The ordering instants for those use
- * the spec's own estimates (start + 30 minutes for MLB, + 12 for NFL; SPEC 6.4).
+ * the spec's own estimates (start + 30 minutes for MLB and the NBA, + 12 for NFL; SPEC 6.4).
  */
 export function timeline(
   game: UpcomingGame['game'],
@@ -118,41 +146,35 @@ export function timeline(
   timeZone?: string,
 ): TimelineItem[] {
   const start = Date.parse(game.scheduled_start);
-  const mlb = game.sport_id === 'mlb';
+  const sport = game.sport_id;
+  const building = venueNoun(sport);
+  const startWord = START_WORD[sport] ?? 'Kickoff';
 
   const steps: (Omit<TimelineItem, 'now'> & { order: number })[] = [
     {
       icon: 'i-verified',
       time: clock(start - CHECK_IN_LEAD, timeZone),
       text: neutral
-        ? 'Check-in opens. Check in at the stadium, then pick a side.'
-        : 'Check-in opens. Check in at the stadium to verify you were there.',
+        ? `Check-in opens. Check in at the ${building}, then pick a side.`
+        : `Check-in opens. Check in at the ${building} to verify you were there.`,
       order: start - CHECK_IN_LEAD,
     },
     {
       icon: 'i-flag',
       time: clock(start, timeZone),
-      text: mlb ? `First pitch. ${matchup}.` : `Kickoff. ${matchup}.`,
+      text: `${startWord}. ${matchup}.`,
       order: start,
     },
   ];
 
   if (neutral) {
-    steps.push(
-      mlb
-        ? {
-            icon: 'i-lock',
-            time: 'End of the 1st',
-            text: 'Picks lock at the first run or the end of the 1st, whichever comes first.',
-            order: start + 30 * MIN,
-          }
-        : {
-            icon: 'i-lock',
-            time: '10:00 in Q1',
-            text: 'Picks lock at the first score or 10:00 in the 1st quarter.',
-            order: start + 12 * MIN,
-          },
-    );
+    const lock = LOCK_STEP[sport] ?? LOCK_STEP['nfl']!;
+    steps.push({
+      icon: 'i-lock',
+      time: lock.time,
+      text: lock.text,
+      order: start + lock.minutes * MIN,
+    });
   }
 
   steps.push({

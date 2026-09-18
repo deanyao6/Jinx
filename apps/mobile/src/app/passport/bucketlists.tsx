@@ -97,9 +97,9 @@ export default function BucketListsScreen() {
   return (
     <Screen>
       <PageIntro
-        kicker={evaluated.length > 0 ? `${evaluated.length} joined` : 'Stadiums and moments'}
+        kicker={evaluated.length > 0 ? `${evaluated.length} joined` : 'Venues and moments'}
         title="Bucket lists"
-        body="Stadiums you have not been to yet show up as ghost stamps in your passport and on the map."
+        body="Venues you have not been to yet show up as ghost stamps in your passport and on the map."
       />
       {joined.isPending || visible.isPending ? <Loading /> : null}
       {joined.isError ? <ErrorNotice error={joined.error} onRetry={joined.refetch} /> : null}
@@ -113,7 +113,7 @@ export default function BucketListsScreen() {
             <View style={{ flex: 1 }}>
               <Text variant="h2">Pick a list to chase</Text>
               <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
-                Every stadium in a league, a division, a walk-off. Join one below.
+                Every venue in a league, a division, a walk-off. Join one below.
               </Text>
             </View>
           </View>

@@ -1,9 +1,9 @@
 import { eggs } from './flags';
 
 /**
- * The two easter eggs that live on a stadium stamp (Dean, 2026-09-17).
+ * The two easter eggs that live on a venue stamp (Dean, 2026-09-17).
  *
- * Pure rules only. What a seal looks like is `components/reference/Seal`; which stadium gets
+ * Pure rules only. What a seal looks like is `components/reference/Seal`; which venue gets
  * which look is `features/passport/seals`.
  */
 
@@ -40,6 +40,7 @@ export type RareMoment = { type: string; needsWin?: boolean };
  *
  * MLB: a no-hitter, a perfect game, a cycle, any walk-off, an immaculate inning.
  * NFL: an overtime win, a score as time expires, a comeback from 14 down.
+ * NBA: a buzzer-beater, a 50-point game, a quadruple-double, an overtime win.
  */
 export const RARE_MOMENTS: Readonly<Record<string, readonly RareMoment[]>> = {
   mlb: [
@@ -51,6 +52,12 @@ export const RARE_MOMENTS: Readonly<Record<string, readonly RareMoment[]>> = {
     { type: 'immaculate_inning' },
   ],
   nfl: [{ type: 'overtime', needsWin: true }, { type: 'walk_off_score' }, { type: 'comeback_14' }],
+  nba: [
+    { type: 'buzzer_beater' },
+    { type: 'fifty_points' },
+    { type: 'quadruple_double' },
+    { type: 'overtime', needsWin: true },
+  ],
 };
 
 /** Every event type any sport counts, for asking the database for just those rows. */
