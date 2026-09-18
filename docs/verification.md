@@ -476,6 +476,13 @@ All with real fetches from Node, fixtures under `ingest/fixtures/nba/` where the
 - **nba.com game pages**: `https://www.nba.com/game/{gameId}` answers 200 for real ids
   (`0021600001`, `0022400001`) and redirects (303 to `/games`) for a made-up one, so it is a
   page about the game. Used as the official highlights link.
+- **No NBA host is reachable from Supabase Edge Functions** (2026-09-18, a throwaway probe
+  function deployed and deleted the same minute): `cdn.nba.com` 403, `stats.nba.com` hangs
+  past 12 s, and ESPN's `site.api.espn.com` 403 as well, all with the same headers Node sends
+  successfully from this machine. Local Deno gets 403 from the CDN too, so part of it is the
+  client and part is the datacenter egress. `nba-sync` and `nba-live` are deployed but
+  unscheduled (migration 20260918100200); the daily GitHub job is the NBA's path, and whether
+  GitHub's runners are allowed through is recorded in docs/progress.md from the run itself.
 - **Coordinates** for the arenas came from OpenStreetMap Nominatim (queried 2026-09-18, one
   request a second, `seed/nba_venues.json` `coords_source`), except Moda Center and The
   Palace of Auburn Hills, which Nominatim could not place and which carry their Wikipedia

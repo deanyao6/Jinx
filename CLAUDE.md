@@ -4,7 +4,7 @@
 > what is half done, what is switched off on purpose, what only Dean can do, and the traps that
 > cost previous sessions hours. This file is layout, commands and conventions.
 
-A passport for sports fans: every game you attend becomes part of a living record. iOS first, MLB + NFL in v1.
+A passport for sports fans: every game you attend becomes part of a living record. iOS first; MLB, NFL and NBA.
 
 **The full product and engineering spec is [SPEC.md](SPEC.md). Read it before changing anything.**
 `design/reference.html` is the single visual source of truth; `docs/turnstile-ui.html` is the older
@@ -114,7 +114,13 @@ npx tsx ingest/src/nfl/rosters.ts                          # NFL current rosters
 npx tsx ingest/src/mlb/relive.ts --attended                 # MLB win probability + story steps
 npx tsx ingest/src/nfl/relive.ts --attended                # NFL ditto, from the nflverse play-by-play
 # storylines: an Edge Function, not a script; see docs/deploy.md for the curl
-npx tsx ingest/src/elo/run.ts --sport mlb                  # Elo ratings + frozen win probabilities
+npx tsx ingest/src/elo/run.ts --sport mlb                  # Elo ratings + frozen win probabilities (--sport nfl, --sport nba)
+npx tsx ingest/src/elo/sweep.ts --sport nba                # Elo parameter grid, log loss over 2016 on (docs/elo-backtest.md)
+npx tsx ingest/src/nba/backfill.ts --from 2000 --to 2026   # NBA schedules + finals (game log + ESPN; the CDN for the current season)
+npx tsx ingest/src/nba/detail.ts --pending                 # NBA details for attended games; --queue drains detail_queue like nba-sync
+npx tsx ingest/src/nba/rosters.ts                          # NBA current rosters into team_rosters
+npx tsx ingest/src/nba/relive.ts --attended                # NBA win probability (ESPN, or the state model) + story steps
+npx tsx ingest/src/nba/fit_wp.ts                           # refit the NBA in-game model (docs/elo-backtest.md)
 npx tsx ingest/src/famous/curated.ts [--check]             # famous games: seed/famous_games.json by local date (refuses on 0 or 2+ matches), then the championship rows
 npx tsx ingest/src/famous/franchise.ts [--check]           # curated superstars from seed/franchise_players.json (refuses on an ambiguous name)
 npx tsx ingest/src/mlb/honors.ts [--from 1997 --to 2026]   # MLB MVP, Cy Young, ROY winners and All-Stars into player_honors

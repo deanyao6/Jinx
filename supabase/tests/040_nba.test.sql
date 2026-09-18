@@ -34,8 +34,9 @@ select is((select definition ->> 'type' from public.bucket_lists where slug = 's
 select has_column('public', 'game_live_state', 'clock', 'game_live_state has a clock');
 select is(public.estimated_pledge_lock('nba', '2026-10-22T00:00:00Z'::timestamptz), '2026-10-22T00:30:00Z'::timestamptz, 'the NBA estimate is tip-off plus 30 minutes');
 
--- Scheduled calls.
-select is((select count(*)::int from cron.job where jobname in ('nba-sync', 'nba-live')), 2, 'nba-sync and nba-live are scheduled');
+-- Scheduled calls: none. Supabase's egress cannot reach any NBA host (20260918100200), so the
+-- daily GitHub job is the NBA's path and no cron row may pretend otherwise.
+select is((select count(*)::int from cron.job where jobname in ('nba-sync', 'nba-live')), 0, 'nba-sync and nba-live are not scheduled');
 
 select * from finish();
 rollback;

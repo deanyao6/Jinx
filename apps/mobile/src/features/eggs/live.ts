@@ -60,9 +60,11 @@ export const EGG_SPORTS: Readonly<Record<string, EggSport>> = {
     pieces: ['football', 'whistle', 'yardFlag'],
   },
   nba: {
-    // nba-live writes game_live_state every minute while someone is checked in: the period in
-    // `inning`, and `inning_state` is `live`, `end` (between periods) or `halftime`.
-    liveFeed: true,
+    // Off: nba-live exists and writes the period to `inning`, `live`/`end`/`halftime` to
+    // `inning_state` and the clock to `clock`, but Supabase's egress cannot reach cdn.nba.com
+    // (docs/verification.md, 2026-09-18), so nothing writes game_live_state for the NBA today.
+    // Flip this the day a route to the scoreboard exists; the rest of the row is complete.
+    liveFeed: false,
     lateFrom: 4,
     signatureBreak: { name: 'Halftime', periods: [2], states: ['halftime'] },
     pieces: ['basketball', 'sneaker', 'towel'],

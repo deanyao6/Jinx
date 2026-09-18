@@ -96,7 +96,7 @@ SQL
   say "3. Edge Functions"
   npm run --silent functions:sync
   # inbound-email stays undeployed until a domain exists (STATE.md section 5).
-  npx supabase functions deploy cleanup-imports delete-account mlb-sync mlb-live send-push \
+  npx supabase functions deploy cleanup-imports delete-account mlb-sync mlb-live nba-sync nba-live send-push \
     evaluate-goals storylines parse-ticket --project-ref "$REF"
 }
 
@@ -134,6 +134,7 @@ verify() {
   npx tsx ingest/src/mlb/relive.ts --rebuild
   npx tsx ingest/src/mlb/relive.ts --attended
   npx tsx ingest/src/nfl/relive.ts --attended
+  npx tsx ingest/src/nba/relive.ts --attended
 
   say "8. State"
   sql "select jobname, schedule, active from cron.job order by jobname" | jq -c '.rows[]'
@@ -141,6 +142,7 @@ verify() {
   sql "select (select count(*) from public.detail_queue where done_at is null) as queue_open,
               (select count(*) from public.games_needing_relive('mlb', 500)) as mlb_stories_owed,
               (select count(*) from public.games_needing_relive('nflverse', 500)) as nfl_stories_owed,
+              (select count(*) from public.games_needing_relive('nba', 500)) as nba_stories_owed,
               (select count(*) from public.ticket_imports where storage_path is not null and image_deleted_at is null
                  and resolved_at < now() - interval '7 days') as overdue_ticket_images" | jq -c '.rows[0]'
 

@@ -14,7 +14,8 @@ const LOCK_RULES: Readonly<
 > = {
   mlb: { estimateMinutes: 30, firstScoreLocks: true, live: true },
   nfl: { estimateMinutes: 12, firstScoreLocks: true, live: false },
-  nba: { estimateMinutes: 30, firstScoreLocks: false, live: true },
+  // live is false until game_live_state has a writer for the NBA (features/eggs/live.ts says why).
+  nba: { estimateMinutes: 30, firstScoreLocks: false, live: false },
 };
 
 function rule(sport: Sport) {
