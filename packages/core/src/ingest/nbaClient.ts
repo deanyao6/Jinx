@@ -202,6 +202,12 @@ export interface NbaClientOptions {
   /** Minimum milliseconds between requests to nba.com hosts (default 1000) and to ESPN (default 300). */
   nbaIntervalMs?: number;
   espnIntervalMs?: number;
+  /**
+   * How long one request may take before it is abandoned (default 20 s). stats.nba.com
+   * never answers some networks (GitHub's runners, Supabase's egress) rather than refusing
+   * them, and without this a roster job sat for hours (docs/verification.md).
+   */
+  timeoutMs?: number;
 }
 
 const BROWSER_HEADERS: Record<string, string> = {
@@ -226,6 +232,7 @@ export class NbaClient {
   private readonly cache: ResponseCache | null;
   private readonly nbaInterval: number;
   private readonly espnInterval: number;
+  private readonly timeoutMs: number;
   private lastNbaAt = 0;
   private lastEspnAt = 0;
 
@@ -234,6 +241,7 @@ export class NbaClient {
     this.cache = opts.cache ?? null;
     this.nbaInterval = opts.nbaIntervalMs ?? 1000;
     this.espnInterval = opts.espnIntervalMs ?? 300;
+    this.timeoutMs = opts.timeoutMs ?? 20_000;
   }
 
   private async throttle(host: 'nba' | 'espn'): Promise<void> {
@@ -260,7 +268,21 @@ export class NbaClient {
       if (hit) return JSON.parse(hit) as T;
     }
     await this.throttle(opts.host);
-    const res = await this.fetchImpl(url, { headers: opts.headers ?? BROWSER_HEADERS });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.timeoutMs);
+    let res: Response;
+    try {
+      res = await this.fetchImpl(url, {
+        headers: opts.headers ?? BROWSER_HEADERS,
+        signal: controller.signal,
+      });
+    } catch (err) {
+      clearTimeout(timer);
+      if (controller.signal.aborted)
+        throw new NbaHttpError(0, `${url} (no answer in ${this.timeoutMs} ms)`);
+      throw err;
+    }
+    clearTimeout(timer);
     if (res.status === 429 || res.status >= 500) {
       if (attempt >= 4) throw new NbaHttpError(res.status, url);
       await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));

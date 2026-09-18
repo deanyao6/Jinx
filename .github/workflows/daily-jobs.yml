@@ -48,9 +48,14 @@ jobs:
       # nba-sync Edge Function every 15 minutes; this is the net under it.
       - name: NBA current season schedule refresh
         run: npx tsx ingest/src/nba/backfill.ts --from $(date +%Y) --to $(date +%Y) --force
+      # stats.nba.com does not answer GitHub's runners (docs/verification.md, 2026-09-18):
+      # rosters and pre-2019 detail fail here and are run from a laptop instead. The failure
+      # is allowed so Elo and Relive below still run.
       - name: NBA current rosters
+        continue-on-error: true
         run: npx tsx ingest/src/nba/rosters.ts
       - name: NBA details for attended games lacking detail
+        continue-on-error: true
         run: npx tsx ingest/src/nba/detail.ts --pending --limit 300
       - name: Elo (NBA)
         run: npx tsx ingest/src/elo/run.ts --sport nba
