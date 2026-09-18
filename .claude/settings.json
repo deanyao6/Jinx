@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx supabase db push --linked --yes)",
+      "Bash(npx supabase functions deploy:*)",
+      "Bash(npm run functions:sync)",
+      "Bash(npx tsx ingest/src/mlb/rosters.ts:*)",
+      "Bash(npx tsx ingest/src/nfl/rosters.ts:*)",
+      "Bash(npx tsx ingest/src/mlb/detail.ts:*)",
+      "Bash(npx tsx ingest/src/nfl/rescore.ts:*)",
+      "Bash(npx tsx ingest/src/mlb/relive.ts:*)",
+      "Bash(npx tsx ingest/src/nfl/relive.ts:*)"
+    ]
+  }
+}
