@@ -85,53 +85,50 @@ piece of UI copy says "arena" where it said "stadium".
 
 ---
 
-## 3. Data sources (all $0, all VERIFY before building)
+## 3. Data sources (all $0, verified 2026-09-17 with real fetches)
 
-Verify each by fetching a real response for one recent game, one team and one season, saving it
-under `ingest/fixtures/nba/` with the date in the file name, and recording the endpoint, the
-headers needed, the fields used and the observed rate limits in `docs/verification.md`. Do not
-write a parser against a shape you have not seen.
+The bottleneck was checked before this brief was finalised. The full record, with field names
+and limits, is the section "NBA data sources" in `docs/verification.md`; real responses are in
+`ingest/fixtures/nba/`. Read both before writing a parser. The short version:
 
-1. **NBA CDN static JSON** (what nba.com's own pages read; no browser spoofing believed
-   necessary). Believed endpoints, all VERIFY:
-   - Schedule for the whole season: `https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json`
-     (game id, date and time, home and away team ids and tricodes, arena name and city, game
-     status). Note the season it covers and whether past seasons are reachable at all from here.
-   - Today's scoreboard: `https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json`
-     (live status, period, game clock, scores). This is the live-state source for check-in.
-   - Box score: `https://cdn.nba.com/static/json/liveData/boxscore/boxscore_{gameId}.json`
-     (players with minutes, points, rebounds, assists; arena; attendance; officials).
-   - Play-by-play: `https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_{gameId}.json`
-     (period, clock, action type, scoring flag, score after, player, description).
-   Check how far back liveData files exist (they may only cover recent seasons).
-2. **stats.nba.com** (unofficial, undocumented, blocks non-browser clients, rate-limited, stricter
-   terms). Needed for history the CDN does not carry. Believed endpoints, all VERIFY:
-   - `https://stats.nba.com/stats/scheduleleaguev2?Season=2016-17&LeagueID=00` or the older
-     `leaguegamefinder` / `leaguegamelog` for finals by season.
-   - `boxscoretraditionalv3?GameID=`, `playbyplayv3?GameID=`, `winprobabilitypbp?GameID=`
-     (a per-play home win probability, which is what Relive's line needs; if it exists the
-     `game_wp_timeline` path is direct, otherwise compute a simple state-based model as SPEC
-     4.3b allows, documented like `docs/elo-backtest.md`).
-   - `commonteamroster?TeamID=&Season=` for rosters, `commonallplayers` for ids and names.
-   Required request headers (VERIFY): a browser `User-Agent`, `Referer: https://www.nba.com/`,
-   `Origin: https://www.nba.com`, `Accept: application/json`. Throttle to roughly one request per
-   second with backoff on 429 and 5xx; cache every response on disk under `ingest/.cache/nba/`
-   the way `ingest/src/nfl/assets.ts` caches nflverse files, so reruns and backfills never
-   refetch.
-3. **Licensing**: the same posture as the MLB source (SPEC 4.2): fine for a hobby app and a
-   TestFlight group, to be revisited before any public App Store launch. Write that into
-   `docs/verification.md` and `docs/attribution.md` (attribution copy for the NBA data, worded
-   without league marks).
+- **Fetch from Node, never curl.** `cdn.nba.com` (Akamai) returns 403 to curl and
+  `stats.nba.com` hangs it; both answer Node's `fetch` at once with the plain browser header
+  set nba.com's own pages send (listed in verification.md). Build the client on `fetch` in
+  `packages/core/src/ingest/nbaClient.ts` with those headers, a 1-request-per-second throttle,
+  backoff on 429 and 5xx, and an on-disk cache under `ingest/.cache/nba/` like
+  `ingest/src/nfl/assets.ts`, so backfills never refetch.
+- **Schedules and finals, 2000 to now**: `stats.nba.com/stats/leaguegamelog` per season and
+  `SeasonType` (Regular Season, Playoffs, and VERIFY the exact strings for the play-in and the
+  in-season tournament), one row per team per game with date, matchup, result and points. It
+  has no start time or venue. For the current season take `gameDateTimeUTC` and the arena from
+  the CDN schedule (`scheduleLeagueV2_1.json`, current season only). For past seasons take them
+  from ESPN's scoreboard by date (`scoreboard?dates=YYYYMMDD` returns every game that day with
+  an ISO UTC `date`, the venue and attendance; the 2016 fixture shows it), one call per game
+  date (about 170 a season, cached on disk), matched to the game log by date and teams. Real
+  start times matter: the game page shows them, and famous-game matching uses local dates.
+- **Detail** (box score and play-by-play): the CDN `liveData` files for recent seasons (they
+  carry `timeActual`, the wall clock the pledge validation needs, plus attendance and
+  duration), and `stats.nba.com` `boxscoretraditionalv3` / `playbyplayv3` for anything the
+  CDN answers 403 for (back to 2000, no wall clock). One provider, two paths, chosen by trying
+  the CDN first.
+- **Live state**: the CDN `todaysScoreboard_00.json` (period, clock, scores), polled every 60 s
+  while anyone is checked in.
+- **Win probability for Relive**: the NBA's own endpoint is dead (500). Use ESPN's
+  `summary?event={id}` `winprobability[]` where it exists (recent seasons; empty for 2016),
+  matching ESPN's event to our game by date and teams through their scoreboard endpoint. For
+  games without it, compute the simple state-based model SPEC 4.3b allows (score margin, time
+  remaining, possession) fitted on the play-by-play of a few seasons, documented in
+  `docs/elo-backtest.md` style. Relive shows the line either way; the story steps never depend
+  on it.
+- **Rosters**: `stats.nba.com/stats/commonteamroster?TeamID=&Season=` (fixture saved).
+- **Licensing**: same posture as MLB (SPEC 4.2): hobby and TestFlight now, revisit before a
+  public launch. Add NBA and ESPN attribution to `docs/attribution.md` without league marks.
 
-Game id and season facts to VERIFY: NBA game ids look like `0022400001` where the third digit
-is the game type (001 preseason, 002 regular season, 003 all-star, 004 playoffs, 005 play-in,
-believed) and `24` is the season start year. The app's `games.season` is an integer: use the
-season's START year (2024 for 2024-25), and add the NBA rule to Wrapped's "which season is
-current" logic (`features/wrapped`: NFL already treats January and February as the previous
-season; the NBA runs October to June). Game times are published in Eastern or UTC (VERIFY) and
-must be stored as UTC in `scheduled_start`.
-
----
+Game ids and seasons: `00` + type + two-digit season start year + sequence (`0022400001` is the
+first regular-season game of 2024-25). `games.season` is the season's START year. Add the NBA
+rule to Wrapped's "current season" logic (`features/wrapped`; NFL already treats January and
+February as the previous season; the NBA runs October to June). Convert the CDN's UTC times
+straight into `scheduled_start`.
 
 ## 4. Reference data and seeds
 
@@ -280,11 +277,39 @@ copies `packages/core/src` into the functions).
 
 ---
 
+## 7b. Definition of done: the same standard as MLB and NFL
+
+Dean's bar (2026-09-17): the NBA ends at the same point and production level as the two sports
+already in. Concretely, every row below has to be true and evidenced in `docs/progress.md` the
+way the existing milestone rows are (the command run and what it printed, or a screenshot under
+`docs/evidence/nba/`), not "the code exists":
+
+| Area | Done when |
+|---|---|
+| Schedules and finals | Every NBA game 2000 to now on local and 2016 to now on hosted, with venue, status and scores; `ingest_progress` shows each season done; the row count matches the game logs (2,378 team rows = 1,189 games for 2000-01, and so on) |
+| Detail on demand | Logging an NBA game queues it; the next `sync` fetches appearances, scoring timeline with `kind` and scorer, context (attendance, duration), moments, and the 12-hour recheck; the queue never fetches an unlogged game |
+| Relive | `npx tsx ingest/src/verify/relive.ts` extended with 5 real NBA games against an independent source (ESPN's play list), including an overtime game and a buzzer-beater, with the win probability line where ESPN has it |
+| Moments | Fixture tests for each detector; the M1 "known games" check extended with 5 NBA games whose moments are known |
+| Elo | Backtest log loss printed for 2016 to 2025, parameters recorded in `docs/elo-backtest.md`, `game_win_prob` frozen before tip-off for the upcoming schedule |
+| Check-in and Pick a side | Fixtures replayed with a fake clock prove the lock rule (before the end of Q1, after, missing timestamps stay valid), matching the six MLB and NFL cases in `packages/core/src/pledge.test.ts`; the live sync writes `game_live_state` and `net._http_response` shows 200s on hosted |
+| Storylines | A real upcoming NBA game gets storylines through the deployed function; the validator accepts them and they are read against the database ("accepted is not correct") |
+| Tickets | 6 NBA ticket strings in the matcher fixture suite; `parse-ticket` accepts `nba` |
+| Rosters and favourites | `team_rosters` has 30 NBA teams; the players prompt lists an NBA roster |
+| Seeds | 30 palettes pass `seed:colors:check`; every arena has coordinates, geofence, elevation and a shape; `npm run parity` unchanged |
+| Copy | Every venue noun goes through `VENUE_NOUN`; the copy test passes; `docs/interactions.md` lists any new control |
+| RLS and tests | Every new table and policy has a pgTAP test; `npm test`, `npm run typecheck`, `npm run lint`, `npm run db:test`, `npm run functions:test`, `npm run functions:check` all pass |
+| Jobs | The daily and 15-minute jobs cover the NBA; judged by `net._http_response` and the GitHub Actions run, never by `cron.job_run_details` |
+| Hosted | Migrations pushed, functions deployed, backfill from 2016 done, rosters and Elo loaded, each proven by reading hosted; `STATE.md` section 3 says what hosted holds |
+| Docs | `STATE.md`, `docs/progress.md`, `docs/deploy.md`, `docs/verification.md`, `CLAUDE.md` (commands and the "MLB + NFL in v1" line) all updated |
+
+Anything that cannot reach this bar in the session is listed in the report as not done, with
+the reason, and in `STATE.md` section 5 as something left. Never describe partial work as done.
+
 ## 8. Order of work and checkpoints (commit and push at each)
 
-1. VERIFY every data source in section 3 with real fetches; fixtures and `docs/verification.md`.
-   Stop and report if the schedule history or play-by-play is not obtainable for free: that
-   changes the plan and Dean should decide.
+1. Read the verified data facts in `docs/verification.md` and the fixtures; resolve the few
+   remaining VERIFY items in section 3 (season type strings, the `006` game type, playoff ids)
+   with real fetches and record them. The sources are known to work from Node.
 2. Seeds (teams, venues, colours, aliases, shape) and the migration adding the sport plus its
    seed rows and constraint changes; pgTAP from `040`; `npm run db:test`; `npm run db:types`.
 3. Client, provider, parsers with fixture tests; `npm test` in `packages/core`.

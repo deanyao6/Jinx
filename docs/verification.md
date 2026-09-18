@@ -357,3 +357,60 @@ matched on id, position, jersey and status.
   row for weeks 1 and 2, five Raiders week-2 rows, and the two rows without a gsis id).
 - Ingest: `npx tsx ingest/src/nfl/rosters.ts`, daily in `nfl-ingest.yml` after the detail
   pass, through the same ETag cache as the other assets.
+
+## NBA data sources — VERIFIED 2026-09-17 (before any NBA code exists)
+
+Checked with live fetches from Node 22 (`fetch`), the same runtime the ingest scripts use.
+Fixtures in `ingest/fixtures/nba/`, each named with the date fetched.
+
+- **curl is blocked, Node is not.** `cdn.nba.com` sits behind Akamai and answers `403 Access
+  Denied` to curl with any headers; `stats.nba.com` hangs curl for 30 s. Both answer Node's
+  `fetch` at once with these headers: a desktop browser `User-Agent`, `Accept: application/json,
+  text/plain, */*`, `Referer: https://www.nba.com/`, `Origin: https://www.nba.com`; stats.nba.com
+  also wants `x-nba-stats-origin: stats` and `x-nba-stats-token: true`. No cookies, no tokens.
+  This is the plain header set nba.com's own pages send; nothing is impersonated. Do not probe
+  these hosts with curl and conclude they are down.
+- **CDN schedule** `https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json`: the
+  CURRENT season only (`leagueSchedule.seasonYear` was `2026-27` on 2026-09-17: 174 dates,
+  1,274 games: 67 preseason `001`, 1,206 regular `002`, 1 `006`). Per game: `gameId`,
+  `gameDateTimeUTC` (ISO, UTC), `gameStatusText`, `arenaName`, `arenaCity`, `arenaState`,
+  `homeTeam`/`awayTeam` with `teamId` (e.g. DET 1610612765), `teamTricode`, `score`,
+  `weekNumber`, `gameLabel`, `gameSubLabel`. 4.7 MB; the fixture keeps two dates.
+- **CDN live data**, per game id: `.../liveData/boxscore/boxscore_{gameId}.json` (arena,
+  `attendance`, `duration` in minutes, each team's `players[]` with `personId`, `name`,
+  `position`, `jerseyNum`, `starter`, `played`, and a `statistics` object with points, rebounds,
+  assists, minutes and the rest) and `.../liveData/playbyplay/playbyplay_{gameId}.json`
+  (`game.actions[]`: `actionNumber`, `period`, `clock` as ISO duration `PT11M43.00S`,
+  `timeActual` wall clock in UTC, `actionType` in {period, jumpball, 3pt, 2pt, freethrow,
+  rebound, turnover, steal, block, foul, timeout, substitution, game}, `subType`, `personId`,
+  `teamTricode`, `scoreHome`, `scoreAway`, `shotResult`, `isFieldGoal`, `description`).
+  Present for 2024-25 (538 actions for 0022400001, BOS 116 ATL 117, attendance 19,156,
+  133 minutes); `403` for 2016-17, so it covers recent seasons only. `todaysScoreboard_00.json`
+  is the live scoreboard (period, clock, scores).
+- **stats.nba.com history** (all answered in 0.2 to 1.3 s; six sequential calls in 1.5 s):
+  `leaguegamelog?Counter=0&Direction=ASC&LeagueID=00&PlayerOrTeam=T&Season=2016-17&SeasonType=Regular%20Season&Sorter=DATE`
+  gives one row per team per game (2,460 rows for 2016-17, 2,378 for 2000-01; `SeasonType=Playoffs`
+  gives 164 for 2023-24) with `GAME_ID`, `GAME_DATE`, `MATCHUP` ("LAC @ UTA"), `WL`, `PTS` and
+  box totals: the schedule-and-finals source for every season since 2000. Note there is no
+  start time in it; use the CDN for the current season's times and, for history, the date
+  (times for old games are not needed by anything in the app).
+  `playbyplayv3?GameID=...&StartPeriod=0&EndPeriod=14` works back to 2000 (454 actions for
+  0020000001) with `clock`, `period`, `personId`, `playerName`, `scoreHome`, `scoreAway`,
+  `isFieldGoal`, `shotResult`, `description`, but NO wall-clock time (only the CDN has
+  `timeActual`). `boxscoretraditionalv3?GameID=...&StartPeriod=0&EndPeriod=14&StartRange=0&EndRange=0&RangeType=0`
+  works back to 2000 (`boxScoreTraditional.homeTeam.players`, 13 rows for 0021600001).
+  `commonteamroster?TeamID=1610612755&Season=2025-26` gives the roster (17 rows: `PLAYER`,
+  `NUM`, `POSITION`, `PLAYER_ID`, `EXP`, `HOW_ACQUIRED`).
+  **`winprobabilitypbp` is dead**: `500` for every `RunType` tried.
+- **ESPN site API** (no headers needed): `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=YYYYMMDD`
+  (events with venue, attendance, scores, `STATUS_FINAL`) and `.../summary?event={id}`
+  (`boxscore`, `gameInfo` with venue and attendance, `plays[]` with `scoringPlay`, `scoreValue`,
+  `awayScore`/`homeScore`, `period`, `clock`, `participants`, and `winprobability[]` of
+  `{homeWinPercentage, playId}` per play: 439 points for 401705733 on 2025-04-10, EMPTY for the
+  2016 game 400899375). ESPN ids differ from NBA ids; match by date and teams.
+- **Game ids**: `00` + type + season start year two digits + sequence. Types seen: `001`
+  preseason, `002` regular season, `006` (one game, unidentified; VERIFY, likely the in-season
+  tournament final or an exhibition). Playoff ids are `004` in the game log (VERIFY by reading
+  the 2023-24 playoff rows in the fixture pattern).
+- **Licensing**: unofficial, undocumented feeds, same posture as the MLB Stats API (SPEC 4.2):
+  hobby and TestFlight use now, revisit before any public launch. ESPN's terms likewise.
