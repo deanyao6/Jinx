@@ -13,6 +13,7 @@ import { Text } from '@/components/Text';
 import { useMyAttendances, type Attendance } from '@/features/attendances/queries';
 import { formatScore, sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
+import { useMyFamousGameIds } from '@/features/famous/queries';
 
 function attendanceTeams(a: Attendance): { id: string; name: string }[] {
   const out: { id: string; name: string }[] = [];
@@ -25,6 +26,7 @@ export function HistorySegment({ onLog }: { onLog: () => void }) {
   const theme = useTheme();
   const router = useRouter();
   const attendances = useMyAttendances();
+  const famousIds = useMyFamousGameIds();
   const [sport, setSport] = useState<string | null>(null);
   const [teamId, setTeamId] = useState<string | null>(null);
   const [season, setSeason] = useState<number | null>(null);
@@ -154,6 +156,7 @@ export function HistorySegment({ onLog }: { onLog: () => void }) {
             <GameRow
               key={a.id}
               first={i === 0}
+              famous={famousIds.has(a.game.id)}
               game={{
                 id: a.game.id,
                 scheduled_start: a.game.scheduled_start,

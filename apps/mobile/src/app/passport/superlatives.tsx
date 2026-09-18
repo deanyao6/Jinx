@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 
 import { Card } from '@/components/Card';
@@ -53,7 +53,8 @@ export default function SuperlativesScreen() {
     const stamp = row.venueId ? s?.stamps.find((st) => st.venue_id === row.venueId) : undefined;
     // A player opens the games you saw them in. The stadium you visit most opens its sheet, which
     // lists every game there; any other row opens the one game its number is from.
-    if (row.playerId) router.push(`/passport/player/${row.playerId}`);
+    if (row.href) router.push(row.href as Href);
+    else if (row.playerId) router.push(`/passport/player/${row.playerId}`);
     else if (row.key === 'most_visited_venue' && stamp) setVenue(stamp);
     else if (row.gameId) router.push(`/games/${row.gameId}`);
     else if (stamp) setVenue(stamp);

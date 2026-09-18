@@ -188,6 +188,7 @@ const SUPERLATIVE_ICONS: Record<string, string> = {
   most_visited_venue: 'i-speaker',
   farthest_venue: 'i-route',
   first_game: 'i-book',
+  famous_games: 'i-spark',
 };
 
 /** How many the Passport shows; the rest are one tap away on the superlatives screen. */
@@ -199,6 +200,7 @@ export const PASSPORT_SUPERLATIVES = 6;
  * A row about no one game (a streak, walk-offs) has nowhere better than the full list.
  */
 export function superlativeHref(row: SuperlativeRow): string | undefined {
+  if (row.href) return row.href;
   if (row.playerId) return `/passport/player/${row.playerId}`;
   if (row.gameId) return `/games/${row.gameId}`;
   return undefined;
@@ -227,6 +229,7 @@ function toSuperlatives(inputs: PassportInputs): SuperlativeFixture[] {
         value: row.value,
         chip: row.context ?? '',
         ...(href ? { href } : {}),
+        ...(row.tone ? { tone: row.tone } : {}),
       };
     });
 }

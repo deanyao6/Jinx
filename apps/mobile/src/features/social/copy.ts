@@ -24,7 +24,8 @@ export type FeedEventType =
   | 'new_stamp'
   | 'goal_completed'
   | 'milestone'
-  | 'wrapped_published';
+  | 'wrapped_published'
+  | 'famous_game';
 
 export type FeedEvent = {
   id: string;
@@ -155,6 +156,9 @@ export function feedEventCopy(e: FeedEvent): string {
       const sport = str(p['sport_id']);
       return `${season ? `${season} ` : ''}${sport ? `${sportLabel(sport)} ` : ''}Wrapped is ready`;
     }
+    case 'famous_game':
+      // "Dean was at Super Bowl LIX." The title is the famous row's, carried in the payload.
+      return `${name} was at ${str(p['title']) ?? 'a famous game'}`;
     default:
       return `${name} did something`;
   }

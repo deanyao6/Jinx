@@ -388,6 +388,89 @@ export type Database = {
           },
         ]
       }
+      famous_games: {
+        Row: {
+          about_team_id: string | null
+          category: string
+          created_at: string
+          game_id: string
+          id: string
+          source: string
+          story: string
+          title: string
+        }
+        Insert: {
+          about_team_id?: string | null
+          category: string
+          created_at?: string
+          game_id: string
+          id?: string
+          source: string
+          story?: string
+          title: string
+        }
+        Update: {
+          about_team_id?: string | null
+          category?: string
+          created_at?: string
+          game_id?: string
+          id?: string
+          source?: string
+          story?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "famous_games_about_team_id_fkey"
+            columns: ["about_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "famous_games_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      famous_rounds: {
+        Row: {
+          edition_base: number | null
+          edition_style: string
+          round: string
+          sport_id: string
+          story: string
+          title: string
+        }
+        Insert: {
+          edition_base?: number | null
+          edition_style?: string
+          round: string
+          sport_id: string
+          story: string
+          title: string
+        }
+        Update: {
+          edition_base?: number | null
+          edition_style?: string
+          round?: string
+          sport_id?: string
+          story?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "famous_rounds_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "sports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feed_events: {
         Row: {
           actor_user_id: string
@@ -468,6 +551,48 @@ export type Database = {
             columns: ["follower_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      franchise_players: {
+        Row: {
+          from_season: number
+          id: string
+          player_id: string
+          source: string
+          team_id: string | null
+          to_season: number | null
+        }
+        Insert: {
+          from_season: number
+          id?: string
+          player_id: string
+          source?: string
+          team_id?: string | null
+          to_season?: number | null
+        }
+        Update: {
+          from_season?: number
+          id?: string
+          player_id?: string
+          source?: string
+          team_id?: string | null
+          to_season?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "franchise_players_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "franchise_players_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
             referencedColumns: ["id"]
           },
         ]
@@ -1035,6 +1160,41 @@ export type Database = {
           },
         ]
       }
+      honor_kinds: {
+        Row: {
+          honor: string
+          label: string
+          rank: number
+          season_first: boolean
+          sport_id: string
+          window_seasons: number
+        }
+        Insert: {
+          honor: string
+          label: string
+          rank: number
+          season_first?: boolean
+          sport_id: string
+          window_seasons?: number
+        }
+        Update: {
+          honor?: string
+          label?: string
+          rank?: number
+          season_first?: boolean
+          sport_id?: string
+          window_seasons?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "honor_kinds_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "sports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inbound_addresses: {
         Row: {
           created_at: string
@@ -1223,26 +1383,133 @@ export type Database = {
           },
         ]
       }
+      player_firsts: {
+        Row: {
+          game_id: string
+          kind: string
+          player_id: string
+        }
+        Insert: {
+          game_id: string
+          kind: string
+          player_id: string
+        }
+        Update: {
+          game_id?: string
+          kind?: string
+          player_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_firsts_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_firsts_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      player_honors: {
+        Row: {
+          honor: string
+          player_id: string
+          season: number
+          source: string
+        }
+        Insert: {
+          honor: string
+          player_id: string
+          season: number
+          source: string
+        }
+        Update: {
+          honor?: string
+          player_id?: string
+          season?: number
+          source?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_honors_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      player_moves: {
+        Row: {
+          joined_on: string
+          kind: string
+          player_id: string
+          source: string
+          team_id: string
+        }
+        Insert: {
+          joined_on: string
+          kind: string
+          player_id: string
+          source: string
+          team_id: string
+        }
+        Update: {
+          joined_on?: string
+          kind?: string
+          player_id?: string
+          source?: string
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_moves_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_moves_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       players: {
         Row: {
+          debut_on: string | null
           full_name: string
           id: string
           provider: string
           provider_player_id: string
+          rookie_season: number | null
           sport_id: string
         }
         Insert: {
+          debut_on?: string | null
           full_name: string
           id?: string
           provider: string
           provider_player_id: string
+          rookie_season?: number | null
           sport_id: string
         }
         Update: {
+          debut_on?: string | null
           full_name?: string
           id?: string
           provider?: string
           provider_player_id?: string
+          rookie_season?: number | null
           sport_id?: string
         }
         Relationships: [
@@ -2201,6 +2468,7 @@ export type Database = {
         Returns: undefined
       }
       export_my_data: { Args: never; Returns: Json }
+      famous_game_headline: { Args: { p_game_id: string }; Returns: Json }
       favorite_players_seen: {
         Args: never
         Returns: {
@@ -2236,6 +2504,23 @@ export type Database = {
       }
       game_context: { Args: { p_game_id: string }; Returns: Json }
       game_day_reminders: { Args: never; Returns: number }
+      game_famous: {
+        Args: { p_game_id: string }
+        Returns: {
+          about_team_id: string
+          category: string
+          joined_on: string
+          kind: string
+          personal: boolean
+          player_id: string
+          player_name: string
+          source: string
+          story: string
+          team_id: string
+          team_nickname: string
+          title: string
+        }[]
+      }
       game_fan_photos: {
         Args: { p_game_id: string; p_limit?: number }
         Returns: {
@@ -2244,6 +2529,22 @@ export type Database = {
           kind: string
           storage_path: string
           user_id: string
+        }[]
+      }
+      game_local_date: {
+        Args: { p_start: string; p_tz: string }
+        Returns: string
+      }
+      game_stars: {
+        Args: { p_game_id: string }
+        Returns: {
+          full_name: string
+          honor: string
+          label: string
+          player_id: string
+          season: number
+          season_first: boolean
+          team_id: string
         }[]
       }
       games_in_year: { Args: { p_year: number }; Returns: number }
@@ -2304,6 +2605,10 @@ export type Database = {
       }
       is_blocked_between: { Args: { a: string; b: string }; Returns: boolean }
       is_mutual: { Args: { a: string; b: string }; Returns: boolean }
+      is_superstar: {
+        Args: { p_player: string; p_season: number }
+        Returns: boolean
+      }
       make_pledge: {
         Args: { p_game_id: string; p_team_id: string }
         Returns: Json
@@ -2319,6 +2624,33 @@ export type Database = {
           display_name: string
           handle: string
           user_id: string
+        }[]
+      }
+      my_famous_games: {
+        Args: never
+        Returns: {
+          away: string
+          away_nickname: string
+          away_score: number
+          away_team_id: string
+          category: string
+          game_id: string
+          home: string
+          home_nickname: string
+          home_score: number
+          home_team_id: string
+          joined_on: string
+          kind: string
+          personal: boolean
+          player_id: string
+          player_name: string
+          scheduled_start: string
+          source: string
+          sport_id: string
+          story: string
+          team_id: string
+          team_nickname: string
+          title: string
         }[]
       }
       my_handshakes: {
@@ -2409,6 +2741,7 @@ export type Database = {
         Returns: number
       }
       rebuild_curated_bucket_lists: { Args: never; Returns: undefined }
+      rebuild_schedule_famous_games: { Args: never; Returns: number }
       recompute_rooting_for_user: {
         Args: { p_user: string }
         Returns: undefined
@@ -2417,6 +2750,7 @@ export type Database = {
         Args: { p_losses: number; p_ties: number; p_wins: number }
         Returns: Json
       }
+      refresh_all_user_stats: { Args: never; Returns: number }
       refresh_my_stats: { Args: never; Returns: Json }
       refresh_user_stats: { Args: { p_user: string }; Returns: undefined }
       remove_device_tokens: { Args: { p_tokens: string[] }; Returns: undefined }
@@ -2436,6 +2770,7 @@ export type Database = {
           together_rival_wins: number
         }[]
       }
+      roman_numeral: { Args: { p_n: number }; Returns: string }
       rotate_inbound_token: { Args: never; Returns: string }
       search_games: {
         Args: {
@@ -2511,6 +2846,15 @@ export type Database = {
         Args: { p_completed: boolean; p_goal_id: string; p_progress: Json }
         Returns: undefined
       }
+      superstar_honor: {
+        Args: { p_player: string; p_season: number }
+        Returns: {
+          honor: string
+          label: string
+          season: number
+          season_first: boolean
+        }[]
+      }
       tagged_games_for_me: {
         Args: { p_owner: string }
         Returns: {
@@ -2584,6 +2928,23 @@ export type Database = {
           isOneToOne: false
           isSetofReturn: true
         }
+      }
+      user_famous_games: {
+        Args: { p_user: string }
+        Returns: {
+          about_team_id: string
+          category: string
+          game_id: string
+          joined_on: string
+          kind: string
+          personal: boolean
+          player_id: string
+          player_name: string
+          source: string
+          story: string
+          team_id: string
+          title: string
+        }[]
       }
       user_game_results: {
         Args: { p_user: string }

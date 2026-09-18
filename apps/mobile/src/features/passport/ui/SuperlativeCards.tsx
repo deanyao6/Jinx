@@ -27,6 +27,7 @@ const ICON_BY_KEY: Record<string, IconName> = {
   farthest_venue: 'i-route',
   most_miles_team: 'i-route',
   first_game: 'i-book',
+  famous_games: 'i-spark',
 };
 
 export function superlativeIcon(key: string): IconName {
@@ -99,7 +100,7 @@ export function SuperlativeCards({ rows, contextFor, onPressRow }: Props) {
           <Card style={{ paddingVertical: theme.spacing.xs + 2 }}>
             {group.rows.map((row) => {
               const context = contextFor?.(row) ?? null;
-              const pressable = !!onPressRow && !!(row.gameId || row.venueId || row.playerId);
+              const pressable = !!onPressRow && !!(row.gameId || row.venueId || row.playerId || row.href);
               const body = (
                 <View
                   style={{
@@ -109,7 +110,7 @@ export function SuperlativeCards({ rows, contextFor, onPressRow }: Props) {
                     paddingVertical: 10,
                   }}
                 >
-                  <IconTile icon={superlativeIcon(row.key)} size={42} />
+                  <IconTile icon={superlativeIcon(row.key)} size={42} gold={row.tone === 'gold'} />
                   <View style={{ flex: 1, minWidth: 0 }}>
                     <Text variant="label" color="muted" numberOfLines={2}>
                       {superlativeLabel(row)}

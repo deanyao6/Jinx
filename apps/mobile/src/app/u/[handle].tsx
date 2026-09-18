@@ -319,11 +319,35 @@ function ProfileTiles({ stats }: { stats: unknown }) {
   const theme = useTheme();
   const s = useMemo(() => parseStats(stats), [stats]);
   if (isEmptyStats(s)) return null;
+  // The same count as their Passport row; only here when there is one. can_view already
+  // decided that this person's stats are visible at all.
+  const famous = s.superlatives.famous_games?.count ?? 0;
+  const tiles = [
+    { label: 'Games', value: s.totals.games, accent: true },
+    { label: 'Stadiums', value: s.totals.venues },
+    ...(s.players_seen ? [{ label: 'Players seen', value: s.players_seen }] : []),
+    ...(famous > 0 ? [{ label: 'Famous games', value: famous }] : []),
+  ];
+  // Four tiles make two rows of two rather than four squeezed ones.
+  const wrap = tiles.length > 3;
   return (
-    <View style={{ flexDirection: 'row', gap: 10, marginBottom: theme.spacing.md }}>
-      <StatTile label="Games" value={String(s.totals.games)} accent />
-      <StatTile label="Stadiums" value={String(s.totals.venues)} />
-      {s.players_seen ? <StatTile label="Players seen" value={String(s.players_seen)} /> : null}
+    <View
+      style={{
+        flexDirection: 'row',
+        flexWrap: wrap ? 'wrap' : 'nowrap',
+        gap: 10,
+        marginBottom: theme.spacing.md,
+      }}
+    >
+      {tiles.map((t) => (
+        <StatTile
+          key={t.label}
+          label={t.label}
+          value={String(t.value)}
+          accent={!!t.accent}
+          style={wrap ? { minWidth: '45%' } : undefined}
+        />
+      ))}
     </View>
   );
 }

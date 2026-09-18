@@ -181,6 +181,10 @@ export type SuperlativeRow = {
   gameId?: string;
   venueId?: string;
   playerId?: string;
+  /** A row about no one game opens its own page. Famous games is the only one so far. */
+  href?: string;
+  /** Gold marks a rarity: the icon is drawn in gold rather than the team colour. */
+  tone?: 'gold';
 };
 
 /** What a row needs to know about the game it points at. Team abbreviations, not names. */
@@ -252,6 +256,19 @@ export function superlativeRows(
     }
     rows.push(clean);
   };
+
+  // Famous games lead: they are the rarest thing on the list, and the only way to their page.
+  if (s.famous_games && s.famous_games.count + s.famous_games.personal_count > 0) {
+    const { count, personal_count } = s.famous_games;
+    push({
+      key: 'famous_games',
+      title: 'Famous games',
+      value: String(count),
+      context: personal_count > 0 ? `${personal_count} personal` : undefined,
+      href: '/passport/famous',
+      tone: 'gold',
+    });
+  }
 
   // The overall most seen player is deliberately not a row: it is usually a stranger. The
   // payload still carries `most_seen_player` for builds already installed.

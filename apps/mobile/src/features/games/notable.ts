@@ -19,16 +19,19 @@ import type { AppearanceRow, GameEventRow } from './queries';
  *   the RBI. An extra point names nobody, so a kicker is named for his field goals only.
  *
  * Together they answer what was actually asked for: who scored a touchdown or hit a home
- * run. "Star player" in the wider sense — an all-star, a franchise great — is deliberately
- * not attempted. Nothing in this database ranks players: `game_appearances` is (game,
- * player, team) and nothing else, and `players` carries no stature. Inferring it from a
- * name would be a guess dressed as a fact.
+ * run. Since famous games (docs/prompts/famous-games.md 3) there is a third source: the
+ * superstars who appeared, from `game_stars`, each named with the honor that makes them one
+ * ("2024 All-Star", "MVP 2023"). Stature comes from awards and a curated list, never from a
+ * name. An ordinary RBI ("Drove in a run") is left out unless the batter is a star: on a big
+ * night it named half the lineup.
  */
 export type NotablePlayer = {
   playerId: string;
   name: string;
-  /** "Home run", "Pick six · 42 yards" — what they did, from game_events. */
+  /** "Home run", "Pick six · 42 yards" — what they did, from game_events. Empty for a star who did nothing notable. */
   did: string;
+  /** "2024 All-Star": why this player is a star, when they are one. */
+  honor?: string;
 };
 
 export type TeamPlayers = {
@@ -48,6 +51,8 @@ export function notablePlayers(
   appearances: readonly AppearanceRow[],
   events: readonly GameEventRow[],
   steps: readonly ReliveStep[] = [],
+  /** playerId -> the honor caption, for the superstars who appeared (`game_stars`). */
+  stars: ReadonlyMap<string, string> = new Map(),
 ): TeamPlayers[] {
   // playerId -> the things they did, in the order they happened.
   const didByPlayer = new Map<string, string[]>();
@@ -76,12 +81,16 @@ export function notablePlayers(
   for (const row of appearances) {
     if (!row.player) continue;
     const group = byTeam.get(row.team_id) ?? { teamId: row.team_id, notable: [], others: [] };
-    const did = didByPlayer.get(row.player.id);
-    if (did)
+    const honor = stars.get(row.player.id);
+    const all = didByPlayer.get(row.player.id) ?? [];
+    // A star keeps everything they did; anyone else loses the ordinary RBI.
+    const did = honor ? all : all.filter((d) => !QUIET_UNLESS_STAR.has(d));
+    if (did.length > 0 || honor)
       group.notable.push({
         playerId: row.player.id,
         name: row.player.full_name,
         did: did.join(', '),
+        ...(honor ? { honor } : {}),
       });
     else group.others.push(row.player.full_name);
     byTeam.set(row.team_id, group);
@@ -93,6 +102,9 @@ export function notablePlayers(
   }
   return [...byTeam.values()];
 }
+
+/** Lines too ordinary to name a player for, unless that player is a star. */
+const QUIET_UNLESS_STAR: ReadonlySet<string> = new Set(['Drove in a run']);
 
 /** What a scoring step says a player did: "Touchdown", "Home run", "Drove in a run". */
 const SCORED_LABEL: Record<string, string> = {

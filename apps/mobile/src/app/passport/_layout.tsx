@@ -10,6 +10,7 @@ export default function PassportStackLayout() {
       <Stack screenOptions={header}>
         <Stack.Screen name="stamps" options={{ title: 'Stamps' }} />
         <Stack.Screen name="superlatives" options={{ title: 'Superlatives' }} />
+        <Stack.Screen name="famous" options={{ title: 'Famous games' }} />
         <Stack.Screen name="moments" options={{ title: 'Moments' }} />
         <Stack.Screen name="moment/[type]" options={{ title: 'Moment' }} />
         <Stack.Screen name="players" options={{ title: 'Players seen' }} />

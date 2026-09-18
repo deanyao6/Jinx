@@ -8,6 +8,8 @@ import { ICONS } from '@/components/reference/icons';
 import { useRepository, useRepositoryStatus } from '@/features/data/context';
 import { RepositoryAvatar } from '@/features/data/RepositoryAvatar';
 import type { GameRowFixture, PersonRef } from '@/features/data/shapes';
+import { useMyFamousGameIds } from '@/features/famous/queries';
+import { FamousMark } from '@/features/famous/ui/FamousMark';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
@@ -113,6 +115,7 @@ function routeId(game: GameRow): string {
 function Body({ initialSegment }: { initialSegment: string }) {
   const { base } = useReferenceTheme();
   const repo = useRepository();
+  const famousIds = useMyFamousGameIds();
   const router = useRouter();
   const [segment, setSegment] = React.useState(initialSegment);
   const [query, setQuery] = React.useState('');
@@ -190,6 +193,7 @@ function Body({ initialSegment }: { initialSegment: string }) {
           <TeamTheme key={`${game.title}-${i}`} team={game.team}>
             <GameRowCard
               game={game}
+              famous={!!game.gameId && famousIds.has(game.gameId)}
               personFor={repo.person}
               onPress={() => router.push(`/games/${routeId(game)}` as Href)}
             />
@@ -331,8 +335,11 @@ function GameRowCard({
   game,
   personFor,
   onPress,
+  famous = false,
 }: {
   game: GameRow;
+  /** A famous game: a small gold mark after the title. Never in demo mode. */
+  famous?: boolean;
   /** Resolves an avatar key to a real person, or to null for the demo's drawn faces. */
   personFor: (key: string) => PersonRef | null;
   onPress: () => void;
@@ -355,6 +362,7 @@ function GameRowCard({
             {game.title}
           </Text>
           <Check size={14} color={base.good} />
+          {famous ? <FamousMark color={base.warn} /> : null}
         </View>
         <Text style={[s.rowMeta, { color: base.muted }]} numberOfLines={1}>
           {game.meta}

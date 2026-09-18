@@ -8,6 +8,8 @@ import { ICONS } from '@/components/reference/icons';
 import { TightText } from '@/components/reference/TightText';
 import { StadiumShape } from '@/components/reference/StadiumShape';
 import { useRepository } from '@/features/data/context';
+import { useMyFamousGameIds } from '@/features/famous/queries';
+import { FamousMark } from '@/features/famous/ui/FamousMark';
 import { EmptyState } from '@/features/data/EmptyState';
 import type { GameLogFixture, LogRowFixture } from '@/features/data/shapes';
 import { fontFamily } from '@/theme/fonts';
@@ -66,6 +68,7 @@ function PanelBody({
   const { base, team } = useReferenceTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const famousIds = useMyFamousGameIds();
   const Back = ICONS['i-chev-l'];
   const Share = ICONS['i-share'];
 
@@ -129,6 +132,7 @@ function PanelBody({
               key={`${row.title}-${i}`}
               row={row}
               first={i === 0}
+              famous={famousIds.has(row.gameId)}
               onPress={() => router.push(`/games/${row.gameId}` as Href)}
             />
           ))}
@@ -176,10 +180,13 @@ function LogRow({
   row,
   first,
   onPress,
+  famous = false,
 }: {
   row: LogRowFixture;
   first: boolean;
   onPress: () => void;
+  /** A famous game: a small gold mark after the title. Never in demo mode. */
+  famous?: boolean;
 }) {
   const { base } = useReferenceTheme();
   return (
@@ -196,7 +203,10 @@ function LogRow({
       >
         <Thumb shapeKey={row.shape} />
         <View style={{ flex: 1, minWidth: 0 }}>
-          <Text style={[s.liTitle, { color: base.ink }]}>{row.title}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+            <Text style={[s.liTitle, { color: base.ink, flexShrink: 1 }]}>{row.title}</Text>
+            {famous ? <FamousMark color={base.warn} /> : null}
+          </View>
           <Text style={[s.liMeta, { color: base.muted }]} numberOfLines={1}>
             {row.meta}
           </Text>

@@ -151,3 +151,49 @@ describe('scoring plays as a source of notable players', () => {
     expect(groups[0]?.others).toEqual(['Someone']);
   });
 });
+
+describe('superstars in Players seen', () => {
+  const rbi = (scorerId: string): ReliveStep => ({
+    wp: 1,
+    score: '1 – 0',
+    label: '1st inning',
+    text: 'Single to left, a run scores.',
+    scorerId,
+    scorerName: 'x',
+    kind: 'single',
+  });
+
+  it('leaves an ordinary RBI out unless the batter is a star', () => {
+    const groups = notablePlayers(
+      [appearance(PHI, 'p-harper', 'Bryce Harper'), appearance(PHI, 'p-bohm', 'Alec Bohm')],
+      [],
+      [rbi('p-harper'), rbi('p-bohm')],
+      new Map([['p-harper', '2024 All-Star']]),
+    );
+    expect(groups[0]?.notable).toEqual([
+      { playerId: 'p-harper', name: 'Bryce Harper', did: 'Drove in a run', honor: '2024 All-Star' },
+    ]);
+    expect(groups[0]?.others).toEqual(['Alec Bohm']);
+  });
+
+  it('names a star who did nothing notable, with the honor alone', () => {
+    const groups = notablePlayers(
+      [appearance(PHI, 'p-wheeler', 'Zack Wheeler'), appearance(PHI, 'p-bohm', 'Alec Bohm')],
+      [],
+      [],
+      new Map([['p-wheeler', '2024 All-Star']]),
+    );
+    expect(groups[0]?.notable).toEqual([
+      { playerId: 'p-wheeler', name: 'Zack Wheeler', did: '', honor: '2024 All-Star' },
+    ]);
+  });
+
+  it('keeps a home run for anyone', () => {
+    const groups = notablePlayers(
+      [appearance(PHI, 'p-bohm', 'Alec Bohm')],
+      [],
+      [{ ...rbi('p-bohm'), kind: 'home_run' }],
+    );
+    expect(groups[0]?.notable.map((n) => n.did)).toEqual(['Home run']);
+  });
+});

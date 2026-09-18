@@ -111,14 +111,14 @@ describe('personalBadgeTitle', () => {
       "Saw Saquon Barkley’s first days as an Eagle",
     );
     expect(personalBadgeTitle({ kind: 'first_days', playerName: 'Mookie Betts', teamNickname: 'Red Sox' })).toBe(
-      "Saw Mookie Betts’s first days with the Red Sox",
+      "Saw Mookie Betts’ first days with the Red Sox",
     );
   });
   it('names the league for a debut, and the other kinds plainly', () => {
     expect(personalBadgeTitle({ kind: 'debut', playerName: 'Bryce Harper', sportId: 'mlb' })).toBe(
       "Saw Bryce Harper’s MLB debut",
     );
-    expect(personalBadgeTitle({ kind: 'rookie', playerName: 'Paul Skenes' })).toBe("Saw Paul Skenes’s rookie season");
+    expect(personalBadgeTitle({ kind: 'rookie', playerName: 'Paul Skenes' })).toBe("Saw Paul Skenes’ rookie season");
     expect(personalBadgeTitle({ kind: 'first_td', playerName: 'DeVonta Smith' })).toBe(
       "Saw DeVonta Smith’s first touchdown",
     );

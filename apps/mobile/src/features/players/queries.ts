@@ -129,6 +129,8 @@ export function useToggleFavoritePlayer() {
       // trigger on user_players has just recomputed it. Spelled out rather than imported from
       // passport/queries, which would make the two features import each other.
       void queryClient.invalidateQueries({ queryKey: ['passport', 'stats', userId] });
+      // Personal famous-game badges come from favourites too.
+      void queryClient.invalidateQueries({ queryKey: ['famous'] });
     },
   });
 }

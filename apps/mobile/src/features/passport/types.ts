@@ -61,6 +61,11 @@ export type Superlatives = {
   farthest_venue?: { venue_id: string; name: string; km: number; game_id?: string };
   most_miles_team?: { franchise_id: string; team_name: string; km: number };
   first_game?: GameRef & { date: string };
+  /**
+   * Famous games you were at (20260918000100_famous_games.sql). `count` is games, however many
+   * reasons each is famous; `personal_count` is badges from your favourite players.
+   */
+  famous_games?: { count: number; personal_count: number };
 };
 
 export type StatsStreaks = { longest_win: number; longest_loss: number; current: number };

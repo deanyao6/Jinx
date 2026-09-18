@@ -132,9 +132,12 @@ export function withArticle(word: string): string {
   return `${/^[aeiou]/i.test(word) ? 'an' : 'a'} ${word}`;
 }
 
-/** "Bryce Harper’s": a curly apostrophe, as the feed copy writes it. */
+/**
+ * "Bryce Harper’s", "Paul Skenes’": a curly apostrophe, and a bare one after an s, the rule
+ * the app's `possessive` in features/passport/format.ts already follows.
+ */
 function possessive(name: string): string {
-  return `${name}\u2019s`;
+  return /s$/i.test(name) ? `${name}\u2019` : `${name}\u2019s`;
 }
 
 export interface PersonalBadgeInput {

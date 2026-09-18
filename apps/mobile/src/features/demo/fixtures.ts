@@ -51,6 +51,8 @@ export type SuperlativeFixture = {
    * because they name no real game, and open the superlatives screen instead.
    */
   href?: string;
+  /** Gold for a rarity (famous games). The demo rows have none. */
+  tone?: 'gold';
 };
 
 export type PassportFixture = {

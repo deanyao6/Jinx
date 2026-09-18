@@ -1,3 +1,4 @@
+import { honorCaption } from '@jinx/core';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Alert, View } from 'react-native';
@@ -52,6 +53,8 @@ import { openShare } from '@/features/share/navigate';
 import { shareGameFor } from '@/features/share/fromGame';
 import { ShareButton } from '@/features/share/ShareButton';
 import { AlsoThere } from '@/features/social/ui/AlsoThere';
+import { FamousCard } from '@/features/famous/ui/FamousCard';
+import { useGameFamous, useGameStars } from '@/features/famous/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /** The icon a moment leads with. Anything not named here is a bolt. */
@@ -90,6 +93,10 @@ export default function GameDetailScreen() {
   const story = useGameStorySteps(gameId);
   // Pregame only: once a game is final, Relive tells its story instead.
   const storylines = useStorylines(gameId);
+  // Famous rows for this game, and my personal badges for it.
+  const famous = useGameFamous(gameId);
+  // Superstars who appeared, for Players seen.
+  const stars = useGameStars(gameId);
   const remove = useDeleteAttendance();
   const [openedAt] = useState(() => Date.now());
 
@@ -102,9 +109,20 @@ export default function GameDetailScreen() {
   // Who to name and who to count. See features/games/notable.ts for why "star player" is
   // "did something in this game" rather than a reputation the database does not hold.
   const playersByTeam = useMemo(() => {
-    const groups = notablePlayers(appearances.data ?? [], events.data ?? [], story.data ?? []);
+    const starCaptions = new Map(
+      (stars.data ?? []).map((st) => [
+        st.playerId,
+        honorCaption({ label: st.label, season: st.season, seasonFirst: st.seasonFirst }),
+      ]),
+    );
+    const groups = notablePlayers(
+      appearances.data ?? [],
+      events.data ?? [],
+      story.data ?? [],
+      starCaptions,
+    );
     return new Map(groups.map((g) => [g.teamId, g]));
-  }, [appearances.data, events.data, story.data]);
+  }, [appearances.data, events.data, story.data, stars.data]);
   const [showAllPlayers, setShowAllPlayers] = useState(false);
 
   const onDelete = () => {
@@ -267,6 +285,13 @@ export default function GameDetailScreen() {
             />
           ) : null}
         </Scoreboard>
+
+        {/* A famous game, or a personal badge from a favourite player: right under the score. */}
+        <FamousCard
+          items={famous.data ?? []}
+          sportId={g.sport_id}
+          homeTeamId={g.home?.id ?? g.home_team_id}
+        />
 
         {context.length ? (
           <View style={{ flexDirection: 'row', gap: 10, marginBottom: theme.spacing.md }}>
@@ -640,9 +665,16 @@ function PlayersCard({
         {group.notable.map((p) => (
           <View key={p.playerId}>
             <Text variant="bodyStrong">{p.name}</Text>
-            <Text variant="caption" color="muted">
-              {p.did}
-            </Text>
+            {p.honor ? (
+              <Text variant="label" color="accent">
+                {p.honor}
+              </Text>
+            ) : null}
+            {p.did ? (
+              <Text variant="caption" color="muted">
+                {p.did}
+              </Text>
+            ) : null}
           </View>
         ))}
       </View>

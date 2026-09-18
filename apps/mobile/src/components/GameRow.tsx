@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
+import { FamousMark } from '@/features/famous/ui/FamousMark';
 import { doubleheaderLabel, formatGameDate, formatScore } from '@/lib/format';
 import { Text } from './Text';
 
@@ -25,10 +26,12 @@ type Props = {
   /** The badge is a label in the team colour unless it reports a state. */
   badgeTone?: 'accent' | 'green' | 'red' | 'muted';
   first?: boolean;
+  /** A famous game: a small gold mark beside the title. */
+  famous?: boolean;
 };
 
 /** "date · away at home · venue · score" list row used by search, history, and upcoming. */
-export function GameRow({ game, onPress, right, badge, badgeTone = 'accent' }: Props) {
+export function GameRow({ game, onPress, right, badge, badgeTone = 'accent', famous = false }: Props) {
   const score = formatScore({
     homeScore: game.home_score,
     awayScore: game.away_score,
@@ -49,9 +52,12 @@ export function GameRow({ game, onPress, right, badge, badgeTone = 'accent' }: P
       }}
     >
       <View style={{ flex: 1 }}>
-        <Text variant="bodyStrong" numberOfLines={1}>
-          {game.awayName} at {game.homeName}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+          <Text variant="bodyStrong" numberOfLines={1} style={{ flexShrink: 1 }}>
+            {game.awayName} at {game.homeName}
+          </Text>
+          {famous ? <FamousMark /> : null}
+        </View>
         <Text variant="caption" color="muted" numberOfLines={1}>
           {meta}
         </Text>

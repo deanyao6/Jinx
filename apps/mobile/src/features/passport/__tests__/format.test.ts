@@ -264,3 +264,21 @@ describe('display helpers', () => {
     );
   });
 });
+
+describe('the famous games superlative', () => {
+  it('leads the list, counts games, says how many are personal, and opens its page', () => {
+    const rows = superlativeRows({ famous_games: { count: 3, personal_count: 2 }, coldest: { game_id: 'g1', value: 19 } });
+    expect(rows[0]).toEqual({
+      key: 'famous_games',
+      title: 'Famous games',
+      value: '3',
+      context: '2 personal',
+      href: '/passport/famous',
+      tone: 'gold',
+    });
+  });
+  it('has no chip without personal badges, and no row with nothing famous', () => {
+    expect(superlativeRows({ famous_games: { count: 1, personal_count: 0 } })[0]?.context).toBeUndefined();
+    expect(superlativeRows({ famous_games: { count: 0, personal_count: 0 } })).toEqual([]);
+  });
+});

@@ -490,6 +490,8 @@ export type Superlative = {
   chip: string;
   /** Where the row goes, when it names a game or a player. See `superlativeHref`. */
   href?: string;
+  /** Gold for a rarity: the icon takes `--warn`, the reference's gold, instead of ink. */
+  tone?: 'gold';
 };
 
 /** `.fx-list`, `.fx-li` and `.fx-chip`. */
@@ -521,7 +523,7 @@ export function SuperlativeList({
                 }
               : {})}
           >
-            {Icon ? <Icon size={19} color={base.ink} /> : null}
+            {Icon ? <Icon size={19} color={item.tone === 'gold' ? base.warn : base.ink} /> : null}
             <View style={{ flex: 1, minWidth: 0 }}>
               <Text style={[s.listLabel, { color: base.muted }]}>{item.label}</Text>
               <Text style={[s.listValue, { color: base.ink }]}>{item.value}</Text>
