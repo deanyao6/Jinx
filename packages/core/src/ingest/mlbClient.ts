@@ -13,6 +13,52 @@ export interface MlbVenuesResponse {
   venues: { id: number; name: string }[];
 }
 
+/**
+ * GET v1/awards/{awardId}/recipients?season=YYYY (verified 2026-09-17, docs/verification.md).
+ * One row per recipient; an All-Star award has thirty-odd, an MVP one. No voting placements
+ * exist anywhere in the API, so "top five in the voting" cannot come from here.
+ */
+export interface MlbAwardRecipientsResponse {
+  awards: {
+    id: string;
+    name: string;
+    date?: string;
+    season: string;
+    team?: { id: number };
+    player: { id: number; nameFirstLast?: string; fullName?: string };
+  }[];
+}
+
+/** GET v1/people?personIds=1,2,3 (verified 2026-09-17). mlbDebutDate is the debut badge. */
+export interface MlbPeopleResponse {
+  people: {
+    id: number;
+    fullName: string;
+    mlbDebutDate?: string;
+    active?: boolean;
+  }[];
+}
+
+/**
+ * GET v1/transactions?teamId=&startDate=&endDate= (verified 2026-09-17). A trade is one row
+ * per player moved, each with the team he went TO, so the row whose toTeam is the queried team
+ * is the join. typeCode: TR trade, SFA signed as free agent, SGN signed, CLW claimed off
+ * waivers, SEL selected (Rule 5), PUR purchased; SC, ASG, OPT, DFA, REL are not joins.
+ */
+export interface MlbTransactionsResponse {
+  transactions: {
+    id: number;
+    person?: { id: number; fullName?: string };
+    toTeam?: { id: number; name?: string };
+    fromTeam?: { id: number; name?: string };
+    date: string;
+    effectiveDate?: string;
+    typeCode: string;
+    typeDesc?: string;
+    description?: string;
+  }[];
+}
+
 export interface MlbClientOptions {
   baseUrl?: string;
   /** Minimum milliseconds between requests. */
@@ -77,5 +123,20 @@ export class MlbClient {
    */
   roster(teamId: string | number, rosterType = '40Man'): Promise<MlbRosterResponse> {
     return this.getJson(`v1/teams/${teamId}/roster?rosterType=${rosterType}`);
+  }
+
+  /** The recipients of one award in one season: ALMVP, NLCY, ALROY, NLAS and so on. */
+  awardRecipients(awardId: string, season: number): Promise<MlbAwardRecipientsResponse> {
+    return this.getJson(`v1/awards/${awardId}/recipients?season=${season}`);
+  }
+
+  /** Up to a few hundred people in one request; the caller chunks. */
+  people(personIds: readonly (string | number)[]): Promise<MlbPeopleResponse> {
+    return this.getJson(`v1/people?personIds=${personIds.join(',')}`);
+  }
+
+  /** A team's transactions in a date range (YYYY-MM-DD, inclusive). */
+  transactions(teamId: string | number, startDate: string, endDate: string): Promise<MlbTransactionsResponse> {
+    return this.getJson(`v1/transactions?teamId=${teamId}&startDate=${startDate}&endDate=${endDate}`);
   }
 }

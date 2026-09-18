@@ -9,6 +9,7 @@ export * from './providers/mlb/winprob.js';
 export * from './providers/nfl/index.js';
 export * from './ingest/index.js';
 export * from './rooting.js';
+export * from './famous.js';
 export * from './records.js';
 export * from './matcher.js';
 export * from './pledge.js';
