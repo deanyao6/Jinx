@@ -25,6 +25,18 @@ jobs:
       # or a call-up shows up the next morning. 30 requests, one per team.
       - name: MLB current rosters
         run: npx tsx ingest/src/mlb/rosters.ts
+      # Famous games: superstars, debuts and joins for the personal badges, then the curated
+      # list and the championship rows. Each refreshes every cached stats payload at the end.
+      - name: MLB honors (award winners and All-Stars, this season and the three before)
+        run: npx tsx ingest/src/mlb/honors.ts
+      - name: MLB debut dates for players without one
+        run: npx tsx ingest/src/mlb/debuts.ts
+      - name: MLB joins (trades and signings, last 30 days)
+        run: npx tsx ingest/src/mlb/moves.ts
+      - name: Famous games (curated list and championship rows)
+        run: npx tsx ingest/src/famous/curated.ts
+      - name: Franchise players (seed/franchise_players.json)
+        run: npx tsx ingest/src/famous/franchise.ts
       - name: MLB details for attended games lacking detail
         run: npx tsx ingest/src/mlb/detail.ts --pending --limit 300
       - name: Elo (MLB)

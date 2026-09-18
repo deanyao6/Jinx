@@ -142,6 +142,9 @@ function useInvalidateAttendances() {
     queryClient.invalidateQueries({ queryKey: attendanceKeys.list(userId) });
     if (gameId) queryClient.invalidateQueries({ queryKey: attendanceKeys.forGame(userId, gameId) });
     else queryClient.invalidateQueries({ queryKey: attendanceKeys.all });
+    // Famous games and personal badges follow attendances. Spelled out rather than imported
+    // from features/famous, the same way players/queries.ts does, to keep features apart.
+    queryClient.invalidateQueries({ queryKey: ['famous'] });
   };
 }
 
@@ -261,6 +264,7 @@ export function useDeleteAttendance() {
       queryClient.invalidateQueries({ queryKey: attendanceKeys.list(userId) });
       queryClient.invalidateQueries({ queryKey: attendanceKeys.forGame(userId, input.gameId) });
       queryClient.invalidateQueries({ queryKey: gameKeys.detail(input.gameId) });
+      queryClient.invalidateQueries({ queryKey: ['famous'] });
     },
   });
 }

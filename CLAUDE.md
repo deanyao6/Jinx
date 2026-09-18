@@ -115,6 +115,14 @@ npx tsx ingest/src/mlb/relive.ts --attended                 # MLB win probabilit
 npx tsx ingest/src/nfl/relive.ts --attended                # NFL ditto, from the nflverse play-by-play
 # storylines: an Edge Function, not a script; see docs/deploy.md for the curl
 npx tsx ingest/src/elo/run.ts --sport mlb                  # Elo ratings + frozen win probabilities
+npx tsx ingest/src/famous/curated.ts [--check]             # famous games: seed/famous_games.json by local date (refuses on 0 or 2+ matches), then the championship rows
+npx tsx ingest/src/famous/franchise.ts [--check]           # curated superstars from seed/franchise_players.json (refuses on an ambiguous name)
+npx tsx ingest/src/mlb/honors.ts [--from 1997 --to 2026]   # MLB MVP, Cy Young, ROY winners and All-Stars into player_honors
+npx tsx ingest/src/mlb/debuts.ts                           # MLB debut dates (people endpoint, 100 a request)
+npx tsx ingest/src/mlb/moves.ts [--from 2016-01-01]        # MLB joins from the transactions feed (default: last 30 days)
+npx tsx ingest/src/nfl/honors.ts                           # NFL honors from the hand-kept seed/nfl_awards.json
+npx tsx ingest/src/nfl/moves.ts [--from 2016 --to 2026]    # NFL joins from the weekly rosters
+npx tsx ingest/src/nfl/firsts.ts [--from 2000 --to 2026]   # NFL first touchdowns (play-by-play) and rookie seasons
 ```
 
 ## Conventions

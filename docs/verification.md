@@ -414,3 +414,97 @@ Fixtures in `ingest/fixtures/nba/`, each named with the date fetched.
   the 2023-24 playoff rows in the fixture pattern).
 - **Licensing**: unofficial, undocumented feeds, same posture as the MLB Stats API (SPEC 4.2):
   hobby and TestFlight use now, revisit before any public launch. ESPN's terms likewise.
+
+## Famous games, superstars and personal badges — VERIFIED 2026-09-17/18
+
+Every VERIFY item in `docs/prompts/famous-games.md`, checked against the live source. Real
+responses are saved in `ingest/fixtures/mlb/` and parsed by `ingest/src/famous/famous.test.ts`.
+
+### MLB awards `v1/awards` and `v1/awards/{awardId}/recipients?season=YYYY`
+- `v1/awards` lists 682 awards. The ones used: `ALMVP`, `NLMVP`, `ALCY`, `NLCY`, `ALROY`,
+  `NLROY`, `ALAS`, `NLAS` (the All-Star rosters). `MLBCY`, `MLBROY`, `WSMVP`, `ASMVP` and the
+  club awards exist too and are not used.
+- A recipients row is `{ id, name, date, season, team: { id }, player: { id, nameFirstLast,
+  primaryPosition } }`. `season` is a string. 2024: one AL MVP (Aaron Judge, 592450), 37 AL
+  All-Stars. Fixtures: `awards_ALMVP_recipients_2024.json`, `awards_ALAS_recipients_2024.json`.
+- **No voting placements.** There is no top-five field anywhere in the API, so the MLB bar is
+  winners plus All-Stars, not "top 5 in the voting".
+- An award with no recipients that season answers **404**, not an empty list: `ALAS` for 2020
+  (no All-Star Game) and this season's MVP before November. `ingest/src/mlb/honors.ts` treats a
+  404 as none. Loaded 1997 to 2026: 2,282 rows. Harper: ROY 2012, MVP 2015 and 2021, All-Star
+  2012-13, 2015-18, 2022, 2024, 2026.
+
+### MLB people `v1/people?personIds=a,b,c` and `v1/people/search?names=&sportIds=1`
+- The debut field is **`mlbDebutDate`** (`2012-04-28` for Harper, 547180). Batched ids work; the
+  script asks 100 at a time. 2,203 of 2,220 local MLB players have one; the rest have not
+  debuted. Fixture: `people_547180_661395_660271.json`.
+- The search endpoint returns every match: "Will Smith" is two players (669257 C, 519293 P),
+  "José Ramírez" two (608070, 542432). Names that need an id are refused, never guessed.
+
+### MLB transactions `v1/transactions?teamId=&startDate=&endDate=`
+- Row: `{ id, person: { id, fullName }, toTeam: { id, name }, fromTeam?, date, effectiveDate,
+  typeCode, typeDesc, description }`. A trade is one row per player moved, each carrying the
+  team he went TO, and it appears in both teams' lists.
+- Phillies, 2025, rows whose `toTeam` is 143: SC 108, SFA 97, ASG 81, NUM 53, CU 32, TR 19,
+  SGN 19, DES 14, DFA 13, SE 9, CLW 5, REL 2, R5M 2, RTN 1, R5 1. A join is `TR`, `SFA`, `SGN`,
+  `CLW`, `R5`, `PUR`. `CU` (recalled) and `SE` (contract selected) are left out: they move a
+  player already in the organization and would make every call-up "first days". `ASG` is a
+  minor league or rehab assignment and names a minor league `toTeam` (1410, Lehigh Valley).
+- Jhoan Duran: `TR` to 143 on 2025-07-30. Fixture: `transactions_143_PHI_2025-07-25_2025-08-05.json`.
+- Loaded 2016-01-01 to 2026-09-17, one request per team per calendar year: 36,256 joins.
+
+### nflverse: no awards anywhere
+- Release tags (2026-09-17): trades, teams, schedules, stats_team, stats_player, ftn_charting,
+  espn_data, weekly_rosters, players_components, players, pbp_participation, officials, misc,
+  test, draft_picks, contracts, snap_counts, rosters, player_stats, pfr_advstats, pbp,
+  nextgen_stats, injuries, depth_charts, combine. None is awards.
+- `players.csv` has no Pro Bowl or All-Pro column (it has `rookie_season`, `last_season`,
+  `draft_year`). `misc/pfr_rosters.csv` has none either and stops at 2022.
+- So `seed/nfl_awards.json` is kept by hand: 442 rows for 2023-2025. Sources, per season:
+  first-team All-Pro from Wikipedia's "2023/2024/2025 All-Pro Team" (AP first team only); Pro
+  Bowl from "2024/2025/2026 Pro Bowl Games" (originals and replacements, both officially Pro
+  Bowlers); MVP and the rest of the top five from NFL.com and ESPN: 2023 Jackson, then
+  Prescott, McCaffrey, Purdy, Allen; 2024 Allen, then Jackson, Barkley, Burrow, Goff; 2025
+  Stafford, then the other finalists Maye, McCaffrey, Allen, Lawrence (only Maye's second place
+  is published in order; the AP's five finalists are the top five). Each row carries its URL.
+- Names resolved to gsis ids through `players.csv`. Five needed a hand choice: Lamar Jackson
+  (QB 00-0034796, not the CB), Josh Allen of Jacksonville (00-0035642, now "Josh Hines-Allen"),
+  Connor McGovern of Buffalo (00-0035679), Byron Murphy the CB (00-0035236), Byron Young of the
+  Rams (00-0039137).
+
+### nflverse weekly rosters before 2024 are plain `.csv`
+- `weekly_rosters` carries `roster_weekly_{season}.csv.gz` only from 2024. 2002-2023 are
+  `.csv` (and parquet, qs, rds) with no `.gz`. `ingest/src/nfl/moves.ts` asks for `.csv.gz`
+  and falls back to `.csv`. (`ingest/src/nfl/rosters.ts` only reads the current season, so it
+  never met this.)
+- A join is the first week a player is on a team's roster (ACT, INA, RES, DEV, EXE) that is not
+  last week's team, across seasons. The file writes the CURRENT abbreviation (LV) for every
+  season, so the team row is picked by franchise and season (OAK in 2019). Checked against
+  2024-25 examples: Saquon Barkley PHI 2024-08-30 (roster week 1), A.J. Brown PHI 2022-09-02,
+  Tom Brady TB 2020-09-04. 17,101 joins 2016-2026.
+
+### nflverse play-by-play: first touchdowns
+- `td_player_id` on a play with `touchdown = 1` is the scorer, the same column the scoring
+  timeline uses. It names who reached the end zone, so a quarterback's "first touchdown" is his
+  first rushing or receiving one, not his first touchdown pass.
+- Floor: 2000, the first season read. A player whose `rookie_season` is before 2000 gets no
+  first, because he may have scored before the data begins. 3,096 firsts. Checked: DeVonta
+  Smith 2021_01_PHI_ATL (the curated game), Saquon Barkley 2018_01_JAX_NYG, Jalen Hurts
+  2020_15_PHI_ARI, Cooper DeJean 2024_22_KC_PHI (the Super Bowl LIX pick six), Tom Brady
+  2001_19_OAK_NE.
+
+### The schedule rule, on local data
+- "Last postseason game, and each finalist's last postseason game before it against anyone
+  else" gives exactly three rows for every complete postseason 2000-2025, both sports: 156 rows,
+  no season with a different count. MLB 2024: ALCS Game 5 NYY 5 at CLE 2, NLCS Game 6 NYM 5 at
+  LAD 10, World Series Game 5 LAD 7 at NYY 6. NFL 2024: WAS 23 at PHI 55, BUF 29 at KC 32,
+  KC 22 at PHI 40.
+
+### The curated list against the games table
+- All 21 entries resolve to exactly one game by local date. Two needed fixing against the data,
+  not the brief: Super Bowl LVII is stored with the **Eagles as home** (KC 38 at PHI 35), and
+  Judge's 62nd was **game 1** of a doubleheader at Texas (the 5–4 win) and needs `game_number`.
+- Local date: `games.scheduled_start` is UTC, so matching reads the venue's `tz`. 56 of 224
+  venues have none (most NFL parks); those are read in Eastern time, which gives the right day
+  for every start between 9 am and 11 pm ET. World Series Game 3 2022, Brady's last game and
+  Freeman's slam all match.

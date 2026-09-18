@@ -6,7 +6,7 @@
 -- against real rows rather than an assumption.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(35);
+select plan(36);
 
 insert into auth.users (id, email, aud, role)
 values ('a1000000-0000-4000-8000-0000000000f1', 'famous-fan@test', 'authenticated', 'authenticated'),
@@ -187,8 +187,10 @@ set local role authenticated;
 set local request.jwt.claims to '{"sub":"a1000000-0000-4000-8000-0000000000f1","role":"authenticated"}';
 
 select is((select count(*) from public.my_famous_games()), 2::bigint, 'my_famous_games lists my two famous games');
-select is((select count(*) from public.game_famous('00000000-0000-0000-0000-0000000000e4')), 2::bigint,
-  'game_famous shows both of a game''s famous rows');
+select is((select count(*) from public.game_famous('00000000-0000-0000-0000-0000000000e4')), 1::bigint,
+  'game_famous shows a game famous two ways once');
+select is((select title from public.game_famous('00000000-0000-0000-0000-0000000000e4')), 'The one with the rain delay',
+  'and it is the curated row');
 select is((select count(*) from public.famous_games where game_id = '00000000-0000-0000-0000-0000000000e4'), 2::bigint,
   'authenticated can read famous_games');
 select throws_ok($$insert into public.famous_games (game_id, source, category, title)
