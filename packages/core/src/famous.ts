@@ -258,13 +258,17 @@ export function rosterJoins(rows: Iterable<RosterWeekRow>): RosterJoin[] {
   return out;
 }
 
-/** Transaction type codes that mean a player joined the `toTeam` (docs/verification.md). */
+/**
+ * Transaction type codes that mean a player joined the `toTeam` (docs/verification.md).
+ * Recalls (CU) and contract selections (SE) are left out on purpose: they move a player who
+ * already belongs to the organization, and would turn every call-up into "first days".
+ */
 export const MLB_JOIN_KINDS: Readonly<Record<string, string>> = {
   TR: 'trade',
   SFA: 'signing',
   SGN: 'signing',
   CLW: 'waivers',
-  SEL: 'selection',
+  R5: 'rule_5',
   PUR: 'purchase',
 };
 
