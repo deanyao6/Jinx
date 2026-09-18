@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 22:05 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -122,8 +122,33 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 4. **Approve the M0.5 screenshots.** `npm run parity` generates them. Do not self-certify this.
 5. **`eas submit`** needs his Apple login and 2FA. An App Store Connect API key would automate it.
 
-**Decided by Dean, not yet built:** famous games, superstars and personal badges. The whole brief
-is `docs/prompts/famous-games.md`, being built in its own session. The NBA is next, from
+**Famous games, superstars and personal badges are built and verified on local (2026-09-18),
+not yet on hosted.** Brief: `docs/prompts/famous-games.md`; evidence: `docs/progress.md` and
+`docs/evidence/famous/`; facts: `docs/verification.md`. Two migrations (`20260918000100`,
+`20260918000200`), nine ingest scripts wired into the daily workflows. What needs Dean:
+
+1. **The hosted rollout.** The agent's `db push` was refused by the permission check on
+   2026-09-18, so hosted has none of it. Run, in order, verifying each by reading hosted:
+   ```bash
+   npx supabase db push --linked --yes
+   set -a; . /tmp/hosted.env; set +a
+   npx tsx ingest/src/mlb/honors.ts --from 2013 --to 2026
+   npx tsx ingest/src/mlb/debuts.ts
+   npx tsx ingest/src/mlb/moves.ts --from 2016-01-01
+   npx tsx ingest/src/nfl/honors.ts
+   npx tsx ingest/src/nfl/moves.ts --from 2016
+   npx tsx ingest/src/nfl/firsts.ts --from 2000
+   npx tsx ingest/src/famous/franchise.ts
+   npx tsx ingest/src/famous/curated.ts
+   ```
+   No Edge Function changed behaviour, so no function deploy is needed.
+2. **Edit `seed/franchise_players.json`.** It is an agent's first draft: ten transcendent names
+   and one to three per team per era. Rerun `ingest/src/famous/franchise.ts` after.
+3. **Skim `seed/nfl_awards.json`.** 442 rows for 2023-2025 from public record (sources in
+   `docs/verification.md`). Pro Bowl includes replacements.
+4. **See it in the app.** The screens are only in the next build.
+
+The NBA is next, from
 `docs/prompts/nba.md`, in another session; venue nouns are per sport (ballpark, stadium, arena).
 Keep every new rule keyed by `sport_id`.
 
