@@ -153,8 +153,18 @@ From a laptop, a few minutes:
 export SUPABASE_URL=https://<ref>.supabase.co SUPABASE_SERVICE_ROLE_KEY=...
 npx tsx ingest/src/mlb/backfill.ts --from 2000 --to $(date +%Y)
 npx tsx ingest/src/nfl/run.ts --from 2000 --to $(date +%Y)
-npx tsx ingest/src/elo/run.ts --sport mlb && npx tsx ingest/src/elo/run.ts --sport nfl
+npx tsx ingest/src/nba/backfill.ts --from 2000 --to $(date +%Y)
+npx tsx ingest/src/nba/rosters.ts
+npx tsx ingest/src/elo/run.ts --sport mlb && npx tsx ingest/src/elo/run.ts --sport nfl && npx tsx ingest/src/elo/run.ts --sport nba
 ```
+
+**The NBA runs from a laptop or GitHub, never from Supabase.** Supabase's Edge runtime cannot
+reach cdn.nba.com, stats.nba.com or ESPN (docs/verification.md, 2026-09-18), so `nba-sync` and
+`nba-live` are deployed but not scheduled. The daily GitHub job refreshes the current season's
+schedule from the CDN and runs Elo and Relive; GitHub's runners cannot reach stats.nba.com, so
+rosters and detail for pre-2019 games (which need it) are run from a laptop:
+`npx tsx ingest/src/nba/rosters.ts` and `npx tsx ingest/src/nba/detail.ts --pending`. There is no
+live NBA state and no 15-minute detail path until a route to those hosts exists.
 
 ### 7. GitHub Actions secrets
 

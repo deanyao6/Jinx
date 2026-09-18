@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**; the NBA **2026-09-18, 01:10 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -12,7 +12,7 @@ Keep it that way: when you change what is true, change this file in the same com
 ## 1. What Jinx is
 
 A passport for sports fans: every game you attend becomes part of a living record. iOS only,
-MLB and NFL, v1 in TestFlight. `SPEC.md` is the product and engineering spec and it is
+MLB, NFL and (from 2026-09-18) the NBA, v1 in TestFlight. `SPEC.md` is the product and engineering spec and it is
 authoritative. `design/reference.html` is the single visual source of truth.
 
 Hobby project, near-zero running cost: $0 data sources, Supabase free tier, Anthropic Haiku
@@ -44,15 +44,21 @@ orphan a loaded database.
 
 | | What it is | State |
 |---|---|---|
-| **local** | Supabase on ports 54421-54427 | 82,240 games, 2000 onward. Every migration. Where you develop |
-| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice. All 22 migrations |
+| **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA). Every migration. 261 MB. Where you develop |
+| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA. All 27 migrations as of 2026-09-18 |
 | **TestFlight** | EAS `@deanyao/jinx` | Build 4 submitted 2026-09-17, waiting on Apple processing |
 
 **Hosted, as verified today:**
 
-- **Eight of nine Edge Functions are deployed**: `storylines`, `parse-ticket`, `cleanup-imports`,
-  `delete-account`, `mlb-sync`, `mlb-live`, `send-push`, `evaluate-goals`. `inbound-email` stays
-  undeployed until ticket forwarding is set up on `jinxsports.fans` (section 5).
+- **Ten of eleven Edge Functions are deployed**: `storylines`, `parse-ticket`, `cleanup-imports`,
+  `delete-account`, `mlb-sync`, `mlb-live`, `nba-sync`, `nba-live`, `send-push`, `evaluate-goals`.
+  `inbound-email` stays undeployed until ticket forwarding is set up on `jinxsports.fans`
+  (section 5). **`nba-sync` and `nba-live` are deployed but not scheduled**: Supabase's egress
+  cannot reach cdn.nba.com, stats.nba.com or ESPN (a probe function answered 403, hang, 403 on
+  2026-09-18; `net._http_response` id 68 is nba-sync's 500). The NBA's data path is the daily
+  GitHub job, which reaches the CDN but not stats.nba.com, and this laptop for rosters and
+  pre-2019 detail (`docs/deploy.md`). There is no live NBA state, so Pick a side at an NBA
+  game counts down to tip-off plus 30 minutes like the NFL's estimate.
 - **Scheduled jobs really run.** Nine `cron.job` rows, and `net._http_response` shows nine 200s in
   the last six hours. The one 404 is from before the deploy finished.
   **Judge a scheduled call by `net._http_response`, never by `cron.job_run_details`**: it reported
@@ -122,15 +128,25 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 4. **Approve the M0.5 screenshots.** `npm run parity` generates them. Do not self-certify this.
 5. **`eas submit`** needs his Apple login and 2FA. An App Store Connect API key would automate it.
 
-**Famous games, superstars and personal badges are built and verified on local (2026-09-18),
-not yet on hosted.** Brief: `docs/prompts/famous-games.md`; evidence: `docs/progress.md` and
+**The NBA is built and verified on local and rolled out to hosted (2026-09-18).** Brief:
+`docs/prompts/nba.md`; evidence: the NBA table in `docs/progress.md` and `docs/evidence/nba/`;
+facts: the NBA sections of `docs/verification.md`. Two rows of the brief's bar are not met and
+cannot be from Supabase: the 15-minute queue drain and live state (above). Not looked at yet:
+Pick a side at a real NBA game (none is played until October 2026), the log sheet's NBA search
+on a device, light mode. What needs Dean: eyeball the 30 palettes in `seed/team_colors.json`
+(hand-tuned to the contrast rule, not to his eye); decide whether the app may read the CDN
+scoreboard itself for live NBA state (the rule today keeps every provider server-side); the
+NBA and ESPN attribution in `docs/attribution.md` before any public launch.
+
+**Famous games, superstars and personal badges are built and verified on local (2026-09-18).
+Their three migrations reached hosted with the NBA's `db push` on 2026-09-18; their ingest
+scripts have not run there yet.** Brief: `docs/prompts/famous-games.md`; evidence: `docs/progress.md` and
 `docs/evidence/famous/`; facts: `docs/verification.md`. Three migrations (`20260918000100`,
 `20260918000200`, `20260918100100`), nine ingest scripts wired into the daily workflows. What needs Dean:
 
-1. **The hosted rollout.** The agent's `db push` was refused by the permission check on
-   2026-09-18, so hosted has none of it. Run, in order, verifying each by reading hosted:
+1. **The hosted rollout, minus the push, which the NBA session did.** Run, in order, verifying
+   each by reading hosted:
    ```bash
-   npx supabase db push --linked --yes
    set -a; . /tmp/hosted.env; set +a
    npx tsx ingest/src/mlb/honors.ts --from 2013 --to 2026
    npx tsx ingest/src/mlb/debuts.ts
