@@ -122,8 +122,9 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 4. **Approve the M0.5 screenshots.** `npm run parity` generates them. Do not self-certify this.
 5. **`eas submit`** needs his Apple login and 2FA. An App Store Connect API key would automate it.
 
-**Decided by Dean, not yet built:** nothing outstanding. Favorite players on the Passport was the
-last open question and shipped on 2026-09-17.
+**Decided by Dean, not yet built:** famous games, superstars and personal badges. The whole brief
+is `docs/prompts/famous-games.md`; Dean wants it built in a fresh session from that file. The NBA
+is a stated intention, not a decision: keep every new rule keyed by `sport_id`.
 
 **Known wrong, not yet fixed:**
 
