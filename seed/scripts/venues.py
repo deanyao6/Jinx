@@ -4,15 +4,18 @@ Venues come from four files (seed/nfl_venues.json, seed/mlb_venues.generated.jso
 overrides and seed/nba_venues.json), merged so a building two leagues share is one row. Both
 scripts need exactly the same keys and coordinates, so the merge lives here once.
 
-Elevations live in seed/venue_elevations.json, keyed by the merged venue key, rather than in the
-venue files: mlb_venues.generated.json is regenerated from the MLB Stats API by gen_mlb_seeds.py
-and would lose a column written into it.
+Elevations live in seed/venue_elevations.json and timezones in seed/venue_timezones.json, both
+keyed by the merged venue key, rather than in the venue files: mlb_venues.generated.json is
+regenerated from the MLB Stats API by gen_mlb_seeds.py and would lose a column written into it.
+Only the MLB file carries its own `tz`; the NFL and NBA ones have none, which is why
+fill_timezones.py resolves every venue from its coordinates.
 """
 import json, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SEED = os.path.join(ROOT, "seed")
 ELEVATIONS = os.path.join(SEED, "venue_elevations.json")
+TIMEZONES = os.path.join(SEED, "venue_timezones.json")
 
 
 def load(name):
@@ -113,3 +116,12 @@ def load_elevations():
     with open(ELEVATIONS, encoding="utf8") as f:
         data = json.load(f)
     return {k: v["elevation_ft"] for k, v in data["venues"].items() if v.get("elevation_ft") is not None}
+
+
+def load_timezones():
+    """key -> IANA zone, for venues fill_timezones.py has resolved from their coordinates."""
+    if not os.path.exists(TIMEZONES):
+        return {}
+    with open(TIMEZONES, encoding="utf8") as f:
+        data = json.load(f)
+    return {k: v["tz"] for k, v in data.items() if v.get("tz")}

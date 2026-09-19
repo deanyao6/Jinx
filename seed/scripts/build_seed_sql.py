@@ -8,6 +8,7 @@ Inputs:
   seed/team_colors.json (light + dark --tf/--t/--t2/--on per team; see check_team_colors.py)
   seed/mlb_venues.generated.json, seed/mlb_venue_overrides.json, seed/nfl_venues.json
   seed/venue_elevations.json (written by fill_elevations.py; see docs/verification.md)
+  seed/venue_timezones.json  (written by fill_timezones.py)
 Output:
   supabase/seed.sql  (run by `supabase db reset`; also safe to psql against production)
 
@@ -17,7 +18,7 @@ Run: python3 seed/scripts/build_seed_sql.py
 import csv, json, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from venues import load_elevations, merged_venues  # noqa: E402
+from venues import load_elevations, load_timezones, merged_venues  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SEED = os.path.join(ROOT, "seed")
@@ -114,6 +115,9 @@ for p in load("team_colors.json")["teams"]:
 # same set of keys and coordinates that this file writes.
 venues = merged_venues()
 elevations = load_elevations()
+# Only the MLB venue file publishes a zone; every other venue gets the one resolved from its
+# coordinates, so `venues.tz` is complete and a local date can always be worked out.
+timezones = load_timezones()
 if ONLY:
     venues = {k: v for k, v in venues.items() if ONLY in v["sports"]}
 
@@ -123,7 +127,7 @@ for k in sorted(venues):
     v = venues[k]
     lines.append(
         "insert into public.venues (key, name, city, state, country, lat, lng, geofence_m, opened_year, closed_year, tz, provider_ids, elevation_ft) values ("
-        + ", ".join(q(x) for x in (v["key"], v["name"], v["city"], v["state"], v["country"], v["lat"], v["lng"], v["geofence_m"], v["opened_year"], v["closed_year"], v["tz"], v["provider_ids"], elevations.get(k)))
+        + ", ".join(q(x) for x in (v["key"], v["name"], v["city"], v["state"], v["country"], v["lat"], v["lng"], v["geofence_m"], v["opened_year"], v["closed_year"], v["tz"] or timezones.get(k), v["provider_ids"], elevations.get(k)))
         + ") on conflict (key) do update set name = excluded.name, city = excluded.city, state = excluded.state, country = excluded.country, lat = excluded.lat, lng = excluded.lng, "
         "geofence_m = excluded.geofence_m, opened_year = excluded.opened_year, closed_year = excluded.closed_year, tz = excluded.tz, provider_ids = excluded.provider_ids, elevation_ft = excluded.elevation_ft;"
     )

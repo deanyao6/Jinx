@@ -584,3 +584,42 @@ responses are saved in `ingest/fixtures/mlb/` and parsed by `ingest/src/famous/f
   venues have none (most NFL parks); those are read in Eastern time, which gives the right day
   for every start between 9 am and 11 pm ET. World Series Game 3 2022, Brady's last game and
   Freeman's slam all match.
+
+## Venue timezones, and the search bugs they hid — FOUND AND FIXED 2026-09-18
+
+Found by Dean trying to search for an NBA game the day the NBA landed.
+
+- **`venues.tz` was null for 126 of 295 venues.** Only the MLB venues had one, because the MLB
+  Stats API publishes it; `seed/nfl_venues.json` and `seed/nba_venues.json` carry no `tz` field
+  at all, so 56 of 65 NFL venues and 70 of 71 NBA venues had none.
+- **Everything that asks for a game's local date was therefore falling back.** `search_games`
+  compared the UTC date, and `game_local_date()` (the famous-game matcher, migration
+  `20260918000100`) fell back to America/New_York. A 7:30 pm tip-off in Los Angeles is 03:30 UTC
+  the NEXT day, so it filed itself under the wrong date. Measured on local: **7,773 MLB games
+  since 2016** had a UTC date different from their local date, and most NBA games did. A fan
+  searching the date they were there got the previous evening's games.
+- **Fixed** by `seed/scripts/fill_timezones.py`, which resolves every venue from its coordinates
+  with `timezonefinder` (offline OpenStreetMap boundaries, `pip install timezonefinder`) into
+  `seed/venue_timezones.json`, and migration `20260918110000`, which carries the 253 resolved
+  zones into `venues.tz`. `seed/scripts/build_seed_sql.py` now writes the column too.
+  Sanity checks (`--check`): Chase Field and Footprint Center get America/Phoenix, which does not
+  keep daylight time; Rogers Centre America/Toronto; Ball Arena America/Denver. Zone counts:
+  90 America/New_York, 63 America/Chicago, 36 America/Los_Angeles, 14 America/Phoenix, 8
+  America/Denver, plus London, Mexico City, Tokyo, Seoul, Sao Paulo, Melbourne and others for
+  international games. 42 venues are unresolved because the seed has no coordinates for them;
+  they are spring training and minor league parks, 23 of which carry 1,000 games between them,
+  and they keep the America/New_York fallback.
+- **A second bug in the same search.** A four-digit token matched `games.season` only. For MLB
+  and NFL the season is the calendar year of nearly every game, so that reads naturally, but the
+  NBA season is its START year: a fan who went to a Lakers game in January 2026 typed
+  "lakers 2026" and got the 2026-27 season. A year token now matches the season OR the calendar
+  year the game was played in.
+- **And it was slow.** The token test ran a correlated alias lookup for every one of the 118,831
+  games: 2.2 s on local, 3.1 s on hosted. The first token is now resolved once into the team and
+  venue ids it allows, narrowing the candidates through `games_home_team_idx`,
+  `games_away_team_idx` and `games_venue_idx` before the full test runs. Every token still has to
+  match, so the narrowing cannot change the answer; proven by diffing 21 query shapes against the
+  old function on local, all identical. Local 2.2 s to 0.12 s; hosted 3.1 s to 0.9 s and 2.6 s to
+  0.15 s. An earlier attempt that put the per-token arrays in a plain CTE made it 74 s, because
+  the planner re-evaluated them per row; `as materialized` is what makes it fast.
+- Regression test: `supabase/tests/041_search_local_date.test.sql`, 8 assertions.

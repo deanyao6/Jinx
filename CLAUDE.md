@@ -103,6 +103,7 @@ node scripts/verify-privacy-functions.mjs # cleanup-imports + delete-account rea
 node scripts/verify-user-journeys.mjs     # M2, M3, M6, M7, M8 done-whens as real users through RLS
 npx tsx ingest/src/verify/relive.ts       # M8.5: 5 MLB + 5 NFL stories against an independent source
 npx tsx ingest/src/mlb/relive.ts --rebuild # regenerate every MLB story after a change to how steps are built
+python3 seed/scripts/fill_timezones.py   # resolve every venue's IANA zone from its coordinates (needs timezonefinder)
 python3 seed/scripts/build_seed_sql.py   # regenerate supabase/seed.sql from seed/*.json
 python3 seed/scripts/fill_elevations.py  # venue elevations (USGS, Open-Elevation) into seed/venue_elevations.json; resumable
 python3 seed/scripts/check_team_colors.py # audit team_colors.json: coverage, verbatim reference rows, WCAG contrast

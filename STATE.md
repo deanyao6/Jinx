@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**; the NBA **2026-09-18, 01:10 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**; the NBA **2026-09-18, 01:10 PDT**; venue timezones and search **2026-09-18, 09:40 PDT**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -127,6 +127,17 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 3. **App Store Connect:** privacy details, and the external TestFlight group.
 4. **Approve the M0.5 screenshots.** `npm run parity` generates them. Do not self-certify this.
 5. **`eas submit`** needs his Apple login and 2FA. An App Store Connect API key would automate it.
+
+**Search finds the right game now (2026-09-18).** Dean searched for an NBA game and it did not
+work. Three bugs, all fixed and on hosted (migration `20260918110000`, test `041`, the detail in
+`docs/verification.md`): `venues.tz` was null for 126 of 295 venues, so search and the
+famous-game matcher used the UTC date and filed a west coast evening game under the next day
+(7,773 MLB games since 2016 and most of the NBA); a year token matched `games.season` only, so
+"lakers 2026" returned the 2026-27 season instead of a January 2026 game; and search took 2.2 s
+on local and 3.1 s on hosted, now 0.12 s and 0.15 s. `seed/scripts/fill_timezones.py` resolves a
+zone from each venue's coordinates and needs `pip install timezonefinder`. 42 venues with no
+coordinates in the seed (spring training and minor league parks, 1,000 games between them) still
+fall back to America/New_York.
 
 **The NBA is built and verified on local and rolled out to hosted (2026-09-18).** Brief:
 `docs/prompts/nba.md`; evidence: the NBA table in `docs/progress.md` and `docs/evidence/nba/`;
