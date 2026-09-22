@@ -1,4 +1,4 @@
-import { Stack, router } from 'expo-router';
+import { Stack, router, type Href } from 'expo-router';
 import { act, renderRouter, waitFor } from 'expo-router/testing-library';
 import React from 'react';
 import { Text } from 'react-native';
@@ -85,7 +85,7 @@ describe('RootStack', () => {
 
     // The other routes that live outside the tabs.
     for (const href of ['/guide/abc', '/relive/abc', '/games/abc', '/settings/favorites']) {
-      await act(async () => router.push(href));
+      await act(async () => router.push(href as Href));
       await expectPathname(app, href);
       await setSession(false, false);
       await expectRoutes(app, ['(auth)']);
