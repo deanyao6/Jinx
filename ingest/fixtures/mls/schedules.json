@@ -1,0 +1,466 @@
+[
+  {
+    "id": "761439",
+    "date": "2026-02-21T19:30Z",
+    "season": {
+      "year": 2026,
+      "type": 13846,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2026-02-21T19:30Z",
+        "venue": {
+          "id": "10421",
+          "fullName": "Energizer Park",
+          "address": {
+            "city": "St. Louis, Missouri",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "clock": 5400,
+          "displayClock": "90'+8'",
+          "period": 2,
+          "type": {
+            "id": "28",
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true,
+            "description": "Full Time",
+            "detail": "FT",
+            "shortDetail": "FT"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "winner": false,
+            "team": {
+              "id": "21812",
+              "displayName": "St. Louis CITY SC",
+              "abbreviation": "STL"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "1",
+            "winner": false,
+            "team": {
+              "id": "21300",
+              "displayName": "Charlotte FC",
+              "abbreviation": "CLT"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "761440",
+    "date": "2026-02-21T21:45Z",
+    "season": {
+      "year": 2026,
+      "type": 13846,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2026-02-21T21:45Z",
+        "venue": {
+          "id": "8674",
+          "fullName": "TQL Stadium",
+          "address": {
+            "city": "Cincinnati, Ohio",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "clock": 5400,
+          "displayClock": "90'+8'",
+          "period": 2,
+          "type": {
+            "id": "28",
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true,
+            "description": "Full Time",
+            "detail": "FT",
+            "shortDetail": "FT"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "2",
+            "winner": true,
+            "team": {
+              "id": "18267",
+              "displayName": "FC Cincinnati",
+              "abbreviation": "CIN"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "18418",
+              "displayName": "Atlanta United FC",
+              "abbreviation": "ATL"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "761441",
+    "date": "2026-02-22T00:30Z",
+    "season": {
+      "year": 2026,
+      "type": 13846,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2026-02-22T00:30Z",
+        "venue": {
+          "id": "7604",
+          "fullName": "Audi Field",
+          "address": {
+            "city": "Washington, District of Columbia",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "clock": 5400,
+          "displayClock": "90'+6'",
+          "period": 2,
+          "type": {
+            "id": "28",
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true,
+            "description": "Full Time",
+            "detail": "FT",
+            "shortDetail": "FT"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "winner": true,
+            "team": {
+              "id": "193",
+              "displayName": "D.C. United",
+              "abbreviation": "DC"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "10739",
+              "displayName": "Philadelphia Union",
+              "abbreviation": "PHI"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "761442",
+    "date": "2026-02-22T00:30Z",
+    "season": {
+      "year": 2026,
+      "type": 13846,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2026-02-22T00:30Z",
+        "venue": {
+          "id": "6971",
+          "fullName": "Inter&Co Stadium",
+          "address": {
+            "city": "Orlando, Florida",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "clock": 5400,
+          "displayClock": "90'+7'",
+          "period": 2,
+          "type": {
+            "id": "28",
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true,
+            "description": "Full Time",
+            "detail": "FT",
+            "shortDetail": "FT"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "winner": false,
+            "team": {
+              "id": "12011",
+              "displayName": "Orlando City SC",
+              "abbreviation": "ORL"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "2",
+            "winner": true,
+            "team": {
+              "id": "190",
+              "displayName": "Red Bull New York",
+              "abbreviation": "RBNY"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "761443",
+    "date": "2026-02-22T00:30Z",
+    "season": {
+      "year": 2026,
+      "type": 13846,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2026-02-22T00:30Z",
+        "venue": {
+          "id": "4370",
+          "fullName": "BC Place",
+          "address": {
+            "city": "Vancouver",
+            "country": "Canada"
+          }
+        },
+        "status": {
+          "clock": 5400,
+          "displayClock": "90'+8'",
+          "period": 2,
+          "type": {
+            "id": "28",
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true,
+            "description": "Full Time",
+            "detail": "FT",
+            "shortDetail": "FT"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "winner": true,
+            "team": {
+              "id": "9727",
+              "displayName": "Vancouver Whitecaps",
+              "abbreviation": "VAN"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "4771",
+              "displayName": "Real Salt Lake",
+              "abbreviation": "RSL"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "761818",
+    "date": "2026-09-19T23:30Z",
+    "season": {
+      "year": 2026,
+      "type": 13846,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2026-09-19T23:30Z",
+        "venue": {
+          "id": "3278",
+          "fullName": "Stade Saputo",
+          "address": {
+            "city": "Montreal",
+            "country": "Canada"
+          }
+        },
+        "status": {
+          "clock": 0,
+          "displayClock": "0'",
+          "type": {
+            "id": "1",
+            "name": "STATUS_SCHEDULED",
+            "state": "pre",
+            "completed": false,
+            "description": "Scheduled",
+            "detail": "Sat, September 19th at 7:30 PM EDT",
+            "shortDetail": "Scheduled"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "9720",
+              "displayName": "CF Montréal",
+              "abbreviation": "MTL"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "183",
+              "displayName": "Columbus Crew",
+              "abbreviation": "CLB"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "761819",
+    "date": "2026-09-19T23:30Z",
+    "season": {
+      "year": 2026,
+      "type": 13846,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2026-09-19T23:30Z",
+        "venue": {
+          "id": "7604",
+          "fullName": "Audi Field",
+          "address": {
+            "city": "Washington, District of Columbia",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "clock": 0,
+          "displayClock": "0'",
+          "type": {
+            "id": "1",
+            "name": "STATUS_SCHEDULED",
+            "state": "pre",
+            "completed": false,
+            "description": "Scheduled",
+            "detail": "Sat, September 19th at 7:30 PM EDT",
+            "shortDetail": "Scheduled"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "193",
+              "displayName": "D.C. United",
+              "abbreviation": "DC"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "21300",
+              "displayName": "Charlotte FC",
+              "abbreviation": "CLT"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "655997",
+    "date": "2022-11-05T20:00Z",
+    "season": {
+      "year": 2022,
+      "type": 10586,
+      "slug": "mls-cup"
+    },
+    "competitions": [
+      {
+        "date": "2022-11-05T20:00Z",
+        "venue": {
+          "id": "7605",
+          "fullName": "BMO Stadium",
+          "address": {
+            "city": "Los Angeles, California",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "clock": 7200,
+          "displayClock": "120'",
+          "period": 5,
+          "type": {
+            "id": "47",
+            "name": "STATUS_FINAL_PEN",
+            "state": "post",
+            "completed": true,
+            "description": "Final Score - After Penalties",
+            "detail": "FT-Pens",
+            "shortDetail": "FT-Pens"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "3",
+            "shootoutScore": 3,
+            "winner": true,
+            "team": {
+              "id": "18966",
+              "displayName": "LAFC",
+              "abbreviation": "LAFC"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "3",
+            "shootoutScore": 0,
+            "winner": false,
+            "team": {
+              "id": "10739",
+              "displayName": "Philadelphia Union",
+              "abbreviation": "PHI"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

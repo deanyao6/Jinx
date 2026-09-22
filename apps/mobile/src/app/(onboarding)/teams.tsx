@@ -25,7 +25,9 @@ function TeamsForm({ initial }: { initial: Team[] }) {
       await save.mutateAsync(selected);
       // The players step lists the picked teams' rosters, so with no team there is nothing
       // for it to ask.
-      router.push(selected.length ? '/(onboarding)/players' : '/(onboarding)/city');
+      router.push(
+        selected.some((t) => t.sport_id !== 'mls') ? '/(onboarding)/players' : '/(onboarding)/city',
+      );
     } catch {
       // surfaced below
     }

@@ -78,6 +78,15 @@ const rosters: Record<string, RosterPlayer[]> = {
 };
 
 describe('the favorite players step', () => {
+  it('omits MLS rosters when favorites span supported and unsupported leagues', async () => {
+    mockTeams.mockReturnValue({
+      data: [PHI, team('union', 'Philadelphia', 'Union', 'mls')],
+      isLoading: false,
+    });
+    const { getByTestId, queryByTestId } = await renderStep();
+    expect(getByTestId('roster-section-phi')).toBeTruthy();
+    expect(queryByTestId('roster-section-union')).toBeNull();
+  });
   beforeEach(() => {
     mockPush.mockClear();
     mockToggle.mockClear();

@@ -56,7 +56,7 @@ export default function WrappedScreen() {
   const params = useLocalSearchParams<{ sport: string; season: string }>();
   const sport = params.sport;
   const season = Number(params.season);
-  const valid = !!sport && Number.isInteger(season) && season > 1990;
+  const valid = !!sport && sport !== 'mls' && Number.isInteger(season) && season > 1990;
 
   const wrapped = useWrapped(valid ? sport : undefined, valid ? season : undefined);
   const seasons = useWrappedSeasons();
@@ -154,7 +154,7 @@ export default function WrappedScreen() {
         <View style={{ padding: theme.spacing.lg }}>
           <EmptyState
             icon="i-spark"
-            title="Pick a season"
+            title={sport === 'mls' ? 'MLS Wrapped is not available yet' : 'Pick a season'}
             actionTitle="Choose"
             onAction={() => setPicking(true)}
           />

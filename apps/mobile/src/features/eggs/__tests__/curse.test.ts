@@ -7,6 +7,11 @@ const DAY = 24 * 60 * 60 * 1000;
 const after = (games: number) => START + games * DAY;
 
 describe('curseBroken', () => {
+  it('a shootout win ends a losing streak', () => {
+    const games = history('LLLLLT');
+    games[5]!.winnerTeamId = games[5]!.homeTeamId;
+    expect(curseBroken(games, { now: after(6) })).toEqual({ gameId: 'g5', losses: 5 });
+  });
   it('triggers on a win after five straight losses', () => {
     expect(curseBroken(history('WLLLLLW'), { now: after(7) })).toEqual({ gameId: 'g6', losses: 5 });
   });

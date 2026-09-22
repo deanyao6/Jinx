@@ -9,6 +9,21 @@ Keep it that way: when you change what is true, change this file in the same com
 
 ---
 
+## MLS hosted rollout (2026-09-22)
+
+MLS schema, 30 teams, palettes, reference venues and `parse-ticket` are deployed to Jinx
+`vekdufflzklfxljqufbq`. All five MLS migrations are applied locally and hosted, including the
+forward fix preserving shared-venue timezones. The recovered hosted timezone/search migration
+is also applied locally. SQL validation passed 371 assertions in 21 files.
+Hosted 2026 has **510 matches / 387 finals**. Hosted 2016–2026 backfill is complete: **4,962 matches / 4,817 finals**, no finals missing venues.
+Local 2016–2026 has 4,962 rows; forced re-import preserved game IDs and attendance references.
+See [rollout handoff](docs/MLS_ROLLOUT.md) for current status and limitations.
+Metro uses hosted public configuration via process environment; local `.env` is unchanged.
+Simulator is running Jinx against hosted, verified at the sign-in screen. Local Colima VM was
+restarted at the user’s request; Mailpit is available on port 54424. No TestFlight build occurred. MLS changes are being published on branch `MLS`.
+GitHub ingestion stays gated. Venue reconciliation and full app journeys remain unverified.
+MLS rosters, Relive, Wrapped and neutral predictions remain unavailable.
+
 ## 1. What Jinx is
 
 A passport for sports fans: every game you attend becomes part of a living record. iOS only,

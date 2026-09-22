@@ -1,0 +1,773 @@
+[
+  {
+    "id": "440952",
+    "date": "2016-03-06T18:30Z",
+    "season": {
+      "year": 2016,
+      "type": 6721,
+      "slug": "regular-season-2016"
+    },
+    "competitions": [
+      {
+        "date": "2016-03-06T18:30Z",
+        "venue": {
+          "id": "4653",
+          "fullName": "Sports Illustrated Stadium",
+          "address": {
+            "city": "Harrison, New Jersey",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "190",
+              "displayName": "Red Bull New York",
+              "abbreviation": "RBNY"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "2",
+            "winner": true,
+            "team": {
+              "id": "7318",
+              "displayName": "Toronto FC",
+              "abbreviation": "TOR"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "468040",
+    "date": "2016-11-06T19:00Z",
+    "season": {
+      "year": 2016,
+      "type": 6726,
+      "slug": "semi-finals---western-conf"
+    },
+    "competitions": [
+      {
+        "date": "2016-11-06T19:00Z",
+        "leg": {
+          "value": 2,
+          "displayValue": "2nd Leg"
+        },
+        "venue": {
+          "id": "2731",
+          "fullName": "Dick's Sporting Goods Park",
+          "address": {
+            "city": "Commerce City, Colorado",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FINAL_PEN",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "shootoutScore": 3,
+            "aggregateScore": 1,
+            "winner": true,
+            "team": {
+              "id": "184",
+              "displayName": "Colorado Rapids",
+              "abbreviation": "COL"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "shootoutScore": 1,
+            "aggregateScore": 1,
+            "winner": false,
+            "team": {
+              "id": "187",
+              "displayName": "LA Galaxy",
+              "abbreviation": "LA"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "468038",
+    "date": "2016-11-07T02:00Z",
+    "season": {
+      "year": 2016,
+      "type": 6726,
+      "slug": "semi-finals---western-conf"
+    },
+    "competitions": [
+      {
+        "date": "2016-11-07T02:00Z",
+        "leg": {
+          "value": 2,
+          "displayValue": "2nd Leg"
+        },
+        "venue": {
+          "id": "4789",
+          "fullName": "Toyota Stadium",
+          "address": {
+            "city": "Toyota Stadium",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "2",
+            "aggregateScore": 2,
+            "winner": true,
+            "team": {
+              "id": "185",
+              "displayName": "FC Dallas",
+              "abbreviation": "DAL"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "1",
+            "aggregateScore": 4,
+            "winner": false,
+            "team": {
+              "id": "9726",
+              "displayName": "Seattle Sounders FC",
+              "abbreviation": "SEA"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "468711",
+    "date": "2016-12-11T01:00Z",
+    "season": {
+      "year": 2016,
+      "type": 6719,
+      "slug": "final"
+    },
+    "competitions": [
+      {
+        "date": "2016-12-11T01:00Z",
+        "venue": {
+          "id": "4792",
+          "fullName": "BMO Field",
+          "address": {
+            "city": "Toronto",
+            "country": "Canada"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FINAL_PEN",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "shootoutScore": 4,
+            "winner": false,
+            "team": {
+              "id": "7318",
+              "displayName": "Toronto FC",
+              "abbreviation": "TOR"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "shootoutScore": 5,
+            "winner": true,
+            "team": {
+              "id": "9726",
+              "displayName": "Seattle Sounders FC",
+              "abbreviation": "SEA"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "498024",
+    "date": "2017-10-30T00:30Z",
+    "season": {
+      "year": 2017,
+      "type": 7292,
+      "slug": "semifinals---western-conf"
+    },
+    "competitions": [
+      {
+        "date": "2017-10-30T00:30Z",
+        "leg": {
+          "value": 1,
+          "displayValue": "1st Leg"
+        },
+        "venue": {
+          "id": "4370",
+          "fullName": "BC Place",
+          "address": {
+            "city": "Vancouver",
+            "country": "Canada"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "9727",
+              "displayName": "Vancouver Whitecaps",
+              "abbreviation": "VAN"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "9726",
+              "displayName": "Seattle Sounders FC",
+              "abbreviation": "SEA"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "498043",
+    "date": "2017-10-30T23:00Z",
+    "season": {
+      "year": 2017,
+      "type": 7288,
+      "slug": "semifinals---eastern-conf"
+    },
+    "competitions": [
+      {
+        "date": "2017-10-30T23:00Z",
+        "leg": {
+          "value": 1,
+          "displayValue": "1st Leg"
+        },
+        "venue": {
+          "id": "4653",
+          "fullName": "Sports Illustrated Stadium",
+          "address": {
+            "city": "Harrison, New Jersey",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "winner": false,
+            "team": {
+              "id": "190",
+              "displayName": "Red Bull New York",
+              "abbreviation": "RBNY"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "2",
+            "winner": true,
+            "team": {
+              "id": "7318",
+              "displayName": "Toronto FC",
+              "abbreviation": "TOR"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "588159",
+    "date": "2020-11-20T23:30Z",
+    "season": {
+      "year": 2020,
+      "type": 9750,
+      "slug": "eastern-conference-playoffs---play-in-round"
+    },
+    "competitions": [
+      {
+        "date": "2020-11-20T23:30Z",
+        "venue": {
+          "id": "3879",
+          "fullName": "Gillette Stadium",
+          "address": {
+            "city": "Foxborough, Massachusetts",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "2",
+            "winner": true,
+            "team": {
+              "id": "189",
+              "displayName": "New England Revolution",
+              "abbreviation": "NE"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "1",
+            "winner": false,
+            "team": {
+              "id": "9720",
+              "displayName": "CF Montréal",
+              "abbreviation": "MTL"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "622134",
+    "date": "2021-12-04T23:30Z",
+    "season": {
+      "year": 2021,
+      "type": 10501,
+      "slug": "western-conference-playoffs---final"
+    },
+    "competitions": [
+      {
+        "date": "2021-12-04T23:30Z",
+        "venue": {
+          "id": "4383",
+          "fullName": "Providence Park",
+          "address": {
+            "city": "Portland, Oregon",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "2",
+            "winner": true,
+            "team": {
+              "id": "9723",
+              "displayName": "Portland Timbers",
+              "abbreviation": "POR"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "4771",
+              "displayName": "Real Salt Lake",
+              "abbreviation": "RSL"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "622133",
+    "date": "2021-12-05T20:00Z",
+    "season": {
+      "year": 2021,
+      "type": 10500,
+      "slug": "eastern-conference-playoffs---final"
+    },
+    "competitions": [
+      {
+        "date": "2021-12-05T20:00Z",
+        "venue": {
+          "id": "4061",
+          "fullName": "Subaru Park",
+          "address": {
+            "city": "Chester, Pennsylvania",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "winner": false,
+            "team": {
+              "id": "10739",
+              "displayName": "Philadelphia Union",
+              "abbreviation": "PHI"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "2",
+            "winner": true,
+            "team": {
+              "id": "17606",
+              "displayName": "New York City FC",
+              "abbreviation": "NYC"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "689566",
+    "date": "2023-10-25T23:30Z",
+    "season": {
+      "year": 2023,
+      "type": 11513,
+      "slug": "eastern-conference-playoffs---wild-card"
+    },
+    "competitions": [
+      {
+        "date": "2023-10-25T23:30Z",
+        "venue": {
+          "id": "4653",
+          "fullName": "Sports Illustrated Stadium",
+          "address": {
+            "city": "Harrison, New Jersey",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "5",
+            "winner": true,
+            "team": {
+              "id": "190",
+              "displayName": "Red Bull New York",
+              "abbreviation": "RBNY"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "2",
+            "winner": false,
+            "team": {
+              "id": "21300",
+              "displayName": "Charlotte FC",
+              "abbreviation": "CLT"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "689567",
+    "date": "2023-10-26T01:30Z",
+    "season": {
+      "year": 2023,
+      "type": 11512,
+      "slug": "western-conference-playoffs---wild-card"
+    },
+    "competitions": [
+      {
+        "date": "2023-10-26T01:30Z",
+        "venue": {
+          "id": "4385",
+          "fullName": "Children's Mercy Park",
+          "address": {
+            "city": "Kansas City, Kansas",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FINAL_PEN",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "shootoutScore": 4,
+            "winner": true,
+            "team": {
+              "id": "186",
+              "displayName": "Sporting Kansas City",
+              "abbreviation": "SKC"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "shootoutScore": 2,
+            "winner": false,
+            "team": {
+              "id": "191",
+              "displayName": "San Jose Earthquakes",
+              "abbreviation": "SJ"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "573306",
+    "date": "2020-07-24T02:30Z",
+    "season": {
+      "year": 2020,
+      "type": 9217,
+      "slug": "regular-season"
+    },
+    "competitions": [
+      {
+        "date": "2020-07-24T02:30Z",
+        "venue": {
+          "id": "8455",
+          "fullName": "ESPN Wide World of Sports Complex",
+          "address": {
+            "city": "Orlando, Florida",
+            "country": "USA"
+          }
+        },
+        "status": {
+          "type": {
+            "name": "STATUS_FULL_TIME",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "2",
+            "winner": false,
+            "team": {
+              "id": "18966",
+              "displayName": "LAFC",
+              "abbreviation": "LAFC"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "2",
+            "winner": false,
+            "team": {
+              "id": "9723",
+              "displayName": "Portland Timbers",
+              "abbreviation": "POR"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "571926",
+    "date": "2020-07-29T02:30Z",
+    "season": {
+      "year": 2020,
+      "type": 9220,
+      "slug": "mls-is-back---round-of-16"
+    },
+    "competitions": [
+      {
+        "date": "2020-07-29T02:30Z",
+        "status": {
+          "type": {
+            "name": "STATUS_FINAL_PEN",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "shootoutScore": 4,
+            "winner": true,
+            "team": {
+              "id": "9723",
+              "displayName": "Portland Timbers",
+              "abbreviation": "POR"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "1",
+            "shootoutScore": 2,
+            "winner": false,
+            "team": {
+              "id": "18267",
+              "displayName": "FC Cincinnati",
+              "abbreviation": "CIN"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "560856",
+    "date": "2020-07-30T02:30Z",
+    "season": {
+      "year": 2020,
+      "type": 9216,
+      "slug": "all-star-game"
+    },
+    "competitions": [
+      {
+        "date": "2020-07-30T02:30Z",
+        "status": {
+          "type": {
+            "name": "STATUS_CANCELED",
+            "state": "post",
+            "completed": false
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "9817",
+              "displayName": "MLS All-Stars",
+              "abbreviation": "MLS"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "winner": false,
+            "team": {
+              "id": "20279",
+              "displayName": "Liga MX All-Stars",
+              "abbreviation": "LMX"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "571924",
+    "date": "2020-07-31T23:30Z",
+    "season": {
+      "year": 2020,
+      "type": 9221,
+      "slug": "mls-is-back---quarterfinals"
+    },
+    "competitions": [
+      {
+        "date": "2020-07-31T23:30Z",
+        "status": {
+          "type": {
+            "name": "STATUS_FINAL_PEN",
+            "state": "post",
+            "completed": true
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "1",
+            "shootoutScore": 5,
+            "winner": true,
+            "team": {
+              "id": "12011",
+              "displayName": "Orlando City SC",
+              "abbreviation": "ORL"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "1",
+            "shootoutScore": 4,
+            "winner": false,
+            "team": {
+              "id": "18966",
+              "displayName": "LAFC",
+              "abbreviation": "LAFC"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

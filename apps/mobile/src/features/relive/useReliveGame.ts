@@ -1,4 +1,4 @@
-import { highlightsSiteLabel, officialHighlightsUrl, scoringNote } from '@jinx/core';
+import { gameResult, highlightsSiteLabel, officialHighlightsUrl, scoringNote } from '@jinx/core';
 import { useMemo } from 'react';
 
 import { useMyAttendanceForGame } from '@/features/attendances/queries';
@@ -92,16 +92,21 @@ export function useReliveGame(gameId: string | undefined): ReliveGameData {
   const personal = useMemo(() => {
     if (!g || !a) return null;
     const rooted = a.rooting_team_id;
-    const decided = g.home_score != null && g.away_score != null && rooted;
-    const mine = rooted === g.home_team_id ? g.home_score : g.away_score;
-    const theirs = rooted === g.home_team_id ? g.away_score : g.home_score;
-    const result = !decided
-      ? null
-      : (mine ?? 0) > (theirs ?? 0)
-        ? ('win' as const)
-        : (mine ?? 0) < (theirs ?? 0)
-          ? ('loss' as const)
-          : ('tie' as const);
+    const result = gameResult(
+      {
+        gameId: g.id,
+        status: g.status as 'final',
+        scheduledStart: g.scheduled_start,
+        homeTeamId: g.home_team_id,
+        awayTeamId: g.away_team_id,
+        homeScore: g.home_score,
+        awayScore: g.away_score,
+        winnerTeamId: g.winner_team_id,
+        rootingTeamId: rooted,
+        rootingBasis: null,
+      },
+      rooted,
+    );
     const tagged = new Set((a.companions ?? []).map((c) => c.person?.id).filter(Boolean));
     const together = (companions.data ?? []).find((c) => tagged.has(c.person_id));
     return personalLine({

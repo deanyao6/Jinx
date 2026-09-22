@@ -153,8 +153,12 @@ export default function GameDetailScreen() {
   }
 
   const final = g.status === 'final' && g.home_score != null && g.away_score != null;
-  const winnerHome = final && g.home_score! > g.away_score!;
-  const winnerAway = final && g.away_score! > g.home_score!;
+  const winnerHome =
+    final &&
+    (g.winner_team_id ? g.winner_team_id === g.home_team_id : g.home_score! > g.away_score!);
+  const winnerAway =
+    final &&
+    (g.winner_team_id ? g.winner_team_id === g.away_team_id : g.away_score! > g.home_score!);
   const dh = doubleheaderLabel(g.doubleheader_number);
   const labels = [sportLabel(g.sport_id), gameTypeLabel(g.game_type), dh]
     .filter(Boolean)
@@ -275,6 +279,22 @@ export default function GameDetailScreen() {
               : null
           }
         >
+          {g.decision_method === 'aggregate_shootout' ? (
+            <Text variant="bodyStrong" style={{ marginTop: theme.spacing.sm }}>
+              {short(
+                (g.home_shootout_score ?? 0) > (g.away_shootout_score ?? 0) ? g.home : g.away,
+                'Winner',
+              )}{' '}
+              advanced on aggregate penalties ({g.away_shootout_score}–{g.home_shootout_score},
+              away–home)
+            </Text>
+          ) : null}
+          {g.decision_method === 'shootout' ? (
+            <Text variant="bodyStrong" style={{ marginTop: theme.spacing.sm }}>
+              {short(winnerHome ? g.home : g.away, 'Winner')} won on penalties (
+              {g.away_shootout_score}–{g.home_shootout_score}, away–home)
+            </Text>
+          ) : null}
           {g.status === 'postponed' && g.rescheduled_to_game_id ? (
             <Button
               title="See the makeup game"
@@ -285,6 +305,12 @@ export default function GameDetailScreen() {
             />
           ) : null}
         </Scoreboard>
+        {g.sport_id === 'mls' ? (
+          <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
+            MLS schedules and results are available. Player stats, live updates and Relive are not
+            available yet.
+          </Text>
+        ) : null}
 
         {/* A famous game, or a personal badge from a favourite player: right under the score. */}
         <FamousCard
@@ -317,7 +343,9 @@ export default function GameDetailScreen() {
               <Text variant="sub" style={{ flex: 1 }}>
                 {a?.verified_via === 'checkin'
                   ? 'You are checked in.'
-                  : 'At the game? Check in to verify it and, if you are neutral, pick a side.'}
+                  : g.sport_id === 'mls'
+                    ? 'At the match? Check in to verify your attendance.'
+                    : 'At the game? Check in to verify it and, if you are neutral, pick a side.'}
               </Text>
             </View>
             <Button

@@ -13,6 +13,8 @@ export interface AttendedGame {
   awayTeamId: string;
   homeScore: number | null;
   awayScore: number | null;
+  /** Explicit winner, including soccer shootouts. Missing preserves score-derived results. */
+  winnerTeamId?: string | null;
   rootingTeamId: string | null;
   rootingBasis: RootingBasis | null;
   /** Pledge for this game, when any. */
@@ -40,6 +42,9 @@ export function gameResult(g: AttendedGame, teamId: string | null): GameResult |
   if (g.status !== 'final' || teamId === null) return null;
   if (g.homeScore === null || g.awayScore === null) return null;
   if (teamId !== g.homeTeamId && teamId !== g.awayTeamId) return null;
+  if (g.winnerTeamId === g.homeTeamId || g.winnerTeamId === g.awayTeamId) {
+    return teamId === g.winnerTeamId ? 'win' : 'loss';
+  }
   if (g.homeScore === g.awayScore) return 'tie';
   const homeWon = g.homeScore > g.awayScore;
   return (teamId === g.homeTeamId) === homeWon ? 'win' : 'loss';

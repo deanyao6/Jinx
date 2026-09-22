@@ -11,6 +11,13 @@ A passport for sports fans: every game you attend becomes part of a living recor
 concept mockup, kept for structure only. `CLAUDE_CODE_PROMPT.md` was the kickoff brief and is
 history now: where it disagrees with STATE.md, STATE.md is right.
 
+## MLS continuation (2026-09-21)
+
+MLS schedules/results/favorites/attendance are in the uncommitted working tree and local DB.
+Read [docs/MLS_ROLLOUT.md](docs/MLS_ROLLOUT.md) before continuing. Hosted MLS schema, teams,
+2026 matches and ticket parsing are deployed (2026-09-22); TestFlight is not updated. Use `node scripts/mls-local.mjs --from 2016 --to 2026` for local imports; never reset
+this loaded database. MLS rosters, Relive, Wrapped and neutral predictions remain unavailable.
+
 ## Where things stand (2026-09-17)
 
 **Jinx is on TestFlight with a live backend.** Build 4 was submitted on 2026-09-17. All ten

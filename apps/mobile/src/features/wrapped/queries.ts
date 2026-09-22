@@ -27,7 +27,7 @@ export function useWrappedSeasons() {
         .eq('user_id', userId as string)
         .order('season', { ascending: false });
       if (error) throw error;
-      return data;
+      return data.filter((s) => s.sport_id !== 'mls');
     },
     enabled: !!userId,
     staleTime: 5 * 60_000,

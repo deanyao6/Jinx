@@ -584,3 +584,13 @@ responses are saved in `ingest/fixtures/mlb/` and parsed by `ingest/src/famous/f
   venues have none (most NFL parks); those are read in Eastern time, which gives the right day
   for every start between 9 am and 11 pm ET. World Series Game 3 2022, Brady's last game and
   Freeman's slam all match.
+
+## MLS historical verification (2026-09-21)
+
+ESPN monthly scoreboards were scanned from 2016 through 2026. Captured minimal fixtures in
+`ingest/fixtures/mls/historical.json` cover `final`, conference semifinal spellings, play-in
+rounds, wild cards and 2020 excluded tournament rounds. Unknown labels fail loudly.
+Official MLS/club comparisons and counts are recorded in
+[evidence/mls/local-rollout.md](evidence/mls/local-rollout.md). ESPN may omit a played venue
+(Union–Toronto, 623627), misstate a city (Toyota Stadium), or use multiple IDs for the same
+physical venue. A resolved venue row does not establish verified coordinates/timezone.

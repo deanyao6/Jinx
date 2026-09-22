@@ -21,7 +21,7 @@ import {
 export const TICKET_MODEL = 'claude-haiku-4-5';
 
 export const TicketSchema = z.object({
-  sport: z.enum(['mlb', 'nfl', 'nba', 'unknown']),
+  sport: z.enum(['mlb', 'nfl', 'nba', 'mls', 'unknown']),
   home_team: z.string(),
   away_team: z.string(),
   date_local: z.string().nullable(),
@@ -48,14 +48,14 @@ export type TicketInput =
   | { kind: 'pdf'; base64: string }
   | { kind: 'text'; text: string };
 
-const SYSTEM_PROMPT = `You extract sports ticket details from ticket screenshots, PDFs, and confirmation emails for MLB (baseball), NFL (football) and NBA (basketball) games.
+const SYSTEM_PROMPT = `You extract sports ticket details from ticket screenshots, PDFs, and confirmation emails for MLB (baseball), NFL (football), NBA (basketball) and MLS (soccer) games.
 Return one entry per distinct game found. A season-ticket or multi-game confirmation yields several entries; a single ticket yields one.
 Rules:
 - home_team and away_team: the team names exactly as printed. If the document prints "A vs B" or "A at B", the team after "at" is the home team; for "vs" keep the printed order and set confidence lower.
 - date_local: the event date printed on the ticket as YYYY-MM-DD in the venue's local time. time_local: HH:MM 24-hour local, or null if not printed.
 - venue: the venue name as printed. section/row/seat: as printed, empty strings when absent. price: a number in dollars or null.
 - ticketing_platform: Ticketmaster, SeatGeek, StubHub, TickPick, team site, or other text you see; empty string if unknown.
-- sport: "mlb", "nfl", "nba", or "unknown". confidence: 0 to 1 for how sure you are the entry is a real game ticket with correct fields.
+- sport: "mlb", "nfl", "nba", "mls", or "unknown". Only MLS league and MLS Cup playoff matches are supported for soccer, not other cups or friendlies. confidence: 0 to 1 for how sure you are the entry is a real game ticket with correct fields.
 - Never invent fields. If the document is not a sports ticket, return an empty tickets list.`;
 
 function userContent(input: TicketInput): Anthropic.Messages.ContentBlockParam[] {
@@ -114,7 +114,7 @@ export async function extractTickets(
 
 interface TeamRow {
   id: string;
-  sport_id: 'mlb' | 'nfl' | 'nba';
+  sport_id: 'mlb' | 'nfl' | 'nba' | 'mls';
   name: string;
   city: string;
   abbreviation: string;
@@ -160,7 +160,7 @@ export async function loadMatchContext(db: MinimalDb): Promise<MatchContext> {
 
 interface GameRow {
   id: string;
-  sport_id: 'mlb' | 'nfl' | 'nba';
+  sport_id: 'mlb' | 'nfl' | 'nba' | 'mls';
   scheduled_start: string;
   home_team_id: string;
   away_team_id: string;

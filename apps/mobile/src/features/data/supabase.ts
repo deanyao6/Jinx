@@ -415,6 +415,7 @@ export function logRowFromAttendance(
       awayTeamId: g.away_team_id,
       homeScore: g.home_score,
       awayScore: g.away_score,
+      winnerTeamId: g.winner_team_id,
     } as Parameters<typeof gameResult>[0],
     teamId ?? attendance.rooting_team_id,
   );
@@ -543,6 +544,7 @@ export type AttendanceRow = {
     away_team_id: string;
     home_score: number | null;
     away_score: number | null;
+    winner_team_id?: string | null;
     home: { id: string; name: string; abbreviation: string } | null;
     away: { id: string; name: string; abbreviation: string } | null;
     venue: { id: string; name: string; city: string | null } | null;
@@ -593,6 +595,7 @@ export function gameRowFromAttendance(
       awayTeamId: g.away_team_id,
       homeScore: g.home_score,
       awayScore: g.away_score,
+      winnerTeamId: g.winner_team_id,
     } as Parameters<typeof gameResult>[0],
     attendance.rooting_team_id,
   );

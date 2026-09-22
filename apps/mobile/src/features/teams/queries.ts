@@ -50,7 +50,8 @@ export function useTeamPalettes() {
 
 export const teamKeys = {
   all: ['teams'] as const,
-  list: (activeOnly: boolean) => ['teams', 'list', activeOnly] as const,
+  // Invalidate persisted pre-MLS catalogs when this release first opens.
+  list: (activeOnly: boolean) => ['teams', 'list', activeOnly, 'mls-v1'] as const,
   search: (query: string, sport: string | null) => ['teams', 'search', query, sport] as const,
 };
 

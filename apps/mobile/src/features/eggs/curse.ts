@@ -65,6 +65,7 @@ export function curseBroken(
         awayTeamId: g.awayTeamId,
         homeScore: g.homeScore,
         awayScore: g.awayScore,
+        winnerTeamId: g.winnerTeamId,
         rootingTeamId: g.rootingTeamId,
         rootingBasis: null,
       },

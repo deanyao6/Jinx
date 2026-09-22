@@ -8,6 +8,7 @@ export const VENUE_NOUN: Readonly<Record<string, { one: string; many: string }>>
   mlb: { one: 'ballpark', many: 'ballparks' },
   nfl: { one: 'stadium', many: 'stadiums' },
   nba: { one: 'arena', many: 'arenas' },
+  mls: { one: 'stadium', many: 'stadiums' },
 };
 
 const GENERIC = { one: 'venue', many: 'venues' } as const;

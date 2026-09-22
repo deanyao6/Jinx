@@ -18,6 +18,7 @@ export type ShareGame = {
   home: string;
   awayScore: number | null;
   homeScore: number | null;
+  winner?: 'home' | 'away' | null;
   status: string;
   venue: string | null;
   /** ISO start time. */

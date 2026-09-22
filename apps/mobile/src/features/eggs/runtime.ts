@@ -40,6 +40,7 @@ export function toReplayGame(a: Attendance): ReplayGame {
     awayTeamId: a.game.away_team_id,
     homeScore: a.game.home_score,
     awayScore: a.game.away_score,
+    winnerTeamId: a.game.winner_team_id,
     rootingTeamId: a.rooting_team_id,
     homeAbbreviation: a.game.home?.abbreviation ?? null,
     awayAbbreviation: a.game.away?.abbreviation ?? null,

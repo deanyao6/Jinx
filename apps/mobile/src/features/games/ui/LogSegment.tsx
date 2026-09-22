@@ -17,7 +17,7 @@ import { isIsoDate, seasonOptions, sportLabel } from '@/lib/format';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useDebounced } from './useDebounced';
 
-const SPORTS = ['mlb', 'nfl', 'nba'] as const;
+const SPORTS = ['mlb', 'nfl', 'nba', 'mls'] as const;
 
 type Props = {
   /** Prefill from an import that could not be matched (teams and the ticket date). */

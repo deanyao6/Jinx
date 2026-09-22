@@ -17,6 +17,7 @@ export type RareRow = {
     away_team_id: string;
     home_score: number | null;
     away_score: number | null;
+    winner_team_id?: string | null;
     events: { type: string }[];
   };
 };
@@ -37,6 +38,7 @@ export function toWitnessedGame(row: RareRow): WitnessedGame {
         awayTeamId: g.away_team_id,
         homeScore: g.home_score,
         awayScore: g.away_score,
+        winnerTeamId: g.winner_team_id,
       } as Parameters<typeof gameResult>[0],
       row.rooting_team_id,
     ),

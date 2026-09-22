@@ -103,7 +103,7 @@ def expand(hex_color):
 
 def main():
     data = load("team_colors.json")
-    rows = data["teams"]
+    rows = data["teams"] + load("mls_colors.json")["teams"]
     problems = []
     warnings = []
 
@@ -131,6 +131,7 @@ def main():
     expected.update(
         {("nba", t["provider_team_id"]): f"{t['city']} {t['name']}" for t in load("nba_teams.json")["teams"] if t["active"]}
     )
+    expected.update({("espn_mls", t["provider_team_id"]): t["name"] for t in load("mls_teams.json")["teams"]})
     for key, name in sorted(expected.items()):
         if key not in seen:
             problems.append(f"no palette for {name} ({key[0]}/{key[1]})")

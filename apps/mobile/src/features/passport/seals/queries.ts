@@ -49,7 +49,7 @@ export function useWitnessedRareGames(enabled = true) {
         .select(
           `rooting_team_id,
            game:games!inner(id, sport_id, venue_id, status, home_team_id, away_team_id,
-             home_score, away_score, events:game_events!inner(type))`,
+             home_score, away_score, winner_team_id, events:game_events!inner(type))`,
         )
         .eq('user_id', userId as string)
         .eq('status', 'attended')

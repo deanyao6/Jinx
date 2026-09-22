@@ -22,14 +22,14 @@ export interface GameWriteContext {
   teamMap: Map<string, string>;
   venueMaps: VenueMaps;
   /** Which provider_ids key to resolve venues by. */
-  venueLookup: 'mlb' | 'nflverse' | 'nba';
+  venueLookup: 'mlb' | 'nflverse' | 'nba' | 'mls';
 }
 
 export function resolveVenue(ctx: GameWriteContext): RowContext['resolveVenue'] {
   return (providerVenueId, season) => {
     if (!providerVenueId) return null;
     if (ctx.venueLookup === 'mlb') return ctx.venueMaps.byMlbVenueId.get(providerVenueId) ?? null;
-    if (ctx.venueLookup === 'nba') {
+    if (ctx.venueLookup === 'nba' || ctx.venueLookup === 'mls') {
       // The NBA parser tags what it has: an ESPN venue id for history, the CDN's arena name
       // for the current season (resolved through venue aliases, so a renamed arena still
       // lands), or a venue row's own id when the caller already knew it.
