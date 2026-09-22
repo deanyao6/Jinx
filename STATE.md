@@ -44,7 +44,7 @@ orphan a loaded database.
 
 | | What it is | State |
 |---|---|---|
-| **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA), plus MLS 2016 onward (4,962 on Arjun's machine; see section 5 for this one). Every migration. Where you develop |
+| **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA), plus 4,962 MLS 2016 onward. Every migration. Where you develop |
 | **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. All 32 migrations as of 2026-09-22 |
 | **TestFlight** | EAS `@deanyao/jinx` | Build 4 submitted 2026-09-17, waiting on Apple processing |
 
@@ -172,8 +172,8 @@ Not done, and known:
 - **Not seen on a device.** Arjun's session reached the league picker on the simulator against
   hosted and stopped at sign-in. The MLS journey (favorite, search, log, stamp, share) has not
   been walked, and it is only in build 5.
-- **Local on Dean's machine**: the MLS backfill was started at the merge; section 3 says what
-  Arjun's had.
+- **Local matches hosted**: `node scripts/mls-local.mjs --from 2016 --to 2026` ran at the merge
+  and loaded 4,962 matches, 4,817 finals, none without a venue, the same numbers as hosted.
 
 **The NBA is built and verified on local and rolled out to hosted (2026-09-18).** Brief:
 `docs/prompts/nba.md`; evidence: the NBA table in `docs/progress.md` and `docs/evidence/nba/`;
