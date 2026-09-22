@@ -40,10 +40,13 @@ export function validateCurated(entries: readonly CuratedFamousGame[]): string[]
   const problems: string[] = [];
   entries.forEach((e, i) => {
     const at = `entry ${i + 1} (${e.local_date} ${e.away} at ${e.home})`;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(e.local_date ?? '')) problems.push(`${at}: local_date must be YYYY-MM-DD`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(e.local_date ?? ''))
+      problems.push(`${at}: local_date must be YYYY-MM-DD`);
     if (!e.sport || !e.home || !e.away) problems.push(`${at}: sport, home and away are required`);
-    if (!CATEGORIES.has(e.category)) problems.push(`${at}: category must be one of ${[...CATEGORIES].join(', ')}`);
-    if (!e.title || e.title.length > 120) problems.push(`${at}: title is required, at most 120 characters`);
+    if (!CATEGORIES.has(e.category))
+      problems.push(`${at}: category must be one of ${[...CATEGORIES].join(', ')}`);
+    if (!e.title || e.title.length > 120)
+      problems.push(`${at}: title is required, at most 120 characters`);
     for (const text of [e.title, e.story]) {
       if (text?.includes(EM_DASH)) problems.push(`${at}: no em dashes in UI copy`);
     }
@@ -82,9 +85,13 @@ export interface Resolved {
 }
 
 /** Every entry to exactly one game, or an error listing every entry that did not. */
-export async function resolveCurated(db: MinimalDb, entries: readonly CuratedFamousGame[]): Promise<Resolved[]> {
+export async function resolveCurated(
+  db: MinimalDb,
+  entries: readonly CuratedFamousGame[],
+): Promise<Resolved[]> {
   const teams = await selectAll<TeamRow>(db, 'teams', 'id, sport_id, abbreviation');
-  const teamId = (sport: string, abbr: string) => teams.find((t) => t.sport_id === sport && t.abbreviation === abbr)?.id;
+  const teamId = (sport: string, abbr: string) =>
+    teams.find((t) => t.sport_id === sport && t.abbreviation === abbr)?.id;
   const abbrOf = new Map(teams.map((t) => [t.id, t.abbreviation]));
   const venues = await selectAll<{ id: string; tz: string | null }>(db, 'venues', 'id, tz');
   const tzOf = new Map(venues.map((v) => [v.id, v.tz]));
@@ -102,7 +109,9 @@ export async function resolveCurated(db: MinimalDb, entries: readonly CuratedFam
     // The local date is the UTC date or the one before it, so a two-day UTC window holds it.
     const { data, error } = await db
       .from('games')
-      .select('id, sport_id, scheduled_start, venue_id, home_team_id, away_team_id, doubleheader_number')
+      .select(
+        'id, sport_id, scheduled_start, venue_id, home_team_id, away_team_id, doubleheader_number',
+      )
       .eq('sport_id', e.sport)
       .eq('home_team_id', home)
       .eq('away_team_id', away)
@@ -137,14 +146,23 @@ export async function resolveCurated(db: MinimalDb, entries: readonly CuratedFam
     }
     out.push({ entry: e, gameId: hits[0]!.id, aboutTeamId });
   }
-  if (errors.length > 0) throw new Error(`refusing to build, ${errors.length} entr${errors.length === 1 ? 'y' : 'ies'} did not resolve:\n  ${errors.join('\n  ')}`);
+  if (errors.length > 0)
+    throw new Error(
+      `refusing to build, ${errors.length} entr${errors.length === 1 ? 'y' : 'ies'} did not resolve:\n  ${errors.join('\n  ')}`,
+    );
   const dupes = out.filter((r, i) => out.findIndex((x) => x.gameId === r.gameId) !== i);
-  if (dupes.length > 0) throw new Error(`refusing to build: two entries name the same game (${dupes.map((d) => d.entry.title).join(', ')})`);
+  if (dupes.length > 0)
+    throw new Error(
+      `refusing to build: two entries name the same game (${dupes.map((d) => d.entry.title).join(', ')})`,
+    );
   return out;
 }
 
 /** Write the curated rows and drop the ones no longer in the file. */
-export async function writeCurated(db: MinimalDb, resolved: readonly Resolved[]): Promise<{ written: number; removed: number }> {
+export async function writeCurated(
+  db: MinimalDb,
+  resolved: readonly Resolved[],
+): Promise<{ written: number; removed: number }> {
   await upsertRows(
     db,
     'famous_games',
@@ -159,8 +177,11 @@ export async function writeCurated(db: MinimalDb, resolved: readonly Resolved[])
     'game_id,source',
   );
   const keep = new Set(resolved.map((r) => r.gameId));
-  const existing = await selectAll<{ id: string; game_id: string }>(db, 'famous_games', 'id, game_id', (q) =>
-    q.eq('source', 'curated'),
+  const existing = await selectAll<{ id: string; game_id: string }>(
+    db,
+    'famous_games',
+    'id, game_id',
+    (q) => q.eq('source', 'curated'),
   );
   const stale = existing.filter((r) => !keep.has(r.game_id)).map((r) => r.id);
   for (const id of stale) {
@@ -176,7 +197,8 @@ async function main(): Promise<void> {
   if (problems.length > 0) throw new Error(`seed/famous_games.json:\n  ${problems.join('\n  ')}`);
   const db = createDb();
   const resolved = await resolveCurated(db, entries);
-  for (const r of resolved) console.log(`${r.entry.local_date} ${r.entry.away} at ${r.entry.home}: ${r.entry.title}`);
+  for (const r of resolved)
+    console.log(`${r.entry.local_date} ${r.entry.away} at ${r.entry.home}: ${r.entry.title}`);
   if (flag('check')) {
     console.log(`${resolved.length} entries resolve to one game each (--check: nothing written)`);
     return;

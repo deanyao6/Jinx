@@ -27,7 +27,10 @@ export function FamousCard({ items, sportId, homeTeamId }: Props) {
       {items.map((raw, i) => {
         const item = { ...raw, sportId: raw.sportId || sportId };
         return (
-          <SideTheme key={`${item.source}:${item.kind}:${item.playerName ?? ''}:${i}`} team={item.teamId ?? homeTeamId}>
+          <SideTheme
+            key={`${item.source}:${item.kind}:${item.playerName ?? ''}:${i}`}
+            team={item.teamId ?? homeTeamId}
+          >
             <FamousEntry item={item} />
           </SideTheme>
         );

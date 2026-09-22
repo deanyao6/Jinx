@@ -68,7 +68,10 @@ async function main(): Promise<void> {
     db,
     'mlb',
     'mlb',
-    joins.map((j) => ({ providerPlayerId: j.providerPlayerId, fullName: j.fullName ?? `Player ${j.providerPlayerId}` })),
+    joins.map((j) => ({
+      providerPlayerId: j.providerPlayerId,
+      fullName: j.fullName ?? `Player ${j.providerPlayerId}`,
+    })),
   );
   const rows = new Map<string, Record<string, unknown>>();
   for (const j of joins) {

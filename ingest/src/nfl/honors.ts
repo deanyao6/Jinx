@@ -36,8 +36,10 @@ export function validateNflAwards(rows: readonly NflAwardRow[]): string[] {
   const problems: string[] = [];
   rows.forEach((r, i) => {
     if (!Number.isInteger(r.season)) problems.push(`row ${i + 1}: season must be a year`);
-    if (!NFL_HONORS.has(r.honor)) problems.push(`row ${i + 1}: honor must be one of ${[...NFL_HONORS].join(', ')}`);
-    if (!/^\d{2}-\d{7}$/.test(r.gsis_id ?? '')) problems.push(`row ${i + 1}: gsis_id looks like 00-0034857`);
+    if (!NFL_HONORS.has(r.honor))
+      problems.push(`row ${i + 1}: honor must be one of ${[...NFL_HONORS].join(', ')}`);
+    if (!/^\d{2}-\d{7}$/.test(r.gsis_id ?? ''))
+      problems.push(`row ${i + 1}: gsis_id looks like 00-0034857`);
     if (!r.name) problems.push(`row ${i + 1}: name is required`);
   });
   return problems;

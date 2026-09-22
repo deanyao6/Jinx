@@ -13,7 +13,12 @@ jest.mock('expo-router', () => ({
 
 const mockData = jest.fn();
 jest.mock('@/features/famous/queries', () => ({
-  useMyFamousGames: () => ({ data: mockData(), isPending: false, isError: false, refetch: jest.fn() }),
+  useMyFamousGames: () => ({
+    data: mockData(),
+    isPending: false,
+    isError: false,
+    refetch: jest.fn(),
+  }),
 }));
 
 const row = (over: Record<string, unknown>) => ({

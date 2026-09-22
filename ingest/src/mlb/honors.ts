@@ -35,7 +35,11 @@ export interface HonorRow {
 }
 
 /** The honor rows in one recipients response. A season with no award yet is just empty. */
-export function honorsFromRecipients(awardId: string, season: number, res: MlbAwardRecipientsResponse): HonorRow[] {
+export function honorsFromRecipients(
+  awardId: string,
+  season: number,
+  res: MlbAwardRecipientsResponse,
+): HonorRow[] {
   const honor = MLB_AWARDS[awardId];
   if (!honor) return [];
   const out: HonorRow[] = [];
@@ -56,7 +60,11 @@ export function honorsFromRecipients(awardId: string, season: number, res: MlbAw
  * An award with no recipients that season answers 404, not an empty list: there was no
  * All-Star Game in 2020, and this season's MVP is not known until November.
  */
-async function recipients(client: MlbClient, awardId: string, season: number): Promise<MlbAwardRecipientsResponse> {
+async function recipients(
+  client: MlbClient,
+  awardId: string,
+  season: number,
+): Promise<MlbAwardRecipientsResponse> {
   try {
     return await client.awardRecipients(awardId, season);
   } catch (err) {
@@ -76,7 +84,9 @@ async function main(): Promise<void> {
   for (let season = from; season <= to; season += 1) {
     const before = rows.length;
     for (const awardId of Object.keys(MLB_AWARDS)) {
-      rows.push(...honorsFromRecipients(awardId, season, await recipients(client, awardId, season)));
+      rows.push(
+        ...honorsFromRecipients(awardId, season, await recipients(client, awardId, season)),
+      );
     }
     console.log(`${season}: ${rows.length - before} honors`);
   }

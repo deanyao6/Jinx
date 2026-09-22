@@ -44,11 +44,16 @@ export async function ensurePlayers(
     for (const [k, v] of await playerIds(db, provider, missing)) out.set(k, v);
   }
   const still = ids.filter((id) => !out.has(id));
-  if (still.length > 0) throw new Error(`players missing after upsert: ${still.slice(0, 5).join(', ')}`);
+  if (still.length > 0)
+    throw new Error(`players missing after upsert: ${still.slice(0, 5).join(', ')}`);
   return out;
 }
 
-export async function playerIds(db: MinimalDb, provider: string, ids: readonly string[]): Promise<Map<string, string>> {
+export async function playerIds(
+  db: MinimalDb,
+  provider: string,
+  ids: readonly string[],
+): Promise<Map<string, string>> {
   const out = new Map<string, string>();
   for (const part of chunk([...ids], 500)) {
     if (part.length === 0) continue;
@@ -58,7 +63,8 @@ export async function playerIds(db: MinimalDb, provider: string, ids: readonly s
       .eq('provider', provider)
       .in('provider_player_id', part);
     if (error) throw new Error(`players lookup: ${error.message}`);
-    for (const p of (data ?? []) as { id: string; provider_player_id: string }[]) out.set(p.provider_player_id, p.id);
+    for (const p of (data ?? []) as { id: string; provider_player_id: string }[])
+      out.set(p.provider_player_id, p.id);
   }
   return out;
 }
@@ -72,7 +78,9 @@ export interface NflPlayerInfo {
 }
 
 /** Every player in nflverse players.csv with a gsis id, through the ETag cache. */
-export async function loadNflPlayers(log: (s: string) => void = console.log): Promise<Map<string, NflPlayerInfo>> {
+export async function loadNflPlayers(
+  log: (s: string) => void = console.log,
+): Promise<Map<string, NflPlayerInfo>> {
   const fetched = await fetchAsset(playersAsset(), { log });
   log(`  players.csv.gz: ${fetched.source}`);
   const out = new Map<string, NflPlayerInfo>();
@@ -92,7 +100,10 @@ export async function loadNflPlayers(log: (s: string) => void = console.log): Pr
 }
 
 /** Service-role recompute of every cached stats payload, after anything that moves a badge. */
-export async function refreshAllStats(db: MinimalDb, log: (s: string) => void = console.log): Promise<void> {
+export async function refreshAllStats(
+  db: MinimalDb,
+  log: (s: string) => void = console.log,
+): Promise<void> {
   const { data, error } = await db.rpc('refresh_all_user_stats');
   if (error) throw new Error(`refresh_all_user_stats: ${error.message}`);
   log(`refreshed ${String(data)} cached stats payloads`);
@@ -101,7 +112,9 @@ export async function refreshAllStats(db: MinimalDb, log: (s: string) => void = 
 /** A tiny argv reader shared by the scripts in this folder. */
 export function arg(name: string): string | null {
   const i = process.argv.indexOf(`--${name}`);
-  return i >= 0 && process.argv[i + 1] && !process.argv[i + 1]!.startsWith('--') ? process.argv[i + 1]! : null;
+  return i >= 0 && process.argv[i + 1] && !process.argv[i + 1]!.startsWith('--')
+    ? process.argv[i + 1]!
+    : null;
 }
 
 export function flag(name: string): boolean {

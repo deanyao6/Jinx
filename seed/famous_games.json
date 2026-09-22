@@ -1,25 +1,215 @@
 [
-  {"sport": "nfl", "local_date": "2018-01-21", "home": "PHI", "away": "MIN", "category": "playoff", "title": "NFC Championship, the Linc's loudest night", "story": "The Eagles routed the Vikings 38–7 with Nick Foles at quarterback and punched their ticket to Super Bowl LII.", "about": {"team": "PHI"}},
-  {"sport": "nfl", "local_date": "2018-02-04", "home": "NE", "away": "PHI", "category": "championship", "title": "Super Bowl LII, Foles and the Philly Special", "story": "A backup quarterback caught a touchdown on fourth down and the Eagles beat the Patriots 41–33 for their first Super Bowl.", "about": {"team": "PHI"}},
-  {"sport": "nfl", "local_date": "2021-09-12", "home": "ATL", "away": "PHI", "category": "debut", "title": "DeVonta Smith's first touchdown", "story": "The rookie caught his first NFL touchdown in a 32–6 opening-day win in Atlanta.", "about": {"team": "PHI"}},
-  {"sport": "nfl", "local_date": "2023-01-29", "home": "PHI", "away": "SF", "category": "playoff", "title": "NFC Championship", "story": "The Eagles beat the 49ers 31–7 at the Linc to reach Super Bowl LVII.", "about": {"team": "PHI"}},
-  {"sport": "nfl", "local_date": "2023-02-12", "home": "PHI", "away": "KC", "category": "championship", "title": "Super Bowl LVII", "story": "A 38–35 shootout the Chiefs won with a field goal in the last seconds. A loss, and still one of the great Super Bowls.", "about": {"team": "PHI"}},
-  {"sport": "nfl", "local_date": "2024-12-29", "home": "PHI", "away": "DAL", "category": "record", "title": "Saquon Barkley's 2,000-yard game", "story": "Barkley became the ninth player to rush for 2,000 yards in a season, in a 41–7 win over Dallas.", "about": {"team": "PHI"}},
-  {"sport": "nfl", "local_date": "2025-01-26", "home": "PHI", "away": "WAS", "category": "playoff", "title": "NFC Championship", "story": "The Eagles put 55 points on the Commanders to reach Super Bowl LIX.", "about": {"team": "PHI"}},
-  {"sport": "nfl", "local_date": "2025-02-09", "home": "PHI", "away": "KC", "category": "championship", "title": "Super Bowl LIX", "story": "The Eagles led 24–0 at the half and beat the Chiefs 40–22 for their second Super Bowl.", "about": {"team": "PHI"}},
+  {
+    "sport": "nfl",
+    "local_date": "2018-01-21",
+    "home": "PHI",
+    "away": "MIN",
+    "category": "playoff",
+    "title": "NFC Championship, the Linc's loudest night",
+    "story": "The Eagles routed the Vikings 38–7 with Nick Foles at quarterback and punched their ticket to Super Bowl LII.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2018-02-04",
+    "home": "NE",
+    "away": "PHI",
+    "category": "championship",
+    "title": "Super Bowl LII, Foles and the Philly Special",
+    "story": "A backup quarterback caught a touchdown on fourth down and the Eagles beat the Patriots 41–33 for their first Super Bowl.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2021-09-12",
+    "home": "ATL",
+    "away": "PHI",
+    "category": "debut",
+    "title": "DeVonta Smith's first touchdown",
+    "story": "The rookie caught his first NFL touchdown in a 32–6 opening-day win in Atlanta.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2023-01-29",
+    "home": "PHI",
+    "away": "SF",
+    "category": "playoff",
+    "title": "NFC Championship",
+    "story": "The Eagles beat the 49ers 31–7 at the Linc to reach Super Bowl LVII.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2023-02-12",
+    "home": "PHI",
+    "away": "KC",
+    "category": "championship",
+    "title": "Super Bowl LVII",
+    "story": "A 38–35 shootout the Chiefs won with a field goal in the last seconds. A loss, and still one of the great Super Bowls.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2024-12-29",
+    "home": "PHI",
+    "away": "DAL",
+    "category": "record",
+    "title": "Saquon Barkley's 2,000-yard game",
+    "story": "Barkley became the ninth player to rush for 2,000 yards in a season, in a 41–7 win over Dallas.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2025-01-26",
+    "home": "PHI",
+    "away": "WAS",
+    "category": "playoff",
+    "title": "NFC Championship",
+    "story": "The Eagles put 55 points on the Commanders to reach Super Bowl LIX.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2025-02-09",
+    "home": "PHI",
+    "away": "KC",
+    "category": "championship",
+    "title": "Super Bowl LIX",
+    "story": "The Eagles led 24–0 at the half and beat the Chiefs 40–22 for their second Super Bowl.",
+    "about": { "team": "PHI" }
+  },
 
-  {"sport": "mlb", "local_date": "2019-03-28", "home": "PHI", "away": "ATL", "category": "debut", "title": "Bryce Harper's Phillies debut", "story": "Opening Day at Citizens Bank Park, and the Phillies beat the Braves 10–4 in Harper's first game in red pinstripes.", "about": {"team": "PHI"}},
-  {"sport": "mlb", "local_date": "2022-10-14", "home": "PHI", "away": "ATL", "category": "playoff", "title": "NLDS Game 3, the Hoskins bat spike", "story": "Rhys Hoskins homered and spiked his bat in the first postseason game at Citizens Bank Park in eleven years, a 9–1 win.", "about": {"team": "PHI"}},
-  {"sport": "mlb", "local_date": "2022-10-23", "home": "PHI", "away": "SD", "category": "playoff", "title": "NLCS Game 5, the swing of his life", "story": "Bryce Harper's go-ahead home run in the rain sent the Phillies to the World Series.", "about": {"team": "PHI"}},
-  {"sport": "mlb", "local_date": "2022-11-01", "home": "PHI", "away": "HOU", "category": "record", "title": "Five home runs at Citizens Bank Park", "story": "The Phillies tied a World Series record with five home runs in Game 3.", "about": {"team": "PHI"}},
+  {
+    "sport": "mlb",
+    "local_date": "2019-03-28",
+    "home": "PHI",
+    "away": "ATL",
+    "category": "debut",
+    "title": "Bryce Harper's Phillies debut",
+    "story": "Opening Day at Citizens Bank Park, and the Phillies beat the Braves 10–4 in Harper's first game in red pinstripes.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "mlb",
+    "local_date": "2022-10-14",
+    "home": "PHI",
+    "away": "ATL",
+    "category": "playoff",
+    "title": "NLDS Game 3, the Hoskins bat spike",
+    "story": "Rhys Hoskins homered and spiked his bat in the first postseason game at Citizens Bank Park in eleven years, a 9–1 win.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "mlb",
+    "local_date": "2022-10-23",
+    "home": "PHI",
+    "away": "SD",
+    "category": "playoff",
+    "title": "NLCS Game 5, the swing of his life",
+    "story": "Bryce Harper's go-ahead home run in the rain sent the Phillies to the World Series.",
+    "about": { "team": "PHI" }
+  },
+  {
+    "sport": "mlb",
+    "local_date": "2022-11-01",
+    "home": "PHI",
+    "away": "HOU",
+    "category": "record",
+    "title": "Five home runs at Citizens Bank Park",
+    "story": "The Phillies tied a World Series record with five home runs in Game 3.",
+    "about": { "team": "PHI" }
+  },
 
-  {"sport": "mlb", "local_date": "2016-11-02", "home": "CLE", "away": "CHC", "category": "championship", "title": "Cubs win Game 7, 108 years", "story": "Ten innings and a rain delay later, the Cubs beat Cleveland 8–7 for their first title since 1908.", "about": "league"},
-  {"sport": "nfl", "local_date": "2017-02-05", "home": "ATL", "away": "NE", "category": "championship", "title": "Super Bowl LI, back from 28–3", "story": "The Patriots came back from 25 points down to beat the Falcons 34–28 in the first Super Bowl overtime.", "about": "league"},
-  {"sport": "nfl", "local_date": "2018-01-14", "home": "MIN", "away": "NO", "category": "playoff", "title": "The Minneapolis Miracle", "story": "Stefon Diggs caught a pass with ten seconds left and ran it in as time expired, 29–24.", "about": "league"},
-  {"sport": "mlb", "local_date": "2021-08-12", "home": "CWS", "away": "NYY", "category": "record", "title": "The Field of Dreams game", "story": "The first major league game in Iowa, next to the movie set, ended on a walk-off home run from Tim Anderson, 9–8.", "about": "league"},
-  {"sport": "nfl", "local_date": "2022-01-23", "home": "KC", "away": "BUF", "category": "playoff", "title": "Thirteen seconds", "story": "The Chiefs tied it in the last thirteen seconds and won in overtime, 42–36, after 25 points in the final two minutes.", "about": "league"},
-  {"sport": "mlb", "local_date": "2022-10-04", "home": "TEX", "away": "NYY", "game_number": 1, "category": "record", "title": "Aaron Judge's 62nd home run", "story": "Judge passed Roger Maris for the American League record on the second-to-last day of the season.", "about": "league"},
-  {"sport": "nfl", "local_date": "2023-01-16", "home": "TB", "away": "DAL", "category": "farewell", "title": "Tom Brady's last game", "story": "A wild-card loss to Dallas, the last game of a 23-season career.", "about": "league"},
-  {"sport": "mlb", "local_date": "2024-09-19", "home": "MIA", "away": "LAD", "category": "record", "title": "Ohtani's 50/50 game", "story": "Shohei Ohtani hit three home runs and stole two bases to become the first player with 50 of each in a season.", "about": "league"},
-  {"sport": "mlb", "local_date": "2024-10-25", "home": "LAD", "away": "NYY", "category": "record", "title": "Freddie Freeman's walk-off grand slam", "story": "The first walk-off grand slam in World Series history won Game 1 in the tenth inning.", "about": "league"}
+  {
+    "sport": "mlb",
+    "local_date": "2016-11-02",
+    "home": "CLE",
+    "away": "CHC",
+    "category": "championship",
+    "title": "Cubs win Game 7, 108 years",
+    "story": "Ten innings and a rain delay later, the Cubs beat Cleveland 8–7 for their first title since 1908.",
+    "about": "league"
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2017-02-05",
+    "home": "ATL",
+    "away": "NE",
+    "category": "championship",
+    "title": "Super Bowl LI, back from 28–3",
+    "story": "The Patriots came back from 25 points down to beat the Falcons 34–28 in the first Super Bowl overtime.",
+    "about": "league"
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2018-01-14",
+    "home": "MIN",
+    "away": "NO",
+    "category": "playoff",
+    "title": "The Minneapolis Miracle",
+    "story": "Stefon Diggs caught a pass with ten seconds left and ran it in as time expired, 29–24.",
+    "about": "league"
+  },
+  {
+    "sport": "mlb",
+    "local_date": "2021-08-12",
+    "home": "CWS",
+    "away": "NYY",
+    "category": "record",
+    "title": "The Field of Dreams game",
+    "story": "The first major league game in Iowa, next to the movie set, ended on a walk-off home run from Tim Anderson, 9–8.",
+    "about": "league"
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2022-01-23",
+    "home": "KC",
+    "away": "BUF",
+    "category": "playoff",
+    "title": "Thirteen seconds",
+    "story": "The Chiefs tied it in the last thirteen seconds and won in overtime, 42–36, after 25 points in the final two minutes.",
+    "about": "league"
+  },
+  {
+    "sport": "mlb",
+    "local_date": "2022-10-04",
+    "home": "TEX",
+    "away": "NYY",
+    "game_number": 1,
+    "category": "record",
+    "title": "Aaron Judge's 62nd home run",
+    "story": "Judge passed Roger Maris for the American League record on the second-to-last day of the season.",
+    "about": "league"
+  },
+  {
+    "sport": "nfl",
+    "local_date": "2023-01-16",
+    "home": "TB",
+    "away": "DAL",
+    "category": "farewell",
+    "title": "Tom Brady's last game",
+    "story": "A wild-card loss to Dallas, the last game of a 23-season career.",
+    "about": "league"
+  },
+  {
+    "sport": "mlb",
+    "local_date": "2024-09-19",
+    "home": "MIA",
+    "away": "LAD",
+    "category": "record",
+    "title": "Ohtani's 50/50 game",
+    "story": "Shohei Ohtani hit three home runs and stole two bases to become the first player with 50 of each in a season.",
+    "about": "league"
+  },
+  {
+    "sport": "mlb",
+    "local_date": "2024-10-25",
+    "home": "LAD",
+    "away": "NYY",
+    "category": "record",
+    "title": "Freddie Freeman's walk-off grand slam",
+    "story": "The first walk-off grand slam in World Series history won Game 1 in the tenth inning.",
+    "about": "league"
+  }
 ]
