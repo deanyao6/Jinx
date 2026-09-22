@@ -152,9 +152,9 @@ famous-game matcher used the UTC date and filed a west coast evening game under 
 (7,773 MLB games since 2016 and most of the NBA); a year token matched `games.season` only, so
 "lakers 2026" returned the 2026-27 season instead of a January 2026 game; and search took 2.2 s
 on local and 3.1 s on hosted, now 0.12 s and 0.15 s. `seed/scripts/fill_timezones.py` resolves a
-zone from each venue's coordinates and needs `pip install timezonefinder`. 42 venues with no
-coordinates in the seed (spring training and minor league parks, 1,000 games between them) still
-fall back to America/New_York.
+zone from each venue's coordinates and needs `pip install timezonefinder`. The 42 venues with no
+coordinates (spring training and minor league parks) are gone with the preseason games as of
+2026-09-22; two remain (Fort Bragg Field, Walmart Park).
 
 **Search v2 is merged (2026-09-22), off by default.** Arjun's `search-improvements`: a shared
 search screen with My games / All games, league and date filters, grouped team and venue
@@ -186,17 +186,18 @@ rosters and favorite players, Relive, Wrapped. The game screen says so.
 
 Not done, and known:
 
-- **38 of the 39 MLS-only stadiums have no timezone and no coordinates**, on hosted and in the
-  seed (`seed/mls_venues.json` carries neither; only Toyota Stadium is curated). So at those
-  stadiums search and the famous-game matcher fall back to America/New_York, the very bug fixed
-  for the other sports on 2026-09-18, and geofenced check-in cannot work. The eleven MLS clubs
-  that share an NFL building (Seattle, New England, Atlanta, Charlotte, LA Galaxy, and so on)
-  are fine. The fix is coordinates for 36 stadiums from a real source, then
-  `python3 seed/scripts/fill_timezones.py`, `build_seed_sql.py` and a migration. No
-  coordinates were guessed, on purpose.
+- **Every MLS venue has coordinates and a timezone (2026-09-22).** 39 stadiums were placed
+  from OpenStreetMap Nominatim, cross-checked against Wikipedia (Q2 Stadium and RFK Stadium
+  from Wikipedia alone), zones from timezonefinder, elevations from USGS and, for the four
+  Canadian stadiums, Natural Resources Canada. Migration `20260923000200`, test `047`, the
+  per-stadium sources in `docs/verification.md`. Two ESPN id pairs are one building
+  (Children's Mercy Park/Sporting Park, Sports Illustrated Stadium/Red Bull Arena) and stay
+  two rows with one coordinate; folding them is a separate job.
 - **MLS results refresh daily from GitHub** (08:45 UTC, `mls-ingest.yml`) since 2026-09-22,
-  when the probe proved the runner reaches ESPN and `MLS_INGEST_ENABLED` was set. Judge it by
-  the workflow log and by the hosted 2026 final count moving, not by `net._http_response`
+  when the probe proved the runner reaches ESPN and `MLS_INGEST_ENABLED` was set. The hand-run
+  `sync` (run 35787322042) read all twelve months of 2026 from ESPN in 2m35s and its finals
+  summed to the 387 hosted already held. Judge the scheduled runs by the workflow log and by
+  the hosted 2026 final count moving after match days, not by `net._http_response`
   (no Edge Function is involved).
 - **The 30 MLS palettes** (`seed/mls_colors.json`) were tuned to the contrast rule, not to
   Dean's eye.
@@ -257,10 +258,20 @@ layout, and `rootStack.test.tsx` flips a session to null from settings, guide, r
 page, favorites and onboarding and asserts the router is on `/welcome` with only `(auth)` in
 the stack. Seen on the simulator: `docs/evidence/sign-out/`.
 
+**Only regular season and postseason games exist (2026-09-22, Dean's decision 13).** 11,703
+spring-training and NBA preseason games left local and 5,649 left hosted, nobody had logged
+one on hosted, and a check constraint on `games.game_type` keeps them out; the MLB and NBA
+ingests no longer ask for them, and the ticket and famous-game matchers treat any other type
+as absent. The 40 spring-training and exhibition parks that never had a coordinate went with
+them, which closes the "42 venues unresolved" item: the two venues still without coordinates
+(Fort Bragg Field, Walmart Park) each hosted one real regular-season game. Migration
+`20260923000100`, test `046`, `docs/verification.md`.
+
 **Known wrong, not yet fixed:**
 
-- **The local database is 226 MB** against M1's 150 MB bar, because NFL detail is stored for every
-  game rather than logged ones. Under the 300 MB target and the 500 MB free-tier cap.
+- **The local database is 254 MB** against M1's 150 MB bar (278 MB before the preseason games
+  went on 2026-09-22), because NFL detail is stored for every game rather than logged ones.
+  Under the 300 MB target and the 500 MB free-tier cap. Hosted is 115 MB.
 - **The sub page restyle has not been approved by Dean yet.** He asked for it on 2026-09-17: one
   style on every page, far more team colour, fewer outlines, better type ratios. All 46 screens
   outside the reference were restyled that day against `docs/subpage-style.md`, which is now the

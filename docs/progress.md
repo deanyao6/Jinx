@@ -62,6 +62,17 @@ CDN but not stats.nba.com.
 | Hosted | **met** | `db push` (four migrations, the famous-games pair included), `functions deploy nba-sync nba-live mlb-live mlb-sync parse-ticket storylines`, backfill from 2016 (14,826 games), rosters (599), Elo (14,052 probabilities), each read back with `supabase db query` |
 | Docs | **met** | STATE.md, this file, docs/deploy.md, docs/verification.md, docs/elo-backtest.md, CLAUDE.md |
 
+## The next wave (2026-09-22)
+
+The build brief is `docs/prompts/next-wave.md`. Each row names what was run and what it printed.
+
+| Part | Status | Evidence |
+|---|---|---|
+| A.1 Sign out returns to welcome | **met** | Reproduced on the simulator (`docs/evidence/sign-out/before-settings-stays.png`), fixed in `features/navigation/RootStack.tsx` plus `_layout.tsx` files for settings, guide and relive; `rootStack.test.tsx` flips a session to null from settings, guide, relive, a game page, favorites and onboarding through expo-router's testing library and asserts `/welcome` with only `(auth)` in the stack; seen after the fix from Settings and from the guide page (`after-settings-welcome.png`, `after-guide-welcome.png`), with `auth.sessions` empty for the user after each |
+| B.1 MLS stadium coordinates | **met** | 39 of 39 placed from Nominatim cross-checked against Wikipedia, none guessed (`docs/verification.md`); `psql`: 0 of 55 MLS venues without coordinates or a timezone on local; migration `20260923000200` on local and hosted; test `047` |
+| B.2 Preseason games gone | **met** | Migration `20260923000100`: local 11,703 rows deleted in 4 s (after two partial indexes), hosted 5,649, both read back as 0 remaining with the check constraint in place; 40 parks gone; local 278 MB to 254 MB after vacuum; `npm test`, `db:test` (429), `functions:test` (21), `functions:check` pass |
+| B.3 MLS daily job | **met, first scheduled run pending** | Run 35787322042 read all of 2026 from ESPN on the runner; its finals sum to hosted's 387; the 08:45 UTC schedule had not fired yet when written |
+
 ## What was found wrong on 2026-09-17, and fixed
 
 Each of these was live, and none was visible from the outside.

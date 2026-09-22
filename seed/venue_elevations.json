@@ -1537,6 +1537,318 @@
       "source": "usgs-epqs",
       "fetched": "2026-09-17"
     },
+    "mls-espn-10143": {
+      "name": "BMO Field",
+      "lat": 43.63334,
+      "lng": -79.41856,
+      "elevation_ft": 282,
+      "source": "nrcan-cdem",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-10421": {
+      "name": "Energizer Park",
+      "lat": 38.63132,
+      "lng": -90.21031,
+      "elevation_ft": 476,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-10661": {
+      "name": "Nu Stadium",
+      "lat": 25.79245,
+      "lng": -80.26029,
+      "elevation_ft": 5,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-1417": {
+      "name": "Historic Crew Stadium",
+      "lat": 40.00947,
+      "lng": -82.99114,
+      "elevation_ft": 843,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-1418": {
+      "name": "RFK Stadium",
+      "lat": 38.89,
+      "lng": -76.9719,
+      "elevation_ft": 10,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-1451": {
+      "name": "Maryland SoccerPlex",
+      "lat": 39.15178,
+      "lng": -77.31185,
+      "elevation_ft": 422,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-1764": {
+      "name": "Pratt & Whitney Stadium at Rentschler Field",
+      "lat": 41.75961,
+      "lng": -72.61884,
+      "elevation_ft": 26,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-2242": {
+      "name": "Camping World Stadium",
+      "lat": 28.53904,
+      "lng": -81.40275,
+      "elevation_ft": 102,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-2266": {
+      "name": "SeatGeek Stadium",
+      "lat": 41.76481,
+      "lng": -87.80619,
+      "elevation_ft": 613,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-2731": {
+      "name": "Dick's Sporting Goods Park",
+      "lat": 39.80595,
+      "lng": -104.89192,
+      "elevation_ft": 5201,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-3262": {
+      "name": "Nissan Stadium, Nashville",
+      "lat": 36.16652,
+      "lng": -86.77131,
+      "elevation_ft": 397,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-3278": {
+      "name": "Stade Saputo",
+      "lat": 45.56309,
+      "lng": -73.55264,
+      "elevation_ft": 131,
+      "source": "nrcan-cdem",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-3714": {
+      "name": "America First Field",
+      "lat": 40.58296,
+      "lng": -111.89329,
+      "elevation_ft": 4427,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-3869": {
+      "name": "Stanford Stadium",
+      "lat": 37.43453,
+      "lng": -122.16199,
+      "elevation_ft": 65,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4061": {
+      "name": "Subaru Park",
+      "lat": 39.83291,
+      "lng": -75.37847,
+      "elevation_ft": 12,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4087": {
+      "name": "Rose Bowl",
+      "lat": 34.16135,
+      "lng": -118.16767,
+      "elevation_ft": 804,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4370": {
+      "name": "BC Place",
+      "lat": 49.27669,
+      "lng": -123.11201,
+      "elevation_ft": 30,
+      "source": "nrcan-cdem",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4373": {
+      "name": "Stade Olympique (Montreal)",
+      "lat": 45.5578,
+      "lng": -73.55165,
+      "elevation_ft": 98,
+      "source": "nrcan-cdem",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4383": {
+      "name": "Providence Park",
+      "lat": 45.52153,
+      "lng": -122.69182,
+      "elevation_ft": 79,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4385": {
+      "name": "Children's Mercy Park",
+      "lat": 39.12164,
+      "lng": -94.82335,
+      "elevation_ft": 964,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4653": {
+      "name": "Sports Illustrated Stadium",
+      "lat": 40.73689,
+      "lng": -74.15026,
+      "elevation_ft": 11,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-4791": {
+      "name": "Shell Energy Stadium",
+      "lat": 29.75203,
+      "lng": -95.35234,
+      "elevation_ft": 35,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-6072": {
+      "name": "PayPal Park",
+      "lat": 37.35131,
+      "lng": -121.92467,
+      "elevation_ft": 57,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-6538": {
+      "name": "Allianz Field",
+      "lat": 44.95314,
+      "lng": -93.16469,
+      "elevation_ft": 909,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-6587": {
+      "name": "Sporting Park",
+      "lat": 39.12164,
+      "lng": -94.82335,
+      "elevation_ft": 964,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-6738": {
+      "name": "Nippert Stadium",
+      "lat": 39.13112,
+      "lng": -84.51623,
+      "elevation_ft": 755,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-6970": {
+      "name": "Bobby Dodd Stadium",
+      "lat": 33.77248,
+      "lng": -84.39296,
+      "elevation_ft": 916,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-6971": {
+      "name": "Inter&Co Stadium",
+      "lat": 28.5411,
+      "lng": -81.38914,
+      "elevation_ft": 100,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-7474": {
+      "name": "Toyota Stadium",
+      "lat": 33.15422,
+      "lng": -96.83537,
+      "elevation_ft": 625,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-7604": {
+      "name": "Audi Field",
+      "lat": 38.86826,
+      "lng": -77.01261,
+      "elevation_ft": 17,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-7605": {
+      "name": "BMO Stadium",
+      "lat": 34.01277,
+      "lng": -118.28334,
+      "elevation_ft": 181,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-7658": {
+      "name": "Navy-Marine Corps Memorial Stadium",
+      "lat": 38.98476,
+      "lng": -76.50708,
+      "elevation_ft": 29,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-8330": {
+      "name": "Chase Stadium",
+      "lat": 26.19324,
+      "lng": -80.16068,
+      "elevation_ft": 12,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-8673": {
+      "name": "Q2 Stadium",
+      "lat": 30.3877,
+      "lng": -97.7195,
+      "elevation_ft": 759,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-8674": {
+      "name": "TQL Stadium",
+      "lat": 39.11118,
+      "lng": -84.52223,
+      "elevation_ft": 534,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-8689": {
+      "name": "ScottsMiracle-Gro Field",
+      "lat": 39.96836,
+      "lng": -83.01666,
+      "elevation_ft": 705,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-8993": {
+      "name": "GEODIS Park",
+      "lat": 36.13003,
+      "lng": -86.76594,
+      "elevation_ft": 483,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-9195": {
+      "name": "Snapdragon Stadium",
+      "lat": 32.78424,
+      "lng": -117.12239,
+      "elevation_ft": 58,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
+    "mls-espn-9606": {
+      "name": "Red Bull Arena",
+      "lat": 40.73689,
+      "lng": -74.15026,
+      "elevation_ft": 11,
+      "source": "usgs-epqs",
+      "fetched": "2026-09-22"
+    },
     "moda-center": {
       "name": "Moda Center",
       "lat": 45.53167,

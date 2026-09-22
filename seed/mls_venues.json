@@ -1,5 +1,5 @@
 {
-  "source": "ESPN 2026 scoreboards. Coordinates unknown until independently verified; check-in unavailable at unmapped venues.",
+  "source": "ESPN 2026 scoreboards and, for the historical venues, the local games table. Coordinates from OpenStreetMap Nominatim cross-checked against Wikipedia (coords_source; docs/verification.md, 2026-09-22); Q2 Stadium and RFK Stadium from Wikipedia alone.",
   "venues": [
     {
       "key": "mls-espn-10421",
@@ -7,14 +7,21 @@
       "city": "St. Louis, Missouri",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 38.63132,
+      "lng": -90.21031,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Energizer Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Energizer Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["10421"]
-      }
+        "espn_venue_ids": [
+          "10421"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-8674",
@@ -22,14 +29,21 @@
       "city": "Cincinnati, Ohio",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 39.11118,
+      "lng": -84.52223,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["TQL Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "TQL Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["8674"]
-      }
+        "espn_venue_ids": [
+          "8674"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-7604",
@@ -37,14 +51,21 @@
       "city": "Washington, District of Columbia",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 38.86826,
+      "lng": -77.01261,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Audi Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Audi Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["7604"]
-      }
+        "espn_venue_ids": [
+          "7604"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-6971",
@@ -52,14 +73,21 @@
       "city": "Orlando, Florida",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 28.5411,
+      "lng": -81.38914,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Inter&Co Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Inter&Co Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["6971"]
-      }
+        "espn_venue_ids": [
+          "6971"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-4370",
@@ -67,14 +95,21 @@
       "city": "Vancouver",
       "country": "Canada",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 49.27669,
+      "lng": -123.11201,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["BC Place"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "BC Place"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["4370"]
-      }
+        "espn_venue_ids": [
+          "4370"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-8673",
@@ -82,14 +117,21 @@
       "city": "Austin, Texas",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 30.3877,
+      "lng": -97.7195,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Q2 Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Q2 Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["8673"]
-      }
+        "espn_venue_ids": [
+          "8673"
+        ]
+      },
+      "coords_source": "wikipedia 2026-09-22"
     },
     {
       "key": "mls-espn-7474",
@@ -97,16 +139,23 @@
       "city": "Frisco",
       "country": "USA",
       "state": "TX",
-      "lat": null,
-      "lng": null,
+      "lat": 33.15422,
+      "lng": -96.83537,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Toyota Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Toyota Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["7474"]
+        "espn_venue_ids": [
+          "7474"
+        ]
       },
       "tz": "America/Chicago",
-      "source": "https://www.fcdallas.com/stadium/contact"
+      "source": "https://www.fcdallas.com/stadium/contact",
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-4791",
@@ -114,14 +163,21 @@
       "city": "Houston, Texas",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 29.75203,
+      "lng": -95.35234,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Shell Energy Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Shell Energy Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["4791"]
-      }
+        "espn_venue_ids": [
+          "4791"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-8993",
@@ -129,14 +185,21 @@
       "city": "Nashville, Tennessee",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 36.13003,
+      "lng": -86.76594,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["GEODIS Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "GEODIS Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["8993"]
-      }
+        "espn_venue_ids": [
+          "8993"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-1722",
@@ -147,10 +210,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Los Angeles Memorial Coliseum"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Los Angeles Memorial Coliseum"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["1722"]
+        "espn_venue_ids": [
+          "1722"
+        ]
       }
     },
     {
@@ -159,14 +228,21 @@
       "city": "Portland, Oregon",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 45.52153,
+      "lng": -122.69182,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Providence Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Providence Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["4383"]
-      }
+        "espn_venue_ids": [
+          "4383"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-9195",
@@ -174,14 +250,21 @@
       "city": "San Diego, California",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 32.78424,
+      "lng": -117.12239,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Snapdragon Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Snapdragon Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["9195"]
-      }
+        "espn_venue_ids": [
+          "9195"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-6072",
@@ -189,14 +272,21 @@
       "city": "San Jose, California",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 37.35131,
+      "lng": -121.92467,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["PayPal Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "PayPal Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["6072"]
-      }
+        "espn_venue_ids": [
+          "6072"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-1423",
@@ -207,10 +297,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Dignity Health Sports Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Dignity Health Sports Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["1423"]
+        "espn_venue_ids": [
+          "1423"
+        ]
       }
     },
     {
@@ -222,10 +318,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Lumen Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Lumen Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["4485"]
+        "espn_venue_ids": [
+          "4485"
+        ]
       }
     },
     {
@@ -237,10 +339,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Soldier Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Soldier Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["1452"]
+        "espn_venue_ids": [
+          "1452"
+        ]
       }
     },
     {
@@ -249,14 +357,21 @@
       "city": "Harrison, New Jersey",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 40.73689,
+      "lng": -74.15026,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Red Bull Arena"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Red Bull Arena"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["9606"]
-      }
+        "espn_venue_ids": [
+          "9606"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-2731",
@@ -264,14 +379,21 @@
       "city": "Commerce City, Colorado",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 39.80595,
+      "lng": -104.89192,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Dick's Sporting Goods Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Dick's Sporting Goods Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["2731"]
-      }
+        "espn_venue_ids": [
+          "2731"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-6538",
@@ -279,14 +401,21 @@
       "city": "Saint Paul, Minnesota",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 44.95314,
+      "lng": -93.16469,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Allianz Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Allianz Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["6538"]
-      }
+        "espn_venue_ids": [
+          "6538"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-3714",
@@ -294,14 +423,21 @@
       "city": "Sandy, Utah",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 40.58296,
+      "lng": -111.89329,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["America First Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "America First Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["3714"]
-      }
+        "espn_venue_ids": [
+          "3714"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-6587",
@@ -309,14 +445,21 @@
       "city": "Kansas City, Kansas",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 39.12164,
+      "lng": -94.82335,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Sporting Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Sporting Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["6587"]
-      }
+        "espn_venue_ids": [
+          "6587"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-4061",
@@ -324,14 +467,21 @@
       "city": "Chester, Pennsylvania",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 39.83291,
+      "lng": -75.37847,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Subaru Park"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Subaru Park"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["4061"]
-      }
+        "espn_venue_ids": [
+          "4061"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-4896",
@@ -342,10 +492,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Yankee Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Yankee Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["4896"]
+        "espn_venue_ids": [
+          "4896"
+        ]
       }
     },
     {
@@ -357,10 +513,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["M&T Bank Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "M&T Bank Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["3873"]
+        "espn_venue_ids": [
+          "3873"
+        ]
       }
     },
     {
@@ -372,10 +534,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Mercedes-Benz Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Mercedes-Benz Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["7485"]
+        "espn_venue_ids": [
+          "7485"
+        ]
       }
     },
     {
@@ -387,10 +555,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Bank of America Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Bank of America Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["4418"]
+        "espn_venue_ids": [
+          "4418"
+        ]
       }
     },
     {
@@ -399,14 +573,21 @@
       "city": "Columbus, Ohio",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 39.96836,
+      "lng": -83.01666,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["ScottsMiracle-Gro Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "ScottsMiracle-Gro Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["8689"]
-      }
+        "espn_venue_ids": [
+          "8689"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-7605",
@@ -414,14 +595,21 @@
       "city": "Los Angeles, California",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 34.01277,
+      "lng": -118.28334,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["BMO Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "BMO Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["7605"]
-      }
+        "espn_venue_ids": [
+          "7605"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-10143",
@@ -429,14 +617,21 @@
       "city": "Toronto",
       "country": "Canada",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 43.63334,
+      "lng": -79.41856,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["BMO Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "BMO Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["10143"]
-      }
+        "espn_venue_ids": [
+          "10143"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-10660",
@@ -447,10 +642,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Gillette Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Gillette Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["10660"]
+        "espn_venue_ids": [
+          "10660"
+        ]
       }
     },
     {
@@ -459,14 +660,21 @@
       "city": "Miami, Florida",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 25.79245,
+      "lng": -80.26029,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Nu Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Nu Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["10661"]
-      }
+        "espn_venue_ids": [
+          "10661"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-5146",
@@ -477,10 +685,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Citi Field"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Citi Field"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["5146"]
+        "espn_venue_ids": [
+          "5146"
+        ]
       }
     },
     {
@@ -489,14 +703,21 @@
       "city": "Montreal",
       "country": "Canada",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 45.56309,
+      "lng": -73.55264,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Stade Saputo"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Stade Saputo"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["3278"]
-      }
+        "espn_venue_ids": [
+          "3278"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-1419",
@@ -507,10 +728,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Empower Field at Mile High"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Empower Field at Mile High"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["1419"]
+        "espn_venue_ids": [
+          "1419"
+        ]
       }
     },
     {
@@ -519,14 +746,21 @@
       "city": "Stanford, California",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 37.43453,
+      "lng": -122.16199,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Stanford Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Stanford Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["3869"]
-      }
+        "espn_venue_ids": [
+          "3869"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
     },
     {
       "key": "mls-espn-5960",
@@ -537,10 +771,16 @@
       "lat": null,
       "lng": null,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["Levi's Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Levi's Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["5960"]
+        "espn_venue_ids": [
+          "5960"
+        ]
       }
     },
     {
@@ -549,14 +789,330 @@
       "city": "Bridgeview, Illinois",
       "country": "USA",
       "state": null,
-      "lat": null,
-      "lng": null,
+      "lat": 41.76481,
+      "lng": -87.80619,
       "geofence_m": 400,
-      "sports": ["mls"],
-      "aliases": ["SeatGeek Stadium"],
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "SeatGeek Stadium"
+      ],
       "provider_ids": {
-        "espn_venue_ids": ["2266"]
+        "espn_venue_ids": [
+          "2266"
+        ]
+      },
+      "coords_source": "nominatim 2026-09-22"
+    },
+    {
+      "key": "mls-espn-1417",
+      "name": "Historic Crew Stadium",
+      "city": "Columbus, Ohio",
+      "country": "USA",
+      "state": null,
+      "lat": 40.00947,
+      "lng": -82.99114,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Historic Crew Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "1417"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-1418",
+      "name": "RFK Stadium",
+      "city": "Washington, District of Columbia",
+      "country": "USA",
+      "state": null,
+      "lat": 38.89,
+      "lng": -76.9719,
+      "coords_source": "wikipedia 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "RFK Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "1418"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-1451",
+      "name": "Maryland SoccerPlex",
+      "city": "Boyds, Maryland",
+      "country": "USA",
+      "state": null,
+      "lat": 39.15178,
+      "lng": -77.31185,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Maryland SoccerPlex"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "1451"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-1764",
+      "name": "Pratt & Whitney Stadium at Rentschler Field",
+      "city": "East Hartford, Connecticut",
+      "country": "USA",
+      "state": null,
+      "lat": 41.75961,
+      "lng": -72.61884,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Pratt & Whitney Stadium at Rentschler Field"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "1764"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-2242",
+      "name": "Camping World Stadium",
+      "city": "Orlando, Florida",
+      "country": "USA",
+      "state": null,
+      "lat": 28.53904,
+      "lng": -81.40275,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Camping World Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "2242"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-3262",
+      "name": "Nissan Stadium, Nashville",
+      "city": "Nashville, Tennessee",
+      "country": "USA",
+      "state": null,
+      "lat": 36.16652,
+      "lng": -86.77131,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Nissan Stadium, Nashville"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "3262"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-4087",
+      "name": "Rose Bowl",
+      "city": "Pasadena, California",
+      "country": "USA",
+      "state": null,
+      "lat": 34.16135,
+      "lng": -118.16767,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Rose Bowl"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "4087"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-4373",
+      "name": "Stade Olympique (Montreal)",
+      "city": "Montreal",
+      "country": "Canada",
+      "state": null,
+      "lat": 45.5578,
+      "lng": -73.55165,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Stade Olympique (Montreal)"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "4373"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-4385",
+      "name": "Children's Mercy Park",
+      "city": "Kansas City, Kansas",
+      "country": "USA",
+      "state": null,
+      "lat": 39.12164,
+      "lng": -94.82335,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Children's Mercy Park"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "4385"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-4653",
+      "name": "Sports Illustrated Stadium",
+      "city": "Harrison, New Jersey",
+      "country": "USA",
+      "state": null,
+      "lat": 40.73689,
+      "lng": -74.15026,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Sports Illustrated Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "4653"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-6738",
+      "name": "Nippert Stadium",
+      "city": "Cincinnati, Ohio",
+      "country": "USA",
+      "state": null,
+      "lat": 39.13112,
+      "lng": -84.51623,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Nippert Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "6738"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-6970",
+      "name": "Bobby Dodd Stadium",
+      "city": "Atlanta, Georgia",
+      "country": "USA",
+      "state": null,
+      "lat": 33.77248,
+      "lng": -84.39296,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Bobby Dodd Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "6970"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-7658",
+      "name": "Navy-Marine Corps Memorial Stadium",
+      "city": "Annapolis, Maryland",
+      "country": "USA",
+      "state": null,
+      "lat": 38.98476,
+      "lng": -76.50708,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Navy-Marine Corps Memorial Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "7658"
+        ]
+      }
+    },
+    {
+      "key": "mls-espn-8330",
+      "name": "Chase Stadium",
+      "city": "Fort Lauderdale, Florida",
+      "country": "USA",
+      "state": null,
+      "lat": 26.19324,
+      "lng": -80.16068,
+      "coords_source": "nominatim 2026-09-22",
+      "geofence_m": 400,
+      "sports": [
+        "mls"
+      ],
+      "aliases": [
+        "Chase Stadium"
+      ],
+      "provider_ids": {
+        "espn_venue_ids": [
+          "8330"
+        ]
       }
     }
-  ]
+  ],
+  "_comment": ""
 }

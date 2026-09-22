@@ -633,3 +633,107 @@ Official MLS/club comparisons and counts are recorded in
 [evidence/mls/local-rollout.md](evidence/mls/local-rollout.md). ESPN may omit a played venue
 (Union–Toronto, 623627), misstate a city (Toyota Stadium), or use multiple IDs for the same
 physical venue. A resolved venue row does not establish verified coordinates/timezone.
+
+## MLS stadium coordinates (next-wave B.1) — SOURCED 2026-09-22
+
+39 venues had hosted an MLS match with no coordinates in `venues` (38 of them with no timezone
+either). Every one was placed from a fetched source, none from memory: OpenStreetMap Nominatim
+(`search?q=<name>, <city>&format=jsonv2`, one request a second, with the User-Agent
+`Jinx-fan-passport/0.1`) cross-checked against the Wikipedia article's coordinate
+(`action=query&prop=coordinates`); the two sources agree within 181 m for all 37 Nominatim
+placements (Maryland SoccerPlex, whose OSM object is the whole complex) and within 85 m for
+all but two. Q2 Stadium and RFK Stadium could not be placed by Nominatim (four queries each)
+and carry the Wikipedia coordinate alone. Raw responses were kept for the session under the
+scratchpad; the chosen values are in `seed/mls_venues.json` (`coords_source`), zones in
+`seed/venue_timezones.json` (timezonefinder), elevations in `seed/venue_elevations.json`
+(USGS EPQS; the four Canadian stadiums from Natural Resources Canada's CDEM service,
+`https://geogratis.gc.ca/services/elevation/cdem/altitude?lat=&lon=`, metres, because
+Open-Elevation's TLS certificate had expired that day), and migration `20260923000200`
+carries all of it to live databases. Test `047` asserts no MLS venue is without either.
+
+**VERIFY: does ESPN's venue object carry coordinates? No.** Every `competitions[].venue` in the
+March to September 2026 scoreboards (378 competitions, 35 venues) has exactly `id`,
+`fullName` and `address {city, country}`; no `state`, and no field containing lat, lon, lng,
+coord or geo. The core resource `v2/sports/soccer/leagues/usa.1/venues/<id>` adds `guid`,
+`shortName` and `images` and still no coordinate. ESPN's site API also answers **403 to a
+custom User-Agent** (it took curl's default); the ingest sends none, so nothing changes there.
+
+Two pairs of ESPN venue ids are one building and both ids appear in 2026 fixtures:
+4385/6587 (Children's Mercy Park, which OSM and Wikipedia now call Sporting Park) and
+4653/9606 (Sports Illustrated Stadium, formerly Red Bull Arena). Both rows of each pair carry
+the same coordinate; folding them into one venue is a separate job (attendances reference
+both). Two rows had bad ESPN address data and were corrected: Bobby Dodd Stadium's city was
+"North West Atlanta, Georia" with no country; Navy-Marine Corps Memorial Stadium had no
+country.
+
+| key | name | city | lat, lng | placed by | Wikipedia article | gap (m) |
+|---|---|---|---|---|---|---|
+| `mls-espn-4383` | Providence Park | Portland, Oregon | 45.52153, -122.69182 | Nominatim way 99615044 | Providence Park | 20 |
+| `mls-espn-4653` | Sports Illustrated Stadium | Harrison, New Jersey | 40.73689, -74.15026 | Nominatim way 75692796 | Sports Illustrated Stadium | 25 |
+| `mls-espn-3714` | America First Field | Sandy, Utah | 40.58296, -111.89329 | Nominatim way 109429239 | America First Field | 11 |
+| `mls-espn-4061` | Subaru Park | Chester, Pennsylvania | 39.83291, -75.37847 | Nominatim way 158031721 | Subaru Park | 84 |
+| `mls-espn-7474` | Toyota Stadium | Frisco | 33.15422, -96.83537 | Nominatim way 40719754 | Toyota Stadium (Texas) | 26 |
+| `mls-espn-4791` | Shell Energy Stadium | Houston, Texas | 29.75203, -95.35234 | Nominatim way 261098257 | Shell Energy Stadium | 20 |
+| `mls-espn-2731` | Dick's Sporting Goods Park | Commerce City, Colorado | 39.80595, -104.89192 | Nominatim way 626539832 | Dick's Sporting Goods Park | 43 |
+| `mls-espn-10143` | BMO Field | Toronto | 43.63334, -79.41856 | Nominatim way 663457707 | BMO Field | 4 |
+| `mls-espn-6971` | Inter&Co Stadium | Orlando, Florida | 28.54110, -81.38914 | Nominatim relation 9219427 | Inter.co Stadium | 16 |
+| `mls-espn-4370` | BC Place | Vancouver | 49.27669, -123.11201 | Nominatim way 24705904 | BC Place | 5 |
+| `mls-espn-4385` | Children's Mercy Park | Kansas City, Kansas | 39.12164, -94.82335 | Nominatim way 195234182 | Sporting Park | 18 |
+| `mls-espn-6072` | PayPal Park | San Jose, California | 37.35131, -121.92467 | Nominatim way 329840159 | PayPal Park | 30 |
+| `mls-espn-3278` | Stade Saputo | Montreal | 45.56309, -73.55264 | Nominatim way 95436479 | Saputo Stadium | 12 |
+| `mls-espn-7605` | BMO Stadium | Los Angeles, California | 34.01277, -118.28334 | Nominatim relation 10070751 | BMO Stadium | 68 |
+| `mls-espn-7604` | Audi Field | Washington, District of Columbia | 38.86826, -77.01261 | Nominatim way 910656537 | Audi Field | 28 |
+| `mls-espn-6538` | Allianz Field | Saint Paul, Minnesota | 44.95314, -93.16469 | Nominatim way 588533245 | Allianz Field | 4 |
+| `mls-espn-8674` | TQL Stadium | Cincinnati, Ohio | 39.11118, -84.52223 | Nominatim way 1445692208 | TQL Stadium | 23 |
+| `mls-espn-8673` | Q2 Stadium | Austin, Texas | 30.38770, -97.71950 | Wikipedia only | Q2 Stadium |  |
+| `mls-espn-8330` | Chase Stadium | Fort Lauderdale, Florida | 26.19324, -80.16068 | Nominatim way 860629662 | Inter Miami CF Stadium | 16 |
+| `mls-espn-8689` | ScottsMiracle-Gro Field | Columbus, Ohio | 39.96836, -83.01666 | Nominatim way 836864820 | ScottsMiracle-Gro Field | 38 |
+| `mls-espn-1417` | Historic Crew Stadium | Columbus, Ohio | 40.00947, -82.99114 | Nominatim relation 11615864 | Historic Crew Stadium | 4 |
+| `mls-espn-8993` | GEODIS Park | Nashville, Tennessee | 36.13003, -86.76594 | Nominatim way 1056868015 | Geodis Park | 8 |
+| `mls-espn-2266` | SeatGeek Stadium | Bridgeview, Illinois | 41.76481, -87.80619 | Nominatim way 69135226 | SeatGeek Stadium | 12 |
+| `mls-espn-10421` | Energizer Park | St. Louis, Missouri | 38.63132, -90.21031 | Nominatim way 1268400174 | Energizer Park | 8 |
+| `mls-espn-9195` | Snapdragon Stadium | San Diego, California | 32.78424, -117.12239 | Nominatim way 1092512810 | Snapdragon Stadium | 43 |
+| `mls-espn-1418` | RFK Stadium | Washington, District of Columbia | 38.89000, -76.97190 | Wikipedia only | Robert F. Kennedy Memorial Stadium |  |
+| `mls-espn-3262` | Nissan Stadium, Nashville | Nashville, Tennessee | 36.16652, -86.77131 | Nominatim way 58759639 | Nissan Stadium (Nashville) | 16 |
+| `mls-espn-6738` | Nippert Stadium | Cincinnati, Ohio | 39.13112, -84.51623 | Nominatim way 35263569 | Nippert Stadium | 9 |
+| `mls-espn-2242` | Camping World Stadium | Orlando, Florida | 28.53904, -81.40275 | Nominatim way 400475584 | Camping World Stadium | 17 |
+| `mls-espn-10661` | Nu Stadium | Miami, Florida | 25.79245, -80.26029 | Nominatim relation 20585093 | Nu Stadium | 148 |
+| `mls-espn-6587` | Sporting Park | Kansas City, Kansas | 39.12164, -94.82335 | Nominatim way 195234182 | Sporting Park | 18 |
+| `mls-espn-9606` | Red Bull Arena | Harrison, New Jersey | 40.73689, -74.15026 | Nominatim way 75692796 | Sports Illustrated Stadium | 25 |
+| `mls-espn-6970` | Bobby Dodd Stadium | North West Atlanta, Georia | 33.77248, -84.39296 | Nominatim way 618966004 | Bobby Dodd Stadium | 17 |
+| `mls-espn-3869` | Stanford Stadium | Stanford, California | 37.43453, -122.16199 | Nominatim relation 18564360 | Stanford Stadium | 78 |
+| `mls-espn-4373` | Stade Olympique (Montreal) | Montreal | 45.55780, -73.55165 | Nominatim way 108505523 | Olympic Stadium (Montreal) | 36 |
+| `mls-espn-1764` | Pratt & Whitney Stadium at Rentschler Field | East Hartford, Connecticut | 41.75961, -72.61884 | Nominatim way 187066996 | Pratt & Whitney Stadium at Rentschler Field | 13 |
+| `mls-espn-4087` | Rose Bowl | Pasadena, California | 34.16135, -118.16767 | Nominatim way 5208863 | Rose Bowl (stadium) | 49 |
+| `mls-espn-7658` | Navy-Marine Corps Memorial Stadium | Annapolis, Maryland | 38.98476, -76.50708 | Nominatim way 38305512 | Navy–Marine Corps Memorial Stadium | 28 |
+| `mls-espn-1451` | Maryland SoccerPlex | Boyds, Maryland | 39.15178, -77.31185 | Nominatim relation 14311627 | Maryland SoccerPlex | 181 |
+
+## Preseason games removed (next-wave B.2) — 2026-09-22
+
+Only regular season and postseason games exist in Jinx (Dean, decision 13). Before: local held
+9,763 MLB spring-training and 1,940 NBA preseason games (11,703), hosted 4,875 and 774
+(5,649), and no attendance, pledge or check-in on hosted pointed at one; local had 3, all on a
+throwaway journey-test user, deleted by hand first. Migration `20260923000100` asserts that
+count is zero, deletes the rows (with two new partial indexes on the games self-references,
+without which each cascaded delete scanned all 118,831 rows), replaces the check constraint
+with `game_type in ('regular', 'postseason')`, and deletes the 40 spring-training and
+exhibition parks that had no coordinate and no other game (`seed/mlb_venue_overrides.json`
+`drop_by_name` keeps them out of the seed). Upstream: `mapMlbGameType` returns null for `S`
+and `E`, `seasonSchedule` asks for `gameType=R,F,D,L,W`, the NBA provider no longer reads
+the `Pre Season` game log and `STORED_TYPES` drops `001`. The ticket matcher
+(`rankCandidates` and `loadCandidates`) and the curated famous-game matcher treat any other
+type as absent. `search_games` and `search_games_v2` were left alone: the constraint means no
+such row can exist for them to return. Local database size 278 MB before, 254 MB after a
+`vacuum full` of games and game_win_prob; hosted 115 MB before and after (autovacuum has not
+run yet). Test `046`.
+
+## The MLS daily job (next-wave B.3) — CHECKED 2026-09-22
+
+`mls-ingest.yml` run 35787322042 (`workflow_dispatch`, `sync`, 2m35s, success) read every
+month of 2026 from ESPN on GitHub's runner and reported per month `games`/`finals` of
+0/0, 26/26, 48/48, 70/70, 74/74, 0/0, 36/36, 75/75, 74/58, 86/0, 21/0, 0/0, no unmapped
+or new venues. The finals sum to 387, which is exactly what hosted holds for 2026, so the run
+wrote nothing new: no match had gone final since the backfill. The scheduled 08:45 UTC runs
+had not yet happened at the time of writing; judge them by `gh run list
+--workflow=mls-ingest.yml` and by the hosted 2026 final count moving after match days
+(`select count(*) from games where sport_id = 'mls' and season = 2026 and status = 'final'`).

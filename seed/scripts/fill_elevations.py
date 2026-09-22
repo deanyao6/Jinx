@@ -6,6 +6,7 @@ live elevation service, never from memory:
 
   USA      USGS Elevation Point Query Service (3DEP), free, no key
            https://epqs.nationalmap.gov/v1/json?x=<lng>&y=<lat>&units=Feet&wkid=4326
+  Canada     Natural Resources Canada CDEM altitude service, free, no key, metres converted to feet
   elsewhere  Open-Elevation (SRTM), free, no key, metres converted to feet
            https://api.open-elevation.com/api/v1/lookup?locations=<lat>,<lng>
 
@@ -54,6 +55,15 @@ def usgs_feet(lat, lng):
     return None if feet < -1500 else feet
 
 
+def nrcan_feet(lat, lng):
+    """Natural Resources Canada's CDEM altitude service (metres), free and keyless, Canada only."""
+    data = fetch_json(f"https://geogratis.gc.ca/services/elevation/cdem/altitude?lat={lat}&lon={lng}")
+    value = data.get("altitude")
+    if value is None:
+        return None
+    return float(value) * FEET_PER_METRE
+
+
 def open_elevation_feet(lat, lng):
     data = fetch_json(f"https://api.open-elevation.com/api/v1/lookup?locations={lat},{lng}")
     results = data.get("results") or []
@@ -68,8 +78,8 @@ def load_file():
             return json.load(f)
     return {
         "_comment": "Ground elevation of each venue in whole feet, keyed by the merged venue key. Written by "
-        "seed/scripts/fill_elevations.py from the USGS Elevation Point Query Service (USA) and Open-Elevation "
-        "(elsewhere). Do not edit by hand; rerun the script. Source and date are in docs/verification.md.",
+        "seed/scripts/fill_elevations.py from the USGS Elevation Point Query Service (USA), Natural Resources "
+        "Canada's CDEM service (Canada) and Open-Elevation (elsewhere). Do not edit by hand; rerun the script. Source and date are in docs/verification.md.",
         "venues": {},
     }
 
@@ -104,6 +114,8 @@ def fill():
         try:
             if v.get("country") in USGS_COUNTRIES:
                 source, feet = "usgs-epqs", usgs_feet(lat, lng)
+            elif v.get("country") == "Canada":
+                source, feet = "nrcan-cdem", nrcan_feet(lat, lng)
             if feet is None:
                 source, feet = "open-elevation", open_elevation_feet(lat, lng)
         except RuntimeError as err:
