@@ -154,7 +154,7 @@ colours. Demo only, but they appear in every parity screenshot.
 | Hero glow (a blurred disc of team colour behind the record) | `features/passport/reference/parts.tsx` |
 | Win probability chart (polyline, dot, baseline) | `features/relive/reference/ReliveScreen.tsx` |
 | Wrapped card backdrops (gradient, team glow, stadium watermark) | `features/wrapped/ui/story.tsx` |
-| Welcome screen art (three seals reading EVERY GAME, EVERY STADIUM, YOUR RECORD, plus a bleeding stadium outline) | `features/onboarding/ui/WelcomeArt.tsx` |
+| Welcome screen wall (rebuilt 2026-09-22 from `design/welcome-reference.html`): the cards behind the sign-in copy. The seals, the bolt and the stadium shapes are the items above; drawn only here are the two photo scenes (a field, a scoreboard, 120x84 SVG), the ticket stub, the companion avatar discs (flat colour) and the ghost stamp's two dashed rings. The six game cards are data, not art | `features/onboarding/ui/wall/` (`cards/PhotoCard.tsx`, `cards/StubCard.tsx`, `cards/SmallCards.tsx`) |
 | Map pins (team-coloured discs sized by visit count, dashed ghosts for unvisited) | `app/passport/map.tsx`, `features/map/markers.ts` |
 | Handshake waiting ring (a dashed rotating ring on an avatar) | `features/eggs/HandshakeAvatar.tsx` |
 | Stadium guide hero shape | `features/guide/reference/StadiumGuideScreen.tsx` |

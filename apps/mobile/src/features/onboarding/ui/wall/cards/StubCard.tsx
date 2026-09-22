@@ -48,7 +48,15 @@ export const StubCard = React.memo(function StubCard({
       {/* `.perf`: `border-top:1.5px dashed #C9BC98; margin:7px 0 5px`. Drawn as a line: React
           Native's dashed border wants all four sides the same. */}
       <Svg height={1.5} width="100%" style={{ marginTop: 7, marginBottom: 5 }}>
-        <Line x1="0" y1="0.75" x2="100%" y2="0.75" stroke={PERF} strokeWidth={1.5} strokeDasharray="4.5 4.5" />
+        <Line
+          x1="0"
+          y1="0.75"
+          x2="100%"
+          y2="0.75"
+          stroke={PERF}
+          strokeWidth={1.5}
+          strokeDasharray="4.5 4.5"
+        />
       </Svg>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <SeatCell label="SEC" value={sec} />

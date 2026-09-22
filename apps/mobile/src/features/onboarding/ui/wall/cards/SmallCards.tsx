@@ -220,7 +220,10 @@ export const WrappedCard = React.memo(function WrappedCard({ id }: { id: string 
       <Text allowFontScaling={false} style={CARD_META}>
         {WRAPPED.tag}
       </Text>
-      <Text allowFontScaling={false} style={wallText({ size: 22, line: 22, width: 62, weight: 900 })}>
+      <Text
+        allowFontScaling={false}
+        style={wallText({ size: 22, line: 22, width: 62, weight: 900 })}
+      >
         {WRAPPED.year}
       </Text>
       <Text allowFontScaling={false} style={CARD_META}>

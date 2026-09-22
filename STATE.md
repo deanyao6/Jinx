@@ -45,13 +45,15 @@ orphan a loaded database.
 | | What it is | State |
 |---|---|---|
 | **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA), plus 4,962 MLS 2016 onward. Every migration. Where you develop |
-| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. All 36 migrations as of 2026-09-22, search v2's four included |
+| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. Every migration through `20260923100000` as of 2026-09-22 22:55 UTC |
 | **TestFlight** | EAS `@deanyao/jinx` | Build 4 submitted 2026-09-17, waiting on Apple processing |
 
 **Hosted, as verified today:**
 
-- **Ten of eleven Edge Functions are deployed**: `storylines`, `parse-ticket`, `cleanup-imports`,
-  `delete-account`, `mlb-sync`, `mlb-live`, `nba-sync`, `nba-live`, `send-push`, `evaluate-goals`.
+- **Eleven of twelve Edge Functions are deployed**: `storylines`, `parse-ticket`, `cleanup-imports`,
+  `delete-account`, `mlb-sync`, `mlb-live`, `nba-sync`, `nba-live`, `send-push`, `evaluate-goals`,
+  and since 2026-09-22 `welcome-wall`, the one public function (`GET`, no session, deployed with
+  `--no-verify-jwt`; it only reads `welcome_wall_cards`).
   `inbound-email` stays undeployed until ticket forwarding is set up on `jinxsports.fans`
   (section 5). **`nba-sync` and `nba-live` are deployed but not scheduled**: Supabase's egress
   cannot reach cdn.nba.com, stats.nba.com or ESPN (a probe function answered 403, hang, 403 on
@@ -128,12 +130,43 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 4. **Approve the M0.5 screenshots.** `npm run parity` generates them. Do not self-certify this.
 5. **`eas submit`** needs his Apple login and 2FA. An App Store Connect API key would automate it.
    Build 5 was submitted on 2026-09-22 and is waiting on Apple.
-6. **Design assets.** `docs/design-assets-to-replace.md` is the inventory; there are no drafts
+6. **Design assets.** `docs/design-assets-to-replace.md` is the inventory (the welcome wall's
+   entry was rewritten at the rebuild); there are no drafts
    of replacements. Dean is taking it to Figma or an image model. The app icon is still the
    Expo default and the splash is blank.
 7. **Sentry** (a free account, then the DSN, org and project slugs and an auth token) and
    **ticket forwarding** (Email Routing on Cloudflare, `wrangler login` once): the exact steps
    are in `docs/prompts/next-wave.md` section H.
+
+**The welcome screen is rebuilt (2026-09-22), and its wall restocks itself weekly.**
+`design/welcome-reference.html` is its source of truth; `app/(auth)/welcome.tsx` composes
+`features/onboarding/ui/WelcomeArt.tsx` (the wall, scrim and copy) and `WelcomeActions.tsx`
+(Apple's button, "Continue with email" under it when the build offers it, both dev-only deep
+links kept). The wall is under `features/onboarding/ui/wall/`: three tilted columns, drawn twice
+and moved on the UI thread by their measured stack height, gold sheen on brass seals, pulsing
+moment cards, counters on one shared clock. Reduce Motion or `EXPO_PUBLIC_WELCOME_FROZEN=1` holds
+everything at phase zero with the counters at 48 and 14; the parity harness has a `welcome`
+screen and scores it at 10.7% (the copy sits 12pt higher than the reference to clear the home
+indicator; `design/PORTING_NOTES.md` lists every substitution). Evidence: `docs/evidence/welcome/`.
+
+The six game cards are real: migration `20260923100000` adds `welcome_wall_cards`, a SQL scorer
+with its weights written in the file (postseason 100, a detected moment 45, NFL primetime 40,
+same-division rivalry 35, one-score 30, overtime 30, comeback 25, high score 15, big market or
+crowd 10, recency as the tiebreak), and `welcome_wall_refresh()`, which pg_cron calls directly at
+13:00 UTC on Mondays and on Fridays from September to February (no Edge Function in that path, so
+trap 3 does not apply). It takes the last 7 days, widens to 30 and then 365 when short, never
+picks a team twice or a sport more than three times, and gives every third card the losing side.
+The app fetches `GET /welcome-wall` in the background at most every six hours, validates the
+shape by hand (no zod in the bundle), caches it, draws the cache on the next launch, and falls
+back to the six bundled reference games when there is none, it is malformed, or it is older than
+14 days. Colours come from `wall/teamFills.ts`, generated from the palette seeds by
+`provider:provider_team_id` (team uuids differ between local and hosted). pgTAP `050`, five Deno
+tests, 31 Jest tests. **The first real run on hosted, 2026-09-22 22:55 UTC**, picked Chiefs 33,
+Colts 30 (Sunday night), Twins 5, Yankees 4, Vikings 9, Bears 3, Rays 2, Red Sox 1, Packers 20,
+Jets 17 and Giants 6, Cardinals 5: three NFL, three MLB, no MLS because none of its 15 finals
+scored above 55. Judge the job by the table's rows, never by `cron.job_run_details`.
+Not done: frame rate on a real phone (no device; the simulator cannot say), and the fetch was
+proven against the locally served function, not against hosted from a build.
 
 **The next wave is briefed (2026-09-22).** Dean answered a 25-point list of everything deferred;
 `docs/prompts/next-wave.md` is the build brief for a fresh session: the sign-out bug (signing

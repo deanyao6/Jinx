@@ -25,7 +25,13 @@ import { WALL } from './styles';
  * Under Reduce Motion, or frozen for a screenshot, the numbers are their final values and
  * nothing runs.
  */
-export const COUNTERS = { games: 48, stadiums: 14, gamesMs: 1400, stadiumsMs: 1700, periodMs: 9000 } as const;
+export const COUNTERS = {
+  games: 48,
+  stadiums: 14,
+  gamesMs: 1400,
+  stadiumsMs: 1700,
+  periodMs: 9000,
+} as const;
 
 export function countAt(target: number, elapsedMs: number, durationMs: number): number {
   'worklet';

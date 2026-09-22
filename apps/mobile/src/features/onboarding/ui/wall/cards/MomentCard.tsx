@@ -79,7 +79,13 @@ export const MomentCard = React.memo(function MomentCard({
         />
         <Text
           allowFontScaling={false}
-          style={wallText({ size: 8.5, line: 11.05, weight: 850, color: WALL.brass, spacing: 1.19 })}
+          style={wallText({
+            size: 8.5,
+            line: 11.05,
+            weight: 850,
+            color: WALL.brass,
+            spacing: 1.19,
+          })}
         >
           {tag}
         </Text>

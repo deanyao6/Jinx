@@ -78,7 +78,11 @@ MLB Relive stories), `mlb-live` (every minute while someone is checked in), `sto
 for the day's games, every 30 min for games starting in 60 to 90 minutes, and on a check-in at a
 game that has none), `send-push` (every 2 min), `cleanup-imports` (daily), `evaluate-goals` (after
 a game goes final), `parse-ticket` and `delete-account` (called by the app), `inbound-email`
-(waits for a domain).
+(waits for a domain), and `welcome-wall`, the one public function: `GET`, no auth, deployed with
+`--no-verify-jwt`, answering the signed-out welcome screen's six game cards from
+`welcome_wall_cards`. The cards themselves are picked by `welcome_wall_refresh()` in SQL, which
+pg_cron calls directly at 13:00 UTC on Mondays (and Fridays in NFL season); judge it by the
+table's rows.
 
 Optional function secrets: `EXPO_ACCESS_TOKEN` (only if you turn on enhanced push security in the
 EAS dashboard) and `TICKET_IMAGE_RETENTION_DAYS` (defaults to 7).

@@ -98,6 +98,8 @@ SQL
   # inbound-email stays undeployed until a domain exists (STATE.md section 5).
   npx supabase functions deploy cleanup-imports delete-account mlb-sync mlb-live nba-sync nba-live send-push \
     evaluate-goals storylines parse-ticket --project-ref "$REF"
+  # The one public function: the signed-out welcome screen reads it with no session.
+  npx supabase functions deploy welcome-wall --no-verify-jwt --project-ref "$REF"
 }
 
 # ---------------------------------------------------------------------------------------------
@@ -145,6 +147,12 @@ verify() {
               (select count(*) from public.games_needing_relive('nba', 500)) as nba_stories_owed,
               (select count(*) from public.ticket_imports where storage_path is not null and image_deleted_at is null
                  and resolved_at < now() - interval '7 days') as overdue_ticket_images" | jq -c '.rows[0]'
+
+  say "8b. The welcome wall answers without a session, and this week's six cards exist"
+  code="$(curl -s -o "$WORK/wall" -w '%{http_code}' "${URL}/functions/v1/welcome-wall")"
+  printf '%s  welcome-wall     HTTP %s  %s cards, week %s\n' "$([ "$code" = 200 ] && echo PASS || echo FAIL)" "$code" \
+    "$(jq -r '.cards | length' "$WORK/wall" 2>/dev/null)" "$(jq -r '.week_start' "$WORK/wall" 2>/dev/null)"
+  sql "select rank, payload->>'title' as title, payload->>'date_label' as when_ from public.welcome_wall_cards order by week_start desc, rank limit 6" | jq -c '.rows[]'
 
   say "9. Both scheduled GitHub workflows"
   gh workflow run daily-jobs.yml

@@ -53,9 +53,12 @@ Deno.test('no cards yet is a 404, not an empty wall', async () => {
 });
 
 Deno.test('a payload past the cap is refused rather than served', async () => {
-  const db = memoryDb({}, {
-    welcome_wall_current: () => ({ ...CARDS, cards: Array(200).fill(CARDS.cards[0]) }),
-  });
+  const db = memoryDb(
+    {},
+    {
+      welcome_wall_current: () => ({ ...CARDS, cards: Array(200).fill(CARDS.cards[0]) }),
+    },
+  );
   const res = await serveWelcomeWall(new Request('http://x/welcome-wall'), () => db, json);
   assertEquals(res.status, 500);
   assertEquals(JSON.stringify(CARDS).length < MAX_BYTES, true);

@@ -23,7 +23,9 @@ function wire(over: Record<string, unknown> = {}) {
     date_label: 'Last night',
     result: i % 3 === 2 ? 'L' : 'W',
     team_id: '00000000-0000-4000-8000-000000000001',
-    team_key: ['mlb:143', 'nflverse:DAL', 'mlb:119', 'mlb:147', 'nflverse:PHI', 'nba:1610612747'][i],
+    team_key: ['mlb:143', 'nflverse:DAL', 'mlb:119', 'mlb:147', 'nflverse:PHI', 'nba:1610612747'][
+      i
+    ],
     score: 120,
     reasons: ['moment'],
     ...o,
@@ -60,11 +62,26 @@ describe('parseWelcomeWall', () => {
     ['not an object', 'nope'],
     ['five cards', wire({ cards: wire().cards.slice(0, 5) })],
     ['seven cards', wire({ cards: [...wire().cards, wire().cards[0]] })],
-    ['a result that is not W or L', wire({ cards: [{ ...wire().cards[0], result: 'T' }, ...wire().cards.slice(1)] })],
-    ['a team we have no colour for', wire({ cards: [{ ...wire().cards[0], team_key: 'mlb:9999' }, ...wire().cards.slice(1)] })],
-    ['a title long enough to break the card', wire({ cards: [{ ...wire().cards[0], title: 'x'.repeat(41) }, ...wire().cards.slice(1)] })],
-    ['a bad date', wire({ cards: [{ ...wire().cards[0], played_on: 'Sunday' }, ...wire().cards.slice(1)] })],
-    ['an unknown sport', wire({ cards: [{ ...wire().cards[0], sport: 'nhl' }, ...wire().cards.slice(1)] })],
+    [
+      'a result that is not W or L',
+      wire({ cards: [{ ...wire().cards[0], result: 'T' }, ...wire().cards.slice(1)] }),
+    ],
+    [
+      'a team we have no colour for',
+      wire({ cards: [{ ...wire().cards[0], team_key: 'mlb:9999' }, ...wire().cards.slice(1)] }),
+    ],
+    [
+      'a title long enough to break the card',
+      wire({ cards: [{ ...wire().cards[0], title: 'x'.repeat(41) }, ...wire().cards.slice(1)] }),
+    ],
+    [
+      'a bad date',
+      wire({ cards: [{ ...wire().cards[0], played_on: 'Sunday' }, ...wire().cards.slice(1)] }),
+    ],
+    [
+      'an unknown sport',
+      wire({ cards: [{ ...wire().cards[0], sport: 'nhl' }, ...wire().cards.slice(1)] }),
+    ],
     ['no updated_at', wire({ updated_at: undefined })],
   ])('rejects %s', (_label, raw) => {
     expect(parseWelcomeWall(raw)).toBeNull();
@@ -112,7 +129,9 @@ describe('the cache', () => {
 
   it('a malformed cache is ignored', () => {
     expect(usableCache('{not json', NOW)).toBeNull();
-    expect(usableCache(JSON.stringify({ fetchedAt: NOW.toISOString(), payload: { cards: [] } }), NOW)).toBeNull();
+    expect(
+      usableCache(JSON.stringify({ fetchedAt: NOW.toISOString(), payload: { cards: [] } }), NOW),
+    ).toBeNull();
     expect(usableCache(null, NOW)).toBeNull();
   });
 
@@ -122,14 +141,29 @@ describe('the cache', () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1);
     expect((await readWallCache(NOW))?.weekStart).toBe('2026-09-21');
 
-    expect(await refreshWallCache(new Date(NOW.getTime() + 5 * 3_600_000), fetchImpl as unknown as typeof fetch)).toBe('skipped');
-    expect(await refreshWallCache(new Date(NOW.getTime() + 7 * 3_600_000), fetchImpl as unknown as typeof fetch)).toBe('cached');
+    expect(
+      await refreshWallCache(
+        new Date(NOW.getTime() + 5 * 3_600_000),
+        fetchImpl as unknown as typeof fetch,
+      ),
+    ).toBe('skipped');
+    expect(
+      await refreshWallCache(
+        new Date(NOW.getTime() + 7 * 3_600_000),
+        fetchImpl as unknown as typeof fetch,
+      ),
+    ).toBe('cached');
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 
   it('a malformed answer is rejected and the cache left alone', async () => {
-    await AsyncStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: '2026-09-01T00:00:00Z', payload: wire() }));
-    const bad = jest.fn(async () => new Response(JSON.stringify({ cards: 'six' }), { status: 200 }));
+    await AsyncStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify({ fetchedAt: '2026-09-01T00:00:00Z', payload: wire() }),
+    );
+    const bad = jest.fn(
+      async () => new Response(JSON.stringify({ cards: 'six' }), { status: 200 }),
+    );
     expect(await refreshWallCache(NOW, bad as unknown as typeof fetch)).toBe('rejected');
     expect((await readWallCache(NOW))?.weekStart).toBe('2026-09-21');
   });

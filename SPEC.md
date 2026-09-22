@@ -149,6 +149,7 @@ interface SportsDataProvider {
 | NFL schedules and finals; detail for queued NFL games | GitHub Action | nightly, daily during season |
 | Elo update | SQL function / Edge Function | after each game goes final |
 | Post-final processing (records, pledges, moments, goals, feed) | Edge Function triggered on status → final | on event |
+| Welcome wall: score the last week's finals for notability and store the six most recognizable in `welcome_wall_cards` (Section 8.8) | SQL function `welcome_wall_refresh()` + pg_cron, no Edge Function in the path | Mondays 13:00 UTC, plus Fridays 13:00 UTC from September to February |
 
 Historical backfill must be idempotent and resumable, logging progress per season.
 
@@ -202,6 +203,9 @@ game_story_steps(game_id, seq int, wp_seq int, away_score int, home_score int, l
 storylines(id uuid pk, game_id, team_id, text, source text: 'results' | 'injury_report' | 'probable_starter', facts jsonb, generated_at)
 team_elo(team_id, as_of date, rating numeric)
 game_win_prob(game_id pk, home_win_prob numeric, method text: 'elo_v1', computed_at)  -- frozen pregame
+welcome_wall_cards(week_start date, rank int 1..6, payload jsonb, created_at, pk (week_start, rank))
+      -- the signed-out welcome screen's six game cards for the week (8.8); payload holds title, venue,
+      -- played_on, night, date_label, result, team_key (provider:provider_team_id), never user data
 ```
 
 ### 5.2 User data
@@ -508,6 +512,9 @@ Earlier concept screens (build exactly as in the reference; a later design pass 
 7. **Profile:** handle and settings; ringed photo, name, tagline, team chips; stats (Games, Stadiums, Followers, Following); rows for Friends (with facepile), goals, Map, Wrapped.
 8. **Friends panel:** back button, search, segments; companion records list with photos ringed in team color; rivalry card with crossed-swords icon; before-you-connected card.
 9. **Record game log:** slide-over from any record card, as in the reference.
+
+The welcome screen has its own reference file, `design/welcome-reference.html`, which is its visual source of truth in the same way; where it and this document disagree visually, the reference wins:
+10. **Welcome:** a dark sign-in screen with a wall of Jinx objects drifting behind it. Three columns, tilted 7 degrees and oversize so no edge shows, scroll at different speeds and directions (34s up, 44s down, 26s up) behind a gradient scrim; in front, the JINX wordmark, the headline "48 games. 14 stadiums. One record." whose numbers count up on mount and every 9s, "You were there. Prove it.", Apple's own Sign in with Apple button (white, 14pt corners), "Continue with email" under it when the build offers email sign-in, and the age line. The wall holds 23 cards drawn twice per column: six game cards, brass and silver seals with a gold sheen on brass, ticket stubs, moment cards that pulse, a photo, companion records, a pledge, the live card with its pulsing dot, the streak, a ghost stamp and a Wrapped card. Every card but the six games is fixed copy. The six games come from the weekly `welcome_wall_cards` pick (4.5) through the public, unauthenticated `GET /welcome-wall` Edge Function, cached at the CDN for six hours; the app fetches it in the background at most every six hours, validates it, caches it, and draws the cached set on the next launch, falling back to the six bundled reference games when there is no cache, the cache is malformed, or it is older than 14 days. Team colours resolve locally from the palette seed by `provider:provider_team_id`, never from the payload. Motion runs on the UI thread and only on `transform` and opacity; Reduce Motion stops every loop and shows the counters' final values; a debug flag (`EXPO_PUBLIC_WELCOME_FROZEN`, and always under the parity harness) forces the bundled set and holds every loop at phase zero so screenshots are byte-comparable. The wall is hidden from VoiceOver; the headline, buttons and age line read in that order. The screen is dark in both appearances.
 
 Screens not in the reference (onboarding, game detail, check-in flow, imports review, map, goals, bucket lists, Wrapped, settings, other users' profiles) must be composed only from the components and tokens above, preferring the Figma-derived components, so they look native to the same design. Onboarding content is unchanged from revision 1: sign in, handle, favorite teams, home city, add past games, permissions requested in context.
 

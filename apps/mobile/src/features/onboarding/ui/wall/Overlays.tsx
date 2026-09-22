@@ -35,7 +35,11 @@ export const Scrim = React.memo(function Scrim({ topInset }: { topInset: number 
           backgroundColor: 'rgba(10,13,18,0.8)',
         }}
       />
-      <Svg width="100%" height="100%" style={{ position: 'absolute', top: topInset, left: 0, right: 0, bottom: 0 }}>
+      <Svg
+        width="100%"
+        height="100%"
+        style={{ position: 'absolute', top: topInset, left: 0, right: 0, bottom: 0 }}
+      >
         <Defs>
           <LinearGradient id="wall-scrim" x1="0" y1="0" x2="0" y2="1">
             <Stop offset="0" stopColor={SCR} stopOpacity="0.05" />

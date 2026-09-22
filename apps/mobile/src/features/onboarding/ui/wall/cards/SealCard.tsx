@@ -72,10 +72,21 @@ export const SealCard = React.memo(function SealCard({
             <Stop offset="1" stopColor="#000000" stopOpacity="0" />
           </RadialGradient>
         </Defs>
-        <Circle cx={shadowSize / 2} cy={shadowSize / 2} r={shadowSize / 2} fill={`url(#ss-${id})`} />
+        <Circle
+          cx={shadowSize / 2}
+          cy={shadowSize / 2}
+          r={shadowSize / 2}
+          fill={`url(#ss-${id})`}
+        />
       </Svg>
       <View style={{ width: SIZE, height: SIZE, borderRadius: SIZE / 2, overflow: 'hidden' }}>
-        <Seal ring={ring} shapeKey={shape} metal={metal} size={SIZE} inkColor="rgba(255,255,255,0.5)" />
+        <Seal
+          ring={ring}
+          shapeKey={shape}
+          metal={metal}
+          size={SIZE}
+          inkColor="rgba(255,255,255,0.5)"
+        />
         {metal === 'brass' ? <Sheen id={id} still={still} /> : null}
       </View>
     </View>

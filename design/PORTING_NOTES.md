@@ -88,6 +88,32 @@ Known items the reference uses that will need an entry when their screen is port
 | `overflow-x: auto` pill and stamp rails | `.pills`, `.fx-stamps` | `ScrollView horizontal` with `showsHorizontalScrollIndicator={false}`. |
 | `:focus-visible` outlines | interactive elements | Not ported. There is no keyboard focus ring on iOS touch. |
 
+## The welcome screen (`design/welcome-reference.html`)
+
+Ported 2026-09-22 into `features/onboarding/ui/WelcomeArt.tsx` and `features/onboarding/ui/wall/`.
+Its own reference file, its own list of substitutions:
+
+| Reference | What the app does instead | Why |
+|---|---|---|
+| `.col` animates `translateY(-50%)` | Each column measures its first stack and moves by that height plus the 9px gap | The reference's columns are stretched to the wall's height (`align-items: stretch`), so `-50%` is half the column box, not the stack, and its loop visibly jumps. Measured in the harness: column boxes 1072px, stacks 616, 788 and 662px. Moving by the stack is what makes the seam invisible, which is what the CSS meant |
+| `.wallwrap` is `inset: 0` of the frame under a fake status row | The wall's percentages are taken from the area below the real status bar; a flat band at the top fade's darkest value covers the bar | The reference's frame is the 812pt below its status row. Sizing from the full 874pt screen put every card 60 to 80pt higher than the reference and shifted the scrim's stops; the first parity run measured that at 18.5%, the fix at 10.7% |
+| `.body{padding-bottom:22px}` | `max(22, bottom safe-area inset)`, which is 34pt on an iPhone with a home indicator | The reference frame has no home indicator. The copy block sits 12pt higher than the reference; that is most of what the diff still shows |
+| `.game .glow` with `filter: blur(20px)` | A radial gradient of the same reach (78px disc plus 20px blur each side), at 75% | No blur filter in React Native, and a filter per card, twice per column, is the per-card effect the prompt forbids for frame rate |
+| `.sealcard svg` with `filter: drop-shadow(0 8px 14px rgba(0,0,0,.45))` | A soft radial disc under the seal, offset 8px | iOS shadows on a transparent view are rasterised per frame; a static gradient costs nothing |
+| `.vig` with `box-shadow: inset 0 0 70px 14px` | Four edge gradients, 84px deep, in one SVG | No inset shadow in React Native |
+| `linear-gradient(135deg, ...)` card tints | An SVG rectangle behind the card, gradient line derived from the angle in bounding-box units | No gradient backgrounds. In box units a 135deg line is corner to corner as on a square; on a wide card it is a few degrees off, invisible for a 42% to 7% tint, and the card never has to be measured first |
+| `.sheen` as a background gradient translated -140% to 140% | A gradient view clipped to the disc, moved by the same amount, 7s loop with the sweep between 62% and 76% | A transform is the one thing Reanimated moves without touching the SVG tree |
+| `.res` and every other `font-variation-settings` pair | The nearest static Archivo instance | `.c b` (80/800) draws in 80/850; `.buddy .rec` and `.pledge .odds` (70/900) draw in 70/850. Everything else the screen asks for exists exactly. `npm run fonts` would add the two if a closer match is ever wanted |
+| `seal()` in the welcome file | The shared `Seal` component, the reference file's `seal()` | The welcome file's copy differs in a few decimals: brass `#F6EFD8/#D3BE8E` against the shared `#F3EBD3/#D9C79C`, silver `#F0F2F4/#C3C9CF` against `#EEF0F2/#C5CAD0`, ring text 6.1 against 6.4, and no baseline rule. Reusing the shared seal keeps one seal in the app |
+| `ghostCard()` | Drawn in `cards/SmallCards.tsx` with the shared `StadiumShape` | `GhostSeal` (bucket lists) has one ring, a different scale and theme colours; the welcome ghost has two rings in fixed white |
+| `.moment .ico` at `stroke-width: 1.8` | `i-bolt` from the icon set, at its 1.9 | The reference icon set is the only icon source in the app |
+| `countTo()` on `requestAnimationFrame` plus `setInterval(9000)` | One shared clock on the UI thread, 0 to 9000ms linear and repeating; each counter is a function of it and only its rounded value crosses to React | Nothing runs on a timer in JS |
+| `prefers-reduced-motion` | `AccessibilityInfo.isReduceMotionEnabled` plus its change listener, or the frozen flag | Reanimated's `useReducedMotion` reads the setting once at startup |
+
+The parity harness captures the reference under `reducedMotion: 'reduce'`, which the file honours
+by stopping every animation and printing the counters' targets, and the app with `frozen`, which
+is the same still frame. Both sides are therefore phase zero, and the shot is reproducible.
+
 ## The parity harness
 
 Three scripts under `scripts/parity/`, run together by `npm run parity`.

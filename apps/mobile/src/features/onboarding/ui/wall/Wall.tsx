@@ -124,7 +124,11 @@ function Column({
   React.useEffect(() => {
     progress.value = 0;
     if (still) return;
-    progress.value = withRepeat(withTiming(1, { duration: durationMs, easing: Easing.linear }), -1, false);
+    progress.value = withRepeat(
+      withTiming(1, { duration: durationMs, easing: Easing.linear }),
+      -1,
+      false,
+    );
   }, [durationMs, progress, still]);
 
   const onStackLayout = (e: LayoutChangeEvent) => {
@@ -133,14 +137,22 @@ function Column({
 
   const style = useAnimatedStyle(() => {
     // Up: 0 to -period. Down: -period to 0. Both ends show the same frame.
-    const y = direction === 'up' ? -progress.value * period.value : -(1 - progress.value) * period.value;
+    const y =
+      direction === 'up' ? -progress.value * period.value : -(1 - progress.value) * period.value;
     return { transform: [{ translateY: y }] };
   });
 
   const stack = (copy: number) => (
     <View style={{ gap: WALL.gap }} onLayout={copy === 0 ? onStackLayout : undefined}>
       {specs.map((spec, j) => (
-        <Card key={j} id={`c${index}-${copy}-${j}`} spec={spec} games={games} today={today} still={still} />
+        <Card
+          key={j}
+          id={`c${index}-${copy}-${j}`}
+          spec={spec}
+          games={games}
+          today={today}
+          still={still}
+        />
       ))}
     </View>
   );
@@ -186,7 +198,9 @@ const Card = React.memo(function Card({
       );
     }
     case 'seal':
-      return <SealCard id={id} ring={spec.ring} shape={spec.shape} metal={spec.metal} still={still} />;
+      return (
+        <SealCard id={id} ring={spec.ring} shape={spec.shape} metal={spec.metal} still={still} />
+      );
     case 'stub':
       return <StubCard team={spec.team} sec={spec.sec} row={spec.row} seat={spec.seat} />;
     case 'moment':

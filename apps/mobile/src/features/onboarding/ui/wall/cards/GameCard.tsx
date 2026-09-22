@@ -47,7 +47,14 @@ export const GameCard = React.memo(function GameCard({
       />
       <View
         pointerEvents="none"
-        style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, backgroundColor: color }}
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: 4,
+          backgroundColor: color,
+        }}
       />
       <Svg
         pointerEvents="none"

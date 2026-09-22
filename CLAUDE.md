@@ -104,6 +104,7 @@ npm run parity              # visual parity: reference shots, app shots, diff, c
 npm run parity:selftest     # prove the parity harness end to end; measures the safe-area inset
 npm run build:design        # regenerate icons and stadium shapes from design/reference.html
 npm run fonts               # regenerate the static Archivo instances (fontTools)
+node scripts/design/build-team-fills.mjs  # regenerate the welcome wall's team fill map from the palette seeds
 npm run seed:colors:check   # validate the 65 team palettes and their contrast
 npm run functions:test      # Deno tests for Edge Functions (syncs packages/core into _shared first)
 npm run functions:check     # Deno typecheck of every Edge Function

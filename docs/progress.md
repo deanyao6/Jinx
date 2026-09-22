@@ -109,6 +109,23 @@ Each of these was live, and none was visible from the outside.
 - **Official highlights opened MLB's site for NFL games.** Both leagues have a real per-game page;
   the link now goes there.
 
+## The welcome screen (2026-09-22)
+
+Rebuilt from `design/welcome-reference.html`; STATE.md has the summary. What was run, and what it
+printed:
+
+| Check | Command | Result |
+|---|---|---|
+| Scorer and pick | `npx supabase test db supabase/tests/050_welcome_wall.test.sql` | 24 of 24: weights, the date label, six rows, no team twice, a draw and a second Phillies game left out, `welcome_wall_current()` serves them under this week's Monday |
+| Public function | `deno test --allow-all welcome-wall/` | 5 of 5: 200 with `max-age=21600`, 405 on POST, 404 with no rows, 500 past the byte cap, the per-IP limit |
+| Payload path in the app | `npx jest src/features/onboarding` | 41 of 41: a valid payload is accepted, five or seven cards, a bad result, an unknown team, a long title, a bad date and an unknown sport are rejected; a malformed cache and one older than 14 days fall to the bundle; refresh caches, then skips for six hours; a bad answer leaves the cache alone; offline reads the cache then the bundle |
+| Paused side by side | `PARITY_DEVICE="Jinx welcome" node scripts/parity/run.mjs welcome` | 10.71% light and dark; `docs/evidence/welcome/parity-dark.png` |
+| Motion | two simulator screenshots 2s apart | column 2 moved down, columns 1 and 3 up, column 3 about 1.3 times as far as column 1 (26s against 34s); counters restart at 9s |
+| Reduce Motion | `defaults write com.apple.Accessibility ReduceMotionEnabled -bool true`, relaunch, two shots 4s apart | byte-identical, counters at 48 and 14 from the first frame; `docs/evidence/welcome/reduce-motion.png` |
+| Hosted | `db push`, `functions deploy welcome-wall --no-verify-jwt`, `select welcome_wall_refresh()` | six rows in 3.4s; `curl` of the public URL with no headers answered 200, 2,072 bytes, `cache-control: public, max-age=21600`; `docs/evidence/welcome/hosted-first-run.json` |
+| The app draws a payload | `supabase functions serve welcome-wall --no-verify-jwt`, launch, relaunch | second launch shows the local pick (Giants 6, Cardinals 5 with an L); `docs/evidence/welcome/payload-from-local-function.png` |
+| Frame rate on an iPhone 12 | not run | no device on this machine; the wall animates transform and opacity only, on the UI thread, with every card in `memo` and no blur views |
+
 ## Decisions that differ from or refine the spec
 
 - **NFL pipeline is TypeScript, not Python.** nflverse publishes `.csv.gz` for every asset, so the Node ingest package streams those and reuses the exact parser and moment detectors in `packages/core`. One implementation instead of two. Python remains only for the fixture extraction script.

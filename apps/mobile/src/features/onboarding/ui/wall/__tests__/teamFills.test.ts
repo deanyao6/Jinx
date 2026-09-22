@@ -23,7 +23,8 @@ describe('teamFills', () => {
   it('matches seed/team_colors.json and seed/mls_colors.json exactly', () => {
     const rows = [...seed('team_colors.json'), ...seed('mls_colors.json')];
     const expected: Record<string, string> = {};
-    for (const r of rows) expected[`${r.provider}:${r.provider_team_id}`] = r.fill_hex.toUpperCase();
+    for (const r of rows)
+      expected[`${r.provider}:${r.provider_team_id}`] = r.fill_hex.toUpperCase();
     expect(TEAM_FILLS).toEqual(expected);
     expect(Object.keys(TEAM_FILLS).length).toBeGreaterThanOrEqual(125);
   });
