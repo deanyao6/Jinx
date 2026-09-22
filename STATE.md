@@ -186,13 +186,14 @@ scoreboard itself for live NBA state (the rule today keeps every provider server
 NBA and ESPN attribution in `docs/attribution.md` before any public launch.
 
 **Famous games, superstars and personal badges are built and verified on local (2026-09-18).
-Their three migrations reached hosted with the NBA's `db push` on 2026-09-18; their ingest
-scripts have not run there yet.** Brief: `docs/prompts/famous-games.md`; evidence: `docs/progress.md` and
+Their three migrations reached hosted with the NBA's `db push` on 2026-09-18, and the daily
+GitHub job has since run the ingest: on 2026-09-22 hosted holds 159 famous games, 436 honors,
+101 franchise players and 1,165 player moves.** Brief: `docs/prompts/famous-games.md`; evidence: `docs/progress.md` and
 `docs/evidence/famous/`; facts: `docs/verification.md`. Three migrations (`20260918000100`,
 `20260918000200`, `20260918100100`), nine ingest scripts wired into the daily workflows. What needs Dean:
 
-1. **The hosted rollout, minus the push, which the NBA session did.** Run, in order, verifying
-   each by reading hosted:
+1. **The hosted rollout is done by the daily job.** To rerun by hand, in order, verifying each
+   by reading hosted:
    ```bash
    set -a; . /tmp/hosted.env; set +a
    npx tsx ingest/src/mlb/honors.ts --from 2013 --to 2026
