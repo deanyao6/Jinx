@@ -3,6 +3,7 @@
  * `v1/schedule`, `v1.1/game/{gamePk}/feed/live`, `v1/teams`, and `v1/teams/{id}/roster`.
  * Field names are verified in docs/verification.md.
  */
+import type { BoxLine } from '../../goodGame.js';
 import type {
   Appearance,
   CanonicalGame,
@@ -164,11 +165,54 @@ export interface MlbRunner {
   };
 }
 
+export interface MlbBoxscorePlayer {
+  person: { id: number; fullName: string };
+  stats?: {
+    batting?: { atBats?: number; hits?: number; homeRuns?: number; rbi?: number };
+    pitching?: {
+      inningsPitched?: string;
+      outs?: number;
+      earnedRuns?: number;
+      strikeOuts?: number;
+      saves?: number;
+    };
+  };
+}
+
 export interface MlbBoxscoreTeam {
   team?: { id: number; name: string };
-  players?: Record<string, { person: { id: number; fullName: string } }>;
+  players?: Record<string, MlbBoxscorePlayer>;
   batters?: number[];
   pitchers?: number[];
+}
+
+/** Innings pitched as outs: "7.0" is 21, "6.2" is 20; the feed's `outs` when it has it. */
+export function inningsToOuts(ip: string | undefined, outs: number | undefined): number {
+  if (typeof outs === 'number') return outs;
+  const m = /^(\d+)(?:\.(\d))?$/.exec(ip ?? '');
+  return m ? Number(m[1]) * 3 + Number(m[2] ?? 0) : 0;
+}
+
+/** The box-score line of one player, from the feed's batting and pitching stats. */
+export function mlbBoxLine(p: MlbBoxscorePlayer | undefined, pitched: boolean): BoxLine | null {
+  const b = p?.stats?.batting;
+  const pi = p?.stats?.pitching;
+  if (!b && !pi) return null;
+  const line: BoxLine = {};
+  if (b) {
+    line.ab = b.atBats ?? 0;
+    line.h = b.hits ?? 0;
+    line.hr = b.homeRuns ?? 0;
+    line.rbi = b.rbi ?? 0;
+  }
+  if (pitched && pi) {
+    line.pitched = true;
+    line.ip_outs = inningsToOuts(pi.inningsPitched, pi.outs);
+    line.er = pi.earnedRuns ?? 0;
+    line.k = pi.strikeOuts ?? 0;
+    line.sv = pi.saves ?? 0;
+  }
+  return line;
 }
 
 export interface MlbFeed {
@@ -430,7 +474,8 @@ export function buildMlbTimeline(plays: MlbPlay[]): ScoringEvent[] {
 
 function appearancesFor(team: MlbBoxscoreTeam | undefined): Appearance[] {
   if (!team?.team) return [];
-  const ids = new Set<number>([...(team.batters ?? []), ...(team.pitchers ?? [])]);
+  const pitchers = new Set<number>(team.pitchers ?? []);
+  const ids = new Set<number>([...(team.batters ?? []), ...pitchers]);
   const out: Appearance[] = [];
   for (const id of ids) {
     const p = team.players?.[`ID${id}`];
@@ -438,6 +483,7 @@ function appearancesFor(team: MlbBoxscoreTeam | undefined): Appearance[] {
       providerPlayerId: String(id),
       fullName: p?.person.fullName ?? `Player ${id}`,
       providerTeamId: String(team.team.id),
+      line: mlbBoxLine(p, pitchers.has(id)),
     });
   }
   return out;

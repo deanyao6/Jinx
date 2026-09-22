@@ -52,6 +52,7 @@ jest.mock('@/features/games/queries', () => {
     useGame: () => ({ data: game, ...settled }),
     useGameEvents: () => ({ data: [], ...settled }),
     useGameAppearances: () => ({ data: [], ...settled }),
+    useGamePlayersSeen: () => ({ data: [], ...settled }),
     useGameScoring: () => ({ data: [], ...settled }),
   };
 });

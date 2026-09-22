@@ -832,3 +832,25 @@ and `competitors[].score`. Not seen: a game under way (none during the session);
 vocabulary for a live MLS match (`STATUS_FIRST_HALF`, `STATUS_HALFTIME`, `STATUS_SECOND_HALF`)
 is taken from ESPN's soccer feeds generally and the parser keys on `state === 'in'` and the
 word HALFTIME, so an unexpected name during play still reads as live.
+
+## Box-score lines for "players seen" (next-wave D.2) — 2026-09-22
+
+Where each line comes from, read against real responses in the fixtures:
+
+- **MLB** `liveData.boxscore.teams.{home,away}.players.ID<id>.stats.batting` (`atBats`, `hits`,
+  `homeRuns`, `rbi`) and `.stats.pitching` (`inningsPitched` "5.0", `outs`, `earnedRuns`,
+  `strikeOuts`, `saves`); a player is a pitcher when in the team's `pitchers[]`. Tigers on
+  2024-09-15: Riley Greene 2 HR, 3 RBI; Keider Montero 15 outs, 0 ER; Jason Foley the save.
+- **NBA** the CDN and stats box scores' `statistics.{points, reboundsTotal, assists, steals,
+  blocks}`, already parsed for the moment detectors.
+- **NFL** nflverse `stats_player_week_{season}.csv.gz`: `rushing_tds + receiving_tds +
+  special_teams_tds + def_tds + fumble_recovery_tds` (touchdowns reached, never a kick),
+  `rushing_yards`, `receiving_yards`, `passing_yards`, `def_sacks`, `def_interceptions`. The
+  file is read for every season now, whichever source the appearances came from.
+- **MLS** has no appearances yet; the rule is defined and waits for E.3.
+
+Thresholds are the brief's recommended ones, unchanged after reading the lines of the local
+attended games: on the Phillies at Dodgers game of 2025-09-16 the rule names Ohtani (MVP,
+homered and pitched five scoreless) and leaves out the four other home-run hitters because
+none is a superstar; on Bears at Eagles 2025-11-28 it names Byard (All-Pro, an interception)
+and A.J. Brown (franchise player, 2 TD, 132 yards) and leaves out D'Andre Swift's touchdown.

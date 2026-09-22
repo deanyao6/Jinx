@@ -536,6 +536,13 @@ function appearances(
       providerPlayerId: p.id,
       fullName: p.name,
       providerTeamId: p.side === 'home' ? homeProviderTeamId : awayProviderTeamId,
+      line: {
+        pts: num(p.stats['points']),
+        reb: num(p.stats['reboundsTotal']),
+        ast: num(p.stats['assists']),
+        stl: num(p.stats['steals']),
+        blk: num(p.stats['blocks']),
+      },
     }));
 }
 

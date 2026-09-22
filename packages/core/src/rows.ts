@@ -3,6 +3,7 @@
  * Deno Edge Functions so there is exactly one place that knows the column names.
  */
 import { trueLock } from './pledge.js';
+import { isGoodGame } from './goodGame.js';
 import type { CanonicalGame, CanonicalGameDetail, GameEvent, Side } from './types.js';
 
 export interface RowContext {
@@ -109,7 +110,14 @@ export function appearanceRows(
     const team_id = teamMap.get(a.providerTeamId);
     if (!player_id || !team_id || seen.has(player_id)) continue;
     seen.add(player_id);
-    out.push({ game_id: gameId, player_id, team_id });
+    const line = a.line ?? null;
+    out.push({
+      game_id: gameId,
+      player_id,
+      team_id,
+      line,
+      good_game: isGoodGame(d.sport, line),
+    });
   }
   return out;
 }

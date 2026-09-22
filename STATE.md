@@ -350,6 +350,20 @@ their stars. A game logged today gets its detail with the nightly job, as before
   fire, with a soccer ball, a scarf and a whistle). **Not yet seen with a game under way**: the
   NBA is off-season and no MLS match was live during the session; the parsers are tested on
   real responses and the probe (`jinx:///you/eggs?probe=live`) proves the fetches.
+- **Players seen shows superstars, for good games (2026-09-22, Dean's decision 7).** Every
+  appearance of a detailed game carries its box-score line and a `good_game` flag
+  (`packages/core/src/goodGame.ts`: MLB a home run, 3 RBI or 3 hits, or 7 innings with 2 or
+  fewer earned runs, 10 strikeouts or a save; NFL a touchdown reached, 100 rushing or receiving
+  yards, 300 passing, 2 sacks or an interception, never a kick; NBA 30 points, a triple-double,
+  20 rebounds or 15 assists; MLS a goal, an assist or a goalkeeper's clean sheet), and
+  `players_seen`, `game_players_seen` and the tap-through list show a player only for a good
+  game and only when they are a superstar or this fan has seen them have ten. The line is stored
+  for everyone, the cheaper choice since detail exists only for logged games. NFL lines come
+  from nflverse's weekly stats file; MLS lines wait for MLS appearances (E.3). Seen on the
+  simulator: `docs/evidence/players-seen/` (Ohtani with "MVP 2025 · 1 HR, 1 RBI, 5.0 IP, 5 K, 0
+  ER"; Byard and A.J. Brown; the NBA game names nobody until NBA honors load). Hosted: Dean's
+  four MLB games re-detailed (14 good games of 116 lines); his two NFL games are queued for the
+  nightly refresh. Migration `20260923000700`, test `020`.
 - **Easter eggs are built and unseen by Dean.** Eight, each behind a flag in
   `apps/mobile/src/features/eggs/flags.ts`: worn stamps, golden stamps, record rewind, curse
   breaker, rally cap, stretch confetti, certified jinx, secret handshake. Settings > About has a
@@ -417,7 +431,8 @@ their stars. A game logged today gets its detail with the nightly job, as before
    `?signOut=1` signs out (`jinx:///settings?signOut=1`), and
    `jinx:///welcome?token_hash=<hash>` signs in, where the hash is `hashed_token` from local
    GoTrue's `POST /auth/v1/admin/generate_link` (`{"type":"magiclink","email":...}`, service
-   role key as `apikey` and bearer).
+   role key as `apikey` and bearer). `jinx:///games/<id>?scroll=end` lands on the bottom of a
+   game page (Players seen), and `jinx:///you/eggs?probe=live` runs the public live feeds.
 10. **The Supabase CLI prints query JSON two ways**: a bare array in a terminal, `{"rows": [...]}`
     when it detects an agent. Handle both, or a script written by one breaks for a person.
 11. **"Accepted" is not "correct".** The storylines validator accepted "105-73" for the 2025

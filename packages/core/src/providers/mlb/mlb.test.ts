@@ -14,6 +14,8 @@ import {
   type MlbScheduleResponse,
   type MlbTeamsResponse,
   mlbScheduleFinalAt,
+  mlbBoxLine,
+  inningsToOuts,
   type MlbScheduleGame,
 } from './parse.js';
 
@@ -232,5 +234,19 @@ describe('when a game ended, from the schedule (hydrate=gameInfo)', () => {
   it('is null without gameInfo, and a schedule row without one never wipes a detail value', () => {
     const { gameInfo: _omit, ...withoutInfo } = doc.games[0]!;
     expect(mlbScheduleFinalAt(withoutInfo)).toBeNull();
+  });
+});
+
+describe('box-score lines (players seen, decision 7)', () => {
+  it('reads the Tigers\' box on 2024-09-15: Greene 2 HR 3 RBI, Montero 5 innings, Foley the save', () => {
+    const detail = parseMlbFeed(feeds.balDet());
+    const by = new Map(detail.appearances.map((a) => [a.fullName, a.line]));
+    expect(by.get('Riley Greene')).toEqual({ ab: 4, h: 2, hr: 2, rbi: 3 });
+    expect(by.get('Keider Montero')).toMatchObject({ pitched: true, ip_outs: 15, er: 0, k: 1, sv: 0 });
+    expect(by.get('Jason Foley')).toMatchObject({ pitched: true, ip_outs: 4, sv: 1 });
+    expect(inningsToOuts('7.0', undefined)).toBe(21);
+    expect(inningsToOuts('6.2', undefined)).toBe(20);
+    expect(inningsToOuts(undefined, 4)).toBe(4);
+    expect(mlbBoxLine(undefined, false)).toBeNull();
   });
 });

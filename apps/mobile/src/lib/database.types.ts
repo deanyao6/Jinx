@@ -600,16 +600,22 @@ export type Database = {
       game_appearances: {
         Row: {
           game_id: string
+          good_game: boolean
+          line: Json | null
           player_id: string
           team_id: string
         }
         Insert: {
           game_id: string
+          good_game?: boolean
+          line?: Json | null
           player_id: string
           team_id: string
         }
         Update: {
           game_id?: string
+          good_game?: boolean
+          line?: Json | null
           player_id?: string
           team_id?: string
         }
@@ -2334,6 +2340,27 @@ export type Database = {
         }
         Relationships: []
       }
+      welcome_wall_cards: {
+        Row: {
+          created_at: string
+          payload: Json
+          rank: number
+          week_start: string
+        }
+        Insert: {
+          created_at?: string
+          payload: Json
+          rank: number
+          week_start: string
+        }
+        Update: {
+          created_at?: string
+          payload?: Json
+          rank?: number
+          week_start?: string
+        }
+        Relationships: []
+      }
       wrapped_snapshots: {
         Row: {
           generated_at: string
@@ -2559,6 +2586,20 @@ export type Database = {
         Args: { p_start: string; p_tz: string }
         Returns: string
       }
+      game_players_seen: {
+        Args: { p_game_id: string }
+        Returns: {
+          full_name: string
+          honor: string
+          label: string
+          line: Json
+          niche: boolean
+          player_id: string
+          season: number
+          season_first: boolean
+          team_id: string
+        }[]
+      }
       game_stars: {
         Args: { p_game_id: string }
         Returns: {
@@ -2607,6 +2648,15 @@ export type Database = {
           season: number
         }[]
       }
+      games_wanting_detail: {
+        Args: { p_provider: string }
+        Returns: {
+          game_id: string
+          provider_game_id: string
+          reason: string
+          season: number
+        }[]
+      }
       generate_wrapped: {
         Args: { p_season: number; p_sport: string; p_user: string }
         Returns: Json
@@ -2615,6 +2665,13 @@ export type Database = {
       going_game_starts_between: {
         Args: { p_from: string; p_to: string }
         Returns: boolean
+      }
+      good_games_seen: {
+        Args: { p_user: string }
+        Returns: {
+          good_games: number
+          player_id: string
+        }[]
       }
       handshake_candidates: {
         Args: { p_game_id: string }
@@ -2704,6 +2761,7 @@ export type Database = {
         Args: { p_force?: boolean; p_season: number; p_sport: string }
         Returns: Json
       }
+      niche_good_games: { Args: never; Returns: number }
       notification_enabled: {
         Args: { p_kind: string; p_user: string }
         Returns: boolean
@@ -2758,6 +2816,7 @@ export type Database = {
           sport_id: string
         }[]
       }
+      players_seen_count: { Args: { p_user: string }; Returns: number }
       process_game_final: { Args: { p_game_id: string }; Returns: Json }
       profile_view: { Args: { p_handle: string }; Returns: Json }
       publish_wrapped_if_season_over: {
@@ -3024,6 +3083,30 @@ export type Database = {
       venue_noun: {
         Args: { p_plural?: boolean; p_sport: string }
         Returns: string
+      }
+      welcome_wall_current: { Args: never; Returns: Json }
+      welcome_wall_date_label: {
+        Args: { p_night: boolean; p_played_on: string; p_today: string }
+        Returns: string
+      }
+      welcome_wall_refresh: { Args: { p_now?: string }; Returns: number }
+      welcome_wall_score_games: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          away_score: number
+          away_team_id: string
+          game_id: string
+          home_score: number
+          home_team_id: string
+          local_date: string
+          night: boolean
+          reasons: string[]
+          scheduled_start: string
+          score: number
+          sport_id: string
+          venue_name: string
+          winner_team_id: string
+        }[]
       }
     }
     Enums: {

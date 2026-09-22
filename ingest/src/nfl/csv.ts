@@ -213,6 +213,18 @@ export interface StatsWeekRow {
   week: number | null;
   season_type: string | null;
   game_id: string | null;
+  position: string | null;
+  passing_yards: number | null;
+  passing_tds: number | null;
+  rushing_yards: number | null;
+  rushing_tds: number | null;
+  receiving_yards: number | null;
+  receiving_tds: number | null;
+  special_teams_tds: number | null;
+  def_tds: number | null;
+  fumble_recovery_tds: number | null;
+  def_sacks: number | null;
+  def_interceptions: number | null;
   /** Current-franchise abbreviation (nflverse writes LV for the 2005 Raiders). */
   team: string | null;
   opponent_team: string | null;
@@ -229,5 +241,17 @@ export function toStatsWeekRow(r: RawRecord): StatsWeekRow {
     game_id: str(r, 'game_id'),
     team: str(r, 'team') ?? str(r, 'recent_team'),
     opponent_team: str(r, 'opponent_team'),
+    position: str(r, 'position'),
+    passing_yards: num(r, 'passing_yards'),
+    passing_tds: num(r, 'passing_tds'),
+    rushing_yards: num(r, 'rushing_yards'),
+    rushing_tds: num(r, 'rushing_tds'),
+    receiving_yards: num(r, 'receiving_yards'),
+    receiving_tds: num(r, 'receiving_tds'),
+    special_teams_tds: num(r, 'special_teams_tds'),
+    def_tds: num(r, 'def_tds'),
+    fumble_recovery_tds: num(r, 'fumble_recovery_tds'),
+    def_sacks: num(r, 'def_sacks'),
+    def_interceptions: num(r, 'def_interceptions'),
   };
 }

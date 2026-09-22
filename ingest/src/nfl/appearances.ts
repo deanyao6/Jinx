@@ -13,7 +13,7 @@
  * through the game's home/away pair plus RELOCATED_ALIASES, using the opponent column when the
  * team column alone is ambiguous.
  */
-import type { Appearance, NflverseGameRow } from '@jinx/core';
+import type { Appearance, BoxLine, NflverseGameRow } from '@jinx/core';
 
 import type { PlayerIdRow, SnapCountRow, StatsWeekRow } from './csv.js';
 
@@ -213,6 +213,51 @@ export function appearancesFromWeeklyStats(
     });
   }
   return index;
+}
+
+/**
+ * The box-score line of every player in every game of a season, from the weekly stats file:
+ * touchdowns reached (rushing, receiving, returns, defensive, fumble recoveries; never a kick),
+ * yards by kind, sacks and interceptions. Keyed by game id, then gsis id. Games the schedule
+ * cannot place are skipped, as in appearancesFromWeeklyStats.
+ */
+export function linesFromWeeklyStats(
+  rows: Iterable<StatsWeekRow>,
+  schedule: ScheduleIndex,
+): Map<string, Map<string, BoxLine>> {
+  const out = new Map<string, Map<string, BoxLine>>();
+  for (const row of rows) {
+    if (row.player_id == null) continue;
+    let gameId: string | null =
+      row.game_id != null && schedule.teamsByGameId.has(row.game_id) ? row.game_id : null;
+    if (gameId == null) gameId = resolveGameId(schedule, row.season, row.week, row.team);
+    if (gameId == null) continue;
+    let byPlayer = out.get(gameId);
+    if (!byPlayer) out.set(gameId, (byPlayer = new Map()));
+    byPlayer.set(row.player_id, {
+      td:
+        (row.rushing_tds ?? 0) +
+        (row.receiving_tds ?? 0) +
+        (row.special_teams_tds ?? 0) +
+        (row.def_tds ?? 0) +
+        (row.fumble_recovery_tds ?? 0),
+      rush_yds: row.rushing_yards ?? 0,
+      rec_yds: row.receiving_yards ?? 0,
+      pass_yds: row.passing_yards ?? 0,
+      sacks: row.def_sacks ?? 0,
+      int: row.def_interceptions ?? 0,
+    });
+  }
+  return out;
+}
+
+/** Attaches the lines to a game's appearances; a player with no stat line keeps none. */
+export function withLines(
+  appearances: Appearance[],
+  lines: Map<string, BoxLine> | undefined,
+): Appearance[] {
+  if (!lines) return appearances;
+  return appearances.map((a) => ({ ...a, line: lines.get(a.providerPlayerId) ?? null }));
 }
 
 export function countAppearances(index: AppearanceIndex): number {

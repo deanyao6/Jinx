@@ -31,6 +31,8 @@ import {
   buildPfrToGsis,
   buildScheduleIndex,
   countAppearances,
+  linesFromWeeklyStats,
+  withLines,
   type AppearanceIndex,
   type PlayerIdentity,
   type ScheduleIndex,
@@ -214,6 +216,12 @@ async function runSeasonDetail(
   try {
     const pbp = await loadPbpBySeason(season, force);
     const appearances = await loadAppearances(season, schedule, players, force);
+    // The weekly stats file carries every line the "players seen" rule reads, whichever
+    // source the appearances came from.
+    const lines = linesFromWeeklyStats(
+      await fetchCsvRows(statsPlayerWeekAsset(season), toStatsWeekRow, force),
+      schedule,
+    );
     const scheduled = new Set(seasonRows.map((r) => r.game_id));
     const pbpWithoutSchedule = [...pbp.keys()].filter((id) => !scheduled.has(id));
     const finals = seasonRows.filter(
@@ -225,11 +233,22 @@ async function runSeasonDetail(
       const plays = pbp.get(row.game_id) ?? [];
       if (plays.length === 0) totals.noPbp++;
       const detail = parseNflGame(row, plays);
-      detail.appearances = appearances.byGame.get(row.game_id) ?? [];
+      detail.appearances = withLines(
+        appearances.byGame.get(row.game_id) ?? [],
+        lines.get(row.game_id),
+      );
       const items = detail.plays.sport === 'nfl' ? detail.plays.items : [];
       const lastStamped = [...items].reverse().find((p) => p.timeOfDay != null);
       detail.finalAt = lastStamped?.timeOfDay ?? approxFinalAt(detail.scheduledStart);
       const res = await upsertGameDetail(db, detail, ctx, detectNflMoments);
+      // A refresh row is not settled by detail_queue_settle (it settles on detail existing,
+      // which a refresh already has), so the row is closed here, once its game is rewritten.
+      if (wanted !== null) {
+        await db
+          .from('detail_queue')
+          .update({ done_at: new Date().toISOString(), last_error: null })
+          .eq('game_id', res.gameId);
+      }
       totals.games++;
       totals.appearances += res.appearances;
       totals.timeline += res.timeline;

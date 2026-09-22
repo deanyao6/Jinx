@@ -12,10 +12,19 @@ type Props = {
   padded?: boolean;
   /** Overrides what the layout says, for a screen that hides its stack's header. */
   underHeader?: boolean;
+  /** The scroll view, for a page that has to move itself (a deep link to a section). */
+  scrollRef?: React.Ref<ScrollView>;
 };
 
 /** Base screen wrapper: safe-area aware, themed background, optional scrolling. */
-export function Screen({ children, scroll = true, style, padded = true, underHeader }: Props) {
+export function Screen({
+  children,
+  scroll = true,
+  style,
+  padded = true,
+  underHeader,
+  scrollRef,
+}: Props) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const headed = useIsUnderHeader();
@@ -36,6 +45,7 @@ export function Screen({ children, scroll = true, style, padded = true, underHea
   }
   return (
     <ScrollView
+      ref={scrollRef}
       style={[base, style]}
       contentContainerStyle={[content, styles.grow]}
       contentInsetAdjustmentBehavior="never"

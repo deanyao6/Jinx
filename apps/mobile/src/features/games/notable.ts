@@ -51,8 +51,16 @@ export function notablePlayers(
   appearances: readonly AppearanceRow[],
   events: readonly GameEventRow[],
   steps: readonly ReliveStep[] = [],
-  /** playerId -> the honor caption, for the superstars who appeared (`game_stars`). */
+  /**
+   * playerId -> the caption, for the players the "players seen" rule names
+   * (`game_players_seen`: superstars with a good game, and the fan's own ten-timers).
+   */
   stars: ReadonlyMap<string, string> = new Map(),
+  /**
+   * Since 2026-09-22 (decision 7) only the players in `stars` are notable; a scorer who is not
+   * one is listed with everyone else. The old behaviour stays for tests and demo data.
+   */
+  seenOnly = false,
 ): TeamPlayers[] {
   // playerId -> the things they did, in the order they happened.
   const didByPlayer = new Map<string, string[]>();
@@ -85,7 +93,7 @@ export function notablePlayers(
     const all = didByPlayer.get(row.player.id) ?? [];
     // A star keeps everything they did; anyone else loses the ordinary RBI.
     const did = honor ? all : all.filter((d) => !QUIET_UNLESS_STAR.has(d));
-    if (did.length > 0 || honor)
+    if (seenOnly ? honor != null : did.length > 0 || honor)
       group.notable.push({
         playerId: row.player.id,
         name: row.player.full_name,

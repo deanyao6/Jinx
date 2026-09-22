@@ -1,3 +1,4 @@
+import type { BoxLine } from './goodGame.js';
 /**
  * Canonical domain types shared by the app, ingestion, and Edge Functions.
  * Everything here is plain data; no provider-specific shapes leak past the adapters.
@@ -149,6 +150,8 @@ export interface Appearance {
   providerPlayerId: string;
   fullName: string;
   providerTeamId: string;
+  /** The box-score line the "players seen" rule reads (goodGame.ts); null when the feed has none. */
+  line?: BoxLine | null;
 }
 
 /** One player on a team's current roster, as the provider lists them today. */

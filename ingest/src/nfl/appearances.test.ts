@@ -4,6 +4,8 @@ import { describe, expect, it } from 'vitest';
 import {
   appearancesFromSnapCounts,
   appearancesFromWeeklyStats,
+  linesFromWeeklyStats,
+  withLines,
   buildPfrToGsis,
   buildScheduleIndex,
   countAppearances,
@@ -124,6 +126,18 @@ function stat(over: Partial<StatsWeekRow>): StatsWeekRow {
     game_id: '2005_01_OAK_NE',
     team: 'NE',
     opponent_team: 'LV',
+    position: 'QB',
+    passing_yards: null,
+    passing_tds: null,
+    rushing_yards: null,
+    rushing_tds: null,
+    receiving_yards: null,
+    receiving_tds: null,
+    special_teams_tds: null,
+    def_tds: null,
+    fumble_recovery_tds: null,
+    def_sacks: null,
+    def_interceptions: null,
     ...over,
   };
 }
@@ -208,5 +222,34 @@ describe('appearances from weekly stats (2000-2011 fallback)', () => {
       unknownTeam: 1,
       missingPlayer: 1,
     });
+  });
+});
+
+describe('box-score lines from the weekly stats (players seen, decision 7)', () => {
+  it('sums every kind of touchdown, keeps yards by kind, and never counts a kick', () => {
+    const schedule = buildScheduleIndex([game('2005_01_OAK_NE', 2005, 1, 'OAK', 'NE')]);
+    const lines = linesFromWeeklyStats(
+      [
+        stat({ passing_yards: 306, passing_tds: 2, rushing_yards: 3 }),
+        stat({ player_id: '00-0020000', player_display_name: 'A Back', position: 'RB', rushing_yards: 101, rushing_tds: 1, receiving_yards: 22, receiving_tds: 1, special_teams_tds: 1 }),
+        stat({ player_id: '00-0020001', player_display_name: 'A Kicker', position: 'K' }),
+        stat({ player_id: '00-0020002', player_display_name: 'A Linebacker', position: 'LB', def_sacks: 2, def_interceptions: 1, def_tds: 1 }),
+        stat({ player_id: null }),
+      ],
+      schedule,
+    );
+    const byPlayer = lines.get('2005_01_OAK_NE')!;
+    expect(byPlayer.get('00-0019596')).toEqual({ td: 0, rush_yds: 3, rec_yds: 0, pass_yds: 306, sacks: 0, int: 0 });
+    expect(byPlayer.get('00-0020000')).toEqual({ td: 3, rush_yds: 101, rec_yds: 22, pass_yds: 0, sacks: 0, int: 0 });
+    expect(byPlayer.get('00-0020001')).toEqual({ td: 0, rush_yds: 0, rec_yds: 0, pass_yds: 0, sacks: 0, int: 0 });
+    expect(byPlayer.get('00-0020002')).toEqual({ td: 1, rush_yds: 0, rec_yds: 0, pass_yds: 0, sacks: 2, int: 1 });
+    expect(byPlayer.has('null')).toBe(false);
+    const withL = withLines(
+      [{ providerPlayerId: '00-0019596', fullName: 'Tom Brady', providerTeamId: 'NE' }, { providerPlayerId: 'x', fullName: 'X', providerTeamId: 'NE' }],
+      byPlayer,
+    );
+    expect(withL[0]!.line?.pass_yds).toBe(306);
+    expect(withL[1]!.line).toBeNull();
+    expect(withLines([{ providerPlayerId: 'x', fullName: 'X', providerTeamId: 'NE' }], undefined)[0]!.line).toBeUndefined();
   });
 });

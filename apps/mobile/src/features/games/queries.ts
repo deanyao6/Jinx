@@ -80,6 +80,7 @@ export const gameKeys = {
   upcoming: (teamIds: string[]) => ['games', 'upcoming', [...teamIds].sort()] as const,
   events: (id: string) => ['games', 'events', id] as const,
   appearances: (id: string) => ['games', 'appearances', id] as const,
+  playersSeen: (id: string) => ['games', 'players-seen', id] as const,
   scoring: (id: string) => ['games', 'scoring', id] as const,
 };
 
@@ -204,6 +205,38 @@ export type AppearanceRow = {
   team_id: string;
   player: { id: string; full_name: string } | null;
 };
+
+/** One row of `game_players_seen`: a superstar with a good game, or one of my ten-timers. */
+export type GamePlayerSeenRow = {
+  player_id: string;
+  full_name: string;
+  team_id: string;
+  line: Record<string, number | boolean> | null;
+  honor: string | null;
+  label: string | null;
+  season: number | null;
+  season_first: boolean | null;
+  niche: boolean;
+};
+
+/**
+ * The players a fan "saw" in a game (Dean, 2026-09-22, decision 7): superstars who had a good
+ * game by the sport's box-score rule, plus anyone this fan has seen have ten good games.
+ */
+export function useGamePlayersSeen(gameId: string | undefined) {
+  return useQuery({
+    queryKey: gameKeys.playersSeen(gameId ?? ''),
+    queryFn: async (): Promise<GamePlayerSeenRow[]> => {
+      const { data, error } = await supabase.rpc('game_players_seen', {
+        p_game_id: gameId as string,
+      });
+      if (error) throw error;
+      return (data ?? []) as unknown as GamePlayerSeenRow[];
+    },
+    enabled: !!gameId,
+    staleTime: 10 * 60_000,
+  });
+}
 
 export function useGameAppearances(gameId: string | undefined) {
   return useQuery({

@@ -196,12 +196,14 @@ export function useMyGamesWithPlayer(playerId: string | undefined) {
         .from('attendances')
         .select(
           `id, game:games!inner(${GAME_DETAIL_SELECT},
-            appearances:game_appearances!inner(player_id))`,
+            appearances:game_appearances!inner(player_id, good_game))`,
         )
         .eq('user_id', userId as string)
         .eq('status', 'attended')
         .eq('game.status', 'final')
-        .eq('game.appearances.player_id', playerId as string);
+        .eq('game.appearances.player_id', playerId as string)
+        // The games a fan "saw" a player in are the ones with a good game (decision 7).
+        .eq('game.appearances.good_game', true);
       if (error) throw error;
       const rows = data as unknown as { id: string; game: GameDetail }[];
       return rows

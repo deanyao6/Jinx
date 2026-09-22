@@ -1,7 +1,7 @@
-import { honorCaption } from '@jinx/core';
+import { honorCaption, lineCaption, type BoxLine, type Sport } from '@jinx/core';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useMemo, useState } from 'react';
-import { Alert, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, View, type ScrollView } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
@@ -25,6 +25,7 @@ import { notablePlayers, othersLine, type TeamPlayers } from '@/features/games/n
 import {
   useGame,
   useGameAppearances,
+  useGamePlayersSeen,
   useGameEvents,
   useGameScoring,
   type GameTeam,
@@ -54,7 +55,7 @@ import { shareGameFor } from '@/features/share/fromGame';
 import { ShareButton } from '@/features/share/ShareButton';
 import { AlsoThere } from '@/features/social/ui/AlsoThere';
 import { FamousCard } from '@/features/famous/ui/FamousCard';
-import { useGameFamous, useGameStars } from '@/features/famous/queries';
+import { useGameFamous } from '@/features/famous/queries';
 import { hasLiveFeed } from '@/features/eggs/live';
 import { isUnderWay, liveStatusLabel } from '@/features/live/format';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -86,6 +87,10 @@ export default function GameDetailScreen() {
   const { gameId } = useLocalSearchParams<{ gameId: string }>();
   const game = useGame(gameId);
   const [openedAt] = useState(() => Date.now());
+  // Development only: `jinx:///games/<id>?scroll=end` lands on the bottom of the page (Players
+  // seen), because the simulator cannot be scrolled by a script (STATE.md trap 9).
+  const { scroll } = useLocalSearchParams<{ scroll?: string }>();
+  const scrollRef = useRef<ScrollView>(null);
   // Live state while the game is under way: the NBA and MLS from the phone's own feed, MLB from
   // the server's table (features/live/feeds.ts). Off otherwise, so nothing polls a game that
   // ended last year.
@@ -109,8 +114,8 @@ export default function GameDetailScreen() {
   const storylines = useStorylines(gameId);
   // Famous rows for this game, and my personal badges for it.
   const famous = useGameFamous(gameId);
-  // Superstars who appeared, for Players seen.
-  const stars = useGameStars(gameId);
+  // Players seen: superstars with a good game, and my own ten-timers (decision 7, 2026-09-22).
+  const seen = useGamePlayersSeen(gameId);
   const remove = useDeleteAttendance();
 
   const g = game.data;
@@ -122,20 +127,30 @@ export default function GameDetailScreen() {
   // Who to name and who to count. See features/games/notable.ts for why "star player" is
   // "did something in this game" rather than a reputation the database does not hold.
   const playersByTeam = useMemo(() => {
-    const starCaptions = new Map(
-      (stars.data ?? []).map((st) => [
-        st.playerId,
-        honorCaption({ label: st.label, season: st.season, seasonFirst: st.seasonFirst }),
-      ]),
+    const captions = new Map(
+      (seen.data ?? []).map((row) => {
+        const honor = row.label
+          ? honorCaption({
+              label: row.label,
+              season: row.season ?? 0,
+              seasonFirst: row.season_first ?? false,
+            })
+          : row.niche
+            ? 'Seen ten good games'
+            : null;
+        const line = g ? lineCaption(g.sport_id as Sport, row.line as BoxLine | null) : null;
+        return [row.player_id, [honor, line].filter(Boolean).join(' · ') || 'Good game'];
+      }),
     );
     const groups = notablePlayers(
       appearances.data ?? [],
       events.data ?? [],
       story.data ?? [],
-      starCaptions,
+      captions,
+      true,
     );
     return new Map(groups.map((g) => [g.teamId, g]));
-  }, [appearances.data, events.data, story.data, stars.data]);
+  }, [appearances.data, events.data, story.data, seen.data, g]);
   const [showAllPlayers, setShowAllPlayers] = useState(false);
 
   const onDelete = () => {
@@ -166,6 +181,12 @@ export default function GameDetailScreen() {
   }
 
   const final = g.status === 'final' && g.home_score != null && g.away_score != null;
+  useEffect(() => {
+    if (!__DEV__ || scroll !== 'end' || !seen.data) return;
+    const t = setTimeout(() => scrollRef.current?.scrollToEnd({ animated: false }), 400);
+    return () => clearTimeout(t);
+  }, [scroll, seen.data]);
+
   // A feed ahead of the table: live scores and the period, or a final the table has not seen.
   const liveNow = live.data && live.data.status === 'live' ? live.data : null;
   const liveFinal = !final && live.data?.status === 'final' ? live.data : null;
@@ -267,7 +288,7 @@ export default function GameDetailScreen() {
 
   return (
     <SideTheme team={pageTeam}>
-      <Screen>
+      <Screen scrollRef={scrollRef}>
         <Stack.Screen
           options={{
             title: `${g.away?.abbreviation ?? ''} at ${g.home?.abbreviation ?? ''}`,
