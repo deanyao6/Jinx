@@ -62,7 +62,13 @@ async function main(): Promise<void> {
   for (const p of known) {
     const info = players.get(p.provider_player_id);
     if (info?.rookieSeason) {
-      rookieRows.push({ sport_id: 'nfl', full_name: p.full_name, provider: 'nflverse', provider_player_id: p.provider_player_id, rookie_season: info.rookieSeason });
+      rookieRows.push({
+        sport_id: 'nfl',
+        full_name: p.full_name,
+        provider: 'nflverse',
+        provider_player_id: p.provider_player_id,
+        rookie_season: info.rookieSeason,
+      });
     }
   }
   await upsertRows(db, 'players', rookieRows, 'provider,provider_player_id');
@@ -85,9 +91,14 @@ async function main(): Promise<void> {
   // provider game id -> games.id, for the games we hold.
   const gameIds = new Map<string, string>();
   for (const part of chunk([...new Set(firsts.values())], 300)) {
-    const { data, error: e } = await db.from('games').select('id, provider_game_id').eq('provider', 'nflverse').in('provider_game_id', part);
+    const { data, error: e } = await db
+      .from('games')
+      .select('id, provider_game_id')
+      .eq('provider', 'nflverse')
+      .in('provider_game_id', part);
     if (e) throw new Error(e.message);
-    for (const g of (data ?? []) as { id: string; provider_game_id: string }[]) gameIds.set(g.provider_game_id, g.id);
+    for (const g of (data ?? []) as { id: string; provider_game_id: string }[])
+      gameIds.set(g.provider_game_id, g.id);
   }
   const placed = [...firsts].filter(([, game]) => gameIds.has(game));
   const ids = await ensurePlayers(
@@ -99,7 +110,11 @@ async function main(): Promise<void> {
   await upsertRows(
     db,
     'player_firsts',
-    placed.map(([gsis, game]) => ({ player_id: ids.get(gsis)!, kind: 'first_td', game_id: gameIds.get(game)! })),
+    placed.map(([gsis, game]) => ({
+      player_id: ids.get(gsis)!,
+      kind: 'first_td',
+      game_id: gameIds.get(game)!,
+    })),
     'player_id,kind',
     // A first already stored stays: it came from an earlier season than this run can see.
     { ignoreDuplicates: true },

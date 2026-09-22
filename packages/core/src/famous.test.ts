@@ -57,9 +57,13 @@ describe('matchCuratedGame', () => {
     expect(matchCuratedGame(entry, [game({})]).map((g) => g.id)).toEqual(['g1']);
   });
   it('does not match the wrong sides, the wrong sport or the wrong day', () => {
-    expect(matchCuratedGame(entry, [game({ home_abbreviation: 'HOU', away_abbreviation: 'PHI' })])).toEqual([]);
+    expect(
+      matchCuratedGame(entry, [game({ home_abbreviation: 'HOU', away_abbreviation: 'PHI' })]),
+    ).toEqual([]);
     expect(matchCuratedGame(entry, [game({ sport_id: 'nfl' })])).toEqual([]);
-    expect(matchCuratedGame(entry, [game({ scheduled_start: '2022-11-03T00:03:00Z' })])).toEqual([]);
+    expect(matchCuratedGame(entry, [game({ scheduled_start: '2022-11-03T00:03:00Z' })])).toEqual(
+      [],
+    );
   });
   it('returns both games of a doubleheader unless the entry says which', () => {
     const dh = [
@@ -84,7 +88,9 @@ describe('isSuperstarSeason', () => {
 describe('honorCaption', () => {
   it('puts the season where the honor reads naturally', () => {
     expect(honorCaption({ label: 'MVP', season: 2023, seasonFirst: false })).toBe('MVP 2023');
-    expect(honorCaption({ label: 'All-Star', season: 2024, seasonFirst: true })).toBe('2024 All-Star');
+    expect(honorCaption({ label: 'All-Star', season: 2024, seasonFirst: true })).toBe(
+      '2024 All-Star',
+    );
   });
 });
 
@@ -104,23 +110,37 @@ describe('singularNickname', () => {
 
 describe('personalBadgeTitle', () => {
   it('says first days as a Phillie, not first home game', () => {
-    expect(personalBadgeTitle({ kind: 'first_days', playerName: 'Jhoan Duran', teamNickname: 'Phillies' })).toBe(
-      "Saw Jhoan Duran’s first days as a Phillie",
-    );
-    expect(personalBadgeTitle({ kind: 'first_days', playerName: 'Saquon Barkley', teamNickname: 'Eagles' })).toBe(
-      "Saw Saquon Barkley’s first days as an Eagle",
-    );
-    expect(personalBadgeTitle({ kind: 'first_days', playerName: 'Mookie Betts', teamNickname: 'Red Sox' })).toBe(
-      "Saw Mookie Betts’ first days with the Red Sox",
-    );
+    expect(
+      personalBadgeTitle({
+        kind: 'first_days',
+        playerName: 'Jhoan Duran',
+        teamNickname: 'Phillies',
+      }),
+    ).toBe('Saw Jhoan Duran’s first days as a Phillie');
+    expect(
+      personalBadgeTitle({
+        kind: 'first_days',
+        playerName: 'Saquon Barkley',
+        teamNickname: 'Eagles',
+      }),
+    ).toBe('Saw Saquon Barkley’s first days as an Eagle');
+    expect(
+      personalBadgeTitle({
+        kind: 'first_days',
+        playerName: 'Mookie Betts',
+        teamNickname: 'Red Sox',
+      }),
+    ).toBe('Saw Mookie Betts’ first days with the Red Sox');
   });
   it('names the league for a debut, and the other kinds plainly', () => {
     expect(personalBadgeTitle({ kind: 'debut', playerName: 'Bryce Harper', sportId: 'mlb' })).toBe(
-      "Saw Bryce Harper’s MLB debut",
+      'Saw Bryce Harper’s MLB debut',
     );
-    expect(personalBadgeTitle({ kind: 'rookie', playerName: 'Paul Skenes' })).toBe("Saw Paul Skenes’ rookie season");
+    expect(personalBadgeTitle({ kind: 'rookie', playerName: 'Paul Skenes' })).toBe(
+      'Saw Paul Skenes’ rookie season',
+    );
     expect(personalBadgeTitle({ kind: 'first_td', playerName: 'DeVonta Smith' })).toBe(
-      "Saw DeVonta Smith’s first touchdown",
+      'Saw DeVonta Smith’s first touchdown',
     );
   });
 });
@@ -154,10 +174,12 @@ describe('rosterJoins', () => {
     ]);
   });
   it('treats a rookie’s first week as a join and an unknown history as nothing', () => {
-    expect(rosterJoins([{ season: 2021, week: 1, team: 'PHI', gsisId: 'r', rookieSeason: 2021 }])).toEqual([
-      { gsisId: 'r', team: 'PHI', season: 2021, week: 1 },
-    ]);
-    expect(rosterJoins([{ season: 2021, week: 1, team: 'PHI', gsisId: 'v', rookieSeason: 2017 }])).toEqual([]);
+    expect(
+      rosterJoins([{ season: 2021, week: 1, team: 'PHI', gsisId: 'r', rookieSeason: 2021 }]),
+    ).toEqual([{ gsisId: 'r', team: 'PHI', season: 2021, week: 1 }]);
+    expect(
+      rosterJoins([{ season: 2021, week: 1, team: 'PHI', gsisId: 'v', rookieSeason: 2017 }]),
+    ).toEqual([]);
   });
 });
 
@@ -166,17 +188,54 @@ describe('mlbJoins', () => {
   it('keeps the trade row whose destination is a major league team, once', () => {
     const joins = mlbJoins(
       [
-        { person: { id: 661395, fullName: 'Jhoan Duran' }, toTeam: { id: 143 }, date: '2025-07-30', typeCode: 'TR' },
-        { person: { id: 690953, fullName: 'Mick Abel' }, toTeam: { id: 142 }, date: '2025-07-30', typeCode: 'TR' },
-        { person: { id: 661395, fullName: 'Jhoan Duran' }, toTeam: { id: 143 }, date: '2025-08-01', typeCode: 'SC' },
-        { person: { id: 605452, fullName: 'Joe Ross' }, toTeam: { id: 1410 }, date: '2025-08-01', typeCode: 'ASG' },
-        { person: { id: 661395, fullName: 'Jhoan Duran' }, toTeam: { id: 143 }, date: '2025-07-30', typeCode: 'TR' },
+        {
+          person: { id: 661395, fullName: 'Jhoan Duran' },
+          toTeam: { id: 143 },
+          date: '2025-07-30',
+          typeCode: 'TR',
+        },
+        {
+          person: { id: 690953, fullName: 'Mick Abel' },
+          toTeam: { id: 142 },
+          date: '2025-07-30',
+          typeCode: 'TR',
+        },
+        {
+          person: { id: 661395, fullName: 'Jhoan Duran' },
+          toTeam: { id: 143 },
+          date: '2025-08-01',
+          typeCode: 'SC',
+        },
+        {
+          person: { id: 605452, fullName: 'Joe Ross' },
+          toTeam: { id: 1410 },
+          date: '2025-08-01',
+          typeCode: 'ASG',
+        },
+        {
+          person: { id: 661395, fullName: 'Jhoan Duran' },
+          toTeam: { id: 143 },
+          date: '2025-07-30',
+          typeCode: 'TR',
+        },
       ],
       mlb,
     );
     expect(joins).toEqual([
-      { providerPlayerId: '661395', providerTeamId: '143', joinedOn: '2025-07-30', kind: 'trade', fullName: 'Jhoan Duran' },
-      { providerPlayerId: '690953', providerTeamId: '142', joinedOn: '2025-07-30', kind: 'trade', fullName: 'Mick Abel' },
+      {
+        providerPlayerId: '661395',
+        providerTeamId: '143',
+        joinedOn: '2025-07-30',
+        kind: 'trade',
+        fullName: 'Jhoan Duran',
+      },
+      {
+        providerPlayerId: '690953',
+        providerTeamId: '142',
+        joinedOn: '2025-07-30',
+        kind: 'trade',
+        fullName: 'Mick Abel',
+      },
     ]);
   });
 });

@@ -17,7 +17,13 @@ import { upsertRows, type MinimalDb } from '@jinx/core';
 
 import { createDb } from '../db.js';
 import { MlbClient } from '../mlb/client.js';
-import { ensurePlayers, flag, loadNflPlayers, refreshAllStats, type NflPlayerInfo } from './players.js';
+import {
+  ensurePlayers,
+  flag,
+  loadNflPlayers,
+  refreshAllStats,
+  type NflPlayerInfo,
+} from './players.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 export const FRANCHISE_FILE = path.join(ROOT, 'seed', 'franchise_players.json');
@@ -51,7 +57,10 @@ export function normName(n: string): string {
 }
 
 /** NFL: the players.csv rows with this name who played in [from, to]. */
-export function nflCandidates(players: Iterable<NflPlayerInfo>, e: FranchiseEntry): NflPlayerInfo[] {
+export function nflCandidates(
+  players: Iterable<NflPlayerInfo>,
+  e: FranchiseEntry,
+): NflPlayerInfo[] {
   const want = normName(e.name);
   const to = e.to ?? 9999;
   return [...players].filter(
@@ -87,10 +96,17 @@ export async function resolveFranchise(db: MinimalDb, file: FranchiseFile) {
   if (error) throw new Error(error.message);
   const teams = (teamRows ?? []) as { id: string; sport_id: string; abbreviation: string }[];
   const client = new MlbClient();
-  const nfl = entries.some((e) => e.sport === 'nfl' && !e.id) ? await loadNflPlayers(() => {}) : new Map<string, NflPlayerInfo>();
+  const nfl = entries.some((e) => e.sport === 'nfl' && !e.id)
+    ? await loadNflPlayers(() => {})
+    : new Map<string, NflPlayerInfo>();
 
   const errors: string[] = [];
-  const out: { entry: FranchiseEntry; providerPlayerId: string; fullName: string; teamId: string | null }[] = [];
+  const out: {
+    entry: FranchiseEntry;
+    providerPlayerId: string;
+    fullName: string;
+    teamId: string | null;
+  }[] = [];
   for (const e of entries) {
     const at = `${e.sport} ${e.team ?? 'any team'} ${e.name}`;
     let teamId: string | null = null;
@@ -108,14 +124,18 @@ export async function resolveFranchise(db: MinimalDb, file: FranchiseFile) {
     if (e.sport === 'mlb') {
       const c = await mlbCandidates(client, e);
       if (c.length !== 1) {
-        errors.push(`${at}: ${c.length === 0 ? 'no MLB player by that name in those seasons' : `${c.length} players, add "id": one of ${c.map((p) => `${p.id} (debut ${p.mlbDebutDate})`).join(', ')}`}`);
+        errors.push(
+          `${at}: ${c.length === 0 ? 'no MLB player by that name in those seasons' : `${c.length} players, add "id": one of ${c.map((p) => `${p.id} (debut ${p.mlbDebutDate})`).join(', ')}`}`,
+        );
         continue;
       }
       out.push({ entry: e, providerPlayerId: String(c[0]!.id), fullName: c[0]!.fullName, teamId });
     } else if (e.sport === 'nfl') {
       const c = nflCandidates(nfl.values(), e);
       if (c.length !== 1) {
-        errors.push(`${at}: ${c.length === 0 ? 'no NFL player by that name in those seasons' : `${c.length} players, add "id": one of ${c.map((p) => `${p.gsisId} (${p.position}, ${p.rookieSeason})`).join(', ')}`}`);
+        errors.push(
+          `${at}: ${c.length === 0 ? 'no NFL player by that name in those seasons' : `${c.length} players, add "id": one of ${c.map((p) => `${p.gsisId} (${p.position}, ${p.rookieSeason})`).join(', ')}`}`,
+        );
         continue;
       }
       out.push({ entry: e, providerPlayerId: c[0]!.gsisId, fullName: c[0]!.name, teamId });
@@ -123,7 +143,8 @@ export async function resolveFranchise(db: MinimalDb, file: FranchiseFile) {
       errors.push(`${at}: unknown sport`);
     }
   }
-  if (errors.length > 0) throw new Error(`refusing to load seed/franchise_players.json:\n  ${errors.join('\n  ')}`);
+  if (errors.length > 0)
+    throw new Error(`refusing to load seed/franchise_players.json:\n  ${errors.join('\n  ')}`);
   return out;
 }
 
@@ -131,7 +152,10 @@ async function main(): Promise<void> {
   const file = JSON.parse(readFileSync(FRANCHISE_FILE, 'utf8')) as FranchiseFile;
   const db = createDb();
   const resolved = await resolveFranchise(db, file);
-  for (const r of resolved) console.log(`${r.entry.sport} ${r.entry.team ?? '*'} ${r.fullName} (${r.providerPlayerId}) ${r.entry.from}-${r.entry.to ?? 'now'}`);
+  for (const r of resolved)
+    console.log(
+      `${r.entry.sport} ${r.entry.team ?? '*'} ${r.fullName} (${r.providerPlayerId}) ${r.entry.from}-${r.entry.to ?? 'now'}`,
+    );
   if (flag('check')) {
     console.log(`${resolved.length} entries resolve (--check: nothing written)`);
     return;
@@ -143,7 +167,9 @@ async function main(): Promise<void> {
       db,
       sport,
       provider,
-      resolved.filter((r) => r.entry.sport === sport).map((r) => ({ providerPlayerId: r.providerPlayerId, fullName: r.fullName })),
+      resolved
+        .filter((r) => r.entry.sport === sport)
+        .map((r) => ({ providerPlayerId: r.providerPlayerId, fullName: r.fullName })),
     );
     for (const [k, v] of m) ids.set(`${sport}:${k}`, v);
   }

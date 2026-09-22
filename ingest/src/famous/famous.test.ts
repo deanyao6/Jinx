@@ -29,11 +29,21 @@ const load = <T>(file: string): T => JSON.parse(readFileSync(file, 'utf8')) as T
 
 describe('MLB award recipients', () => {
   it('reads the 2024 AL MVP as Aaron Judge', () => {
-    const rows = honorsFromRecipients('ALMVP', 2024, load<MlbAwardRecipientsResponse>(path.join(MLB, 'awards_ALMVP_recipients_2024.json')));
-    expect(rows).toEqual([{ providerPlayerId: '592450', fullName: 'Aaron Judge', season: 2024, honor: 'mvp' }]);
+    const rows = honorsFromRecipients(
+      'ALMVP',
+      2024,
+      load<MlbAwardRecipientsResponse>(path.join(MLB, 'awards_ALMVP_recipients_2024.json')),
+    );
+    expect(rows).toEqual([
+      { providerPlayerId: '592450', fullName: 'Aaron Judge', season: 2024, honor: 'mvp' },
+    ]);
   });
   it('reads every 2024 AL All-Star', () => {
-    const rows = honorsFromRecipients('ALAS', 2024, load<MlbAwardRecipientsResponse>(path.join(MLB, 'awards_ALAS_recipients_2024.json')));
+    const rows = honorsFromRecipients(
+      'ALAS',
+      2024,
+      load<MlbAwardRecipientsResponse>(path.join(MLB, 'awards_ALAS_recipients_2024.json')),
+    );
     expect(rows).toHaveLength(37);
     expect(new Set(rows.map((r) => r.honor))).toEqual(new Set(['all_star']));
     expect(rows.find((r) => r.fullName === 'Bobby Witt Jr.')?.providerPlayerId).toBe('677951');
@@ -54,7 +64,9 @@ describe('MLB people', () => {
 
 describe('MLB transactions', () => {
   it('finds the Jhoan Duran trade to the Phillies and no rehab assignment', () => {
-    const res = load<MlbTransactionsResponse>(path.join(MLB, 'transactions_143_PHI_2025-07-25_2025-08-05.json'));
+    const res = load<MlbTransactionsResponse>(
+      path.join(MLB, 'transactions_143_PHI_2025-07-25_2025-08-05.json'),
+    );
     const joins = mlbJoins(res.transactions, (id) => Number(id) < 1000);
     const toPhi = joins.filter((j) => j.providerTeamId === '143');
     expect(toPhi.find((j) => j.fullName === 'Jhoan Duran')).toEqual({
@@ -83,7 +95,16 @@ describe('seed/famous_games.json', () => {
     expect(validateCurated(entries)).toEqual([]);
   });
   it('rejects an entry that breaks the rules', () => {
-    const bad = { sport: 'nfl', local_date: '2025-2-9', home: 'PHI', away: 'KC', category: 'party', title: 'x' + String.fromCharCode(0x2014), story: '', about: 'league' };
+    const bad = {
+      sport: 'nfl',
+      local_date: '2025-2-9',
+      home: 'PHI',
+      away: 'KC',
+      category: 'party',
+      title: 'x' + String.fromCharCode(0x2014),
+      story: '',
+      about: 'league',
+    };
     expect(validateCurated([bad as unknown as CuratedFamousGame])).toHaveLength(3);
   });
 });
@@ -102,16 +123,24 @@ describe('seed/nfl_awards.json', () => {
   it('holds MVP, MVP top five and first-team All-Pro only, no Pro Bowl', () => {
     const rows = load<NflAwardRow[]>(NFL_AWARDS_FILE);
     expect(new Set(rows.map((r) => r.honor))).toEqual(new Set(['mvp', 'mvp_top5', 'all_pro_1st']));
-    expect(validateNflAwards([{ season: 2024, honor: 'pro_bowl', gsis_id: '00-0034857', name: 'Josh Allen' }])).toHaveLength(1);
+    expect(
+      validateNflAwards([
+        { season: 2024, honor: 'pro_bowl', gsis_id: '00-0034857', name: 'Josh Allen' },
+      ]),
+    ).toHaveLength(1);
   });
   it('names the quarterback Lamar Jackson, not the cornerback', () => {
     const rows = load<NflAwardRow[]>(NFL_AWARDS_FILE);
-    expect(new Set(rows.filter((r) => r.name === 'Lamar Jackson').map((r) => r.gsis_id))).toEqual(new Set(['00-0034796']));
+    expect(new Set(rows.filter((r) => r.name === 'Lamar Jackson').map((r) => r.gsis_id))).toEqual(
+      new Set(['00-0034796']),
+    );
   });
 });
 
 describe('NFL moves', () => {
-  const seed = load<{ abbr: string; franchise: string; first: number; last: number | null }[]>(path.join(ROOT, 'seed', 'nfl_teams.json'));
+  const seed = load<{ abbr: string; franchise: string; first: number; last: number | null }[]>(
+    path.join(ROOT, 'seed', 'nfl_teams.json'),
+  );
   it('puts a current code on the team row that played that season', () => {
     expect(teamForSeason(seed, 'LV', 2019)).toBe('OAK');
     expect(teamForSeason(seed, 'LV', 2020)).toBe('LV');
@@ -136,10 +165,28 @@ describe('franchise players', () => {
   });
   it('limits NFL candidates to players active in the entry’s seasons', () => {
     const players = [
-      { gsisId: 'a', name: 'Adrian Peterson', position: 'RB', rookieSeason: 2002, lastSeason: 2009 },
-      { gsisId: 'b', name: 'Adrian Peterson', position: 'RB', rookieSeason: 2007, lastSeason: 2021 },
+      {
+        gsisId: 'a',
+        name: 'Adrian Peterson',
+        position: 'RB',
+        rookieSeason: 2002,
+        lastSeason: 2009,
+      },
+      {
+        gsisId: 'b',
+        name: 'Adrian Peterson',
+        position: 'RB',
+        rookieSeason: 2007,
+        lastSeason: 2021,
+      },
     ];
-    expect(nflCandidates(players, { sport: 'nfl', name: 'Adrian Peterson', from: 2012, to: 2016 }).map((p) => p.gsisId)).toEqual(['b']);
-    expect(nflCandidates(players, { sport: 'nfl', name: 'Adrian Peterson', from: 2007, to: 2016 })).toHaveLength(2);
+    expect(
+      nflCandidates(players, { sport: 'nfl', name: 'Adrian Peterson', from: 2012, to: 2016 }).map(
+        (p) => p.gsisId,
+      ),
+    ).toEqual(['b']);
+    expect(
+      nflCandidates(players, { sport: 'nfl', name: 'Adrian Peterson', from: 2007, to: 2016 }),
+    ).toHaveLength(2);
   });
 });
