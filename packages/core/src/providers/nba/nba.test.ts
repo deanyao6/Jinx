@@ -257,13 +257,18 @@ describe('CDN schedule', () => {
   const doc = load<{ leagueSchedule: { gameDates: { games: CdnScheduleGame[] }[] } }>(
     'cdn_schedule_2026-27_trimmed_2026-09-17.json',
   );
-  it('keeps stored game types with real tip-off times and arena names', () => {
-    const games = parseCdnSchedule(doc.leagueSchedule.gameDates.flatMap((d) => d.games));
-    expect(games.length).toBeGreaterThan(0);
+  it('keeps stored game types with real tip-off times and arena names, and drops preseason', () => {
+    const all = doc.leagueSchedule.gameDates.flatMap((d) => d.games);
+    // The fixture's first two dates are preseason (001), the third is the regular-season
+    // opener (002), added from the live CDN on 2026-09-22.
+    expect(all.filter((g) => g.gameId.startsWith('001')).length).toBe(3);
+    const games = parseCdnSchedule(all);
+    expect(games.length).toBe(2);
     const g = games[0]!;
-    expect(g.gameType).toBe('preseason');
-    expect(g.scheduledStart).toBe('2026-10-03T23:00:00.000Z');
-    expect(g.providerVenueId).toBe('name:Videotron Centre');
+    expect(g.providerGameId).toBe('0022600001');
+    expect(g.gameType).toBe('regular');
+    expect(g.scheduledStart).toBe('2026-10-20T19:00:00.000Z');
+    expect(g.providerVenueId).toBe('name:Little Caesars Arena');
     expect(g.status).toBe('scheduled');
     expect(g.homeScore).toBeNull();
     expect(g.season).toBe(2026);

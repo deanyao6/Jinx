@@ -115,6 +115,8 @@ export async function resolveCurated(
       .eq('sport_id', e.sport)
       .eq('home_team_id', home)
       .eq('away_team_id', away)
+      // Only regular season and postseason games exist in Jinx; anything else is absent.
+      .in('game_type', ['regular', 'postseason'])
       .gte('scheduled_start', `${e.local_date}T00:00:00Z`)
       .lt('scheduled_start', `${addDays(e.local_date, 2)}T00:00:00Z`);
     if (error) throw new Error(`games lookup: ${error.message}`);

@@ -234,7 +234,12 @@ function cdnStatus(g: CdnScheduleGame): GameStatus {
 }
 
 /** Game types the app stores. The All-Star game (`003`) is left out. */
-const STORED_TYPES = new Set(['001', '002', '004', '005', '006']);
+/**
+ * Regular season (002), the Cup final (006), playoffs (004) and the play-in (005). Preseason
+ * (001) is not stored: only regular season and postseason games exist in Jinx (Dean,
+ * 2026-09-22), and the All-Star game (003) never was.
+ */
+const STORED_TYPES = new Set(['002', '004', '005', '006']);
 
 /**
  * The CDN schedule as canonical games. The venue reference is `name:<arenaName>`, resolved

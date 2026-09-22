@@ -40,6 +40,9 @@ def merged_venues():
     merge_by_name = overrides["merge_into_nfl_by_name"]
     coords_by_name = overrides["coordinates_by_name"]
     closed_by_name = overrides["closed_years_by_name"]
+    # Spring-training and exhibition parks: no coordinates, and no game since preseason games
+    # left Jinx (2026-09-22). Migration 20260923000100 removed them from live databases.
+    drop_by_name = set(overrides.get("drop_by_name", []))
 
     venues = {}
     for k, v in nfl.items():
@@ -52,7 +55,7 @@ def merged_venues():
         }
 
     for v in load("mlb_venues.generated.json"):
-        if v["name"] == "TBD":
+        if v["name"] == "TBD" or v["name"] in drop_by_name:
             continue
         names = set(v["aliases"]) | {v["name"]}
         target = None

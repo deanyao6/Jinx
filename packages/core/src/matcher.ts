@@ -2,7 +2,7 @@
  * Ticket -> game matcher (SPEC.md 7.4). Pure: callers pass the parsed ticket, the candidate games
  * (already narrowed to date +/- 1 day by the database), and alias tables.
  */
-import type { GameStatus, Sport } from './types.js';
+import type { GameStatus, Sport, GameType } from './types.js';
 
 export interface ParsedTicket {
   sport: 'mlb' | 'nfl' | 'nba' | 'mls' | 'unknown';
@@ -41,6 +41,7 @@ export interface VenueRef {
 export interface CandidateGame {
   id: string;
   sport: Sport;
+  gameType: GameType;
   scheduledStart: string;
   homeTeamId: string;
   awayTeamId: string;
@@ -229,7 +230,13 @@ export function rankCandidates(
   const venueScoreById = new Map(venueMatches.map((m) => [m.venue.id, m.score]));
   const ticketMinutes = parseMinutes(ticket.time_local);
 
-  const ranked: RankedCandidate[] = candidates.map((game) => {
+  // Only regular season and postseason games exist in Jinx (Dean, 2026-09-22); a preseason
+  // candidate, should one ever come back, is treated as absent rather than matched.
+  const eligible = candidates.filter(
+    (game) => game.gameType === 'regular' || game.gameType === 'postseason',
+  );
+
+  const ranked: RankedCandidate[] = eligible.map((game) => {
     const reasons: string[] = [];
     let score = 0;
     const home = teamById.get(game.homeTeamId);

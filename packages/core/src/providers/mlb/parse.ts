@@ -201,9 +201,11 @@ export function mapMlbGameType(code: string): GameType | null {
     case 'L':
     case 'W':
       return 'postseason';
+    // Spring training (S) and exhibitions (E) are not stored: only regular season and
+    // postseason games exist in Jinx (Dean, 2026-09-22). The schedule request no longer asks
+    // for them either; this keeps one out should a feed ever carry one.
     case 'S':
     case 'E':
-      return 'preseason';
     default:
       return null;
   }

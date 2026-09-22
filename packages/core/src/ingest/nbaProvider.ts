@@ -106,8 +106,8 @@ export class NbaProvider implements SportsDataProvider {
     const s = seasonString(season);
     const out: LogGame[] = [];
     const current = season >= (await this.currentSeason()) - 1;
+    // No preseason: only regular season and postseason games exist in Jinx (Dean, 2026-09-22).
     for (const type of [
-      SEASON_TYPES.preseason,
       SEASON_TYPES.regular,
       SEASON_TYPES.playIn,
       SEASON_TYPES.playoffs,

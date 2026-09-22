@@ -105,6 +105,7 @@ const game = (
   },
 ): CandidateGame => ({
   id: p.id ?? `g${++seq}`,
+  gameType: 'regular',
   status: 'final',
   doubleheaderNumber: null,
   rescheduledToGameId: null,
@@ -240,6 +241,7 @@ const G = {
   eaglesPre0809: game({
     id: 'eagles-pre',
     sport: 'nfl',
+    gameType: 'preseason',
     scheduledStart: '2024-08-09T23:00:00Z',
     homeTeamId: 'eagles',
     awayTeamId: 'rams',
@@ -688,6 +690,7 @@ const cases: Case[] = [
     decision: 'matched',
   },
   {
+    // Preseason games do not exist in Jinx; a candidate marked so is never matched.
     name: 'NFL preseason',
     ticket: ticket({
       sport: 'nfl',
@@ -696,8 +699,8 @@ const cases: Case[] = [
       date_local: '2024-08-09',
       venue: 'Lincoln Financial Field',
     }),
-    expect: 'eagles-pre',
-    decision: 'matched',
+    expect: null,
+    decision: 'failed',
   },
   {
     name: 'Philly ambiguity resolved by sport',
@@ -847,6 +850,7 @@ describe('MLS tickets', () => {
   const cup: CandidateGame = {
     id: 'mls-cup-2022',
     sport: 'mls',
+    gameType: 'postseason',
     status: 'final',
     scheduledStart: '2022-11-05T20:00:00Z',
     homeTeamId: 'lafc',

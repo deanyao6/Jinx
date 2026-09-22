@@ -161,6 +161,7 @@ export async function loadMatchContext(db: MinimalDb): Promise<MatchContext> {
 interface GameRow {
   id: string;
   sport_id: 'mlb' | 'nfl' | 'nba' | 'mls';
+  game_type: 'regular' | 'postseason' | 'preseason';
   scheduled_start: string;
   home_team_id: string;
   away_team_id: string;
@@ -182,8 +183,10 @@ export async function loadCandidates(
   let q = db
     .from('games')
     .select(
-      'id, sport_id, scheduled_start, home_team_id, away_team_id, venue_id, status, doubleheader_number, rescheduled_to_game_id',
+      'id, sport_id, game_type, scheduled_start, home_team_id, away_team_id, venue_id, status, doubleheader_number, rescheduled_to_game_id',
     )
+    // Only regular season and postseason games exist in Jinx (Dean, 2026-09-22).
+    .in('game_type', ['regular', 'postseason'])
     .gte('scheduled_start', from)
     .lte('scheduled_start', to);
   if (ticket.sport !== 'unknown') q = q.eq('sport_id', ticket.sport);
@@ -192,6 +195,7 @@ export async function loadCandidates(
   return ((data ?? []) as GameRow[]).map((g) => ({
     id: g.id,
     sport: g.sport_id,
+    gameType: g.game_type,
     scheduledStart: g.scheduled_start,
     homeTeamId: g.home_team_id,
     awayTeamId: g.away_team_id,

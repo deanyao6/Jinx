@@ -104,8 +104,9 @@ export class MlbClient {
     return this.getJson(`v1/schedule?sportId=1&startDate=${startDate}&endDate=${endDate}`);
   }
 
+  /** Regular season and the four postseason rounds. Spring training (S) is not asked for. */
   seasonSchedule(season: number): Promise<MlbScheduleResponse> {
-    return this.getJson(`v1/schedule?sportId=1&season=${season}&gameType=R,F,D,L,W,S`);
+    return this.getJson(`v1/schedule?sportId=1&season=${season}&gameType=R,F,D,L,W`);
   }
 
   feed(gamePk: string | number): Promise<MlbFeed> {
