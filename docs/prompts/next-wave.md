@@ -11,13 +11,16 @@ and list the choice in the report.
 added end to end), `docs/elo-backtest.md`, `docs/simulator.md`. STATE.md section 7 lists the
 traps that cost previous sessions hours; every one applies here.
 
-**Another person is working on this repo at the same time.** Arjun is improving game search
-(`search_games`, the log sheet's search, aliases). Rules of the road: `git pull --rebase` before
+**Another person is working on this repo at the same time.** Arjun owns game search. His
+search v2 (`search_games_v2`, `search_entities_v2`, the `features/games/search/` screen, behind
+`EXPO_PUBLIC_SEARCH_V2`) merged to main on 2026-09-22; `docs/SEARCH_PLAN.md` and
+`docs/evidence/search/README.md` describe it. Rules of the road: `git pull --rebase` before
 you start and before every push; never overwrite a file changed by a commit you did not make
 (rebase and merge by hand); use migration timestamps from `20260923000100` on and pgTAP test
-numbers from `045`; do not edit `search_games` or `supabase/tests/041_search_local_date.test.sql`
-unless a task here needs it, and then say so in the commit message. Part B.1 (stadium
-coordinates) touches search's inputs; Dean has said a merge conflict there is acceptable.
+numbers from `046` (his took `045`); do not edit `search_games`, `search_games_v2`,
+`search_entities_v2`, `packages/core/src/search.ts` or the search tests unless a task here needs
+it, and then say so in the commit message. Part B.1 (stadium coordinates) and B.2 (preseason)
+touch search's inputs; Dean has said a merge conflict there is acceptable.
 
 Standing rules of the repo, all of which apply:
 

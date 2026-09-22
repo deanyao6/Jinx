@@ -9,15 +9,6 @@ Keep it that way: when you change what is true, change this file in the same com
 
 ---
 
-## Search v2 ready for review (2026-09-22)
-
-Branch `search-improvements` adds explicit My games / All games search, phrase/matchup
-interpretation, typo-tolerant aliases, calendar dates, ambiguity choices and cursor pagination.
-The additive search migrations are applied **locally only**. Entry points stay on v1 unless
-`EXPO_PUBLIC_SEARCH_V2=1` is set after deploying the migrations. No hosted search changes.
-See [search evidence and rollout](docs/evidence/search/README.md) for tests, the read-only
-15,132-game backtest, limitations and release steps.
-
 ## 1. What Jinx is
 
 A passport for sports fans: every game you attend becomes part of a living record. iOS only,
@@ -164,6 +155,20 @@ on local and 3.1 s on hosted, now 0.12 s and 0.15 s. `seed/scripts/fill_timezone
 zone from each venue's coordinates and needs `pip install timezonefinder`. 42 venues with no
 coordinates in the seed (spring training and minor league parks, 1,000 games between them) still
 fall back to America/New_York.
+
+**Search v2 is merged (2026-09-22), off by default.** Arjun's `search-improvements`: a shared
+search screen with My games / All games, league and date filters, grouped team and venue
+suggestions, visible typo corrections ("philies" offers Phillies), ambiguity choices (Giants
+asks MLB or NFL), matchups ("Eagles at Cowboys" fixes the sides), calendar-year dates at the
+venue, and cursor pagination. Additive: `search_games_v2` and `search_entities_v2` (migrations
+`20260922000200` to `000500`, `pg_trgm` and `unaccent`, normalized alias columns kept by
+triggers), a core interpreter in `packages/core/src/search.ts`, the screen under
+`features/games/search/`. **v1 (`search_games`) is untouched and is what every build uses until
+`EXPO_PUBLIC_SEARCH_V2=1` is set in the EAS environment**, which needs a build after the
+migrations are on hosted. Plan: `docs/SEARCH_PLAN.md`; evidence and rollout steps:
+`docs/evidence/search/README.md` (a read-only backtest of 13 query shapes and a 543-row
+pagination walk against independent SQL). Not yet: seen on a device, hosted latency, and the
+same 38 MLS stadiums without a timezone (the timezone test now audits MLB, NFL and NBA only).
 
 **MLS is merged and on hosted (2026-09-22).** Arjun built it on branch `MLS` with an agent and
 rolled it out to hosted himself before the merge: five migrations (`20260919000100` to
