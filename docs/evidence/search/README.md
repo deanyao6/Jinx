@@ -34,7 +34,9 @@ with Upcoming. No reset was used.
 - Mobile: **910 tests / 92 suites / 2 snapshots**, including 15 new screen/request cases.
 - Database: **416 assertions / 23 files**, including 36 new transactional search assertions.
 - Ingest: **38 tests**.
-- Workspace typecheck, lint and Edge Function typecheck pass.
+- Workspace typecheck, lint, formatting and Edge Function typecheck pass.
+- A separate formatting-only commit cleans 22 pre-existing main-branch failures so CI can pass;
+  their JSON values / emitted JavaScript were compared and are unchanged.
 - Mobile emits pre-existing notification/act/open-handle warnings, then exits successfully.
 
 Reproduce the read-only data backtest with:
