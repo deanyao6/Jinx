@@ -58,7 +58,7 @@ Standing rules of the repo, all of which apply:
 
 Deferred by Dean, not for this session: App Store Connect privacy and the external group (4),
 `support@example.com` and the "(draft)" privacy text (23), Pick a side at a real NBA game (20,
-none until October). Design assets (11) are on Dean's list, section H.
+none until October). Ticket forwarding (2), Sentry (3) and design assets (11) are Dean's own, section H: not this session's.
 
 ---
 
@@ -274,40 +274,23 @@ the game page with a shootout result. Screenshots under `docs/evidence/mls/journ
 
 ---
 
-## H. Needs Dean, and only Dean
+## H. Dean's own list: not for this session
 
-Put these at the top of the report in this order, each with exactly what to bring back.
+Dean will do these himself, later. **Do not start them, do not wait on them, and do not ask
+about them in the report**; just leave the hooks they need intact.
 
-**H.1 Ticket forwarding on `jinxsports.fans` (2).** Dean's part, in the Cloudflare dashboard and
-once on his machine:
+**H.1 Ticket forwarding on `jinxsports.fans` (2).** Cloudflare Email Routing, the worker in
+`infra/cloudflare-email-worker/`, `inbound-email`, `EXPO_PUBLIC_INBOUND_EMAIL_DOMAIN`. Leave the
+worker, the function and `docs/deploy.md` section 5 as they are.
 
-1. Cloudflare: the zone `jinxsports.fans`, Email > Email Routing > enable it. Add the subdomain
-   `in` (Cloudflare writes the MX records).
-2. On his machine: `cd infra/cloudflare-email-worker && npm install && npx wrangler login`
-   (opens a browser once).
+**H.2 Sentry (3).** `apps/mobile/src/lib/sentry.ts` initialises when `EXPO_PUBLIC_SENTRY_DSN`
+is set; `SENTRY_DISABLE_AUTO_UPLOAD=true` stays on EAS until Dean brings the DSN, slugs and
+token. Do not remove the flag.
 
-Then the agent's part, pre-approved: set `SUPABASE_FUNCTIONS_URL` in `wrangler.toml` to
-`https://vekdufflzklfxljqufbq.supabase.co/functions/v1`, generate an `INBOUND_EMAIL_SECRET`,
-`npx wrangler secret put INBOUND_EMAIL_SECRET`, `npm run deploy`, the same secret with
-`npx supabase secrets set`, deploy `inbound-email`, then back to Dean for step 3: Email Routing
-> Routing rules > catch-all for `in.jinxsports.fans` > "Send to a Worker" > `jinx-inbound-email`.
-Finally `EXPO_PUBLIC_INBOUND_EMAIL_DOMAIN=in.jinxsports.fans` in the EAS production
-environment, and prove it by forwarding a real confirmation to the address the app shows and
-reading the resulting `imports` row on hosted. That closes M4.
+**H.3 Design assets (11).** `docs/design-assets-to-replace.md` is the inventory. Keep its
+drop-in contracts true if you touch an icon, seal, shape or palette, and nothing else.
 
-**H.2 Sentry (3).** Dean creates a free account at sentry.io, one project of type React Native,
-and brings back three things: the **DSN**, the **organization slug** and **project slug**, and an
-**auth token** (Settings > Auth Tokens, scope `project:releases` and `org:read`). The agent then
-sets `EXPO_PUBLIC_SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT` and the secret `SENTRY_AUTH_TOKEN`
-on EAS production, removes `SENTRY_DISABLE_AUTO_UPLOAD`, and proves it with a deliberate test
-error from a development build showing up in Sentry with a readable stack. `apps/mobile/src/lib/
-sentry.ts` already initialises when the DSN is set.
-
-**H.3 Design assets (11).** There is an inventory (`docs/design-assets-to-replace.md`) and no
-drafts of replacements. Dean is taking it to Figma or an image model. Nothing for the agent
-except to keep the drop-in contracts in that file true.
-
-**H.4 Later, by Dean's call:** App Store Connect privacy and external group (4); the support
+**H.4 Also Dean's, later:** App Store Connect privacy and external group (4); the support
 address and "(draft)" privacy text (23); Pick a side at a real NBA game in October (20).
 
 ---
@@ -320,8 +303,7 @@ written into `STATE.md` (section 5 loses the item or gains the honest gap), `doc
 `docs/verification.md` (every VERIFY above answered with the evidence) and `CLAUDE.md` (the
 amended live-feed rule, any new command). Commit and push after each part.
 
-The report at the end, in this order: H (what Dean must do, with the exact strings to bring
-back); anything decided here that the data contradicted, with the evidence; every VERIFY and its
+The report at the end, in this order: anything decided here that the data contradicted, with the evidence; every VERIFY and its
 answer; the palette diff table; the screenshot folders; numbers (database size before and after
 B.2 and B.5, the three-way log loss for MLS, the preseason rows deleted, the stadiums sourced
 and the ones that could not be); and what was left undone and why.
