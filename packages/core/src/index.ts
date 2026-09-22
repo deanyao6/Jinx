@@ -20,3 +20,4 @@ export * from './highlights.js';
 export * from './venue.js';
 export * from './providers/mls/parse.js';
 export * from './ingest/mlsProvider.js';
+export * from './search.js';

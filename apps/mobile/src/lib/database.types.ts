@@ -1795,14 +1795,17 @@ export type Database = {
       team_aliases: {
         Row: {
           alias: string
+          search_name: string
           team_id: string
         }
         Insert: {
           alias: string
+          search_name?: string
           team_id: string
         }
         Update: {
           alias?: string
+          search_name?: string
           team_id?: string
         }
         Relationships: [
@@ -2225,14 +2228,17 @@ export type Database = {
       venue_aliases: {
         Row: {
           alias: string
+          search_name: string
           venue_id: string
         }
         Insert: {
           alias: string
+          search_name?: string
           venue_id: string
         }
         Update: {
           alias?: string
+          search_name?: string
           venue_id?: string
         }
         Relationships: [
@@ -2790,6 +2796,10 @@ export type Database = {
       }
       roman_numeral: { Args: { p_n: number }; Returns: string }
       rotate_inbound_token: { Args: never; Returns: string }
+      search_entities_v2: {
+        Args: { p_phrases: string[]; p_sport?: string }
+        Returns: Json
+      }
       search_games: {
         Args: {
           p_from?: string
@@ -2823,6 +2833,20 @@ export type Database = {
           venue_name: string
         }[]
       }
+      search_games_v2: {
+        Args: {
+          p_cursor?: Json
+          p_filters?: Json
+          p_limit?: number
+          p_personal_text?: boolean
+          p_query?: string
+          p_scope?: string
+          p_selection?: Json
+          p_sort?: string
+        }
+        Returns: Json
+      }
+      search_normalize_v2: { Args: { value: string }; Returns: string }
       search_profiles: {
         Args: { p_limit?: number; p_query: string }
         Returns: {
