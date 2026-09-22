@@ -12,6 +12,7 @@ import { useMyFamousGameIds } from '@/features/famous/queries';
 import { FamousMark } from '@/features/famous/ui/FamousMark';
 import { TabBar } from '@/features/passport/reference/parts';
 import { fontFamily } from '@/theme/fonts';
+import { env } from '@/lib/env';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, radius, screenPadding } from '@/theme/reference/tokens';
 
@@ -50,7 +51,10 @@ const SEGMENTS = ['History', 'Upcoming', 'Imports'] as const;
  * The other two are screens of their own.
  */
 const ADD_ACTIONS: readonly { label: string; href: Href }[] = [
-  { label: 'Log a game', href: '/legacy-games?segment=log' },
+  {
+    label: 'Log a game',
+    href: env.searchV2 ? '/games/search?scope=all' : '/legacy-games?segment=log',
+  },
   { label: 'Log a season', href: '/games/bulk' },
   { label: 'Upload tickets', href: '/games/import' },
 ];
@@ -179,6 +183,9 @@ function Body({ initialSegment }: { initialSegment: string }) {
             style={[s.searchText, { color: base.ink }]}
             value={query}
             onChangeText={setQuery}
+            onFocus={() => {
+              if (env.searchV2) router.push('/games/search?scope=mine');
+            }}
             placeholder="Search attended games, stadiums, teams..."
             placeholderTextColor={base.muted}
             autoCorrect={false}

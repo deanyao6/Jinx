@@ -8,6 +8,7 @@ export default function GamesStackLayout() {
   return (
     <UnderHeader>
       <Stack screenOptions={header}>
+        <Stack.Screen name="search" options={{ title: 'Find a game' }} />
         <Stack.Screen name="[gameId]" options={{ title: 'Game' }} />
         <Stack.Screen name="log/[gameId]" options={{ title: 'Log game', presentation: 'modal' }} />
         <Stack.Screen name="bulk" options={{ title: 'Log a season' }} />

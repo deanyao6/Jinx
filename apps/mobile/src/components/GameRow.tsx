@@ -16,6 +16,8 @@ export type GameRowData = {
   away_score: number | null;
   is_tie?: boolean | null;
   doubleheader_number?: number | null;
+  /** Search dates are venue-local; preserve that calendar day in the row. */
+  local_date?: string;
 };
 
 type Props = {
@@ -46,7 +48,11 @@ export function GameRow({
     isTie: game.is_tie,
   });
   const dh = doubleheaderLabel(game.doubleheader_number);
-  const meta = [formatGameDate(game.scheduled_start), game.venueName, dh]
+  const meta = [
+    formatGameDate(game.local_date ? `${game.local_date}T12:00:00` : game.scheduled_start),
+    game.venueName,
+    dh,
+  ]
     .filter(Boolean)
     .join(' · ');
   const body = (
