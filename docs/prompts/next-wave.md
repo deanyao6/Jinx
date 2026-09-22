@@ -144,6 +144,28 @@ pictures, MLS attendances, famous-game badges, pledges) is missing either.
 ESPN (NBA history, NBA win probability, MLS) lines in the same form as the MLB and nflverse
 ones, and the app's About screen shows the file. No logos, no marks.
 
+**B.8 Two start-time bugs that `final_at` exposed (found 2026-09-22, add to this session).**
+Six rows on hosted have a `final_at` before their `scheduled_start`, and in every case the
+start is what is wrong:
+
+- **Five NFL London games start 12 hours late**: `2017_03_BAL_JAX`, `2017_04_NO_MIA`,
+  `2017_08_MIN_CLE`, `2018_07_TEN_LAC`, `2018_08_PHI_JAX` are stored at 01:30 UTC, which is
+  9:30 pm Eastern, for 9:30 am Eastern kickoffs (13:30 UTC). The other 36 London games are
+  right. `docs/verification.md` line 61 records the opposite quirk (2000 to 2005 `gametime`
+  `09:00` meaning 9 pm); whatever the parser does about that is catching these five real
+  morning games. Fix the rule (a London venue, or a game at Wembley, Twickenham or Tottenham,
+  is a morning game), rerun the NFL schedule for 2017 and 2018, and assert on the five ids.
+  A fan who was at Wembley searched that Sunday and got Monday.
+- **A suspended MLB game is filed under its resumption**: `824912` (Giants at Braves) started
+  2026-06-16 23:15 UTC, was delayed 112 minutes, suspended, and resumed 2026-06-17 18:00 UTC.
+  The schedule refresh took the `resumeDate` as `scheduled_start`, so the fans who were there
+  on the 16th cannot find it on the 16th, and `final_at` (first pitch + duration + delay) lands
+  on the 17th at 03:49 UTC, before the resumed innings were played. VERIFY the MLB fields
+  (`resumeDate`, `resumedFrom`, `status.detailedState` "Suspended"): keep the original
+  `scheduled_start`, store the resumption on the row (a `resumed_at` column or the existing
+  postponed/makeup link, whichever SPEC 5 fits), and take `final_at` from the resumed game's
+  end. Then find every other suspended game since 2016 and fix them the same way. Test both.
+
 ---
 
 ## C. Live state, read by the app (decided, 8)
