@@ -12,17 +12,30 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
  *   React Native; four edge gradients of the same reach stand in for it
  *   (design/PORTING_NOTES.md).
  *
- * All static, all one SVG each, never touched by an animation.
+ * All static, one SVG, never touched by an animation. Laid out over the area below the
+ * status bar, which is the reference's whole frame; the bar itself gets a flat band above.
  */
 const SCR = '#0A0D12';
 const VIG = '#06080B';
 /** The inset shadow reaches spread plus blur: 14 + 70. */
 const VIG_REACH = 84;
 
-export const Scrim = React.memo(function Scrim() {
+export const Scrim = React.memo(function Scrim({ topInset }: { topInset: number }) {
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-      <Svg width="100%" height="100%">
+      {/* The status bar band, above the reference's frame: the top fade's darkest value,
+          held flat, so the clock and battery read over whatever card is under them. */}
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: topInset,
+          backgroundColor: 'rgba(10,13,18,0.8)',
+        }}
+      />
+      <Svg width="100%" height="100%" style={{ position: 'absolute', top: topInset, left: 0, right: 0, bottom: 0 }}>
         <Defs>
           <LinearGradient id="wall-scrim" x1="0" y1="0" x2="0" y2="1">
             <Stop offset="0" stopColor={SCR} stopOpacity="0.05" />

@@ -49,11 +49,18 @@ export const Wall = React.memo(function Wall({
   games,
   today,
   still,
+  topInset,
 }: {
   games: readonly WallGame[];
   /** `YYYY-MM-DD` on the device, for the date labels. */
   today: string;
   still: boolean;
+  /**
+   * The status bar's height. The reference's frame is the screen below its fake status row,
+   * so the wall's percentages are taken from that area; the wall still runs up behind the
+   * real status bar because it overflows its frame by 14% at the top.
+   */
+  topInset: number;
 }) {
   return (
     <View
@@ -62,30 +69,32 @@ export const Wall = React.memo(function Wall({
       importantForAccessibility="no-hide-descendants"
       style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]}
     >
-      <View
-        style={{
-          position: 'absolute',
-          left: WALL_FRAME.left,
-          top: WALL_FRAME.top,
-          width: WALL_FRAME.width,
-          height: WALL_FRAME.height,
-          flexDirection: 'row',
-          gap: WALL.gap,
-          transform: [{ rotate: WALL_FRAME.rotate }],
-        }}
-      >
-        {COLUMNS.map((specs, i) => (
-          <Column
-            key={i}
-            index={i}
-            specs={specs}
-            games={games}
-            today={today}
-            still={still}
-            direction={COLUMN_MOTION[i]?.direction ?? 'up'}
-            durationMs={COLUMN_MOTION[i]?.durationMs ?? 30_000}
-          />
-        ))}
+      <View style={{ position: 'absolute', top: topInset, left: 0, right: 0, bottom: 0 }}>
+        <View
+          style={{
+            position: 'absolute',
+            left: WALL_FRAME.left,
+            top: WALL_FRAME.top,
+            width: WALL_FRAME.width,
+            height: WALL_FRAME.height,
+            flexDirection: 'row',
+            gap: WALL.gap,
+            transform: [{ rotate: WALL_FRAME.rotate }],
+          }}
+        >
+          {COLUMNS.map((specs, i) => (
+            <Column
+              key={i}
+              index={i}
+              specs={specs}
+              games={games}
+              today={today}
+              still={still}
+              direction={COLUMN_MOTION[i]?.direction ?? 'up'}
+              durationMs={COLUMN_MOTION[i]?.durationMs ?? 30_000}
+            />
+          ))}
+        </View>
       </View>
     </View>
   );

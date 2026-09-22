@@ -44,8 +44,8 @@ export function WelcomeArt({
 
   return (
     <View style={{ flex: 1, backgroundColor: WALL.scr }} testID="welcome-art">
-      {games ? <Wall games={games} today={today} still={still} /> : null}
-      <Scrim />
+      {games ? <Wall games={games} today={today} still={still} topInset={insets.top} /> : null}
+      <Scrim topInset={insets.top} />
       {/* `.body`: `padding: 0 22px 22px`, a spacer, then the copy at the bottom. The bottom
           padding is the reference's 22 or the home indicator's inset, whichever is larger. */}
       <View
