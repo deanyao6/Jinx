@@ -9,9 +9,7 @@
   "cases": [
     {
       "query": "Phillies 2026",
-      "entities": [
-        "Philadelphia Phillies"
-      ],
+      "entities": ["Philadelphia Phillies"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 25,
@@ -19,9 +17,7 @@
     },
     {
       "query": "philies 2026",
-      "entities": [
-        "Philadelphia Phillies"
-      ],
+      "entities": ["Philadelphia Phillies"],
       "alternatives": 1,
       "tier": 2,
       "rowsOnFirstPage": 25,
@@ -29,9 +25,7 @@
     },
     {
       "query": "PHI MLB 2026",
-      "entities": [
-        "Philadelphia Phillies"
-      ],
+      "entities": ["Philadelphia Phillies"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 25,
@@ -39,10 +33,7 @@
     },
     {
       "query": "Eagles at Cowboys 2024",
-      "entities": [
-        "Philadelphia Eagles",
-        "Dallas Cowboys"
-      ],
+      "entities": ["Philadelphia Eagles", "Dallas Cowboys"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 1,
@@ -50,10 +41,7 @@
     },
     {
       "query": "Cowboys vs Eagles 2024",
-      "entities": [
-        "Dallas Cowboys",
-        "Philadelphia Eagles"
-      ],
+      "entities": ["Dallas Cowboys", "Philadelphia Eagles"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 2,
@@ -61,9 +49,7 @@
     },
     {
       "query": "LA Galaxy",
-      "entities": [
-        "LA Galaxy"
-      ],
+      "entities": ["LA Galaxy"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 25,
@@ -71,10 +57,7 @@
     },
     {
       "query": "LAFC Galaxy 2025",
-      "entities": [
-        "LAFC",
-        "LA Galaxy"
-      ],
+      "entities": ["LAFC", "LA Galaxy"],
       "alternatives": 1,
       "tier": 2,
       "rowsOnFirstPage": 2,
@@ -82,10 +65,7 @@
     },
     {
       "query": "LAFC vs Galaxy September 2025",
-      "entities": [
-        "LAFC",
-        "LA Galaxy"
-      ],
+      "entities": ["LAFC", "LA Galaxy"],
       "alternatives": 1,
       "tier": 2,
       "rowsOnFirstPage": 0,
@@ -93,9 +73,7 @@
     },
     {
       "query": "Montréal MLS",
-      "entities": [
-        "CF Montréal"
-      ],
+      "entities": ["CF Montréal"],
       "alternatives": 1,
       "tier": 1,
       "rowsOnFirstPage": 25,
@@ -103,9 +81,7 @@
     },
     {
       "query": "Montreal MLS",
-      "entities": [
-        "CF Montréal"
-      ],
+      "entities": ["CF Montréal"],
       "alternatives": 1,
       "tier": 1,
       "rowsOnFirstPage": 25,
@@ -113,9 +89,7 @@
     },
     {
       "query": "Lakers January 2026",
-      "entities": [
-        "Los Angeles Lakers"
-      ],
+      "entities": ["Los Angeles Lakers"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 0,
@@ -123,9 +97,7 @@
     },
     {
       "query": "Giants MLB",
-      "entities": [
-        "San Francisco Giants"
-      ],
+      "entities": ["San Francisco Giants"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 25,
@@ -133,30 +105,14 @@
     },
     {
       "query": "Giants NFL",
-      "entities": [
-        "New York Giants"
-      ],
+      "entities": ["New York Giants"],
       "alternatives": 1,
       "tier": 0,
       "rowsOnFirstPage": 25,
       "elapsedIncludingDockerMs": 303
     }
   ],
-  "timingsMs": [
-    247,
-    420,
-    602,
-    352,
-    349,
-    533,
-    600,
-    891,
-    570,
-    605,
-    367,
-    282,
-    303
-  ],
+  "timingsMs": [247, 420, 602, 352, 349, 533, 600, 891, 570, 605, 367, 282, 303],
   "pagination": {
     "season": 2025,
     "sport": "mls",

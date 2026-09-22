@@ -2,6 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
+import { format, resolveConfig } from 'prettier';
 import { parseSearch, resolveSearch } from '../packages/core/src/search.ts';
 
 const literal = (v) => `'${String(v).replaceAll("'", "''")}'`;
@@ -180,7 +181,14 @@ report.explain = {
 report.note =
   'Timings include Docker/psql process startup and two RPCs; not hosted p95. NBA has no games in this local dataset, so NBA date semantics are covered by transactional SQL fixtures.';
 mkdirSync('docs/evidence/search', { recursive: true });
-writeFileSync('docs/evidence/search/backtest.json', JSON.stringify(report, null, 2) + '\n');
+const outputPath = 'docs/evidence/search/backtest.json';
+writeFileSync(
+  outputPath,
+  await format(JSON.stringify(report), {
+    ...(await resolveConfig(outputPath)),
+    filepath: outputPath,
+  }),
+);
 console.log(
   `Passed ${fixtures.length} entity/result cases, ambiguity/invalid-input checks and ${received.length}-row pagination backtest.`,
 );
