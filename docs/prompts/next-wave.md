@@ -263,6 +263,20 @@ a fan with only MLS attendances gets a Wrapped.
 
 **E.6 Live.** Part C covers it; MLS is the second feed.
 
+**E.7 MLS can reach the welcome wall.** The welcome screen's weekly picker
+(`welcome_wall_score_games`, migration `20260923100000`) never chose an MLS match in its first
+run although 16 were played that week, because on hosted 0 of 387 MLS finals carry
+`games.attendance` and 0 of 30 MLS clubs carry `teams.division`, so the two heaviest weights
+(rivalry 35, big crowd) cannot fire for MLS while every MLB and NFL one-score game gets the crowd
+bonus. Three data fixes, no scorer change: store the attendance ESPN's scoreboard reports for
+each match (VERIFY the field; `packages/core/src/providers/mls/parse.ts`), backfilled for 2016
+on; give each club its conference (Eastern, Western) in `seed/mls_teams.json` and the seed
+build so `division` is populated the way the picker reads it; and because MLS rivalries are
+not conference-wide, add the derbies the league itself names (Cascadia Cup, El Tráfico, Hudson
+River Derby, Texas Derby, Canadian Classique, Atlantic Cup, Rocky Mountain Cup, Heritage Cup,
+California Clásico) to whatever the picker's rivalry test reads, keyed by `sport_id`. Then
+rerun `welcome_wall_refresh()` on hosted for a week with MLS matches and show the picks.
+
 After all of it, the game page's "not available yet" sentence goes, and every sport-keyed table
 in the code has an `mls` row (the NBA brief's checklist in `docs/prompts/nba.md` section 1 is
 the list).
