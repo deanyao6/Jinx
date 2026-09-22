@@ -127,6 +127,23 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 3. **App Store Connect:** privacy details, and the external TestFlight group.
 4. **Approve the M0.5 screenshots.** `npm run parity` generates them. Do not self-certify this.
 5. **`eas submit`** needs his Apple login and 2FA. An App Store Connect API key would automate it.
+   Build 5 was submitted on 2026-09-22 and is waiting on Apple.
+6. **Design assets.** `docs/design-assets-to-replace.md` is the inventory; there are no drafts
+   of replacements. Dean is taking it to Figma or an image model. The app icon is still the
+   Expo default and the splash is blank.
+7. **Sentry** (a free account, then the DSN, org and project slugs and an auth token) and
+   **ticket forwarding** (Email Routing on Cloudflare, `wrangler login` once): the exact steps
+   are in `docs/prompts/next-wave.md` section H.
+
+**The next wave is briefed (2026-09-22).** Dean answered a 25-point list of everything deferred;
+`docs/prompts/next-wave.md` is the build brief for a fresh session: the sign-out bug (signing
+out does not return to the welcome screen), MLS stadium coordinates, preseason games removed,
+`final_at`, NFL detail only for logged games, handshakes in the export, the app reading free
+live feeds directly (a rule change), players seen reworked to superstars with good games,
+superstars for the NBA and MLS, the MLS second wave with draws voiding pledges, palettes
+cross-checked against an open source, light mode, and the unwalked journeys. Arjun is on search
+at the same time. **The MLS daily job is on**: `MLS_INGEST_ENABLED` was set after the probe run
+reached ESPN from GitHub in 36 s.
 
 **Search finds the right game now (2026-09-18).** Dean searched for an NBA game and it did not
 work. Three bugs, all fixed and on hosted (migration `20260918110000`, test `041`, the detail in
@@ -162,11 +179,10 @@ Not done, and known:
   are fine. The fix is coordinates for 36 stadiums from a real source, then
   `python3 seed/scripts/fill_timezones.py`, `build_seed_sql.py` and a migration. No
   coordinates were guessed, on purpose.
-- **Nothing refreshes MLS results yet.** `.github/workflows/mls-ingest.yml` is gated on a
-  repository variable `MLS_INGEST_ENABLED` that is not set, and no Edge Function touches
-  ESPN. Until Dean sets it after a successful runner probe (`workflow_dispatch`, mode `probe`),
-  the 123 scheduled 2026 matches go final only when someone runs
-  `npx tsx ingest/src/mls/backfill.ts --from 2026 --to 2026 --force` against hosted.
+- **MLS results refresh daily from GitHub** (08:45 UTC, `mls-ingest.yml`) since 2026-09-22,
+  when the probe proved the runner reaches ESPN and `MLS_INGEST_ENABLED` was set. Judge it by
+  the workflow log and by the hosted 2026 final count moving, not by `net._http_response`
+  (no Edge Function is involved).
 - **The 30 MLS palettes** (`seed/mls_colors.json`) were tuned to the contrast rule, not to
   Dean's eye.
 - **Not seen on a device.** Arjun's session reached the league picker on the simulator against
