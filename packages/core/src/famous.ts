@@ -70,7 +70,10 @@ export interface MatchableGame {
  * game of a doubleheader when the entry says which. Exactly one is a match; zero and more than
  * one are both errors the caller must refuse on, never guess.
  */
-export function matchCuratedGame(entry: CuratedFamousGame, games: readonly MatchableGame[]): MatchableGame[] {
+export function matchCuratedGame(
+  entry: CuratedFamousGame,
+  games: readonly MatchableGame[],
+): MatchableGame[] {
   return games.filter(
     (g) =>
       g.sport_id === entry.sport &&
@@ -101,7 +104,11 @@ export function isSuperstarSeason(
 }
 
 /** "MVP 2023", "2024 All-Star": what a star's caption says on a game page. */
-export function honorCaption(input: { label: string; season: number; seasonFirst: boolean }): string {
+export function honorCaption(input: {
+  label: string;
+  season: number;
+  seasonFirst: boolean;
+}): string {
   return input.seasonFirst ? `${input.season} ${input.label}` : `${input.label} ${input.season}`;
 }
 
@@ -161,7 +168,9 @@ export function personalBadgeTitle(input: PersonalBadgeInput): string {
       const nick = input.teamNickname?.trim();
       if (!nick) return `Saw ${who} first days with a new team`;
       const one = singularNickname(nick);
-      return one ? `Saw ${who} first days as ${withArticle(one)}` : `Saw ${who} first days with the ${nick}`;
+      return one
+        ? `Saw ${who} first days as ${withArticle(one)}`
+        : `Saw ${who} first days with the ${nick}`;
     }
     case 'debut': {
       const league = input.sportId ? `${input.sportId.toUpperCase()} ` : '';
@@ -296,7 +305,10 @@ export interface MlbJoin {
  * filter is by `toTeam`, and a teamId the caller cares about (a minor-league affiliate's id
  * appears on rehab assignments, which are not joins).
  */
-export function mlbJoins(transactions: Iterable<MlbTransactionLike>, isMajorLeagueTeam: (id: string) => boolean): MlbJoin[] {
+export function mlbJoins(
+  transactions: Iterable<MlbTransactionLike>,
+  isMajorLeagueTeam: (id: string) => boolean,
+): MlbJoin[] {
   const out: MlbJoin[] = [];
   const seen = new Set<string>();
   for (const t of transactions) {

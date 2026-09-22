@@ -5,6 +5,8 @@
 export const env = {
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '',
+  /** Enable only after the additive search v2 migration is deployed. */
+  searchV2: isOn(process.env.EXPO_PUBLIC_SEARCH_V2),
   inboundEmailDomain: process.env.EXPO_PUBLIC_INBOUND_EMAIL_DOMAIN ?? 'in.example.com',
   /** Crash reporting is off unless a DSN is set (src/lib/sentry.ts). */
   sentryDsn: process.env.EXPO_PUBLIC_SENTRY_DSN ?? '',

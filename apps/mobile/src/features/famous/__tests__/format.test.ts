@@ -1,4 +1,11 @@
-import { famousKicker, famousStory, famousTitle, groupFamous, leagueLabel, type FamousListItem } from '../format';
+import {
+  famousKicker,
+  famousStory,
+  famousTitle,
+  groupFamous,
+  leagueLabel,
+  type FamousListItem,
+} from '../format';
 
 const item = (over: Partial<FamousListItem>): FamousListItem => ({
   gameId: 'g',
@@ -27,11 +34,19 @@ describe('famous titles and kickers', () => {
     expect(famousKicker(item({}))).toBe('Championship');
   });
   it('builds a personal badge’s sentence and says it is yours', () => {
-    const badge = item({ personal: true, kind: 'first_days', playerName: 'Jhoan Duran', teamNickname: 'Phillies', sportId: 'mlb' });
+    const badge = item({
+      personal: true,
+      kind: 'first_days',
+      playerName: 'Jhoan Duran',
+      teamNickname: 'Phillies',
+      sportId: 'mlb',
+    });
     expect(famousTitle(badge)).toBe('Saw Jhoan Duran’s first days as a Phillie');
     expect(famousKicker(badge)).toBe('Yours');
     expect(famousStory(badge)).toMatch(/within 14 days/);
-    expect(famousTitle({ ...badge, kind: 'debut', playerName: 'Bryce Harper' })).toBe('Saw Bryce Harper’s MLB debut');
+    expect(famousTitle({ ...badge, kind: 'debut', playerName: 'Bryce Harper' })).toBe(
+      'Saw Bryce Harper’s MLB debut',
+    );
   });
 });
 
@@ -40,8 +55,21 @@ describe('groupFamous', () => {
     const groups = groupFamous([
       item({ gameId: 'a', scheduledStart: '2018-02-04T23:31:00Z', title: 'Super Bowl LII' }),
       item({ gameId: 'b' }),
-      item({ gameId: 'c', sportId: 'mlb', teamId: 'phi-mlb', teamNickname: 'Phillies', title: 'NLCS Game 5', scheduledStart: '2022-10-23T18:37:00Z' }),
-      item({ gameId: 'd', teamId: 'kc', teamNickname: 'Chiefs', title: 'Thirteen seconds', scheduledStart: '2022-01-23T23:30:00Z' }),
+      item({
+        gameId: 'c',
+        sportId: 'mlb',
+        teamId: 'phi-mlb',
+        teamNickname: 'Phillies',
+        title: 'NLCS Game 5',
+        scheduledStart: '2022-10-23T18:37:00Z',
+      }),
+      item({
+        gameId: 'd',
+        teamId: 'kc',
+        teamNickname: 'Chiefs',
+        title: 'Thirteen seconds',
+        scheduledStart: '2022-01-23T23:30:00Z',
+      }),
     ]);
     expect(groups.map((g) => g.title)).toEqual(['MLB', 'NFL']);
     const nfl = groups[1]!;

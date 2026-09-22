@@ -136,7 +136,13 @@ export class MlbClient {
   }
 
   /** A team's transactions in a date range (YYYY-MM-DD, inclusive). */
-  transactions(teamId: string | number, startDate: string, endDate: string): Promise<MlbTransactionsResponse> {
-    return this.getJson(`v1/transactions?teamId=${teamId}&startDate=${startDate}&endDate=${endDate}`);
+  transactions(
+    teamId: string | number,
+    startDate: string,
+    endDate: string,
+  ): Promise<MlbTransactionsResponse> {
+    return this.getJson(
+      `v1/transactions?teamId=${teamId}&startDate=${startDate}&endDate=${endDate}`,
+    );
   }
 }

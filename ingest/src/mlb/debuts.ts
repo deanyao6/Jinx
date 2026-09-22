@@ -24,12 +24,17 @@ async function main(): Promise<void> {
   const db = createDb();
   const client = new MlbClient();
   const players = (
-    await selectAll<PlayerRow>(db, 'players', 'provider_player_id, full_name, debut_on', (q) => q.eq('provider', 'mlb'))
+    await selectAll<PlayerRow>(db, 'players', 'provider_player_id, full_name, debut_on', (q) =>
+      q.eq('provider', 'mlb'),
+    )
   ).filter((p) => flag('all') || p.debut_on == null);
   const byId = new Map(players.map((p) => [p.provider_player_id, p]));
 
   let found = 0;
-  for (const part of chunk([...byId.keys()].filter((id) => /^\d+$/.test(id)), 100)) {
+  for (const part of chunk(
+    [...byId.keys()].filter((id) => /^\d+$/.test(id)),
+    100,
+  )) {
     const res = await client.people(part);
     const rows = [];
     for (const p of res.people ?? []) {

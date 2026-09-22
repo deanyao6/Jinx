@@ -6,7 +6,9 @@ import { FamousCard } from '../ui/FamousCard';
 
 describe('FamousCard on a game page', () => {
   it('shows nothing for an ordinary game', async () => {
-    const { queryByTestId } = await renderScreen(<FamousCard items={[]} sportId="nfl" homeTeamId={null} />);
+    const { queryByTestId } = await renderScreen(
+      <FamousCard items={[]} sportId="nfl" homeTeamId={null} />,
+    );
     expect(queryByTestId('famous-card')).toBeNull();
   });
 

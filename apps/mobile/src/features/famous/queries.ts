@@ -86,7 +86,14 @@ export function useGameFamous(gameId: string | undefined) {
   });
 }
 
-export type GameStar = { playerId: string; name: string; teamId: string; label: string; season: number; seasonFirst: boolean };
+export type GameStar = {
+  playerId: string;
+  name: string;
+  teamId: string;
+  label: string;
+  season: number;
+  seasonFirst: boolean;
+};
 
 /** The superstars who appeared in a game, with the honor that makes each one a star. */
 export function useGameStars(gameId: string | undefined) {

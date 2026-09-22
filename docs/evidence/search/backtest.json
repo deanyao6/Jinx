@@ -1,0 +1,213 @@
+{
+  "recordedAt": "2026-09-22T21:22:27.715Z",
+  "source": "local only; read-only authenticated SQL",
+  "counts": {
+    "mlb": 2881,
+    "mls": 4962,
+    "nfl": 7289
+  },
+  "cases": [
+    {
+      "query": "Phillies 2026",
+      "entities": ["Philadelphia Phillies"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 247
+    },
+    {
+      "query": "philies 2026",
+      "entities": ["Philadelphia Phillies"],
+      "alternatives": 1,
+      "tier": 2,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 420
+    },
+    {
+      "query": "PHI MLB 2026",
+      "entities": ["Philadelphia Phillies"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 602
+    },
+    {
+      "query": "Eagles at Cowboys 2024",
+      "entities": ["Philadelphia Eagles", "Dallas Cowboys"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 1,
+      "elapsedIncludingDockerMs": 352
+    },
+    {
+      "query": "Cowboys vs Eagles 2024",
+      "entities": ["Dallas Cowboys", "Philadelphia Eagles"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 2,
+      "elapsedIncludingDockerMs": 349
+    },
+    {
+      "query": "LA Galaxy",
+      "entities": ["LA Galaxy"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 533
+    },
+    {
+      "query": "LAFC Galaxy 2025",
+      "entities": ["LAFC", "LA Galaxy"],
+      "alternatives": 1,
+      "tier": 2,
+      "rowsOnFirstPage": 2,
+      "elapsedIncludingDockerMs": 600
+    },
+    {
+      "query": "LAFC vs Galaxy September 2025",
+      "entities": ["LAFC", "LA Galaxy"],
+      "alternatives": 1,
+      "tier": 2,
+      "rowsOnFirstPage": 0,
+      "elapsedIncludingDockerMs": 891
+    },
+    {
+      "query": "Montréal MLS",
+      "entities": ["CF Montréal"],
+      "alternatives": 1,
+      "tier": 1,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 570
+    },
+    {
+      "query": "Montreal MLS",
+      "entities": ["CF Montréal"],
+      "alternatives": 1,
+      "tier": 1,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 605
+    },
+    {
+      "query": "Lakers January 2026",
+      "entities": ["Los Angeles Lakers"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 0,
+      "elapsedIncludingDockerMs": 367
+    },
+    {
+      "query": "Giants MLB",
+      "entities": ["San Francisco Giants"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 282
+    },
+    {
+      "query": "Giants NFL",
+      "entities": ["New York Giants"],
+      "alternatives": 1,
+      "tier": 0,
+      "rowsOnFirstPage": 25,
+      "elapsedIncludingDockerMs": 303
+    }
+  ],
+  "timingsMs": [247, 420, 602, 352, 349, 533, 600, 891, 570, 605, 367, 282, 303],
+  "pagination": {
+    "season": 2025,
+    "sport": "mls",
+    "rows": 543,
+    "exactOrderAndCoverage": true
+  },
+  "explain": {
+    "fuzzyAliases": [
+      {
+        "Plan": {
+          "Node Type": "Seq Scan",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Relation Name": "team_aliases",
+          "Alias": "team_aliases",
+          "Startup Cost": 0,
+          "Total Cost": 23.15,
+          "Plan Rows": 2,
+          "Plan Width": 16,
+          "Actual Startup Time": 0.189,
+          "Actual Total Time": 0.632,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Filter": "((search_name % 'philies'::text) AND (similarity(search_name, 'philies'::text) >= '0.42'::double precision))",
+          "Rows Removed by Filter": 693,
+          "Shared Hit Blocks": 11,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning": {
+          "Shared Hit Blocks": 182,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 1.128,
+        "Triggers": [],
+        "Execution Time": 0.668
+      }
+    ],
+    "matchup": [
+      {
+        "Plan": {
+          "Node Type": "Result",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 0,
+          "Total Cost": 0.26,
+          "Plan Rows": 1,
+          "Plan Width": 32,
+          "Actual Startup Time": 6.471,
+          "Actual Total Time": 6.472,
+          "Actual Rows": 1,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 3950,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning": {
+          "Shared Hit Blocks": 0,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 0.025,
+        "Triggers": [],
+        "Execution Time": 6.496
+      }
+    ]
+  },
+  "note": "Timings include Docker/psql process startup and two RPCs; not hosted p95. NBA has no games in this local dataset, so NBA date semantics are covered by transactional SQL fixtures."
+}

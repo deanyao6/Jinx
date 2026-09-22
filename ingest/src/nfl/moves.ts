@@ -38,15 +38,23 @@ interface SeedTeam {
  * LA, LAC) for every season, but a 2019 Raiders game belongs to the OAK team row, so the
  * franchise's row that was active that season is the one a join must point at.
  */
-export function teamForSeason(seed: readonly SeedTeam[], code: string, season: number): string | null {
+export function teamForSeason(
+  seed: readonly SeedTeam[],
+  code: string,
+  season: number,
+): string | null {
   const franchise = seed.find((t) => t.abbr === code)?.franchise;
   if (!franchise) return null;
-  const row = seed.find((t) => t.franchise === franchise && t.first <= season && (t.last == null || t.last >= season));
+  const row = seed.find(
+    (t) => t.franchise === franchise && t.first <= season && (t.last == null || t.last >= season),
+  );
   return row?.abbr ?? null;
 }
 
 /** First game date of each (season, week), less six days: when that roster week began. */
-export function weekStarts(schedule: readonly { season: number; week: number | null; gameday: string }[]): Map<string, string> {
+export function weekStarts(
+  schedule: readonly { season: number; week: number | null; gameday: string }[],
+): Map<string, string> {
   const first = new Map<string, string>();
   for (const g of schedule) {
     if (g.week == null || !g.gameday) continue;
@@ -67,8 +75,14 @@ export function weekStarts(schedule: readonly { season: number; week: number | n
  * The weekly roster file for a season. From 2024 the release carries `.csv.gz`; before that
  * only `.csv` (checked 2026-09-17), so a 404 on the first is followed by the second.
  */
-async function fetchWeeklyRoster(season: number, log: (s: string) => void): Promise<{ path: string } | null> {
-  for (const ref of [weeklyRostersAsset(season), { tag: 'weekly_rosters', file: `roster_weekly_${season}.csv` }]) {
+async function fetchWeeklyRoster(
+  season: number,
+  log: (s: string) => void,
+): Promise<{ path: string } | null> {
+  for (const ref of [
+    weeklyRostersAsset(season),
+    { tag: 'weekly_rosters', file: `roster_weekly_${season}.csv` },
+  ]) {
     try {
       return await fetchAsset(ref, { log });
     } catch (err) {
@@ -84,10 +98,17 @@ async function main(): Promise<void> {
   const db = createDb();
   const log = (s: string) => console.log(s);
 
-  const seed = JSON.parse(readFileSync(path.join(ROOT, 'seed', 'nfl_teams.json'), 'utf8')) as SeedTeam[];
-  const { data: teamRows, error } = await db.from('teams').select('id, abbreviation').eq('sport_id', 'nfl');
+  const seed = JSON.parse(
+    readFileSync(path.join(ROOT, 'seed', 'nfl_teams.json'), 'utf8'),
+  ) as SeedTeam[];
+  const { data: teamRows, error } = await db
+    .from('teams')
+    .select('id, abbreviation')
+    .eq('sport_id', 'nfl');
   if (error) throw new Error(error.message);
-  const teamIdByAbbr = new Map(((teamRows ?? []) as { id: string; abbreviation: string }[]).map((t) => [t.abbreviation, t.id]));
+  const teamIdByAbbr = new Map(
+    ((teamRows ?? []) as { id: string; abbreviation: string }[]).map((t) => [t.abbreviation, t.id]),
+  );
 
   const { path: gamesPath } = await fetchAsset(schedulesAsset(), { log });
   const starts = weekStarts(await loadScheduleRows(openAsset(gamesPath)));
@@ -136,7 +157,10 @@ async function main(): Promise<void> {
     db,
     'nfl',
     'nflverse',
-    wanted.map((w) => ({ providerPlayerId: w.gsisId, fullName: players.get(w.gsisId)?.name ?? names.get(w.gsisId) ?? w.gsisId })),
+    wanted.map((w) => ({
+      providerPlayerId: w.gsisId,
+      fullName: players.get(w.gsisId)?.name ?? names.get(w.gsisId) ?? w.gsisId,
+    })),
   );
   const out = new Map<string, Record<string, unknown>>();
   for (const w of wanted) {
@@ -150,7 +174,9 @@ async function main(): Promise<void> {
     });
   }
   await upsertRows(db, 'player_moves', [...out.values()], 'player_id,team_id,joined_on');
-  console.log(`${out.size} NFL moves for ${from}-${to}${unplaced ? ` (${unplaced} without a team or week date, skipped)` : ''}`);
+  console.log(
+    `${out.size} NFL moves for ${from}-${to}${unplaced ? ` (${unplaced} without a team or week date, skipped)` : ''}`,
+  );
   await refreshAllStats(db);
 }
 

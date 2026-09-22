@@ -9,6 +9,15 @@ Keep it that way: when you change what is true, change this file in the same com
 
 ---
 
+## Search v2 ready for review (2026-09-22)
+
+Branch `search-improvements` adds explicit My games / All games search, phrase/matchup
+interpretation, typo-tolerant aliases, calendar dates, ambiguity choices and cursor pagination.
+The additive search migrations are applied **locally only**. Entry points stay on v1 unless
+`EXPO_PUBLIC_SEARCH_V2=1` is set after deploying the migrations. No hosted search changes.
+See [search evidence and rollout](docs/evidence/search/README.md) for tests, the read-only
+15,132-game backtest, limitations and release steps.
+
 ## 1. What Jinx is
 
 A passport for sports fans: every game you attend becomes part of a living record. iOS only,

@@ -1,1520 +1,1520 @@
 {
- "accor-arena": {
-  "lat": 48.83871,
-  "lng": 2.37877,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/Paris"
- },
- "acrisure-stadium": {
-  "lat": 40.44667,
-  "lng": -80.01583,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "alamodome": {
-  "lat": 29.41694,
-  "lng": -98.47889,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "allegiant-stadium": {
-  "lat": 36.09056,
-  "lng": -115.18389,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "allianz-arena": {
-  "lat": 48.21878,
-  "lng": 11.62475,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/Berlin"
- },
- "american-airlines-center": {
-  "lat": 32.79049,
-  "lng": -96.81028,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "amway-arena": {
-  "lat": 28.5497,
-  "lng": -81.38632,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "arena-cdmx": {
-  "lat": 19.49761,
-  "lng": -99.1752,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Mexico_City"
- },
- "arena-corinthians": {
-  "lat": -23.54528,
-  "lng": -46.47417,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Sao_Paulo"
- },
- "arrowhead-stadium": {
-  "lat": 39.04889,
-  "lng": -94.48389,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "att-stadium": {
-  "lat": 32.74778,
-  "lng": -97.09278,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "ball-arena": {
-  "lat": 39.74868,
-  "lng": -105.00754,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "bank-of-america-stadium": {
-  "lat": 35.22583,
-  "lng": -80.85278,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "barclays-center": {
-  "lat": 40.68251,
-  "lng": -73.97525,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "bell-centre": {
-  "lat": 45.49604,
-  "lng": -73.5692,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Toronto"
- },
- "benchmark-international-arena": {
-  "lat": 27.9427,
-  "lng": -82.45189,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "bok-center": {
-  "lat": 36.15267,
-  "lng": -95.99637,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "bradley-center": {
-  "lat": 43.04305,
-  "lng": -87.91611,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "caesars-superdome": {
-  "lat": 29.95083,
-  "lng": -90.08111,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "candlestick-park": {
-  "lat": 37.71361,
-  "lng": -122.38611,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "capital-one-arena": {
-  "lat": 38.89819,
-  "lng": -77.02094,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "charlotte-coliseum": {
-  "lat": 35.20239,
-  "lng": -80.7952,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "chase-center": {
-  "lat": 37.7679,
-  "lng": -122.38742,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "climate-pledge-arena": {
-  "lat": 47.6219,
-  "lng": -122.35399,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "co-op-live": {
-  "lat": 53.48641,
-  "lng": -2.2,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/London"
- },
- "compaq-center": {
-  "lat": 29.73036,
-  "lng": -95.43472,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "crypto-com-arena": {
-  "lat": 34.043,
-  "lng": -118.26714,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "delta-center": {
-  "lat": 40.76833,
-  "lng": -111.90106,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "deutsche-bank-park": {
-  "lat": 50.06806,
-  "lng": 8.64581,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/Berlin"
- },
- "dignity-health-sports-park": {
-  "lat": 33.864,
-  "lng": -118.261,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "dome-at-americas-center": {
-  "lat": 38.63278,
-  "lng": -90.18861,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "empower-field-at-mile-high": {
-  "lat": 39.74389,
-  "lng": -105.02,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "espn-wide-world-of-sports": {
-  "lat": 28.33767,
-  "lng": -81.55752,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "estadio-azteca": {
-  "lat": 19.303,
-  "lng": -99.1505,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Mexico_City"
- },
- "etihad-arena": {
-  "lat": 24.46036,
-  "lng": 54.60422,
-  "resolved_on": "2026-09-18",
-  "tz": "Asia/Dubai"
- },
- "everbank-stadium": {
-  "lat": 30.32389,
-  "lng": -81.6375,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "fedexforum": {
-  "lat": 35.13823,
-  "lng": -90.05077,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "first-horizon-coliseum": {
-  "lat": 36.05608,
-  "lng": -79.82501,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "fiserv-forum": {
-  "lat": 43.04501,
-  "lng": -87.91749,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "ford-field": {
-  "lat": 42.34,
-  "lng": -83.04556,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Detroit"
- },
- "foxboro-stadium": {
-  "lat": 42.09278,
-  "lng": -71.2675,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "frost-bank-center": {
-  "lat": 29.42692,
-  "lng": -98.43751,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "gainbridge-fieldhouse": {
-  "lat": 39.76393,
-  "lng": -86.1555,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Indiana/Indianapolis"
- },
- "georgia-dome": {
-  "lat": 33.758,
-  "lng": -84.401,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "giants-stadium": {
-  "lat": 40.81222,
-  "lng": -74.07694,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "gies-memorial-stadium": {
-  "lat": 40.09917,
-  "lng": -88.23583,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "gillette-stadium": {
-  "lat": 42.091,
-  "lng": -71.264,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "golden-1-center": {
-  "lat": 38.58014,
-  "lng": -121.4995,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "hard-rock-stadium": {
-  "lat": 25.95806,
-  "lng": -80.23889,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "highmark-stadium": {
-  "lat": 42.77306,
-  "lng": -78.79222,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "hinkle-fieldhouse": {
-  "lat": 39.8436,
-  "lng": -86.16743,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Indiana/Indianapolis"
- },
- "honda-center": {
-  "lat": 33.80783,
-  "lng": -117.87653,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "hubert-h-humphrey-metrodome": {
-  "lat": 44.97389,
-  "lng": -93.25806,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "huntington-bank-field": {
-  "lat": 41.50611,
-  "lng": -81.69944,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "huntington-bank-stadium": {
-  "lat": 44.976,
-  "lng": -93.225,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "husky-stadium": {
-  "lat": 47.6503,
-  "lng": -122.3016,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "intuit-dome": {
-  "lat": 33.94426,
-  "lng": -118.34217,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "izod-center": {
-  "lat": 40.8116,
-  "lng": -74.0676,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "jma-wireless-dome": {
-  "lat": 43.03628,
-  "lng": -76.13636,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "kaseya-center": {
-  "lat": 25.78136,
-  "lng": -80.18794,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "keyarena": {
-  "lat": 47.6219,
-  "lng": -122.35399,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "kia-center": {
-  "lat": 28.53929,
-  "lng": -81.38389,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "lambeau-field": {
-  "lat": 44.50139,
-  "lng": -88.06222,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "levis-stadium": {
-  "lat": 37.403,
-  "lng": -121.97,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "lincoln-financial-field": {
-  "lat": 39.90083,
-  "lng": -75.1675,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "little-caesars-arena": {
-  "lat": 42.34098,
-  "lng": -83.05495,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Detroit"
- },
- "los-angeles-memorial-coliseum": {
-  "lat": 34.01417,
-  "lng": -118.28778,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "lucas-oil-stadium": {
-  "lat": 39.76006,
-  "lng": -86.16381,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Indiana/Indianapolis"
- },
- "lumen-field": {
-  "lat": 47.5952,
-  "lng": -122.3316,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "madison-square-garden": {
-  "lat": 40.75051,
-  "lng": -73.99352,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "maracana": {
-  "lat": -22.9122,
-  "lng": -43.2303,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Sao_Paulo"
- },
- "melbourne-cricket-ground": {
-  "lat": -37.82,
-  "lng": 144.98333,
-  "resolved_on": "2026-09-18",
-  "tz": "Australia/Melbourne"
- },
- "mercedes-benz-arena-shanghai": {
-  "lat": 31.19093,
-  "lng": 121.4887,
-  "resolved_on": "2026-09-18",
-  "tz": "Asia/Shanghai"
- },
- "mercedes-benz-stadium": {
-  "lat": 33.75556,
-  "lng": -84.4,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "metlife-stadium": {
-  "lat": 40.81353,
-  "lng": -74.07436,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mile-high-stadium": {
-  "lat": 39.74611,
-  "lng": -105.02167,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "mlb-american-family-field": {
-  "lat": 43.02838,
-  "lng": -87.97099,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-american-family-fields-of-phoenix": {
-  "lat": 33.49202,
-  "lng": -112.1727,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-angel-stadium": {
-  "lat": 33.80019044,
-  "lng": -117.8823996,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-arvest-ballpark": {
-  "lat": 36.15968,
-  "lng": -94.194624,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-autozone-park": {
-  "lat": 35.14297,
-  "lng": -90.04924,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-baycare-ballpark": {
-  "lat": 27.97159,
-  "lng": -82.731714,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-bb-t-ballpark": {
-  "lat": 35.22781,
-  "lng": -80.84823,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-bb-t-coastal-federal-field": {
-  "lat": 33.711404,
-  "lng": -78.88444,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-bristol-motor-speedway": {
-  "lat": 31.5156,
-  "lng": -82.5269,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-busch-stadium": {
-  "lat": 38.62256667,
-  "lng": -90.19286667,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-busch-stadium-i": {
-  "lat": 38.62389,
-  "lng": -90.19222,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-cacti-park-of-the-palm-beaches": {
-  "lat": 26.75475,
-  "lng": -80.11316,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-camelback-ranch": {
-  "lat": 33.51434,
-  "lng": -112.29612,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-charlotte-sports-park": {
-  "lat": 26.99888,
-  "lng": -82.18212,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-chase-field": {
-  "lat": 33.445302,
-  "lng": -112.066687,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-cheney-stadium": {
-  "lat": 47.237981,
-  "lng": -122.497643,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-chukchansi-park": {
-  "lat": 36.73256,
-  "lng": -119.79157,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-cinergy-field": {
-  "lat": 39.09722,
-  "lng": -84.50833,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-citi-field": {
-  "lat": 40.75753012,
-  "lng": -73.84559155,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-citizens-bank-park": {
-  "lat": 39.90539086,
-  "lng": -75.16716957,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-clover-park": {
-  "lat": 27.3249268,
-  "lng": -80.4068854,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-coca-cola-park": {
-  "lat": 40.6253183,
-  "lng": -75.4516154,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-comerica-park": {
-  "lat": 42.3391151,
-  "lng": -83.048695,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Detroit"
- },
- "mlb-constellation-field": {
-  "lat": 29.62275645,
-  "lng": -95.64718344,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-coolray-field": {
-  "lat": 34.0409586,
-  "lng": -83.9937909,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-cooltoday-park": {
-  "lat": 27.04422,
-  "lng": -82.23593,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-coors-field": {
-  "lat": 39.756042,
-  "lng": -104.994136,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "mlb-daikin-park": {
-  "lat": 29.756967,
-  "lng": -95.355509,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-day-air-ballpark": {
-  "lat": 39.764172,
-  "lng": -84.185896,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-dr-pepper-ballpark": {
-  "lat": 33.0984,
-  "lng": -96.8197,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-durham-bulls-athletic-park": {
-  "lat": 35.99158,
-  "lng": -78.90401,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-ed-smith-stadium": {
-  "lat": 27.34795,
-  "lng": -82.5174,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-english-field": {
-  "lat": 37.2178,
-  "lng": -80.4233,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-estadio-alfredo-harp-helu": {
-  "lat": 19.40389,
-  "lng": -99.09028,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Mexico_City"
- },
- "mlb-fenway-park": {
-  "lat": 42.346456,
-  "lng": -71.097441,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-field-of-dreams": {
-  "lat": 42.498241,
-  "lng": -91.056486,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-fifth-third-field": {
-  "lat": 41.64767,
-  "lng": -83.53838,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-first-tennessee-park": {
-  "lat": 36.173218,
-  "lng": -86.785171,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-firstenergy-stadium": {
-  "lat": 40.365558,
-  "lng": -75.933816,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-five-county-stadium": {
-  "lat": 35.81726,
-  "lng": -78.27122,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-george-m-steinbrenner-field": {
-  "lat": 27.97997,
-  "lng": -82.50702,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-globe-life-field": {
-  "lat": 32.747299,
-  "lng": -97.081818,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-globe-life-park-in-arlington": {
-  "lat": 32.751321,
-  "lng": -97.082682,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-gocheok-sky-dome": {
-  "lat": 37.49833,
-  "lng": 126.86722,
-  "resolved_on": "2026-09-18",
-  "tz": "Asia/Seoul"
- },
- "mlb-goodyear-ballpark": {
-  "lat": 33.42892,
-  "lng": -112.39027,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-great-american-ball-park": {
-  "lat": 39.097389,
-  "lng": -84.506611,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-harbor-park": {
-  "lat": 36.84265,
-  "lng": -76.27803,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-hiram-bithorn-stadium": {
-  "lat": 18.4175,
-  "lng": -66.06694,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Puerto_Rico"
- },
- "mlb-hohokam-stadium": {
-  "lat": 33.43831,
-  "lng": -111.82973,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-huntington-park": {
-  "lat": 39.96868,
-  "lng": -83.01102,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-isotopes-park": {
-  "lat": 35.06985,
-  "lng": -106.62802,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "mlb-jetblue-park": {
-  "lat": 26.55092,
-  "lng": -81.76225,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-joseph-p-riley-jr-ballpark": {
-  "lat": 32.790421,
-  "lng": -79.961332,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-journey-bank-ballpark": {
-  "lat": 41.2419845,
-  "lng": -77.0475104,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-kauffman-stadium": {
-  "lat": 39.051567,
-  "lng": -94.480483,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-las-vegas-ballpark": {
-  "lat": 36.152607,
-  "lng": -115.329888,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-lecom-park": {
-  "lat": 27.48553,
-  "lng": -82.57038,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-lee-health-sports-complex": {
-  "lat": 26.537803,
-  "lng": -81.841973,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-loandepot-park": {
-  "lat": 25.77796236,
-  "lng": -80.21951795,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-loanmart-field": {
-  "lat": 34.102721,
-  "lng": -117.54792,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-london-stadium": {
-  "lat": 51.53861,
-  "lng": -0.01639,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/London"
- },
- "mlb-louisville-slugger-field": {
-  "lat": 38.2557199,
-  "lng": -85.74479,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Kentucky/Louisville"
- },
- "mlb-mgm-park": {
-  "lat": 30.395421,
-  "lng": -88.893217,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-milwaukee-county-stadium": {
-  "lat": 43.02833,
-  "lng": -87.97417,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-montgomery-riverwalk-stadium": {
-  "lat": 32.382298,
-  "lng": -86.310592,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-nationals-park": {
-  "lat": 38.872861,
-  "lng": -77.007501,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-nelson-w-wolff-municipal-stadium": {
-  "lat": 29.40978,
-  "lng": -98.60189,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-newbridge-bank-park": {
-  "lat": 36.07667,
-  "lng": -79.79487,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-olympic-stadium": {
-  "lat": 45.558,
-  "lng": -73.552,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Toronto"
- },
- "mlb-oneok-field": {
-  "lat": 36.1601215,
-  "lng": -95.9888782,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-oracle-park": {
-  "lat": 37.778383,
-  "lng": -122.389448,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-oriole-park-at-camden-yards": {
-  "lat": 39.283787,
-  "lng": -76.621689,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-pensacola-bayfront-stadium": {
-  "lat": 30.4048409,
-  "lng": -87.2188349,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-peoples-natural-gas-field": {
-  "lat": 40.473826,
-  "lng": -78.394753,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-peoria-stadium": {
-  "lat": 33.63187,
-  "lng": -112.23359,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-petco-park": {
-  "lat": 32.707861,
-  "lng": -117.157278,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-pnc-park": {
-  "lat": 40.446904,
-  "lng": -80.005753,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-progressive-field": {
-  "lat": 41.495861,
-  "lng": -81.685255,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-publix-field-at-joker-marchant-stadium": {
-  "lat": 28.074822,
-  "lng": -81.9508415,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-rate-field": {
-  "lat": 41.83,
-  "lng": -87.634167,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-redhawks-field-at-bricktown": {
-  "lat": 35.46511,
-  "lng": -97.50762,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-regions-field": {
-  "lat": 33.5077928,
-  "lng": -86.8120366,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-rickwood-field": {
-  "lat": 33.5023303,
-  "lng": -86.8563555,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-robert-f-kennedy-memorial-stadium": {
-  "lat": 38.88972,
-  "lng": -76.97167,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-roger-dean-chevrolet-stadium": {
-  "lat": 26.890957,
-  "lng": -80.116365,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-route-66-stadium": {
-  "lat": 37.21078,
-  "lng": -93.2797,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-sahlen-field": {
-  "lat": 42.880772,
-  "lng": -78.873955,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-salt-river-fields-at-talking-stick": {
-  "lat": 33.54523,
-  "lng": -111.88552,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-scottsdale-stadium": {
-  "lat": 33.48869,
-  "lng": -111.92099,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-shea-stadium": {
-  "lat": 40.75694,
-  "lng": -73.84583,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-sloan-park": {
-  "lat": 33.43081,
-  "lng": -111.882,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-smith-s-ballpark": {
-  "lat": 40.74109,
-  "lng": -111.89256,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "mlb-southwest-university-park": {
-  "lat": 31.759277,
-  "lng": -106.492526,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Denver"
- },
- "mlb-surprise-stadium": {
-  "lat": 33.62762,
-  "lng": -112.37849,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-sutter-health-park": {
-  "lat": 38.57994,
-  "lng": -121.51246,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-sydney-cricket-ground": {
-  "lat": 33.89167,
-  "lng": 151.22472,
-  "resolved_on": "2026-09-18",
-  "tz": "Etc/GMT-10"
- },
- "mlb-t-mobile-park": {
-  "lat": 47.591333,
-  "lng": -122.33251,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-target-field": {
-  "lat": 44.981829,
-  "lng": -93.277891,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-td-ameritrade-park": {
-  "lat": 41.25861,
-  "lng": -95.93779,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-td-ballpark": {
-  "lat": 27.9745812,
-  "lng": -82.7913301,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-tempe-diablo-stadium": {
-  "lat": 33.40092,
-  "lng": -111.9707,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mlb-the-baseball-grounds-of-jacksonville": {
-  "lat": 30.32533,
-  "lng": -81.64256,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-the-dell-diamond": {
-  "lat": 30.527463,
-  "lng": -97.630397,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-the-diamond": {
-  "lat": 33.654183,
-  "lng": -117.3010675,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-the-stadium-at-the-espn-wide-world-of-sports": {
-  "lat": 28.33725,
-  "lng": -81.55613,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-tokyo-dome": {
-  "lat": 35.70556,
-  "lng": 139.75194,
-  "resolved_on": "2026-09-18",
-  "tz": "Asia/Tokyo"
- },
- "mlb-tropicana-field": {
-  "lat": 27.767778,
-  "lng": -82.6525,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-truist-park": {
-  "lat": 33.890672,
-  "lng": -84.467641,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-trustmark-park": {
-  "lat": 32.274168,
-  "lng": -90.147519,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-turner-field": {
-  "lat": 33.735,
-  "lng": -84.38944,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-uniqlo-field-at-dodger-stadium": {
-  "lat": 34.07368,
-  "lng": -118.24053,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mlb-victory-field": {
-  "lat": 39.7657354,
-  "lng": -86.1682918,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Indiana/Indianapolis"
- },
- "mlb-werner-park": {
-  "lat": 41.1510945,
-  "lng": -96.1057988,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-whataburger-field": {
-  "lat": 27.80995,
-  "lng": -97.39941,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-wrigley-field": {
-  "lat": 41.948171,
-  "lng": -87.655503,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mlb-yankee-stadium": {
-  "lat": 40.82919482,
-  "lng": -73.9264977,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "mlb-yankee-stadium-i": {
-  "lat": 40.82667,
-  "lng": -73.92806,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "moda-center": {
-  "lat": 45.53167,
-  "lng": -122.66667,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "mohegan-sun-arena": {
-  "lat": 41.49111,
-  "lng": -72.08974,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "moody-center": {
-  "lat": 30.28094,
-  "lng": -97.73065,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "mortgage-matchup-center": {
-  "lat": 33.44604,
-  "lng": -112.0711,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mountain-america-stadium": {
-  "lat": 33.42639,
-  "lng": -111.9325,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "mt-bank-stadium": {
-  "lat": 39.27806,
-  "lng": -76.62278,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "nissan-stadium": {
-  "lat": 36.16639,
-  "lng": -86.77139,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "northwest-stadium": {
-  "lat": 38.90778,
-  "lng": -76.86444,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "oakland-coliseum": {
-  "lat": 37.75167,
-  "lng": -122.20056,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "oracle-arena": {
-  "lat": 37.75027,
-  "lng": -122.20293,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "paycom-center": {
-  "lat": 35.4634,
-  "lng": -97.51508,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "paycor-stadium": {
-  "lat": 39.095,
-  "lng": -84.516,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "pechanga-arena": {
-  "lat": 32.7553,
-  "lng": -117.21227,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "pontiac-silverdome": {
-  "lat": 42.64583,
-  "lng": -83.255,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Detroit"
- },
- "prudential-center": {
-  "lat": 40.73343,
-  "lng": -74.17115,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "pyramid-arena": {
-  "lat": 35.15545,
-  "lng": -90.05198,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "ralph-wilson-stadium": {
-  "lat": 42.774,
-  "lng": -78.787,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "raymond-james-stadium": {
-  "lat": 27.97583,
-  "lng": -82.50333,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "rca-dome": {
-  "lat": 39.76361,
-  "lng": -86.16333,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Indiana/Indianapolis"
- },
- "reliant-stadium": {
-  "lat": 29.68472,
-  "lng": -95.41083,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "resch-center": {
-  "lat": 44.49949,
-  "lng": -88.05504,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "reunion-arena": {
-  "lat": 32.77355,
-  "lng": -96.80904,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "rocket-arena": {
-  "lat": 41.49669,
-  "lng": -81.68858,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "rogers-arena": {
-  "lat": 49.27791,
-  "lng": -123.10894,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Vancouver"
- },
- "rogers-centre": {
-  "lat": 43.64139,
-  "lng": -79.38917,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Toronto"
- },
- "saitama-super-arena": {
-  "lat": 35.89512,
-  "lng": 139.63075,
-  "resolved_on": "2026-09-18",
-  "tz": "Asia/Tokyo"
- },
- "san-diego-stadium": {
-  "lat": 32.78306,
-  "lng": -117.11944,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "santiago-bernabeu": {
-  "lat": 40.45306,
-  "lng": -3.68835,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/Madrid"
- },
- "save-mart-center": {
-  "lat": 36.80969,
-  "lng": -119.73851,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "schottenstein-center": {
-  "lat": 40.0076,
-  "lng": -83.02496,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "scotiabank-arena": {
-  "lat": 43.64343,
-  "lng": -79.37908,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Toronto"
- },
- "sleep-train-arena": {
-  "lat": 38.64745,
-  "lng": -121.49905,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "smoothie-king-center": {
-  "lat": 29.94904,
-  "lng": -90.08207,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "sofi-stadium": {
-  "lat": 33.953,
-  "lng": -118.339,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "soldier-field": {
-  "lat": 41.8623,
-  "lng": -87.6167,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "spectrum-center": {
-  "lat": 35.2251,
-  "lng": -80.83915,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "stade-de-france": {
-  "lat": 48.9245,
-  "lng": 2.3602,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/Paris"
- },
- "stan-sheriff-center": {
-  "lat": 21.29431,
-  "lng": -157.81892,
-  "resolved_on": "2026-09-18",
-  "tz": "Pacific/Honolulu"
- },
- "state-farm-arena": {
-  "lat": 33.75737,
-  "lng": -84.39638,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "state-farm-stadium": {
-  "lat": 33.528,
-  "lng": -112.263,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Phoenix"
- },
- "t-mobile-arena": {
-  "lat": 36.10268,
-  "lng": -115.17822,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "t-mobile-center": {
-  "lat": 39.0973,
-  "lng": -94.57995,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "target-center": {
-  "lat": 44.97959,
-  "lng": -93.27598,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "td-garden": {
-  "lat": 42.3663,
-  "lng": -71.06216,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "texas-stadium": {
-  "lat": 32.83972,
-  "lng": -96.91083,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "the-o2-arena": {
-  "lat": 51.50293,
-  "lng": 0.00318,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/London"
- },
- "the-palace-of-auburn-hills": {
-  "lat": 42.69667,
-  "lng": -83.24556,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Detroit"
- },
- "thomas-and-mack-center": {
-  "lat": 36.10492,
-  "lng": -115.14427,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "three-rivers-stadium": {
-  "lat": 40.44667,
-  "lng": -80.01278,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "tiger-stadium-lsu": {
-  "lat": 30.41222,
-  "lng": -91.18389,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "tottenham-hotspur-stadium": {
-  "lat": 51.6044,
-  "lng": -0.0664,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/London"
- },
- "toyota-arena-ontario": {
-  "lat": 34.07302,
-  "lng": -117.56632,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Los_Angeles"
- },
- "toyota-center": {
-  "lat": 29.75075,
-  "lng": -95.36223,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "twickenham-stadium": {
-  "lat": 51.45583,
-  "lng": -0.34139,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/London"
- },
- "uber-arena": {
-  "lat": 52.50637,
-  "lng": 13.44377,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/Berlin"
- },
- "united-center": {
-  "lat": 41.88068,
-  "lng": -87.67419,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "us-bank-stadium": {
-  "lat": 44.974,
-  "lng": -93.258,
-  "resolved_on": "2026-09-18",
-  "tz": "America/Chicago"
- },
- "veterans-stadium": {
-  "lat": 39.90667,
-  "lng": -75.17111,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- },
- "wembley-stadium": {
-  "lat": 51.5556,
-  "lng": -0.2794,
-  "resolved_on": "2026-09-18",
-  "tz": "Europe/London"
- },
- "xfinity-mobile-arena": {
-  "lat": 39.9011,
-  "lng": -75.17202,
-  "resolved_on": "2026-09-18",
-  "tz": "America/New_York"
- }
+  "accor-arena": {
+    "lat": 48.83871,
+    "lng": 2.37877,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/Paris"
+  },
+  "acrisure-stadium": {
+    "lat": 40.44667,
+    "lng": -80.01583,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "alamodome": {
+    "lat": 29.41694,
+    "lng": -98.47889,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "allegiant-stadium": {
+    "lat": 36.09056,
+    "lng": -115.18389,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "allianz-arena": {
+    "lat": 48.21878,
+    "lng": 11.62475,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/Berlin"
+  },
+  "american-airlines-center": {
+    "lat": 32.79049,
+    "lng": -96.81028,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "amway-arena": {
+    "lat": 28.5497,
+    "lng": -81.38632,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "arena-cdmx": {
+    "lat": 19.49761,
+    "lng": -99.1752,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Mexico_City"
+  },
+  "arena-corinthians": {
+    "lat": -23.54528,
+    "lng": -46.47417,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Sao_Paulo"
+  },
+  "arrowhead-stadium": {
+    "lat": 39.04889,
+    "lng": -94.48389,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "att-stadium": {
+    "lat": 32.74778,
+    "lng": -97.09278,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "ball-arena": {
+    "lat": 39.74868,
+    "lng": -105.00754,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "bank-of-america-stadium": {
+    "lat": 35.22583,
+    "lng": -80.85278,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "barclays-center": {
+    "lat": 40.68251,
+    "lng": -73.97525,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "bell-centre": {
+    "lat": 45.49604,
+    "lng": -73.5692,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Toronto"
+  },
+  "benchmark-international-arena": {
+    "lat": 27.9427,
+    "lng": -82.45189,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "bok-center": {
+    "lat": 36.15267,
+    "lng": -95.99637,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "bradley-center": {
+    "lat": 43.04305,
+    "lng": -87.91611,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "caesars-superdome": {
+    "lat": 29.95083,
+    "lng": -90.08111,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "candlestick-park": {
+    "lat": 37.71361,
+    "lng": -122.38611,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "capital-one-arena": {
+    "lat": 38.89819,
+    "lng": -77.02094,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "charlotte-coliseum": {
+    "lat": 35.20239,
+    "lng": -80.7952,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "chase-center": {
+    "lat": 37.7679,
+    "lng": -122.38742,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "climate-pledge-arena": {
+    "lat": 47.6219,
+    "lng": -122.35399,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "co-op-live": {
+    "lat": 53.48641,
+    "lng": -2.2,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/London"
+  },
+  "compaq-center": {
+    "lat": 29.73036,
+    "lng": -95.43472,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "crypto-com-arena": {
+    "lat": 34.043,
+    "lng": -118.26714,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "delta-center": {
+    "lat": 40.76833,
+    "lng": -111.90106,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "deutsche-bank-park": {
+    "lat": 50.06806,
+    "lng": 8.64581,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/Berlin"
+  },
+  "dignity-health-sports-park": {
+    "lat": 33.864,
+    "lng": -118.261,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "dome-at-americas-center": {
+    "lat": 38.63278,
+    "lng": -90.18861,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "empower-field-at-mile-high": {
+    "lat": 39.74389,
+    "lng": -105.02,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "espn-wide-world-of-sports": {
+    "lat": 28.33767,
+    "lng": -81.55752,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "estadio-azteca": {
+    "lat": 19.303,
+    "lng": -99.1505,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Mexico_City"
+  },
+  "etihad-arena": {
+    "lat": 24.46036,
+    "lng": 54.60422,
+    "resolved_on": "2026-09-18",
+    "tz": "Asia/Dubai"
+  },
+  "everbank-stadium": {
+    "lat": 30.32389,
+    "lng": -81.6375,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "fedexforum": {
+    "lat": 35.13823,
+    "lng": -90.05077,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "first-horizon-coliseum": {
+    "lat": 36.05608,
+    "lng": -79.82501,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "fiserv-forum": {
+    "lat": 43.04501,
+    "lng": -87.91749,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "ford-field": {
+    "lat": 42.34,
+    "lng": -83.04556,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Detroit"
+  },
+  "foxboro-stadium": {
+    "lat": 42.09278,
+    "lng": -71.2675,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "frost-bank-center": {
+    "lat": 29.42692,
+    "lng": -98.43751,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "gainbridge-fieldhouse": {
+    "lat": 39.76393,
+    "lng": -86.1555,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Indiana/Indianapolis"
+  },
+  "georgia-dome": {
+    "lat": 33.758,
+    "lng": -84.401,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "giants-stadium": {
+    "lat": 40.81222,
+    "lng": -74.07694,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "gies-memorial-stadium": {
+    "lat": 40.09917,
+    "lng": -88.23583,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "gillette-stadium": {
+    "lat": 42.091,
+    "lng": -71.264,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "golden-1-center": {
+    "lat": 38.58014,
+    "lng": -121.4995,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "hard-rock-stadium": {
+    "lat": 25.95806,
+    "lng": -80.23889,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "highmark-stadium": {
+    "lat": 42.77306,
+    "lng": -78.79222,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "hinkle-fieldhouse": {
+    "lat": 39.8436,
+    "lng": -86.16743,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Indiana/Indianapolis"
+  },
+  "honda-center": {
+    "lat": 33.80783,
+    "lng": -117.87653,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "hubert-h-humphrey-metrodome": {
+    "lat": 44.97389,
+    "lng": -93.25806,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "huntington-bank-field": {
+    "lat": 41.50611,
+    "lng": -81.69944,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "huntington-bank-stadium": {
+    "lat": 44.976,
+    "lng": -93.225,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "husky-stadium": {
+    "lat": 47.6503,
+    "lng": -122.3016,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "intuit-dome": {
+    "lat": 33.94426,
+    "lng": -118.34217,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "izod-center": {
+    "lat": 40.8116,
+    "lng": -74.0676,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "jma-wireless-dome": {
+    "lat": 43.03628,
+    "lng": -76.13636,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "kaseya-center": {
+    "lat": 25.78136,
+    "lng": -80.18794,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "keyarena": {
+    "lat": 47.6219,
+    "lng": -122.35399,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "kia-center": {
+    "lat": 28.53929,
+    "lng": -81.38389,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "lambeau-field": {
+    "lat": 44.50139,
+    "lng": -88.06222,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "levis-stadium": {
+    "lat": 37.403,
+    "lng": -121.97,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "lincoln-financial-field": {
+    "lat": 39.90083,
+    "lng": -75.1675,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "little-caesars-arena": {
+    "lat": 42.34098,
+    "lng": -83.05495,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Detroit"
+  },
+  "los-angeles-memorial-coliseum": {
+    "lat": 34.01417,
+    "lng": -118.28778,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "lucas-oil-stadium": {
+    "lat": 39.76006,
+    "lng": -86.16381,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Indiana/Indianapolis"
+  },
+  "lumen-field": {
+    "lat": 47.5952,
+    "lng": -122.3316,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "madison-square-garden": {
+    "lat": 40.75051,
+    "lng": -73.99352,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "maracana": {
+    "lat": -22.9122,
+    "lng": -43.2303,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Sao_Paulo"
+  },
+  "melbourne-cricket-ground": {
+    "lat": -37.82,
+    "lng": 144.98333,
+    "resolved_on": "2026-09-18",
+    "tz": "Australia/Melbourne"
+  },
+  "mercedes-benz-arena-shanghai": {
+    "lat": 31.19093,
+    "lng": 121.4887,
+    "resolved_on": "2026-09-18",
+    "tz": "Asia/Shanghai"
+  },
+  "mercedes-benz-stadium": {
+    "lat": 33.75556,
+    "lng": -84.4,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "metlife-stadium": {
+    "lat": 40.81353,
+    "lng": -74.07436,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mile-high-stadium": {
+    "lat": 39.74611,
+    "lng": -105.02167,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "mlb-american-family-field": {
+    "lat": 43.02838,
+    "lng": -87.97099,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-american-family-fields-of-phoenix": {
+    "lat": 33.49202,
+    "lng": -112.1727,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-angel-stadium": {
+    "lat": 33.80019044,
+    "lng": -117.8823996,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-arvest-ballpark": {
+    "lat": 36.15968,
+    "lng": -94.194624,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-autozone-park": {
+    "lat": 35.14297,
+    "lng": -90.04924,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-baycare-ballpark": {
+    "lat": 27.97159,
+    "lng": -82.731714,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-bb-t-ballpark": {
+    "lat": 35.22781,
+    "lng": -80.84823,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-bb-t-coastal-federal-field": {
+    "lat": 33.711404,
+    "lng": -78.88444,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-bristol-motor-speedway": {
+    "lat": 31.5156,
+    "lng": -82.5269,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-busch-stadium": {
+    "lat": 38.62256667,
+    "lng": -90.19286667,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-busch-stadium-i": {
+    "lat": 38.62389,
+    "lng": -90.19222,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-cacti-park-of-the-palm-beaches": {
+    "lat": 26.75475,
+    "lng": -80.11316,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-camelback-ranch": {
+    "lat": 33.51434,
+    "lng": -112.29612,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-charlotte-sports-park": {
+    "lat": 26.99888,
+    "lng": -82.18212,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-chase-field": {
+    "lat": 33.445302,
+    "lng": -112.066687,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-cheney-stadium": {
+    "lat": 47.237981,
+    "lng": -122.497643,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-chukchansi-park": {
+    "lat": 36.73256,
+    "lng": -119.79157,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-cinergy-field": {
+    "lat": 39.09722,
+    "lng": -84.50833,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-citi-field": {
+    "lat": 40.75753012,
+    "lng": -73.84559155,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-citizens-bank-park": {
+    "lat": 39.90539086,
+    "lng": -75.16716957,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-clover-park": {
+    "lat": 27.3249268,
+    "lng": -80.4068854,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-coca-cola-park": {
+    "lat": 40.6253183,
+    "lng": -75.4516154,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-comerica-park": {
+    "lat": 42.3391151,
+    "lng": -83.048695,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Detroit"
+  },
+  "mlb-constellation-field": {
+    "lat": 29.62275645,
+    "lng": -95.64718344,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-coolray-field": {
+    "lat": 34.0409586,
+    "lng": -83.9937909,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-cooltoday-park": {
+    "lat": 27.04422,
+    "lng": -82.23593,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-coors-field": {
+    "lat": 39.756042,
+    "lng": -104.994136,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "mlb-daikin-park": {
+    "lat": 29.756967,
+    "lng": -95.355509,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-day-air-ballpark": {
+    "lat": 39.764172,
+    "lng": -84.185896,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-dr-pepper-ballpark": {
+    "lat": 33.0984,
+    "lng": -96.8197,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-durham-bulls-athletic-park": {
+    "lat": 35.99158,
+    "lng": -78.90401,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-ed-smith-stadium": {
+    "lat": 27.34795,
+    "lng": -82.5174,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-english-field": {
+    "lat": 37.2178,
+    "lng": -80.4233,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-estadio-alfredo-harp-helu": {
+    "lat": 19.40389,
+    "lng": -99.09028,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Mexico_City"
+  },
+  "mlb-fenway-park": {
+    "lat": 42.346456,
+    "lng": -71.097441,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-field-of-dreams": {
+    "lat": 42.498241,
+    "lng": -91.056486,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-fifth-third-field": {
+    "lat": 41.64767,
+    "lng": -83.53838,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-first-tennessee-park": {
+    "lat": 36.173218,
+    "lng": -86.785171,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-firstenergy-stadium": {
+    "lat": 40.365558,
+    "lng": -75.933816,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-five-county-stadium": {
+    "lat": 35.81726,
+    "lng": -78.27122,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-george-m-steinbrenner-field": {
+    "lat": 27.97997,
+    "lng": -82.50702,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-globe-life-field": {
+    "lat": 32.747299,
+    "lng": -97.081818,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-globe-life-park-in-arlington": {
+    "lat": 32.751321,
+    "lng": -97.082682,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-gocheok-sky-dome": {
+    "lat": 37.49833,
+    "lng": 126.86722,
+    "resolved_on": "2026-09-18",
+    "tz": "Asia/Seoul"
+  },
+  "mlb-goodyear-ballpark": {
+    "lat": 33.42892,
+    "lng": -112.39027,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-great-american-ball-park": {
+    "lat": 39.097389,
+    "lng": -84.506611,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-harbor-park": {
+    "lat": 36.84265,
+    "lng": -76.27803,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-hiram-bithorn-stadium": {
+    "lat": 18.4175,
+    "lng": -66.06694,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Puerto_Rico"
+  },
+  "mlb-hohokam-stadium": {
+    "lat": 33.43831,
+    "lng": -111.82973,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-huntington-park": {
+    "lat": 39.96868,
+    "lng": -83.01102,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-isotopes-park": {
+    "lat": 35.06985,
+    "lng": -106.62802,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "mlb-jetblue-park": {
+    "lat": 26.55092,
+    "lng": -81.76225,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-joseph-p-riley-jr-ballpark": {
+    "lat": 32.790421,
+    "lng": -79.961332,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-journey-bank-ballpark": {
+    "lat": 41.2419845,
+    "lng": -77.0475104,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-kauffman-stadium": {
+    "lat": 39.051567,
+    "lng": -94.480483,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-las-vegas-ballpark": {
+    "lat": 36.152607,
+    "lng": -115.329888,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-lecom-park": {
+    "lat": 27.48553,
+    "lng": -82.57038,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-lee-health-sports-complex": {
+    "lat": 26.537803,
+    "lng": -81.841973,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-loandepot-park": {
+    "lat": 25.77796236,
+    "lng": -80.21951795,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-loanmart-field": {
+    "lat": 34.102721,
+    "lng": -117.54792,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-london-stadium": {
+    "lat": 51.53861,
+    "lng": -0.01639,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/London"
+  },
+  "mlb-louisville-slugger-field": {
+    "lat": 38.2557199,
+    "lng": -85.74479,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Kentucky/Louisville"
+  },
+  "mlb-mgm-park": {
+    "lat": 30.395421,
+    "lng": -88.893217,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-milwaukee-county-stadium": {
+    "lat": 43.02833,
+    "lng": -87.97417,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-montgomery-riverwalk-stadium": {
+    "lat": 32.382298,
+    "lng": -86.310592,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-nationals-park": {
+    "lat": 38.872861,
+    "lng": -77.007501,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-nelson-w-wolff-municipal-stadium": {
+    "lat": 29.40978,
+    "lng": -98.60189,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-newbridge-bank-park": {
+    "lat": 36.07667,
+    "lng": -79.79487,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-olympic-stadium": {
+    "lat": 45.558,
+    "lng": -73.552,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Toronto"
+  },
+  "mlb-oneok-field": {
+    "lat": 36.1601215,
+    "lng": -95.9888782,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-oracle-park": {
+    "lat": 37.778383,
+    "lng": -122.389448,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-oriole-park-at-camden-yards": {
+    "lat": 39.283787,
+    "lng": -76.621689,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-pensacola-bayfront-stadium": {
+    "lat": 30.4048409,
+    "lng": -87.2188349,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-peoples-natural-gas-field": {
+    "lat": 40.473826,
+    "lng": -78.394753,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-peoria-stadium": {
+    "lat": 33.63187,
+    "lng": -112.23359,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-petco-park": {
+    "lat": 32.707861,
+    "lng": -117.157278,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-pnc-park": {
+    "lat": 40.446904,
+    "lng": -80.005753,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-progressive-field": {
+    "lat": 41.495861,
+    "lng": -81.685255,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-publix-field-at-joker-marchant-stadium": {
+    "lat": 28.074822,
+    "lng": -81.9508415,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-rate-field": {
+    "lat": 41.83,
+    "lng": -87.634167,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-redhawks-field-at-bricktown": {
+    "lat": 35.46511,
+    "lng": -97.50762,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-regions-field": {
+    "lat": 33.5077928,
+    "lng": -86.8120366,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-rickwood-field": {
+    "lat": 33.5023303,
+    "lng": -86.8563555,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-robert-f-kennedy-memorial-stadium": {
+    "lat": 38.88972,
+    "lng": -76.97167,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-roger-dean-chevrolet-stadium": {
+    "lat": 26.890957,
+    "lng": -80.116365,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-route-66-stadium": {
+    "lat": 37.21078,
+    "lng": -93.2797,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-sahlen-field": {
+    "lat": 42.880772,
+    "lng": -78.873955,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-salt-river-fields-at-talking-stick": {
+    "lat": 33.54523,
+    "lng": -111.88552,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-scottsdale-stadium": {
+    "lat": 33.48869,
+    "lng": -111.92099,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-shea-stadium": {
+    "lat": 40.75694,
+    "lng": -73.84583,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-sloan-park": {
+    "lat": 33.43081,
+    "lng": -111.882,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-smith-s-ballpark": {
+    "lat": 40.74109,
+    "lng": -111.89256,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "mlb-southwest-university-park": {
+    "lat": 31.759277,
+    "lng": -106.492526,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Denver"
+  },
+  "mlb-surprise-stadium": {
+    "lat": 33.62762,
+    "lng": -112.37849,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-sutter-health-park": {
+    "lat": 38.57994,
+    "lng": -121.51246,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-sydney-cricket-ground": {
+    "lat": 33.89167,
+    "lng": 151.22472,
+    "resolved_on": "2026-09-18",
+    "tz": "Etc/GMT-10"
+  },
+  "mlb-t-mobile-park": {
+    "lat": 47.591333,
+    "lng": -122.33251,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-target-field": {
+    "lat": 44.981829,
+    "lng": -93.277891,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-td-ameritrade-park": {
+    "lat": 41.25861,
+    "lng": -95.93779,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-td-ballpark": {
+    "lat": 27.9745812,
+    "lng": -82.7913301,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-tempe-diablo-stadium": {
+    "lat": 33.40092,
+    "lng": -111.9707,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mlb-the-baseball-grounds-of-jacksonville": {
+    "lat": 30.32533,
+    "lng": -81.64256,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-the-dell-diamond": {
+    "lat": 30.527463,
+    "lng": -97.630397,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-the-diamond": {
+    "lat": 33.654183,
+    "lng": -117.3010675,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-the-stadium-at-the-espn-wide-world-of-sports": {
+    "lat": 28.33725,
+    "lng": -81.55613,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-tokyo-dome": {
+    "lat": 35.70556,
+    "lng": 139.75194,
+    "resolved_on": "2026-09-18",
+    "tz": "Asia/Tokyo"
+  },
+  "mlb-tropicana-field": {
+    "lat": 27.767778,
+    "lng": -82.6525,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-truist-park": {
+    "lat": 33.890672,
+    "lng": -84.467641,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-trustmark-park": {
+    "lat": 32.274168,
+    "lng": -90.147519,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-turner-field": {
+    "lat": 33.735,
+    "lng": -84.38944,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-uniqlo-field-at-dodger-stadium": {
+    "lat": 34.07368,
+    "lng": -118.24053,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mlb-victory-field": {
+    "lat": 39.7657354,
+    "lng": -86.1682918,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Indiana/Indianapolis"
+  },
+  "mlb-werner-park": {
+    "lat": 41.1510945,
+    "lng": -96.1057988,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-whataburger-field": {
+    "lat": 27.80995,
+    "lng": -97.39941,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-wrigley-field": {
+    "lat": 41.948171,
+    "lng": -87.655503,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mlb-yankee-stadium": {
+    "lat": 40.82919482,
+    "lng": -73.9264977,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "mlb-yankee-stadium-i": {
+    "lat": 40.82667,
+    "lng": -73.92806,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "moda-center": {
+    "lat": 45.53167,
+    "lng": -122.66667,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "mohegan-sun-arena": {
+    "lat": 41.49111,
+    "lng": -72.08974,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "moody-center": {
+    "lat": 30.28094,
+    "lng": -97.73065,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "mortgage-matchup-center": {
+    "lat": 33.44604,
+    "lng": -112.0711,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mountain-america-stadium": {
+    "lat": 33.42639,
+    "lng": -111.9325,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "mt-bank-stadium": {
+    "lat": 39.27806,
+    "lng": -76.62278,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "nissan-stadium": {
+    "lat": 36.16639,
+    "lng": -86.77139,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "northwest-stadium": {
+    "lat": 38.90778,
+    "lng": -76.86444,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "oakland-coliseum": {
+    "lat": 37.75167,
+    "lng": -122.20056,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "oracle-arena": {
+    "lat": 37.75027,
+    "lng": -122.20293,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "paycom-center": {
+    "lat": 35.4634,
+    "lng": -97.51508,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "paycor-stadium": {
+    "lat": 39.095,
+    "lng": -84.516,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "pechanga-arena": {
+    "lat": 32.7553,
+    "lng": -117.21227,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "pontiac-silverdome": {
+    "lat": 42.64583,
+    "lng": -83.255,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Detroit"
+  },
+  "prudential-center": {
+    "lat": 40.73343,
+    "lng": -74.17115,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "pyramid-arena": {
+    "lat": 35.15545,
+    "lng": -90.05198,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "ralph-wilson-stadium": {
+    "lat": 42.774,
+    "lng": -78.787,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "raymond-james-stadium": {
+    "lat": 27.97583,
+    "lng": -82.50333,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "rca-dome": {
+    "lat": 39.76361,
+    "lng": -86.16333,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Indiana/Indianapolis"
+  },
+  "reliant-stadium": {
+    "lat": 29.68472,
+    "lng": -95.41083,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "resch-center": {
+    "lat": 44.49949,
+    "lng": -88.05504,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "reunion-arena": {
+    "lat": 32.77355,
+    "lng": -96.80904,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "rocket-arena": {
+    "lat": 41.49669,
+    "lng": -81.68858,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "rogers-arena": {
+    "lat": 49.27791,
+    "lng": -123.10894,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Vancouver"
+  },
+  "rogers-centre": {
+    "lat": 43.64139,
+    "lng": -79.38917,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Toronto"
+  },
+  "saitama-super-arena": {
+    "lat": 35.89512,
+    "lng": 139.63075,
+    "resolved_on": "2026-09-18",
+    "tz": "Asia/Tokyo"
+  },
+  "san-diego-stadium": {
+    "lat": 32.78306,
+    "lng": -117.11944,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "santiago-bernabeu": {
+    "lat": 40.45306,
+    "lng": -3.68835,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/Madrid"
+  },
+  "save-mart-center": {
+    "lat": 36.80969,
+    "lng": -119.73851,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "schottenstein-center": {
+    "lat": 40.0076,
+    "lng": -83.02496,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "scotiabank-arena": {
+    "lat": 43.64343,
+    "lng": -79.37908,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Toronto"
+  },
+  "sleep-train-arena": {
+    "lat": 38.64745,
+    "lng": -121.49905,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "smoothie-king-center": {
+    "lat": 29.94904,
+    "lng": -90.08207,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "sofi-stadium": {
+    "lat": 33.953,
+    "lng": -118.339,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "soldier-field": {
+    "lat": 41.8623,
+    "lng": -87.6167,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "spectrum-center": {
+    "lat": 35.2251,
+    "lng": -80.83915,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "stade-de-france": {
+    "lat": 48.9245,
+    "lng": 2.3602,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/Paris"
+  },
+  "stan-sheriff-center": {
+    "lat": 21.29431,
+    "lng": -157.81892,
+    "resolved_on": "2026-09-18",
+    "tz": "Pacific/Honolulu"
+  },
+  "state-farm-arena": {
+    "lat": 33.75737,
+    "lng": -84.39638,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "state-farm-stadium": {
+    "lat": 33.528,
+    "lng": -112.263,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Phoenix"
+  },
+  "t-mobile-arena": {
+    "lat": 36.10268,
+    "lng": -115.17822,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "t-mobile-center": {
+    "lat": 39.0973,
+    "lng": -94.57995,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "target-center": {
+    "lat": 44.97959,
+    "lng": -93.27598,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "td-garden": {
+    "lat": 42.3663,
+    "lng": -71.06216,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "texas-stadium": {
+    "lat": 32.83972,
+    "lng": -96.91083,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "the-o2-arena": {
+    "lat": 51.50293,
+    "lng": 0.00318,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/London"
+  },
+  "the-palace-of-auburn-hills": {
+    "lat": 42.69667,
+    "lng": -83.24556,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Detroit"
+  },
+  "thomas-and-mack-center": {
+    "lat": 36.10492,
+    "lng": -115.14427,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "three-rivers-stadium": {
+    "lat": 40.44667,
+    "lng": -80.01278,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "tiger-stadium-lsu": {
+    "lat": 30.41222,
+    "lng": -91.18389,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "tottenham-hotspur-stadium": {
+    "lat": 51.6044,
+    "lng": -0.0664,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/London"
+  },
+  "toyota-arena-ontario": {
+    "lat": 34.07302,
+    "lng": -117.56632,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Los_Angeles"
+  },
+  "toyota-center": {
+    "lat": 29.75075,
+    "lng": -95.36223,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "twickenham-stadium": {
+    "lat": 51.45583,
+    "lng": -0.34139,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/London"
+  },
+  "uber-arena": {
+    "lat": 52.50637,
+    "lng": 13.44377,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/Berlin"
+  },
+  "united-center": {
+    "lat": 41.88068,
+    "lng": -87.67419,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "us-bank-stadium": {
+    "lat": 44.974,
+    "lng": -93.258,
+    "resolved_on": "2026-09-18",
+    "tz": "America/Chicago"
+  },
+  "veterans-stadium": {
+    "lat": 39.90667,
+    "lng": -75.17111,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  },
+  "wembley-stadium": {
+    "lat": 51.5556,
+    "lng": -0.2794,
+    "resolved_on": "2026-09-18",
+    "tz": "Europe/London"
+  },
+  "xfinity-mobile-arena": {
+    "lat": 39.9011,
+    "lng": -75.17202,
+    "resolved_on": "2026-09-18",
+    "tz": "America/New_York"
+  }
 }
