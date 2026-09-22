@@ -7,12 +7,14 @@
  *     npx tsx ingest/src/nfl/run.ts --queued     # the current season, plus seasons of queued games
  *
  * Schedule: games.csv is upserted for every season from 2000 regardless of --seasons (cheap, and it
- * keeps scores and kickoff times current). Detail: for each requested season the pbp csv.gz is
- * grouped by game_id, parsed with parseNflGame, joined with appearances, and written with
- * upsertGameDetail(detectNflMoments). Progress is recorded in ingest_progress (job nfl_detail,
- * key season). A season is marked `done` only once every game in games.csv has a score; an
- * in-progress season is left `pending` with its counts so the nightly run picks it up again
- * without --force.
+ * keeps scores and kickoff times current). Detail, on demand (SPEC 4.7, since 2026-09-22): for
+ * each requested season, the games `games_wanting_detail` names (queued because a fan logged,
+ * checked in, is going or matched a ticket; attended; famous) and nothing else. A season with
+ * none wanted is skipped without downloading its play-by-play. For the wanted games the pbp
+ * csv.gz is grouped by game_id, parsed with parseNflGame, joined with appearances, and written
+ * with upsertGameDetail(detectNflMoments); the queue is settled afterwards. Progress in
+ * ingest_progress (job nfl_detail, key season) records each pass; `--force` details every
+ * final of the season the old way (a full rebuild, not for the nightly job).
  */
 import {
   detectNflMoments,
@@ -97,19 +99,28 @@ export function seasonOfGameId(providerGameId: string): number | null {
   return Number.isInteger(season) && season >= 1999 ? season : null;
 }
 
+export interface WantedGame {
+  game_id: string;
+  provider_game_id: string;
+  season: number;
+  reason: 'queue' | 'attended' | 'famous';
+}
+
+/** The NFL games that want detail right now (SPEC 4.7): queued, or attended or famous without it. */
+export async function wantedGames(db: Db): Promise<WantedGame[]> {
+  const { data, error } = await db.rpc('games_wanting_detail', { p_provider: 'nflverse' });
+  if (error) throw new Error(`games_wanting_detail: ${error.message}`);
+  return (data ?? []) as WantedGame[];
+}
+
 /**
- * Seasons that hold a queued NFL game still lacking detail (SPEC 4.7). A user who logs a game
- * from a season nobody has ingested gets it overnight, instead of only ever the current season.
+ * Seasons that hold a wanted NFL game. A user who logs a game from a season nobody has ingested
+ * gets it overnight, instead of only ever the current season.
  */
 export async function queuedSeasons(db: Db): Promise<number[]> {
-  const { data, error } = await db.rpc('detail_queue_pending', {
-    p_provider: 'nflverse',
-    p_limit: 500,
-  });
-  if (error) throw new Error(`detail_queue_pending: ${error.message}`);
   const seasons = new Set<number>();
-  for (const row of (data ?? []) as { provider_game_id: string }[]) {
-    const season = seasonOfGameId(row.provider_game_id);
+  for (const row of await wantedGames(db)) {
+    const season = row.season ?? seasonOfGameId(row.provider_game_id);
     if (season !== null) seasons.add(season);
   }
   return [...seasons].sort((a, b) => a - b);
@@ -196,6 +207,7 @@ async function runSeasonDetail(
   schedule: ScheduleIndex,
   players: () => Promise<Map<string, PlayerIdentity>>,
   force: boolean,
+  wanted: Set<string> | null,
 ): Promise<void> {
   const key = String(season);
   await setProgress(db, DETAIL_JOB, key, 'running');
@@ -204,7 +216,9 @@ async function runSeasonDetail(
     const appearances = await loadAppearances(season, schedule, players, force);
     const scheduled = new Set(seasonRows.map((r) => r.game_id));
     const pbpWithoutSchedule = [...pbp.keys()].filter((id) => !scheduled.has(id));
-    const finals = seasonRows.filter((r) => r.home_score != null && r.away_score != null);
+    const finals = seasonRows.filter(
+      (r) => r.home_score != null && r.away_score != null && (wanted === null || wanted.has(r.game_id)),
+    );
 
     const totals = { games: 0, appearances: 0, timeline: 0, moments: 0, reliable: 0, noPbp: 0 };
     for (const row of finals) {
@@ -223,10 +237,13 @@ async function runSeasonDetail(
       if (detail.timestampsReliable) totals.reliable++;
     }
 
-    const complete = finals.length === seasonRows.length && seasonRows.length > 0;
+    // With detail on demand a season is never "complete": a fan can log another of its games
+    // tomorrow. Only a --force rebuild of every final can say so.
+    const complete = wanted === null && finals.length === seasonRows.length && seasonRows.length > 0;
     const detail = {
       ...totals,
       scheduled: seasonRows.length,
+      wanted: wanted === null ? null : finals.length,
       complete,
       appearance_rows: countAppearances(appearances),
       appearance_skipped: appearances.skipped,
@@ -242,7 +259,7 @@ async function runSeasonDetail(
         `${totals.timeline} timeline rows, ${totals.moments} moments; reliable ${totals.reliable}, ` +
         `no pbp ${totals.noPbp}, pbp without schedule ${pbpWithoutSchedule.length}` +
         (skipped ? `; appearance rows skipped: ${skipped}` : '') +
-        (complete ? '' : ' [incomplete season, left pending]'),
+        (complete ? '' : wanted === null ? ' [incomplete season, left pending]' : ' [on demand]'),
     );
   } catch (err) {
     await setProgress(db, DETAIL_JOB, key, 'failed', { error: String(err) });
@@ -299,10 +316,28 @@ async function main(): Promise<void> {
   };
 
   log('detail:');
+  // Detail on demand: only the games that want it, unless --force rebuilds whole seasons.
+  const wantedBySeason = new Map<number, Set<string>>();
+  if (!args.force) {
+    for (const w of await wantedGames(db)) {
+      const season = w.season ?? seasonOfGameId(w.provider_game_id);
+      if (season === null) continue;
+      let set = wantedBySeason.get(season);
+      if (!set) wantedBySeason.set(season, (set = new Set()));
+      set.add(w.provider_game_id);
+    }
+    const total = [...wantedBySeason.values()].reduce((n, s) => n + s.size, 0);
+    log(`  ${total} game(s) want detail across ${wantedBySeason.size} season(s)`);
+  }
   for (const season of args.seasons) {
     const key = String(season);
-    if (!args.force && (await getProgress(db, DETAIL_JOB, key)) === 'done') {
+    if (args.force && (await getProgress(db, DETAIL_JOB, key)) === 'done') {
       log(`season ${season}: already done, skipping`);
+      continue;
+    }
+    const wanted = args.force ? null : (wantedBySeason.get(season) ?? new Set<string>());
+    if (wanted !== null && wanted.size === 0) {
+      log(`season ${season}: nothing wants detail, skipping`);
       continue;
     }
     const seasonRows = bySeason.get(season);
@@ -310,7 +345,12 @@ async function main(): Promise<void> {
       log(`season ${season}: not in games.csv, skipping`);
       continue;
     }
-    await runSeasonDetail(db, ctx, season, seasonRows, schedule, players, args.force);
+    await runSeasonDetail(db, ctx, season, seasonRows, schedule, players, args.force, wanted);
+  }
+  if (!args.force) {
+    const { data, error } = await db.rpc('detail_queue_settle', {});
+    if (error) throw new Error(`detail_queue_settle: ${error.message}`);
+    log(`  queue settled: ${String(data ?? 0)} row(s)`);
   }
 }
 

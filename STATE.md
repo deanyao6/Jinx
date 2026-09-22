@@ -267,11 +267,22 @@ them, which closes the "42 venues unresolved" item: the two venues still without
 (Fort Bragg Field, Walmart Park) each hosted one real regular-season game. Migration
 `20260923000100`, test `046`, `docs/verification.md`.
 
+**NFL detail only for logged games (2026-09-22, Dean's decision 17).** The NFL pipeline now
+follows SPEC 4.7 like MLB and the NBA: `games_wanting_detail('nflverse')` names the games that
+are queued (a fan logged, checked in, is going or matched a ticket), attended or famous, and
+`ingest/src/nfl/run.ts` details only those, skipping a season's 20 MB play-by-play when nothing
+in it is wanted, and settles the queue after. Migration `20260923000600` dropped the rest:
+543,273 appearance rows, 89,290 scoring plays and 8,267 moments on local (87 of 7,289 games keep
+detail), 2,756 games' worth on hosted (37 keep it; 48 famous games without detail are now on the
+nightly job's list). Proven: a newly logged 2025 game was detailed by the next
+run alone (1 of 285), the Relive verifier still passes all 15 games, all 90 famous NFL games keep
+their stars. A game logged today gets its detail with the nightly job, as before. Test `019`.
+
 **Known wrong, not yet fixed:**
 
-- **The local database is 254 MB** against M1's 150 MB bar (278 MB before the preseason games
-  went on 2026-09-22), because NFL detail is stored for every game rather than logged ones.
-  Under the 300 MB target and the 500 MB free-tier cap. Hosted is 115 MB.
+- **The local database is 145 MB, under M1's 150 MB bar at last (2026-09-22).** It was 278 MB
+  that morning: the preseason games took it to 254 MB and NFL detail on demand (below) to 145 MB.
+  Hosted was 115 MB before its NFL cleanup; autovacuum returns the space over the following days.
 - **The sub page restyle has not been approved by Dean yet.** He asked for it on 2026-09-17: one
   style on every page, far more team colour, fewer outlines, better type ratios. All 46 screens
   outside the reference were restyled that day against `docs/subpage-style.md`, which is now the

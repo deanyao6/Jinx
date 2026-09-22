@@ -797,3 +797,17 @@ test `042`) refuses a null and refuses a non-detail write over a detail value.
 
 After the backfill on 2026-09-22, local: MLB 2,343 of 2,343 finals of 2026 and both attended
 games exact; NBA 4 of 5 attended (0021600001 is the stats path); MLS 44; NFL all 7,033.
+
+## NFL detail on demand (next-wave B.5) — 2026-09-22
+
+Before: every NFL final since 2000 carried appearances, scoring plays and moments because a
+season's play-by-play is one file (docs/progress.md, Decisions). Local `game_appearances` was
+91 MB of the 256 MB database. The rule is now SPEC 4.7's for every sport: `games_wanting_detail`
+(queued, attended or famous games without detail) drives `ingest/src/nfl/run.ts`, which skips a
+season entirely when nothing in it is wanted. Migration `20260923000600` deleted the detail of
+6,946 unwanted games on local (543,273 appearance rows, 89,290 scoring plays, 8,267 moments; no
+Relive rows, which only attended games ever had) and 2,756 on hosted (2,793 detailed before, 37
+after, 48 famous games without detail now wanting it); players rows stay (rosters, honors, moves
+and firsts reference them). Local after `vacuum full`: 145 MB. Hosted reports its size once
+autovacuum runs. Proof that nothing a fan can see changed: the Relive verifier's 15 games pass,
+the 21 curated famous games resolve, and every attended game keeps its detail (test `019`).
