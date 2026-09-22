@@ -8,7 +8,7 @@ import {
   ThemeProvider as NavThemeProvider,
 } from '@react-navigation/native';
 import Constants from 'expo-constants';
-import { Stack, useRouter, type Href } from 'expo-router';
+import { useGlobalSearchParams, useRouter, type Href } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
@@ -21,6 +21,7 @@ import { Text } from '@/components/Text';
 import { useAuth, useAuthListener, useSignOut } from '@/features/auth/hooks';
 import { StretchConfetti } from '@/features/eggs/StretchConfetti';
 import { useNavStore } from '@/features/nav/store';
+import { RootStack } from '@/features/navigation/RootStack';
 import { ParityHost } from '@/features/parity/ParityHost';
 import { useTeamPalettes } from '@/features/teams/queries';
 import { useNotificationRuntime } from '@/features/notifications/push';
@@ -140,6 +141,14 @@ function RootNavigator() {
   const onboarded = signedIn && !!profile.data?.onboarded_at;
   const profileReady = !signedIn || profile.data != null;
 
+  // Development only: any route opened with `?signOut=1` (`xcrun simctl openurl booted
+  // jinx:///settings?signOut=1`) signs out, because nothing can tap the confirm sheet in the
+  // simulator (STATE.md trap 9). A production build ignores the parameter.
+  const { signOut: signOutParam } = useGlobalSearchParams<{ signOut?: string }>();
+  useEffect(() => {
+    if (__DEV__ && signOutParam === '1' && signedIn) void signOut();
+  }, [signOutParam, signedIn, signOut]);
+
   useEffect(() => {
     if (onboarded && pendingRoute) {
       setPendingRoute(null);
@@ -153,27 +162,7 @@ function RootNavigator() {
   }
   if (!profileReady) return <Splash />;
 
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={onboarded}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="games" />
-        <Stack.Screen name="you" />
-        <Stack.Screen name="passport" />
-        <Stack.Screen name="friends" />
-        <Stack.Screen name="u" />
-        <Stack.Screen name="wrapped" options={{ presentation: 'fullScreenModal' }} />
-        <Stack.Screen name="share" options={{ presentation: 'modal' }} />
-      </Stack.Protected>
-      <Stack.Protected guard={signedIn && !onboarded}>
-        <Stack.Screen name="(onboarding)" />
-      </Stack.Protected>
-      <Stack.Protected guard={!signedIn}>
-        <Stack.Screen name="(auth)" />
-      </Stack.Protected>
-      <Stack.Screen name="invite" />
-    </Stack>
-  );
+  return <RootStack signedIn={signedIn} onboarded={onboarded} />;
 }
 
 /**

@@ -1,5 +1,5 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
@@ -8,6 +8,7 @@ import { Notice, errorMessage } from '@/components/Notice';
 import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { isAppleSignInAvailable, signInWithApple } from '@/features/auth/apple';
+import { signInWithTokenHash } from '@/features/auth/email';
 import { StadiumWatermark, WelcomeSeals } from '@/features/onboarding/ui/WelcomeArt';
 import { features } from '@/lib/env';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -22,6 +23,15 @@ export default function WelcomeScreen() {
   useEffect(() => {
     isAppleSignInAvailable().then(setAppleAvailable);
   }, []);
+
+  // Development only: `jinx:///welcome?token_hash=<hashed magic-link token>` signs in without
+  // typing, because the simulator cannot be typed into by a script (STATE.md trap 9). The hash
+  // comes from local GoTrue's generate_link. A production build ignores the parameter.
+  const { token_hash: tokenHash } = useLocalSearchParams<{ token_hash?: string }>();
+  useEffect(() => {
+    if (!__DEV__ || !tokenHash) return;
+    signInWithTokenHash(tokenHash).catch((e) => setError(errorMessage(e)));
+  }, [tokenHash]);
 
   const onApple = async () => {
     setError(null);

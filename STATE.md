@@ -137,7 +137,7 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 
 **The next wave is briefed (2026-09-22).** Dean answered a 25-point list of everything deferred;
 `docs/prompts/next-wave.md` is the build brief for a fresh session: the sign-out bug (signing
-out does not return to the welcome screen), MLS stadium coordinates, preseason games removed,
+out does not return to the welcome screen; **fixed 2026-09-22**, see below), MLS stadium coordinates, preseason games removed,
 `final_at`, NFL detail only for logged games, handshakes in the export, the app reading free
 live feeds directly (a rule change), players seen reworked to superstars with good games,
 superstars for the NBA and MLS, the MLS second wave with draws voiding pledges, palettes
@@ -247,6 +247,16 @@ The NBA is next, from
 `docs/prompts/nba.md`, in another session; venue nouns are per sport (ballpark, stadium, arena).
 Keep every new rule keyed by `sport_id`.
 
+**Sign out returns to the welcome screen (fixed 2026-09-22).** Dean reported on build 4 that
+signing out left the app where it was. Cause: the root navigator guards its screens with
+`Stack.Protected`, but a route it did not name is still added, unguarded, and `settings`,
+`guide` and `relive` were never named; and a folder without a `_layout.tsx` is not one route
+but one per file (`guide/[venueId]`), which a guard naming `guide` never matches. Now every
+signed-in route is named in `features/navigation/RootStack.tsx`, the three folders have a
+layout, and `rootStack.test.tsx` flips a session to null from settings, guide, relive, a game
+page, favorites and onboarding and asserts the router is on `/welcome` with only `(auth)` in
+the stack. Seen on the simulator: `docs/evidence/sign-out/`.
+
 **Known wrong, not yet fixed:**
 
 - **The local database is 226 MB** against M1's 150 MB bar, because NFL detail is stored for every
@@ -321,6 +331,11 @@ Keep every new rule keyed by `sport_id`.
    does not remount it; terminate and relaunch to see fresh data. Animations have a way in too:
    `jinx:///you/eggs?play=<flag key>` (add `&sport=nfl` for the confetti) shows one easter egg and
    starts it, so frames can be screenshotted. Open `jinx:///you/about` between two of them.
+   Sign out and in without a tap (development builds only, 2026-09-22): any route with
+   `?signOut=1` signs out (`jinx:///settings?signOut=1`), and
+   `jinx:///welcome?token_hash=<hash>` signs in, where the hash is `hashed_token` from local
+   GoTrue's `POST /auth/v1/admin/generate_link` (`{"type":"magiclink","email":...}`, service
+   role key as `apikey` and bearer).
 10. **The Supabase CLI prints query JSON two ways**: a bare array in a terminal, `{"rows": [...]}`
     when it detects an agent. Handle both, or a script written by one breaks for a person.
 11. **"Accepted" is not "correct".** The storylines validator accepted "105-73" for the 2025

@@ -20,3 +20,9 @@ export async function verifyEmailCode(email: string, code: string): Promise<void
   });
   if (error) throw error;
 }
+
+/** Completes a magic link by its hashed token (what GoTrue's generate_link returns). */
+export async function signInWithTokenHash(tokenHash: string): Promise<void> {
+  const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' });
+  if (error) throw error;
+}

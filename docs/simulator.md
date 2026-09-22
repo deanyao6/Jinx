@@ -100,6 +100,21 @@ Sign in with Apple will not work in the simulator either, since it needs the Ser
 configured in Supabase. Use "Continue with email" and read the code from Mailpit at
 http://127.0.0.1:54424.
 
+A script cannot type the code (the simulator grants no accessibility permission), so a
+development build also signs in from a link: mint a magic link through local GoTrue and open
+it.
+
+```
+SR=$(npx supabase status -o json | jq -r .SERVICE_ROLE_KEY)
+H=$(curl -s -X POST http://127.0.0.1:54421/auth/v1/admin/generate_link \
+  -H "apikey: $SR" -H "Authorization: Bearer $SR" -H "Content-Type: application/json" \
+  -d '{"type":"magiclink","email":"deanyao6@gmail.com"}' | jq -r .hashed_token)
+xcrun simctl openurl booted "jinx:///welcome?token_hash=$H"
+xcrun simctl openurl booted "jinx:///settings?signOut=1"    # any route: signs out
+```
+
+Both parameters are ignored by a production build.
+
 ## Disk
 
 Budget roughly 40 GB: about 25 GB for Xcode and 9 GB for one iOS runtime, plus working space
