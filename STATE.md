@@ -45,7 +45,7 @@ orphan a loaded database.
 | | What it is | State |
 |---|---|---|
 | **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA), plus 4,962 MLS 2016 onward. Every migration. Where you develop |
-| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. All 32 migrations as of 2026-09-22 |
+| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. All 36 migrations as of 2026-09-22, search v2's four included |
 | **TestFlight** | EAS `@deanyao/jinx` | Build 4 submitted 2026-09-17, waiting on Apple processing |
 
 **Hosted, as verified today:**
@@ -164,8 +164,9 @@ venue, and cursor pagination. Additive: `search_games_v2` and `search_entities_v
 `20260922000200` to `000500`, `pg_trgm` and `unaccent`, normalized alias columns kept by
 triggers), a core interpreter in `packages/core/src/search.ts`, the screen under
 `features/games/search/`. **v1 (`search_games`) is untouched and is what every build uses until
-`EXPO_PUBLIC_SEARCH_V2=1` is set in the EAS environment**, which needs a build after the
-migrations are on hosted. Plan: `docs/SEARCH_PLAN.md`; evidence and rollout steps:
+`EXPO_PUBLIC_SEARCH_V2=1` is set in the EAS environment** and a build carries it. The four
+migrations are on hosted since 2026-09-22 (pushed at the merge; v1 answered 50 rows for
+"phillies 2025" afterwards), so the flag is the only step left, and it is Dean's call. Plan: `docs/SEARCH_PLAN.md`; evidence and rollout steps:
 `docs/evidence/search/README.md` (a read-only backtest of 13 query shapes and a 543-row
 pagination walk against independent SQL). Not yet: seen on a device, hosted latency, and the
 same 38 MLS stadiums without a timezone (the timezone test now audits MLB, NFL and NBA only).
