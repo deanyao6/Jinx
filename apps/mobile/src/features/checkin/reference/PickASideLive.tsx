@@ -78,10 +78,11 @@ function Live({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
 
   const p = ctx.pledge;
   const gameOver = ctx.status === 'final';
-  // MLB and the NBA have a live feed, polled every 60s while checked in: MLB locks the moment
-  // it shows a run or the end of the 1st, the NBA at the end of the 1st quarter. NFL has none
+  // MLB (server-side), the NBA and MLS (the phone reads the public feed) have live state,
+  // polled every 30 s while checked in: MLB locks the moment it shows a run or the end of the
+  // 1st, the NBA at the end of the 1st quarter, MLS at the first goal or halftime. NFL has none
   // in v1, so its timer is an estimate (SPEC 6.4.4).
-  const live = useLiveState(gameId, hasLiveFeed(ctx.sport_id) && !gameOver);
+  const live = useLiveState(gameId, ctx.sport_id, hasLiveFeed(ctx.sport_id) && !gameOver);
   const lock = estimateLock(
     ctx.sport_id,
     ctx.scheduled_start,

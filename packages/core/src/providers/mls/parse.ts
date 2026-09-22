@@ -1,4 +1,4 @@
-import type { CanonicalGame, CanonicalTeam, GameStatus } from '../../types.js';
+import type { CanonicalGame, CanonicalTeam, GameStatus, LiveState } from '../../types.js';
 
 export const MLS_PROVIDER = 'espn_mls';
 
@@ -261,4 +261,47 @@ export function mlsSummaryFinalAt(summary: MlsSummary, scheduledStart: string): 
   const last = Math.max(...stamps);
   if (last < kickoff || last > kickoff + MLS_WALLCLOCK_WINDOW_MS) return null;
   return new Date(last).toISOString();
+}
+
+/** The header of ESPN's `summary?event=`: the match's status and scores, one request per match. */
+export interface MlsSummaryHeader {
+  header?: {
+    competitions?: {
+      date?: string;
+      status?: {
+        type: { name: string; state: string; completed: boolean };
+        displayClock?: string;
+        period?: number;
+      };
+      competitors?: { homeAway: 'home' | 'away'; score?: string | number }[];
+    }[];
+  };
+}
+
+/**
+ * A match as the app's live feed reads it (SPEC 6.4; decision 8, 2026-09-22): the period is the
+ * half (3 and 4 for extra time, 5 for a shootout), the state is `halftime` between the halves,
+ * `live` during play, `end` when it is over, and the clock is ESPN's display clock ("67'",
+ * "90'+4'"). Scores are goals; shootout kicks are not in them.
+ */
+export function parseMlsLiveState(doc: MlsSummaryHeader, fetchedAt: string): LiveState | null {
+  const c = doc.header?.competitions?.[0];
+  if (!c?.status) return null;
+  const t = c.status.type;
+  const status = mlsStatus(t.name, t.state, t.completed);
+  const home = c.competitors?.find((x) => x.homeAway === 'home');
+  const away = c.competitors?.find((x) => x.homeAway === 'away');
+  const halftime = /HALFTIME/.test(t.name);
+  let inningState: LiveState['inningState'] = null;
+  if (status === 'final') inningState = 'end';
+  else if (status === 'live') inningState = halftime ? 'halftime' : 'live';
+  return {
+    status,
+    inning: status === 'scheduled' ? null : (c.status.period ?? null),
+    inningState,
+    clock: status === 'live' && !halftime ? (c.status.displayClock ?? null) : null,
+    homeScore: score(home?.score) ?? 0,
+    awayScore: score(away?.score) ?? 0,
+    fetchedAt,
+  };
 }

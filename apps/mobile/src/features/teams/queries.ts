@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { useAuthStore } from '@/features/auth/store';
 import { supabase } from '@/lib/supabase';
 import type { TeamTokens } from '@/theme/reference/teams';
 
@@ -34,8 +35,14 @@ export const teamPaletteKeys = {
  * persisted query cache. That costs one small request on a cold start.
  */
 export function useTeamPalettes() {
+  // `team_colors` is readable by authenticated users only. The provider that calls this mounts
+  // above the navigator, so on an app that starts signed out the query ran as anon, got no rows
+  // and cached that for a day: every palette was neutral until the next launch (found
+  // 2026-09-22 after the sign-out fix). It waits for a session now.
+  const signedIn = useAuthStore((s) => s.status === 'signedIn');
   return useQuery({
     queryKey: teamPaletteKeys.all,
+    enabled: signedIn,
     queryFn: async (): Promise<Map<string, TeamTokens>> => {
       const { data, error } = await supabase.from('team_colors').select(TEAM_COLOR_COLUMNS);
       if (error) throw error;

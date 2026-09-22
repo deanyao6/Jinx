@@ -105,7 +105,7 @@ function RallyCapLive({
   const focused = useIsFocused();
   const flipRallyCap = useEggStore((state) => state.flipRallyCap);
   // Polled only for a sport that has a live feed at all. See `EGG_SPORTS`.
-  const liveState = useLiveState(active?.gameId, !!active && hasLiveFeed(active.sport));
+  const liveState = useLiveState(active?.gameId, active?.sport, !!active && hasLiveFeed(active.sport));
   const liveNow = eggLiveFrom(liveState.data);
 
   // The live state hears about the final before the games table does.

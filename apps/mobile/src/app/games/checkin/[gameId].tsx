@@ -28,7 +28,10 @@ import {
   useGameContext,
   useSetCompanions,
   type GameContext,
+  useLiveState,
 } from '@/features/checkin/queries';
+import { hasLiveFeed } from '@/features/eggs/live';
+import { isUnderWay } from '@/features/live/format';
 import { getPushStatus, registerPush, type PushStatus } from '@/features/notifications/push';
 import { useAddPerson, usePeople } from '@/features/people/queries';
 import { openShare } from '@/features/share/navigate';
@@ -77,7 +80,15 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
   const [now, setNow] = useState(() => Date.now());
 
   const checkedIn = !!ctx.checked_in_at;
-  const inWindow = isWithinCheckInWindow(now, ctx.scheduled_start, ctx.final_at);
+  // The feed hears the final before the table does: the window then closes an hour after it.
+  const live = useLiveState(
+    gameId,
+    ctx.sport_id,
+    !checkedIn && hasLiveFeed(ctx.sport_id) && isUnderWay(ctx.status, ctx.scheduled_start, now),
+  );
+  const finalAt =
+    ctx.final_at ?? (live.data?.status === 'final' ? live.data.fetched_at : null);
+  const inWindow = isWithinCheckInWindow(now, ctx.scheduled_start, finalAt);
   const venueKnown = ctx.venue.lat != null && ctx.venue.lng != null && ctx.venue.geofence_m != null;
 
   useEffect(() => {

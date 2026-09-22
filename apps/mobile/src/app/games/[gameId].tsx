@@ -55,6 +55,9 @@ import { ShareButton } from '@/features/share/ShareButton';
 import { AlsoThere } from '@/features/social/ui/AlsoThere';
 import { FamousCard } from '@/features/famous/ui/FamousCard';
 import { useGameFamous, useGameStars } from '@/features/famous/queries';
+import { useLiveState } from '@/features/checkin/queries';
+import { hasLiveFeed } from '@/features/eggs/live';
+import { isUnderWay, liveStatusLabel } from '@/features/live/format';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /** The icon a moment leads with. Anything not named here is a bolt. */
@@ -83,6 +86,18 @@ export default function GameDetailScreen() {
   const router = useRouter();
   const { gameId } = useLocalSearchParams<{ gameId: string }>();
   const game = useGame(gameId);
+  const [openedAt] = useState(() => Date.now());
+  // Live state while the game is under way: the NBA and MLS from the phone's own feed, MLB from
+  // the server's table (features/live/feeds.ts). Off otherwise, so nothing polls a game that
+  // ended last year.
+  const liveSport = game.data?.sport_id;
+  const live = useLiveState(
+    gameId,
+    liveSport,
+    !!game.data &&
+      hasLiveFeed(liveSport) &&
+      isUnderWay(game.data.status, game.data.scheduled_start, openedAt),
+  );
   const attendance = useMyAttendanceForGame(gameId);
   const events = useGameEvents(gameId);
   const appearances = useGameAppearances(gameId);
@@ -98,7 +113,6 @@ export default function GameDetailScreen() {
   // Superstars who appeared, for Players seen.
   const stars = useGameStars(gameId);
   const remove = useDeleteAttendance();
-  const [openedAt] = useState(() => Date.now());
 
   const g = game.data;
   const a = attendance.data;
@@ -153,6 +167,10 @@ export default function GameDetailScreen() {
   }
 
   const final = g.status === 'final' && g.home_score != null && g.away_score != null;
+  // A feed ahead of the table: live scores and the period, or a final the table has not seen.
+  const liveNow = live.data && live.data.status === 'live' ? live.data : null;
+  const liveFinal = !final && live.data?.status === 'final' ? live.data : null;
+  const liveLabel = liveNow ? liveStatusLabel(g.sport_id, liveNow) : null;
   const winnerHome =
     final &&
     (g.winner_team_id ? g.winner_team_id === g.home_team_id : g.home_score! > g.away_score!);
@@ -264,17 +282,33 @@ export default function GameDetailScreen() {
             teamId: g.away?.id ?? g.away_team_id,
             abbreviation: g.away?.abbreviation ?? '',
             name: short(g.away, 'Away'),
-            score: final ? String(g.away_score) : '–',
+            score: final
+              ? String(g.away_score)
+              : liveNow || liveFinal
+                ? String((liveNow ?? liveFinal)!.away_score)
+                : '–',
           }}
           home={{
             teamId: g.home?.id ?? g.home_team_id,
             abbreviation: g.home?.abbreviation ?? '',
             name: short(g.home, 'Home'),
-            score: final ? String(g.home_score) : '–',
+            score: final
+              ? String(g.home_score)
+              : liveNow || liveFinal
+                ? String((liveNow ?? liveFinal)!.home_score)
+                : '–',
           }}
           winner={winnerHome ? 'home' : winnerAway ? 'away' : null}
           kicker={labels}
-          status={`${final ? (g.is_tie ? 'Final, tie' : 'Final') : statusLabel(g.status)} · ${formatGameDateLong(g.scheduled_start)}, ${formatGameTime(g.scheduled_start)}`}
+          status={`${
+            final
+              ? g.is_tie
+                ? 'Final, tie'
+                : 'Final'
+              : liveFinal
+                ? 'Final'
+                : (liveLabel ?? statusLabel(liveNow ? 'live' : g.status))
+          } · ${formatGameDateLong(g.scheduled_start)}, ${formatGameTime(g.scheduled_start)}`}
           venue={
             g.venue
               ? `${g.venue.name}, ${g.venue.city}${g.venue.state ? `, ${g.venue.state}` : ''}`

@@ -8,6 +8,7 @@ import {
   lockRuleCopy,
   pledgeConfirmationCopy,
   underdogTeamId,
+  type LiveState,
 } from '../lock';
 
 const START = '2026-09-15T23:05:00Z';
@@ -164,5 +165,48 @@ describe('windows and dates', () => {
     expect(isTodayAtVenue(START, 'America/New_York', t('2026-09-16T01:00:00Z'))).toBe(true);
     expect(isTodayAtVenue(START, 'America/New_York', t('2026-09-16T05:00:00Z'))).toBe(false);
     expect(isTodayAtVenue(START, 'America/New_York', t('2026-09-15T10:00:00Z'))).toBe(true);
+  });
+});
+
+describe('estimateLock for the sports the phone reads itself (2026-09-22)', () => {
+  const start = '2026-10-21T23:30:00Z';
+  const row = (over: Partial<LiveState>): LiveState => ({
+    status: 'live',
+    inning: 1,
+    inning_state: 'live',
+    home_score: 0,
+    away_score: 0,
+    locked: false,
+    lock_reason: null,
+    fetched_at: '2026-10-21T23:40:00Z',
+    ...over,
+  });
+  it('NBA without a row: tip-off + 30 minutes, estimated', () => {
+    const r = estimateLock('nba', start, null, Date.parse('2026-10-21T23:40:00Z'));
+    expect(r).toEqual({ at: '2026-10-22T00:00:00.000Z', locked: false, reason: 'estimate' });
+  });
+  it('NBA: a first basket does not lock, the end of the first quarter does', () => {
+    const now = Date.parse('2026-10-21T23:41:00Z');
+    expect(estimateLock('nba', start, row({ home_score: 2 }), now).reason).toBe('live_fallback');
+    expect(estimateLock('nba', start, row({ home_score: 2 }), now).locked).toBe(false);
+    const end = estimateLock('nba', start, row({ inning: 1, inning_state: 'end', home_score: 28, away_score: 25 }), now);
+    expect(end).toEqual({ at: '2026-10-21T23:40:00Z', locked: true, reason: 'end_of_first' });
+    expect(estimateLock('nba', start, row({ inning: 2, inning_state: 'halftime' }), now).locked).toBe(true);
+  });
+  it('MLS without a row: kick-off + 15 minutes, estimated; a first goal or halftime locks', () => {
+    const now = Date.parse('2026-10-21T23:41:00Z');
+    expect(estimateLock('mls', start, null, now)).toEqual({
+      at: '2026-10-21T23:45:00.000Z',
+      locked: false,
+      reason: 'estimate',
+    });
+    expect(estimateLock('mls', start, row({ away_score: 1 }), now)).toEqual({
+      at: '2026-10-21T23:40:00Z',
+      locked: true,
+      reason: 'first_score',
+    });
+    expect(estimateLock('mls', start, row({ inning: 1, inning_state: 'halftime' }), now).locked).toBe(false);
+    expect(estimateLock('mls', start, row({ inning: 2, inning_state: 'live' }), now).reason).toBe('end_of_first');
+    expect(lockRuleCopy('mls')).toBe('Locks at the first goal or halftime');
   });
 });

@@ -17,7 +17,9 @@ export type PieceKind =
   | 'yardFlag'
   | 'basketball'
   | 'sneaker'
-  | 'towel';
+  | 'towel'
+  | 'soccerBall'
+  | 'scarf';
 
 export type EggSport = {
   /**
@@ -60,14 +62,19 @@ export const EGG_SPORTS: Readonly<Record<string, EggSport>> = {
     pieces: ['football', 'whistle', 'yardFlag'],
   },
   nba: {
-    // Off: nba-live exists and writes the period to `inning`, `live`/`end`/`halftime` to
-    // `inning_state` and the clock to `clock`, but Supabase's egress cannot reach cdn.nba.com
-    // (docs/verification.md, 2026-09-18), so nothing writes game_live_state for the NBA today.
-    // Flip this the day a route to the scoreboard exists; the rest of the row is complete.
-    liveFeed: false,
+    // On since 2026-09-22: the phone reads the CDN scoreboard itself (features/live/feeds.ts),
+    // period in `inning`, `live`/`end`/`halftime` in `inning_state`, the clock in `clock`.
+    liveFeed: true,
     lateFrom: 4,
     signatureBreak: { name: 'Halftime', periods: [2], states: ['halftime'] },
     pieces: ['basketball', 'sneaker', 'towel'],
+  },
+  mls: {
+    // The phone reads ESPN's summary itself. Halves are periods; the second half is late.
+    liveFeed: true,
+    lateFrom: 2,
+    signatureBreak: { name: 'Halftime', periods: [1, 2], states: ['halftime'] },
+    pieces: ['soccerBall', 'scarf', 'whistle'],
   },
 };
 

@@ -50,7 +50,7 @@ jest.mock('@/features/attendances/queries', () => ({
 const mockLive = jest.fn();
 const mockLiveEnabled = jest.fn();
 jest.mock('@/features/checkin/queries', () => ({
-  useLiveState: (gameId: string | undefined, enabled: boolean) => {
+  useLiveState: (gameId: string | undefined, _sport: string | null | undefined, enabled: boolean) => {
     mockLiveEnabled(gameId, enabled);
     return { data: enabled ? mockLive() : undefined };
   },

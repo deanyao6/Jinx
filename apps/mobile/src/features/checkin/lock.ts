@@ -14,8 +14,11 @@ const LOCK_RULES: Readonly<
 > = {
   mlb: { estimateMinutes: 30, firstScoreLocks: true, live: true },
   nfl: { estimateMinutes: 12, firstScoreLocks: true, live: false },
-  // live is false until game_live_state has a writer for the NBA (features/eggs/live.ts says why).
-  nba: { estimateMinutes: 30, firstScoreLocks: false, live: false },
+  // The phone reads the NBA CDN and ESPN itself (features/live/feeds.ts, decision 8 of
+  // 2026-09-22). MLS locks at the first goal or halftime; kick-offs run about 13 minutes late,
+  // so the estimate without a feed is a quarter of an hour.
+  nba: { estimateMinutes: 30, firstScoreLocks: false, live: true },
+  mls: { estimateMinutes: 15, firstScoreLocks: true, live: true },
 };
 
 function rule(sport: Sport) {
@@ -26,6 +29,8 @@ export type LiveState = {
   status: string;
   inning: number | null;
   inning_state: string | null;
+  /** The period clock where the sport has one ("4:12", "67'"). */
+  clock?: string | null;
   home_score: number;
   away_score: number;
   locked: boolean;
@@ -120,12 +125,14 @@ const LOCK_RULE_COPY: Readonly<Record<string, string>> = {
   mlb: 'Locks at the end of the 1st or the first run',
   nfl: 'Locks at the first score or 10:00 left in Q1 (estimated)',
   nba: 'Locks at the end of the 1st quarter',
+  mls: 'Locks at the first goal or halftime',
 };
 
 const LOCK_NOTE_COPY: Readonly<Record<string, string>> = {
   mlb: 'or the moment anyone scores a run',
   nfl: 'or the moment anyone scores',
   nba: 'about 30 minutes after tip-off',
+  mls: 'or the moment anyone scores',
 };
 
 /** Plain-language lock rule for the sport. */

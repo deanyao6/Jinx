@@ -59,8 +59,11 @@ orphan a loaded database.
   cannot reach cdn.nba.com, stats.nba.com or ESPN (a probe function answered 403, hang, 403 on
   2026-09-18; `net._http_response` id 68 is nba-sync's 500). The NBA's data path is the daily
   GitHub job, which reaches the CDN but not stats.nba.com, and this laptop for rosters and
-  pre-2019 detail (`docs/deploy.md`). There is no live NBA state, so Pick a side at an NBA
-  game counts down to tip-off plus 30 minutes like the NFL's estimate.
+  pre-2019 detail (`docs/deploy.md`). **Since 2026-09-22 the phone reads NBA and MLS live state
+  itself** (`apps/mobile/src/features/live/feeds.ts`, Dean's decision 8): the CDN scoreboard and
+  ESPN's summary answer a fetch from the device build (`docs/evidence/live/`), so Pick a side,
+  the game page scoreboard, the check-in window and the two live eggs work for both;
+  `nba-live` stays deployed and unscheduled as a spare.
 - **Scheduled jobs really run.** Nine `cron.job` rows, and `net._http_response` shows nine 200s in
   the last six hours. The one 404 is from before the deploy finished.
   **Judge a scheduled call by `net._http_response`, never by `cron.job_run_details`**: it reported
@@ -289,7 +292,11 @@ but one per file (`guide/[venueId]`), which a guard naming `guide` never matches
 signed-in route is named in `features/navigation/RootStack.tsx`, the three folders have a
 layout, and `rootStack.test.tsx` flips a session to null from settings, guide, relive, a game
 page, favorites and onboarding and asserts the router is on `/welcome` with only `(auth)` in
-the stack. Seen on the simulator: `docs/evidence/sign-out/`.
+the stack. Seen on the simulator: `docs/evidence/sign-out/`. A second bug found the same way:
+the team palettes query ran at launch, above the navigator, and on an app that starts signed
+out it ran as anon, got no rows and cached that for a day, so a fan who signed in saw every
+team in neutral grey until the next launch. It now waits for a session
+(`after-sign-in-from-cold-start-palettes.png`).
 
 **Only regular season and postseason games exist (2026-09-22, Dean's decision 13).** 11,703
 spring-training and NBA preseason games left local and 5,649 left hosted, nobody had logged
@@ -334,6 +341,15 @@ their stars. A game logged today gets its detail with the nightly job, as before
   seen, followers, blocks, reports, reactions, notifications and preferences, device tokens,
   sign-in and forwarding emails (no OTP hashes) and inbound rejections; migration
   `20260923000400`, test `049`, on local and hosted.
+- **Live state on the phone (2026-09-22).** `useLiveState(gameId, sport, enabled)` reads
+  `game_live_state` for MLB and the public feeds for the NBA and MLS, every 30 s while enabled,
+  backing off to five minutes on a failure, and moves the cached game's status when a feed says
+  live or final. The game page shows live scores and the period ("Q3 4:12", "67'", "Top 7th"),
+  the check-in window closes an hour after a feed's final, `LOCK_RULES` and `EGG_SPORTS` have
+  `nba` live and an `mls` row (first goal or halftime locks; the rally cap and halftime confetti
+  fire, with a soccer ball, a scarf and a whistle). **Not yet seen with a game under way**: the
+  NBA is off-season and no MLS match was live during the session; the parsers are tested on
+  real responses and the probe (`jinx:///you/eggs?probe=live`) proves the fetches.
 - **Easter eggs are built and unseen by Dean.** Eight, each behind a flag in
   `apps/mobile/src/features/eggs/flags.ts`: worn stamps, golden stamps, record rewind, curse
   breaker, rally cap, stretch confetti, certified jinx, secret handshake. Settings > About has a

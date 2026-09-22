@@ -72,7 +72,12 @@ of all three environments. Highlights that change how you work:
 - The app is **Jinx**. Bundle ID `com.deanyao.jinx`, URL scheme `jinx://`, workspace scope `@jinx/*`.
 - Hobby project: $0 data sources, Supabase free tier, minimal moving parts.
 - Non-goals: betting or wagering, ticket marketplace, live chat, team or league logos and marks.
-- Never call MLB Stats API or the Anthropic API from the client. Never ship service-role or Anthropic keys in the app bundle.
+- Never call the MLB Stats API or the Anthropic API from the client. Never ship service-role or Anthropic keys in the app bundle.
+- **The app may read free public live feeds directly** (Dean, 2026-09-22): the NBA CDN
+  (`cdn.nba.com` scoreboard and boxscore) and ESPN's soccer summary for MLS, from
+  `apps/mobile/src/features/live/feeds.ts`, keyless, polled only while a fan is checked in or on a
+  game page with a game under way, never writing to the database. MLB stays server-side
+  (`mlb-live` writes `game_live_state`). Any other provider, and anything with a key, stays server-side.
 - Never store raw device coordinates. Store distance and accuracy only.
 - Build milestone by milestone (SPEC.md Section 12). Do not start the next milestone with failing tests.
 - When the spec is ambiguous or seems wrong in practice, stop and ask instead of guessing.

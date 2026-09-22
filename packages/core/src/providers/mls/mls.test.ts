@@ -4,6 +4,7 @@ import {
   isMlsLeagueEvent,
   mlsScoreboardFinalAt,
   mlsSummaryFinalAt,
+  parseMlsLiveState,
   parseMlsEvent,
   mlsStatus,
   stoppageMinutes,
@@ -341,5 +342,50 @@ describe('when a match ended', () => {
     };
     expect(mlsSummaryFinalAt(old, '2016-03-06T18:30Z')).toBeNull();
     expect(mlsSummaryFinalAt({}, '2016-03-06T18:30Z')).toBeNull();
+  });
+});
+
+describe('live state from the summary header (the app reads it from the phone)', () => {
+  const header = (name: string, state: string, completed: boolean, period: number, clock: string) => ({
+    header: {
+      competitions: [
+        {
+          status: { type: { name, state, completed }, displayClock: clock, period },
+          competitors: [
+            { homeAway: 'home' as const, score: '2' },
+            { homeAway: 'away' as const, score: '1' },
+          ],
+        },
+      ],
+    },
+  });
+  it('maps the halves to periods, halftime to the break, full time to the end', () => {
+    expect(parseMlsLiveState(header('STATUS_FIRST_HALF', 'in', false, 1, "23'"), 't')).toEqual({
+      status: 'live', inning: 1, inningState: 'live', clock: "23'", homeScore: 2, awayScore: 1, fetchedAt: 't',
+    });
+    expect(parseMlsLiveState(header('STATUS_HALFTIME', 'in', false, 1, "45'+2'"), 't')).toMatchObject({
+      status: 'live', inning: 1, inningState: 'halftime', clock: null,
+    });
+    expect(parseMlsLiveState(header('STATUS_FULL_TIME', 'post', true, 2, "90'+4'"), 't')).toMatchObject({
+      status: 'final', inning: 2, inningState: 'end', clock: null,
+    });
+    expect(parseMlsLiveState(header('STATUS_SCHEDULED', 'pre', false, 0, "0'"), 't')).toMatchObject({
+      status: 'scheduled', inning: null, inningState: null,
+    });
+    expect(parseMlsLiveState({}, 't')).toBeNull();
+  });
+  it('reads the real 761829 summary as a 2-2 final', () => {
+    const doc = JSON.parse(
+      readFileSync(
+        new URL('../../../../../ingest/fixtures/mls/espn_summary_761829_MIA_SD_wallclock_2026-09-22.json', import.meta.url),
+        'utf8',
+      ),
+    );
+    // The fixture keeps the header's competition object; ESPN nests it under competitions[].
+    expect(parseMlsLiveState({ header: { competitions: [doc.header] } }, 't')).toMatchObject({
+      status: 'final',
+      homeScore: 2,
+      awayScore: 2,
+    });
   });
 });

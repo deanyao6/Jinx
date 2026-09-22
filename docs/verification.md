@@ -811,3 +811,24 @@ after, 48 famous games without detail now wanting it); players rows stay (roster
 and firsts reference them). Local after `vacuum full`: 145 MB. Hosted reports its size once
 autovacuum runs. Proof that nothing a fan can see changed: the Relive verifier's 15 games pass,
 the 21 curated famous games resolve, and every attended game keeps its detail (test `019`).
+
+## Live feeds from the phone (next-wave C) — VERIFIED 2026-09-22
+
+Decision 8 lets the app read free public feeds for live state. Checked from the development
+build on the iPhone 17 Pro simulator through the probe on the Easter eggs page
+(`jinx:///you/eggs?probe=live`, `docs/evidence/live/probe-feeds-from-device-build.png`):
+
+| Request from React Native `fetch` | Answer |
+|---|---|
+| `cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json` with `Accept`, `Referer: https://www.nba.com/`, `Origin: https://www.nba.com` (React Native's own User-Agent) | 200 in 107 ms, `gameDate 2026-09-22`, 0 games (off-season) |
+| `cdn.nba.com/static/json/liveData/boxscore/boxscore_0022500001.json`, same headers | 200 in 363 ms, "Final", 124-125 |
+| `site.api.espn.com/apis/site/v2/sports/soccer/usa.1/summary?event=761829`, `Accept` only | 200 in 1,157 ms, `STATUS_FULL_TIME`; parsed as a 2-2 final |
+
+So the CDN does not need a browser User-Agent from a device (it refused curl's), and ESPN,
+which refuses a custom User-Agent, takes React Native's default. The feeds are
+`apps/mobile/src/features/live/feeds.ts`; `parseCdnLiveState` (core) serves the NBA and the new
+`parseMlsLiveState` (core) reads the summary header's `status.type`, `period`, `displayClock`
+and `competitors[].score`. Not seen: a game under way (none during the session); the status
+vocabulary for a live MLS match (`STATUS_FIRST_HALF`, `STATUS_HALFTIME`, `STATUS_SECOND_HALF`)
+is taken from ESPN's soccer feeds generally and the parser keys on `state === 'in'` and the
+word HALFTIME, so an unexpected name during play still reads as live.

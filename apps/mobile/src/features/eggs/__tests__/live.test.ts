@@ -23,8 +23,8 @@ const live = (over: Partial<EggLive> = {}): EggLive => ({
 });
 
 describe('the sport table', () => {
-  it('has a complete row for each sport, and only MLB has a live feed today', () => {
-    expect(Object.keys(EGG_SPORTS).sort()).toEqual(['mlb', 'nba', 'nfl']);
+  it('has a complete row for each sport; MLB, the NBA and MLS have a live feed, the NFL none', () => {
+    expect(Object.keys(EGG_SPORTS).sort()).toEqual(['mlb', 'mls', 'nba', 'nfl']);
     for (const row of Object.values(EGG_SPORTS)) {
       expect(row.lateFrom).toBeGreaterThan(0);
       expect(row.signatureBreak.periods.length).toBeGreaterThan(0);
@@ -32,6 +32,8 @@ describe('the sport table', () => {
       expect(row.pieces).toHaveLength(3);
     }
     expect(hasLiveFeed('mlb')).toBe(true);
+    expect(hasLiveFeed('nba')).toBe(true);
+    expect(hasLiveFeed('mls')).toBe(true);
     expect(hasLiveFeed('nfl')).toBe(false);
     expect(hasLiveFeed('nhl')).toBe(false);
     expect(hasLiveFeed(null)).toBe(false);

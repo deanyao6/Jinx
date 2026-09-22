@@ -129,6 +129,28 @@ function Towel(props: PieceProps) {
   );
 }
 
+/** A ball with one pentagon and its five spokes: the classic panel. */
+function SoccerBall(props: PieceProps) {
+  return (
+    <Frame {...props}>
+      <Circle cx="12" cy="12" r="9" fill={props.fill} />
+      <Path d="M12 8.6 15.2 11l-1.2 3.8h-4L8.8 11Z" fill={props.color} />
+      <Path d="M12 8.6V4.4M15.2 11l3.9-1.3M14 14.8l2.4 3.3M10 14.8l-2.4 3.3M8.8 11 4.9 9.7" />
+    </Frame>
+  );
+}
+
+/** A folded scarf, two tassels at each end. */
+function Scarf(props: PieceProps) {
+  return (
+    <Frame {...props}>
+      <Path d="M5 6.5h14v4H5Z" fill={props.fill} />
+      <Path d="M8 10.5v7l1.5-1 1.5 1v-7M13 10.5v7l1.5-1 1.5 1v-7" fill={props.fill} />
+      <Path d="M5 8.5h14" />
+    </Frame>
+  );
+}
+
 export const PIECES: Readonly<Record<PieceKind, (props: PieceProps) => React.ReactElement>> = {
   peanut: Peanut,
   snackBox: SnackBox,
@@ -137,6 +159,8 @@ export const PIECES: Readonly<Record<PieceKind, (props: PieceProps) => React.Rea
   whistle: Whistle,
   yardFlag: YardFlag,
   basketball: Basketball,
+  soccerBall: SoccerBall,
+  scarf: Scarf,
   sneaker: Sneaker,
   towel: Towel,
 };

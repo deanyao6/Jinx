@@ -9,6 +9,7 @@ import { Screen } from '@/components/Screen';
 import { Text } from '@/components/Text';
 import { EGG_CATALOG } from '@/features/eggs/catalog';
 import { eggs } from '@/features/eggs/flags';
+import { LiveFeedProbe } from '@/features/live/Probe';
 
 /**
  * Easter eggs, for development only: every egg, whether its switch is on, and a way to play it
@@ -19,7 +20,12 @@ import { eggs } from '@/features/eggs/flags';
  */
 export default function EasterEggsScreen() {
   // `?play=<key>` shows that one egg and starts it, because nothing can tap Play in the simulator.
-  const { play, sport } = useLocalSearchParams<{ play?: string; sport?: string }>();
+  // `?probe=live` runs the public live feeds from this build and shows what came back.
+  const { play, sport, probe } = useLocalSearchParams<{
+    play?: string;
+    sport?: string;
+    probe?: string;
+  }>();
   if (!__DEV__) {
     return (
       <Screen>
@@ -36,6 +42,7 @@ export default function EasterEggsScreen() {
         title="Easter eggs"
         body="Each one plays here on sample data. The switches are in features/eggs/flags.ts."
       />
+      {probe === 'live' ? <LiveFeedProbe /> : null}
       {EGG_CATALOG.filter((egg) => !play || egg.key === play).map(
         ({ key, title, how, Preview }) => (
           <Card key={key}>

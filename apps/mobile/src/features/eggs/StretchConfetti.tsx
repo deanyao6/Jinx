@@ -194,7 +194,7 @@ function StretchWatch({ onStretch }: { onStretch: (sport: string, seed: number) 
   }, []);
 
   const pending = !!active && hasLiveFeed(active.sport) && !shown.includes(active.gameId);
-  const liveState = useLiveState(active?.gameId, pending && opening);
+  const liveState = useLiveState(active?.gameId, active?.sport, pending && opening);
   // A row left in the cache from an earlier look is not "now". Only a fresh one counts.
   const stretch =
     pending &&

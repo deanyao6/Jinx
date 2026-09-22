@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { attendanceKeys } from '@/features/attendances/queries';
 import { useAuthStore } from '@/features/auth/store';
-import { GAME_TEAM_COLUMNS, gameKeys, type GameDetail } from '@/features/games/queries';
+import { GAME_TEAM_COLUMNS, fetchGame, gameKeys, type GameDetail } from '@/features/games/queries';
+import { clientLiveFeed, pollDelayMs } from '@/features/live/feeds';
 import { supabase } from '@/lib/supabase';
 import type { LiveState } from './lock';
 
@@ -91,11 +92,38 @@ export function useGameContext(gameId: string | undefined) {
   });
 }
 
-/** Live state for MLB games with a check-in; the server refreshes it every minute. */
-export function useLiveState(gameId: string | undefined, enabled: boolean) {
+/**
+ * Live state for a game under way. MLB reads `game_live_state`, which the server refreshes every
+ * minute while anyone is checked in; the NBA and MLS read their public feeds from the phone
+ * (features/live/feeds.ts, decision 8 of 2026-09-22), which never write to the database. Either
+ * way the row has the same shape. Polled every 30 s while `enabled`, backing off to five
+ * minutes when a feed fails, and a feed's `live` or `final` moves the cached game's status so
+ * the game page follows without a refetch.
+ */
+export function useLiveState(
+  gameId: string | undefined,
+  sport: string | null | undefined,
+  enabled: boolean,
+) {
+  const queryClient = useQueryClient();
+  const feed = clientLiveFeed(sport);
   return useQuery({
     queryKey: checkinKeys.live(gameId ?? ''),
     queryFn: async (): Promise<LiveState | null> => {
+      if (feed) {
+        const game = await queryClient.fetchQuery({
+          queryKey: gameKeys.detail(gameId as string),
+          queryFn: () => fetchGame(gameId as string),
+          staleTime: 60_000,
+        });
+        const live = await feed.fetchLive(game);
+        if (live && (live.status === 'live' || live.status === 'final')) {
+          queryClient.setQueryData<GameDetail>(gameKeys.detail(gameId as string), (g) =>
+            g && g.status !== live.status && g.status !== 'final' ? { ...g, status: live.status } : g,
+          );
+        }
+        return live;
+      }
       const { data, error } = await supabase
         .from('game_live_state')
         .select('*')
@@ -105,7 +133,14 @@ export function useLiveState(gameId: string | undefined, enabled: boolean) {
       return data;
     },
     enabled: !!gameId && enabled,
-    refetchInterval: enabled ? 30_000 : false,
+    retry: false,
+    refetchInterval: (query) => {
+      if (!enabled) return false;
+      const base = feed?.pollMs ?? 30_000;
+      return query.state.status === 'error'
+        ? pollDelayMs(base, query.state.fetchFailureCount)
+        : base;
+    },
     staleTime: 20_000,
   });
 }
