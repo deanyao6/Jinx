@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jinx welcome screen, reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<style>
+:root{--page:#E7EAEE;--ink:#101318;--muted:#6B7280;--line:#DDE1E6;--card:#fff;
+  --scr:#0A0D12;--cream:#F3EBD3;--brass:#D9B65F;--good:#3CCB7F;--bad:#FF6A60;--gold:#FFC425}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--page:#07090B;--ink:#F1F3F6;--muted:#98A2B3;--line:#242A31;--card:#14181D}}
+:root[data-theme="dark"]{--page:#07090B;--ink:#F1F3F6;--muted:#98A2B3;--line:#242A31;--card:#14181D}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.intro{max-width:1240px;margin:0 auto;padding:44px 24px 6px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between}
+.intro h1{font-size:clamp(42px,8vw,84px);line-height:.86;margin:0;font-weight:900;font-variation-settings:"wdth" 62}
+.intro p{max-width:62ch;color:var(--muted);font-size:16.5px;line-height:1.5;margin:12px 0 0}
+.theme{display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
+.theme button{border:0;background:transparent;padding:8px 14px;border-radius:999px;font:inherit;font-size:14px;cursor:pointer;color:var(--muted)}
+.theme button[aria-pressed="true"]{background:var(--ink);color:var(--page);font-weight:700}
+.rail{display:flex;gap:40px;overflow-x:auto;padding:32px 24px 60px;scroll-snap-type:x mandatory;align-items:flex-start}
+.shot{flex:0 0 auto;scroll-snap-align:center;width:340px;margin:0}
+.shot figcaption{margin-top:15px;font-size:14.5px;line-height:1.45;color:var(--muted);max-width:34ch}
+.shot figcaption b{color:var(--ink);display:block;font-size:17px;margin-bottom:2px}
+.phone{width:340px;height:710px;background:#08090C;border-radius:50px;padding:11px;box-shadow:0 34px 60px -34px rgba(8,10,14,.6)}
+.scr{position:relative;width:100%;height:100%;background:var(--scr);border-radius:40px;overflow:hidden;color:#fff;display:flex;flex-direction:column}
+.status{display:flex;justify-content:space-between;padding:14px 26px 0;font-size:13px;font-weight:650;position:relative;z-index:4}
+.body{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;padding:0 22px 22px}
+.spacer{flex:1}
+.word{font-size:62px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.82;letter-spacing:.01em}
+h2.hl{font-size:29px;line-height:1.04;font-weight:900;margin:14px 0 8px;letter-spacing:-.01em}
+h2.hl em{font-style:normal;color:var(--brass)}
+p.sub{font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.6);margin:0 0 16px}
+.cta{width:100%;border:0;border-radius:14px;background:#fff;color:#0B0E12;font:inherit;font-weight:800;font-size:15.5px;padding:15px;cursor:pointer}
+.cta:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+.fine{text-align:center;font-size:11.5px;color:rgba(255,255,255,.4);margin:10px 0 0}
+
+/* ---------- the wall ---------- */
+.wallwrap{position:absolute;inset:0;z-index:0;overflow:hidden}
+.wall{position:absolute;left:-16%;top:-14%;width:132%;height:132%;display:flex;gap:9px;transform:rotate(-7deg);opacity:1}
+.col{flex:1;display:flex;flex-direction:column;gap:9px;will-change:transform}
+.c1{animation:up 34s linear infinite}
+.c2{animation:down 44s linear infinite}
+.c3{animation:up 26s linear infinite}
+@keyframes up{to{transform:translateY(-50%)}}
+@keyframes down{from{transform:translateY(-50%)}to{transform:none}}
+.stack{display:flex;flex-direction:column;gap:9px}
+.scrim{position:absolute;inset:0;z-index:2;background:
+  linear-gradient(180deg,rgba(10,13,18,.05) 0%,rgba(10,13,18,.2) 26%,rgba(10,13,18,.72) 48%,rgba(10,13,18,.95) 62%,#0A0D12 72%)}
+.topfade{position:absolute;left:0;right:0;top:0;height:96px;z-index:2;background:linear-gradient(180deg,rgba(10,13,18,.8),rgba(10,13,18,0))}
+.vig{position:absolute;inset:0;z-index:2;box-shadow:inset 0 0 70px 14px rgba(6,8,11,.55)}
+
+/* card types */
+.c{border-radius:12px;padding:9px 10px;font-size:10.5px;line-height:1.3;position:relative;overflow:hidden;
+   background:rgba(255,255,255,.085);border:1px solid rgba(255,255,255,.12)}
+.c b{display:block;font-size:12.5px;font-weight:800;font-variation-settings:"wdth" 80;margin-bottom:2px}
+.c .meta{color:rgba(255,255,255,.52);font-size:10px}
+.game{padding-left:14px}
+.game{background:linear-gradient(135deg,color-mix(in srgb,var(--t) 42%,transparent),rgba(255,255,255,.07))}
+.game::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--t)}
+.game .glow{position:absolute;right:-24px;top:-24px;width:78px;height:78px;border-radius:50%;background:var(--t);filter:blur(20px);opacity:.75}
+.res{position:absolute;right:8px;bottom:8px;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:900;color:#0B0E12}
+.res.w{background:var(--good)} .res.l{background:var(--bad)}
+.sealcard{background:transparent;border:0;padding:0;display:grid;place-items:center}
+.sealcard svg{width:88px;height:88px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.45))}
+.sheen{position:absolute;inset:0;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.55) 48%,transparent 58%);
+  transform:translateX(-140%);animation:sheen 7s ease-in-out infinite}
+@keyframes sheen{0%,62%{transform:translateX(-140%)}76%{transform:translateX(140%)}100%{transform:translateX(140%)}}
+.stub{background:var(--cream);color:#15171B;border:0}
+.stub .adm{font-size:8px;letter-spacing:.2em;font-weight:800;color:#8A7A52}
+.stub .jx{font-size:20px;font-weight:900;font-variation-settings:"wdth" 64;line-height:1;margin:2px 0}
+.stub .perf{border-top:1.5px dashed #C9BC98;margin:7px 0 5px}
+.stub .seat{display:flex;justify-content:space-between;font-size:9px;color:#6B6553}
+.stub .seat b{font-size:12px;color:#15171B;margin:0}
+.stub::before,.stub::after{content:"";position:absolute;top:34px;width:12px;height:12px;border-radius:50%;background:var(--scr)}
+.stub::before{left:-6px}.stub::after{right:-6px}
+.moment{background:linear-gradient(140deg,rgba(217,182,95,.38),rgba(255,255,255,.06));border-color:rgba(217,182,95,.55)}
+.moment .tag{font-size:8.5px;letter-spacing:.14em;font-weight:850;color:var(--brass)}
+.moment .ico{position:absolute;right:6px;bottom:4px;width:30px;height:30px;color:rgba(217,182,95,.5)}
+.pop{animation:pop 6s ease-in-out infinite}
+@keyframes pop{0%,70%,100%{transform:none}76%{transform:scale(1.045)}82%{transform:scale(.995)}}
+.photo{padding:0;border:0;background:#0E1424}
+.photo svg{display:block;width:100%;height:auto}
+.photo .cap{position:absolute;left:8px;bottom:6px;font-size:9.5px;color:rgba(255,255,255,.85);text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.buddy{display:flex;align-items:center;gap:8px}
+.buddy .av{width:26px;height:26px;border-radius:50%;flex:0 0 auto}
+.buddy .rec{margin-left:auto;font-size:14px;font-weight:900;font-variation-settings:"wdth" 70}
+.pledge .odds{font-size:15px;font-weight:900;color:var(--gold);font-variation-settings:"wdth" 70}
+.live{border-color:rgba(255,106,96,.45)}
+.live .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--bad);margin-right:5px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.streak{background:linear-gradient(140deg,rgba(60,203,127,.30),rgba(255,255,255,.06));border-color:rgba(60,203,127,.45)}
+.streak .st{margin-top:6px;font-size:13px;font-weight:900;letter-spacing:.22em;color:var(--good)}
+.ghost{display:grid;place-items:center;padding:10px 0;background:rgba(255,255,255,.04)}
+.ghost svg{width:74px;height:74px;opacity:.55}
+.ghost .cap{font-size:8.5px;letter-spacing:.16em;color:rgba(255,255,255,.5);margin-top:6px;font-weight:800;text-align:center}
+.ghost .nm{font-size:11px;font-weight:800;color:rgba(255,255,255,.82);text-align:center}
+.wrapped{background:linear-gradient(150deg,#3B1F63,#12172B);border-color:rgba(255,255,255,.14)}
+.wrapped .yr{font-size:22px;font-weight:900;font-variation-settings:"wdth" 62;line-height:1}
+.counter{font-variation-settings:"wdth" 62;font-weight:900}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="intro">
+  <div>
+    <h1>Welcome screen</h1>
+    <p>The approved welcome screen for Jinx. A tilted wall of real Jinx objects drifts behind the pitch in three columns at different speeds: game cards in team colors, brass and silver seals with a gold sheen, ticket stubs, moment cards, a live game, companion records, photos, a pledge, a Wrapped card, a streak card, and a ghost stamp for a stadium not yet visited.</p>
+  </div>
+  <div class="theme" role="group" aria-label="Theme">
+    <button data-mode="system" aria-pressed="true">System</button>
+    <button data-mode="light" aria-pressed="false">Light</button>
+    <button data-mode="dark" aria-pressed="false">Dark</button>
+  </div>
+</header>
+
+<main class="rail">
+
+<figure class="shot">
+ <div class="phone"><div class="scr">
+  <div class="wallwrap"><div class="wall" id="wallA"></div></div>
+  <span class="scrim"></span><span class="topfade"></span><span class="topfade"></span><span class="vig"></span>
+  <div class="status"><span>2:29</span><span>94</span></div>
+  <div class="body">
+   <div class="spacer"></div>
+   <div class="word">JINX</div>
+   <h2 class="hl"><span class="counter" id="cG">48</span> games. <span class="counter" id="cS">14</span> stadiums.<br><em>One record.</em></h2>
+   <p class="sub">You were there. Prove it.</p>
+   <button class="cta">Sign in with Apple</button>
+   <p class="fine">You must be 13 or older to use Jinx.</p>
+  </div>
+ </div></div>
+ <figcaption><b>Welcome</b>The wall drifts behind the pitch. The headline numbers count up on load. Everything stops under Reduce Motion.</figcaption>
+</figure>
+
+</main>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  document.querySelectorAll('.theme button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.theme button').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      b.setAttribute('aria-pressed','true');
+      if(b.dataset.mode==='system') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',b.dataset.mode);
+    });
+  });
+
+  var SHAPES={
+    ballparkA:'<path d="M32 58 6 35Q8 13 31 8q21 1 27 22l-6 6z"/><path d="M32 50 16 36q4-14 16-16 12 2 16 16z" fill="currentColor" fill-opacity=".14"/><path d="m32 49-5-5 5-5 5 5z"/>',
+    bowl:'<rect x="5" y="13" width="54" height="38" rx="17"/><rect x="17" y="22" width="30" height="20" rx="2" fill="currentColor" fill-opacity=".14"/><path d="M32 22v20"/>',
+    dodger:'<path d="M32 58 12 39l7-6q13-7 26 0l7 6z"/><path d="M9 31Q32 2 55 31" stroke-dasharray="3 3"/><path d="m32 50-5-5 5-5 5 5z"/>',
+    canopy:'<path d="M5 20q0-9 9-9h36q9 0 9 9v24q0 9-9 9H14q-9 0-9-9z"/><rect x="17" y="22" width="30" height="20" rx="2" fill="currentColor" fill-opacity=".14"/><path d="M5 20 17 22M59 20l-12 2"/>'
+  };
+  var n=0;
+  function seal(ring,shape,metal){
+    n++; var m = metal==='brass'?['#F6EFD8','#D3BE8E','#6E5A33']:['#F0F2F4','#C3C9CF','#49525F'];
+    return '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="g'+n+'" cx="36%" cy="30%" r="76%"><stop offset="0" stop-color="'+m[0]+'"/><stop offset="1" stop-color="'+m[1]+'"/></radialGradient>'+
+      '<path id="r'+n+'" d="M22 50a28 28 0 0 1 56 0"/></defs>'+
+      '<circle cx="50" cy="50" r="47" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.3" stroke-dasharray="3 2.6"/>'+
+      '<circle cx="50" cy="50" r="40" fill="url(#g'+n+')" stroke="'+m[2]+'" stroke-width="1.5"/>'+
+      '<circle cx="50" cy="50" r="36" fill="none" stroke="'+m[2]+'" stroke-width=".8"/>'+
+      '<circle cx="50" cy="50" r="24" fill="none" stroke="'+m[2]+'" stroke-width="2.4" stroke-dasharray=".8 2.2" opacity=".5"/>'+
+      '<text font-size="6.1" font-weight="800" fill="'+m[2]+'" font-family="Archivo, sans-serif" letter-spacing=".5"><textPath href="#r'+n+'" startOffset="50%" text-anchor="middle">'+ring+'</textPath></text>'+
+      '<g transform="translate(35 36) scale(.47)" fill="none" stroke="'+m[2]+'" stroke-width="3" color="'+m[2]+'">'+SHAPES[shape]+'</g></svg>';
+  }
+  function photo(kind,sky){
+    if(kind==='field') return '<svg viewBox="0 0 120 84"><rect width="120" height="84" fill="'+sky+'"/><path d="M0 34h120v50H0z" fill="#2E7D4F"/><path d="M60 80 26 52l34-19 34 19z" fill="#C49A6C"/><path d="M60 72 44 58l16-10 16 10z" fill="#3A8D5C"/><rect x="6" y="8" width="13" height="7" fill="#FFF6C8"/><rect x="101" y="8" width="13" height="7" fill="#FFF6C8"/><path d="M12 15v19M108 15v19" stroke="#DDE3EA" stroke-width="2"/></svg>';
+    return '<svg viewBox="0 0 120 84"><rect width="120" height="84" fill="'+sky+'"/><rect x="14" y="14" width="92" height="46" rx="5" fill="#141A22" stroke="#39434F"/><text x="60" y="46" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="22" fill="#FFD166">6 – 3</text><path d="M0 66h120v18H0z" fill="#232830"/></svg>';
+  }
+
+  function game(t,title,venue,date,res){
+    return '<div class="c game" style="--t:'+t+'"><span class="glow"></span><b>'+title+'</b><span class="meta">'+venue+'<br>'+date+'</span><span class="res '+res+'">'+res.toUpperCase()+'</span></div>';
+  }
+  function stub(team,seat,row,sec){
+    return '<div class="c stub"><div class="adm">ADMIT ONE</div><div class="jx">'+team+'</div><div class="perf"></div><div class="seat"><span>SEC<b>'+sec+'</b></span><span>ROW<b>'+row+'</b></span><span>SEAT<b>'+seat+'</b></span></div></div>';
+  }
+  function moment(tag,line,sub){
+    return '<div class="c moment pop"><div class="tag">'+tag+'</div><b>'+line+'</b><span class="meta">'+sub+'</span>'+
+      '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2.5 5 13.5h6l-1 8 8-11h-6z"/></svg></div>';
+  }
+  function sealCard(ring,shape,metal){
+    return '<div class="c sealcard"><div style="position:relative;border-radius:50%;overflow:hidden">'+seal(ring,shape,metal)+(metal==='brass'?'<span class="sheen"></span>':'')+'</div></div>';
+  }
+  function photoCard(kind,sky,cap){
+    return '<div class="c photo">'+photo(kind,sky)+'<span class="cap">'+cap+'</span></div>';
+  }
+  function buddy(name,rec,color,cls){
+    return '<div class="c buddy"><span class="av" style="background:'+color+'"></span><span><b style="margin:0">'+name+'</b><span class="meta">'+ (cls==='good'?'never lost together':'0 for the last 4') +'</span></span><span class="rec" style="color:'+(cls==='good'?'var(--good)':'var(--bad)')+'">'+rec+'</span></div>';
+  }
+  function pledgeCard(team,odds,delta){
+    return '<div class="c pledge"><span class="meta">NEUTRAL GAME</span><b>Backed the '+team+'</b><span class="meta">at '+odds+', underdog</span><div class="odds">'+delta+'</div></div>';
+  }
+  function liveCard(){
+    return '<div class="c live"><span class="meta"><span class="dot"></span>LIVE, TOP 3RD</span><b>Padres 1, Dodgers 2</b><span class="meta">Dodger Stadium, you are checked in</span></div>';
+  }
+  function streakCard(){
+    return '<div class="c streak"><span class="meta">CURRENT STREAK</span><b>4 wins in a row</b><span class="meta">since Aug 9</span><div class="st">W W W W</div></div>';
+  }
+  function ghostCard(name,shape){
+    return '<div class="c ghost"><svg viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.6">'+
+      '<circle cx="50" cy="50" r="46" stroke-dasharray="4 4"/><circle cx="50" cy="50" r="38" stroke-dasharray="2 4" opacity=".7"/>'+
+      '<g transform="translate(35 36) scale(.47)" stroke-width="3.4" color="rgba(255,255,255,.7)">'+SHAPES[shape]+'</g></svg>'+
+      '<span class="nm">'+name+'</span><span class="cap">STAMP NOT YET EARNED</span></div>';
+  }
+  function wrappedCard(){
+    return '<div class="c wrapped"><span class="meta">SEASON WRAPPED</span><div class="yr">2025</div><span class="meta">18 games, 6 stadiums,<br>best month: August</span></div>';
+  }
+
+  var COL1=[
+    game('#E81828','Phillies 7, Mets 2','Citi Field','Sep 20, 2026','w'),
+    sealCard('CITIZENS BANK PARK','ballparkA','brass'),
+    stub('EAGLES','7','14','121'),
+    moment('MOMENT','Walk-off, 9th','You were there, 3 rows up'),
+    photoCard('field','#1D2B53','Section 321 with Dad'),
+    buddy('Dad','7–1','#6E9E7A','good'),
+    game('#041E42','Cowboys 37, Commanders 20','AT&T Stadium','Sep 20, 2026','w')
+  ];
+  var COL2=[
+    liveCard(),
+    stub('PHILLIES','12','8','104'),
+    game('#005A9C','Dodgers 10, Giants 4','Dodger Stadium','Sep 19, 2026','w'),
+    sealCard('DODGER STADIUM','dodger','silver'),
+    pledgeCard('Rockies','37%','+0.63'),
+    ghostCard('WRIGLEY FIELD','ballparkA'),
+    game('#0C2340','Yankees 2, Rays 0','Yankee Stadium','Sep 22, 2026','l'),
+    photoCard('board','#241B2E','Final, 6–3')
+  ];
+  var COL3=[
+    streakCard(),
+    game('#004C54','Eagles 24, Titans 20','Nissan Stadium','Sep 20, 2026','w'),
+    sealCard('LINCOLN FINANCIAL','bowl','brass'),
+    wrappedCard(),
+    game('#003594','Rams 28, Giants 6','SoFi Stadium','Sep 21, 2026','w'),
+    buddy('Jordan','0–4','#9E6E6E','bad'),
+    moment('MOMENT','19°F, coldest yet','Eagles vs Cowboys, 2022'),
+    sealCard('SOFI STADIUM','canopy','silver')
+  ];
+
+  function column(items,cls){
+    var inner=items.join('');
+    return '<div class="col '+cls+'"><div class="stack">'+inner+'</div><div class="stack">'+inner+'</div></div>';
+  }
+  var wallHTML = column(COL1,'c1')+column(COL2,'c2')+column(COL3,'c3');
+  $('#wallA').innerHTML = wallHTML;
+  
+
+  /* headline counters */
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function countTo(el,target,ms){
+    if(reduce||!el){if(el)el.textContent=target;return}
+    var s=performance.now();
+    (function step(t){var k=Math.min(1,(t-s)/ms);el.textContent=Math.round(target*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step)})(s);
+  }
+  function run(){countTo($('#cG'),48,1400);countTo($('#cS'),14,1700)}
+  run(); setInterval(run,9000);
+})();
+</script>
+</body>
+</html>
