@@ -22,6 +22,13 @@ numbers from `046` (his took `045`); do not edit `search_games`, `search_games_v
 it, and then say so in the commit message. Part B.1 (stadium coordinates) and B.2 (preseason)
 touch search's inputs; Dean has said a merge conflict there is acceptable.
 
+**A third session is rebuilding the welcome screen** from `design/welcome-reference.html` and
+`WELCOME_SCREEN_PROMPT.md`: it owns `app/(auth)/welcome.tsx`, `features/onboarding/ui/WelcomeArt.tsx`
+and everything under `features/onboarding/ui/wall/`, plus a `welcome_wall_cards` table, a
+`welcome-wall` Edge Function and a weekly cron. Do not edit those; G.2 below covers the other
+signed-out screens, not welcome. Its migrations start at `20260923100000` and its pgTAP tests at
+`050`, so yours (from `20260923000100` and `046`) never collide.
+
 Standing rules of the repo, all of which apply:
 
 - Commit and push to `main` after each verified step. Do not sit on finished work.
@@ -264,7 +271,8 @@ readable in dark is invisible in light (the Chip and TextField inside cards were
 every screen in the simulator in light mode with the Phillies theme and one dark-navy team (the
 Bears), and put the contact sheets under `docs/evidence/light/` for Dean to react to.
 
-**G.2 The signed-out screens (19).** `app/(auth)/welcome.tsx`, `email.tsx`, `code.tsx` and
+**G.2 The signed-out screens (19).** `app/(auth)/email.tsx`, `code.tsx` (welcome belongs to the
+welcome-screen session) and
 `app/(onboarding)/index.tsx`, `teams.tsx`, `players.tsx`, `city.tsx`, `birthday.tsx`,
 `past-games.tsx`. Restyled, never screenshotted. Both modes, under `docs/evidence/signed-out/`.
 
