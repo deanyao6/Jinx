@@ -153,6 +153,14 @@ export default function GameDetailScreen() {
   }, [appearances.data, events.data, story.data, seen.data, g]);
   const [showAllPlayers, setShowAllPlayers] = useState(false);
 
+  // Development only: `?scroll=end` lands on Players seen for a screenshot. A hook, so it sits
+  // above the early returns below (rules-of-hooks).
+  useEffect(() => {
+    if (!__DEV__ || scroll !== 'end' || !seen.data) return;
+    const t = setTimeout(() => scrollRef.current?.scrollToEnd({ animated: false }), 400);
+    return () => clearTimeout(t);
+  }, [scroll, seen.data]);
+
   const onDelete = () => {
     if (!a) return;
     Alert.alert('Remove this game?', 'It comes off your passport. You can log it again later.', [
@@ -181,11 +189,6 @@ export default function GameDetailScreen() {
   }
 
   const final = g.status === 'final' && g.home_score != null && g.away_score != null;
-  useEffect(() => {
-    if (!__DEV__ || scroll !== 'end' || !seen.data) return;
-    const t = setTimeout(() => scrollRef.current?.scrollToEnd({ animated: false }), 400);
-    return () => clearTimeout(t);
-  }, [scroll, seen.data]);
 
   // A feed ahead of the table: live scores and the period, or a final the table has not seen.
   const liveNow = live.data && live.data.status === 'live' ? live.data : null;
