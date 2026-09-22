@@ -55,13 +55,7 @@ export default function CheckInScreen() {
   // until the pick is settled; after that this route shows the result card below.
   const c = ctx.data;
   const settled = !!c.pledge && c.pledge.status !== 'provisional';
-  if (
-    c.sport_id !== 'mls' &&
-    c.checked_in_at &&
-    c.neutral_for_user &&
-    !c.both_favorites &&
-    !settled
-  ) {
+  if (c.checked_in_at && c.neutral_for_user && !c.both_favorites && !settled) {
     return (
       <>
         <Stack.Screen options={{ headerShown: false }} />
@@ -211,10 +205,6 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
           </Card>
         ) : ctx.both_favorites ? (
           <SidePicker gameId={gameId} ctx={ctx} />
-        ) : ctx.neutral_for_user && ctx.sport_id === 'mls' ? (
-          <Card>
-            <Text>You are checked in. Neutral picks are not available for MLS yet.</Text>
-          </Card>
         ) : ctx.neutral_for_user ? (
           <PledgePanel gameId={gameId} ctx={ctx} />
         ) : (
@@ -239,7 +229,6 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
 }
 
 function headline(ctx: GameContext): string {
-  if (ctx.sport_id === 'mls' && ctx.neutral_for_user) return 'At the match';
   if (ctx.both_favorites) return 'Pick a side';
   if (ctx.neutral_for_user) return 'Pick a side';
   const fav = ctx.home.favorite ? ctx.home : ctx.away;
@@ -495,7 +484,7 @@ function PledgePanel({ ctx }: { gameId: string; ctx: GameContext }) {
   const gain = (1 - p.win_prob_at_pledge).toFixed(2);
   const pill: { label: string; tone: ResultTone } =
     p.status === 'void'
-      ? { label: 'Void', tone: 'neutral' }
+      ? { label: p.void_reason === 'draw' ? 'Drawn' : 'Void', tone: 'neutral' }
       : won
         ? { label: 'Won', tone: 'win' }
         : p.result === 'loss'
@@ -517,7 +506,14 @@ function PledgePanel({ ctx }: { gameId: string; ctx: GameContext }) {
           </Text>
           <ResultPill label={pill.label} tone={pill.tone} />
         </View>
-        {p.status === 'void' ? (
+        {p.status === 'void' && p.void_reason === 'draw' ? (
+          <>
+            <Text variant="h2">Drawn, no result</Text>
+            <Text variant="sub" color="muted" style={{ marginTop: 4 }}>
+              The match ended level, so your pick does not count either way.
+            </Text>
+          </>
+        ) : p.status === 'void' ? (
           <>
             <Text variant="h2">Your pick did not count</Text>
             <Text variant="sub" color="muted" style={{ marginTop: 4 }}>

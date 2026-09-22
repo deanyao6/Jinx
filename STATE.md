@@ -216,9 +216,16 @@ at the merge because `041` was already the search test). In the app: league pick
 schedules, results, logging, Passport, stamps, bucket list, share cards. A shootout is stored
 apart from goals (`decision_method`, `home_shootout_score`, `away_shootout_score`,
 `winner_team_id`), and `gameResult` honours an explicit winner, so a 3–3 match won on
-penalties is a win. **Deliberately unavailable for MLS** until a draw-aware model exists:
-Elo and win probability, Pick a side (`make_pledge` answers `sport_not_supported`), live state,
-rosters and favorite players, Relive, Wrapped. The game screen says so.
+penalties is a win. **MLS second wave, in progress (2026-09-22).** Done: a draw-aware Elo (`runEloThreeWay`,
+three-way log loss 1.0358 over 3,911 matches from 2018 against 1.0518 for the base rates,
+`docs/elo-backtest.md`), probabilities for every match on local and hosted (`game_win_prob`
+with `draw_prob`, method `elo_draw_v1`), Pick a side at an MLS match (the pledged side's own
+probability, the explainer says "Draw 27%: a draw voids the pick", the lock is the first goal or
+halftime with the phone's live feed), and **a draw voids the pledge**: `void`, reason `draw`,
+no result, "Drawn, no result" on the screens and in the notification, out of every count; a
+shootout is a drawn match and voids too, extra time scores (migration `20260923000800`, test
+`021`). Still deliberately unavailable: rosters and favorite players, Relive, Wrapped; the game
+screen says so.
 
 Not done, and known:
 

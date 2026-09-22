@@ -1,0 +1,11 @@
+{
+ "_note": "GET https://site.web.api.espn.com/apis/common/v3/search?query=Diego%20Valeri&limit=5 fetched 2026-09-22: HTTP 200 and no items. Same for query=Diego%20Valeri alone, &type=player and query=Valeri&sport=soccer. Do not use it for player ids; v2 works.",
+ "_fetched": "2026-09-22",
+ "response": {
+  "count": 0,
+  "pageIndex": 0,
+  "pageSize": 15,
+  "pageCount": 0,
+  "items": []
+ }
+}

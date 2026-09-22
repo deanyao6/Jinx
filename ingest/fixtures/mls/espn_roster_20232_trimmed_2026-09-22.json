@@ -1,0 +1,71 @@
+{
+ "_note": "GET https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams/20232/roster (Inter Miami CF) fetched 2026-09-22 with plain fetch; a custom User-Agent gets 403. 33 athletes in full, trimmed to three and to the id and name fields. athletes[].id is the ESPN athlete id used in seed/mls_awards.json (espn_id).",
+ "_fetched": "2026-09-22",
+ "timestamp": "2026-09-22T23:12:52Z",
+ "status": "success",
+ "season": {
+  "year": 2026,
+  "displayName": "2026 MLS",
+  "type": 13846,
+  "name": "Regular Season"
+ },
+ "team": {
+  "id": "20232",
+  "displayName": "Inter Miami CF",
+  "abbreviation": "MIA"
+ },
+ "athletes": [
+  {
+   "id": "231059",
+   "uid": "s:600~a:231059",
+   "firstName": "Dayne",
+   "lastName": "St. Clair",
+   "fullName": "Dayne St. Clair",
+   "displayName": "Dayne St. Clair",
+   "jersey": "97",
+   "position": {
+    "id": "1",
+    "name": "Goalkeeper",
+    "displayName": "Goalkeeper",
+    "abbreviation": "G",
+    "leaf": false
+   },
+   "dateOfBirth": "1997-05-09T07:00Z"
+  },
+  {
+   "id": "256444",
+   "uid": "s:600~a:256444",
+   "firstName": "Luis",
+   "lastName": "Barraza",
+   "fullName": "Luis Barraza",
+   "displayName": "Luis Barraza",
+   "jersey": "13",
+   "position": {
+    "id": "1",
+    "name": "Goalkeeper",
+    "displayName": "Goalkeeper",
+    "abbreviation": "G",
+    "leaf": false
+   },
+   "dateOfBirth": "1996-11-08T08:00Z"
+  },
+  {
+   "id": "297047",
+   "uid": "s:600~a:297047",
+   "firstName": "Rocco",
+   "lastName": "Ríos Novo",
+   "fullName": "Rocco Ríos Novo",
+   "displayName": "Rocco Ríos Novo",
+   "jersey": "34",
+   "position": {
+    "id": "1",
+    "name": "Goalkeeper",
+    "displayName": "Goalkeeper",
+    "abbreviation": "G",
+    "leaf": false
+   },
+   "dateOfBirth": "2002-06-04T07:00Z"
+  }
+ ],
+ "athleteCount": 33
+}

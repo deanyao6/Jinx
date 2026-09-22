@@ -3,8 +3,12 @@
  * 2000, scored over the seasons from --score-from (default 2016) so the early years warm up.
  *
  *   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... npx tsx ingest/src/elo/sweep.ts --sport nba [--score-from 2016]
+ *   npx tsx ingest/src/elo/sweep.ts --sport mls --score-from 2018   # three-way: K, home, draw term, MOV
+ *
+ * MLS is scored by three-way log loss (home, draw, away), every final counted, draws included;
+ * its history starts in 2016 so 2016 and 2017 are the warm-up.
  */
-import { runElo, type EloGameInput, type EloParams } from '@jinx/core';
+import { runElo, runEloThreeWay, type EloGameInput, type EloParams } from '@jinx/core';
 
 import { createDb, selectAll } from '../db.js';
 
@@ -67,6 +71,44 @@ function loss(params: EloParams): { logLoss: number; scored: number } {
 
 const base = sport === 'nfl' ? 1505 : 1500;
 const results: { line: string; loss: number }[] = [];
+if (sport === 'mls') {
+  // A reference point: a constant model at the base rates of the scored seasons.
+  const scoredFinals = games.filter(
+    (g) => g.season >= scoreFrom && g.homeScore != null && g.awayScore != null,
+  );
+  const n = scoredFinals.length;
+  const rate = { home: 0, draw: 0, away: 0 };
+  for (const g of scoredFinals) {
+    if (g.homeScore! > g.awayScore!) rate.home++;
+    else if (g.homeScore! < g.awayScore!) rate.away++;
+    else rate.draw++;
+  }
+  const constant =
+    -(rate.home * Math.log(rate.home / n) + rate.draw * Math.log(rate.draw / n) + rate.away * Math.log(rate.away / n)) / n;
+  console.log(
+    `constant model: home ${(rate.home / n).toFixed(3)}, draw ${(rate.draw / n).toFixed(3)}, away ${(rate.away / n).toFixed(3)} over ${n}: ${constant.toFixed(4)}`,
+  );
+  for (const k of [10, 15, 20, 25, 30, 40])
+    for (const homeAdv of [40, 60, 80, 100, 120])
+      for (const draw of [0.6, 0.8, 0.9, 1.0, 1.1, 1.2])
+        for (const reg of [1 / 4, 1 / 3])
+          for (const mov of [false, true]) {
+            const run = runEloThreeWay(
+              games,
+              { k, homeAdv, seasonRegression: reg, base, movMultiplier: mov, draw },
+              { minPriorGames: 20, scoreFromSeason: scoreFrom },
+            );
+            results.push({
+              line: `K=${k} home=${homeAdv} draw=${draw} reg=${reg.toFixed(3)} mov=${mov}: ${run.logLoss!.toFixed(4)} over ${run.scoredGames}`,
+              loss: run.logLoss!,
+            });
+          }
+  results.sort((a, b) => a.loss - b.loss);
+  console.log(results.slice(0, 25).map((r) => r.line).join('\n'));
+  console.log('...');
+  console.log(results.slice(-3).map((r) => r.line).join('\n'));
+  process.exit(0);
+}
 for (const k of [6, 8, 10, 12, 14, 16, 20, 24, 28])
   for (const homeAdv of [30, 40, 50, 60, 70, 80, 100, 120])
     for (const reg of [1 / 4, 1 / 3])

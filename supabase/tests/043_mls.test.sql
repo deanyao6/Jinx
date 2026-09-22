@@ -32,7 +32,9 @@ set local role authenticated;
 select set_config('request.jwt.claim.sub','a1410000-0000-4000-8000-000000000001',true);
 select is((select count(*)::int from public.teams where sport_id='mls' and active),30,'authenticated user reads reference data');
 select throws_ok($$insert into public.sports(id,name) values('mls_test','x')$$,'42501',null,'authenticated user cannot write reference data');
-select is(public.make_pledge('a1410000-0000-4000-8000-000000000002',(select home_team_id from public.games where provider='mls_test'))->>'reason','sport_not_supported','MLS neutral picks cannot fall back to 50 percent');
+-- Since 20260923000800 MLS has a draw-aware model and Pick a side: the only thing stopping this
+-- pick is that the fan is not checked in (test 021 covers the probabilities and the draw void).
+select is(public.make_pledge('a1410000-0000-4000-8000-000000000002',(select home_team_id from public.games where provider='mls_test'))->>'reason','not_checked_in','MLS neutral picks are allowed once checked in');
 select is((select count(*)::int from public.attendances where game_id='a1410000-0000-4000-8000-000000000002'),1,'MLS attendance visible to its owner');
 reset role;
 select * from finish();

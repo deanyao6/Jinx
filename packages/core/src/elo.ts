@@ -21,7 +21,7 @@ export interface EloParams {
   movMultiplier: boolean;
 }
 
-// MLS needs a calibrated draw-aware model; no binary probability is published for it.
+// MLS has its own three-outcome model below (THREE_WAY_PARAMS); the binary one never fits a draw.
 export const ELO_PARAMS: Record<Exclude<Sport, 'mls'>, EloParams> = {
   mlb: { k: 4, homeAdv: 24, seasonRegression: 1 / 3, base: 1500, movMultiplier: false },
   nfl: { k: 20, homeAdv: 48, seasonRegression: 1 / 3, base: 1505, movMultiplier: true },
@@ -137,5 +137,124 @@ export function runElo(games: EloGameInput[], params: EloParams, opts: RunEloOpt
     gamesPlayed.set(g.awayTeamId, awayPrior + 1);
   }
 
+  return { ratings, results, logLoss: scored > 0 ? lossSum / scored : null, scoredGames: scored };
+}
+
+// ---------------------------------------------------------------------------
+// Three outcomes: Elo with a draw term, for MLS (next-wave E.1, 2026-09-22).
+//
+// Ratings move as in the binary model, with a draw scoring 0.5 and the margin multiplier on the
+// goal difference. The pregame probabilities come from a Davidson term: with
+// d = elo_home + home_adv - elo_away and r = 10^(d/400),
+//   P(home) = r / (r + 1 + v * sqrt(r)),  P(away) = 1 / (...),  P(draw) = v * sqrt(r) / (...),
+// so the draw is likeliest between equals (sqrt(r) = 1) and thins out as the sides diverge.
+// `draw` (v) is fitted by grid with the rest (ingest/src/elo/sweep.ts --sport mls), scored by
+// three-way log loss; docs/elo-backtest.md has the grid.
+// ---------------------------------------------------------------------------
+
+export interface ThreeWayParams extends EloParams {
+  /** The Davidson draw parameter: 0 is the binary model, 1 makes a draw as likely as either side's win between equals. */
+  draw: number;
+}
+
+export const THREE_WAY_PARAMS: Record<'mls', ThreeWayParams> = {
+  // Fitted 2026-09-22 on 2016-2025 (docs/elo-backtest.md): three-way log loss 1.0358 over 3,911
+  // matches from 2018 against 1.0518 for the base rates; the grid's floor was flat around it.
+  mls: { k: 30, homeAdv: 100, seasonRegression: 1 / 3, base: 1500, movMultiplier: true, draw: 0.8 },
+};
+
+export interface ThreeWayProbabilities {
+  home: number;
+  draw: number;
+  away: number;
+}
+
+export function threeWayProbabilities(
+  eloHome: number,
+  eloAway: number,
+  homeAdv: number,
+  draw: number,
+): ThreeWayProbabilities {
+  const r = Math.pow(10, (eloHome + homeAdv - eloAway) / 400);
+  const d = draw * Math.sqrt(r);
+  const z = r + 1 + d;
+  return { home: r / z, draw: d / z, away: 1 / z };
+}
+
+export interface ThreeWayGameResult extends EloGameResult {
+  drawProb: number;
+  awayWinProb: number;
+}
+
+export interface ThreeWayRun {
+  ratings: Map<string, number>;
+  results: ThreeWayGameResult[];
+  /** Mean three-way log loss over final games where both teams had `minPriorGames` prior games. */
+  logLoss: number | null;
+  scoredGames: number;
+}
+
+/** Runs the draw-aware Elo chronologically; the same contract as runElo with a draw probability. */
+export function runEloThreeWay(
+  games: EloGameInput[],
+  params: ThreeWayParams,
+  opts: RunEloOptions & { scoreFromSeason?: number } = {},
+): ThreeWayRun {
+  const minPrior = opts.minPriorGames ?? 20;
+  const ratings = new Map<string, number>(opts.initialRatings ?? []);
+  const gamesPlayed = new Map<string, number>();
+  const results: ThreeWayGameResult[] = [];
+  let currentSeason: number | null = opts.initialSeason ?? null;
+  let lossSum = 0;
+  let scored = 0;
+
+  const sorted = [...games].sort(
+    (a, b) => a.scheduledStart.localeCompare(b.scheduledStart) || a.id.localeCompare(b.id),
+  );
+  for (const g of sorted) {
+    if (currentSeason !== null && g.season !== currentSeason) {
+      for (const [team, r] of ratings) ratings.set(team, regressForNewSeason(r, params));
+    }
+    currentSeason = g.season;
+    const home = ratings.get(g.homeTeamId) ?? params.base;
+    const away = ratings.get(g.awayTeamId) ?? params.base;
+    const adv = g.isNeutralSite ? 0 : params.homeAdv;
+    const p = threeWayProbabilities(home, away, adv, params.draw);
+    results.push({
+      id: g.id,
+      homeWinProb: p.home,
+      drawProb: p.draw,
+      awayWinProb: p.away,
+      homeEloPre: home,
+      awayEloPre: away,
+    });
+    if (g.homeScore === null || g.awayScore === null) continue;
+
+    const s = actualScore(g.homeScore, g.awayScore);
+    const homePrior = gamesPlayed.get(g.homeTeamId) ?? 0;
+    const awayPrior = gamesPlayed.get(g.awayTeamId) ?? 0;
+    if (
+      homePrior >= minPrior &&
+      awayPrior >= minPrior &&
+      (opts.scoreFromSeason === undefined || g.season >= opts.scoreFromSeason)
+    ) {
+      const q = s === 1 ? p.home : s === 0 ? p.away : p.draw;
+      lossSum -= Math.log(Math.min(Math.max(q, 1e-6), 1));
+      scored += 1;
+    }
+    // The binary expectation of the same ratings drives the update, as in the other sports.
+    const expected = homeWinProbability(home, away, adv);
+    let k = params.k;
+    if (params.movMultiplier && s !== 0.5) {
+      const margin = g.homeScore - g.awayScore;
+      const eloDiffWinner = s === 1 ? home + adv - away : away - (home + adv);
+      k *= movMultiplier(margin, eloDiffWinner);
+    }
+    const delta = k * (s - expected);
+    ratings.set(g.homeTeamId, home + delta);
+    ratings.set(g.awayTeamId, away - delta);
+    gamesPlayed.set(g.homeTeamId, homePrior + 1);
+    gamesPlayed.set(g.awayTeamId, awayPrior + 1);
+  }
   return { ratings, results, logLoss: scored > 0 ? lossSum / scored : null, scoredGames: scored };
 }

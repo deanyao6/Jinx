@@ -57,3 +57,36 @@ prior fixed at 0.5:
 ESPN's own line scores 0.4321 on the same states; it knows possession and the pregame line,
 which this does not. Chosen: marginScale = 0.10. The line is drawn for Relive only; nothing is
 scored or paid from it.
+
+## MLS: three outcomes (2026-09-22)
+
+A football match draws about a quarter of the time (24.9% of the 4,069 finals from 2018 to
+2025 on local; home wins 48.1%, away wins 27.0%), so the binary model cannot fit it and MLS had
+no probabilities at all. `runEloThreeWay` in `packages/core/src/elo.ts` keeps the Elo update
+(a draw scores 0.5, the margin multiplier on the goal difference) and gives three pregame
+probabilities through a Davidson draw term: with `d = elo_home + home_adv - elo_away` and
+`r = 10^(d/400)`, P(home) = r / (r + 1 + v sqrt(r)), P(away) = 1 / (...), P(draw) =
+v sqrt(r) / (...), so the draw is likeliest between equals and thins out as the sides diverge.
+
+`npx tsx ingest/src/elo/sweep.ts --sport mls --score-from 2018` runs 720 combinations over
+every match from 2016 (the first two seasons warm up), scored by mean three-way log loss over
+the 3,911 finals from 2018 where both sides had 20 prior matches. Reference: the constant model
+at the base rates scores 1.0518.
+
+| K | home_adv | draw v | Regression | MOV | Three-way log loss 2018-2025 |
+|---|---|---|---|---|---|
+| 30 | 100 | 0.8 | 1/3 | yes | **1.0358** |
+| 25 | 100 | 0.8 | 1/3 | yes | 1.0360 |
+| 30 | 100 | 0.8 | 1/4 | yes | 1.0360 |
+| 30 | 120 | 0.8 | 1/3 | yes | 1.0363 |
+| 20 | 100 | 0.8 | 1/3 | yes | 1.0367 |
+| 30 | 80 | 0.8 | 1/3 | yes | 1.0376 |
+| 25 | 100 | 0.6 | 1/3 | yes | 1.0378 |
+| 25 | 100 | 0.8 | 1/3 | no | 1.0380 |
+| 10 | 40 | 1.2 | 1/3 | no | 1.0839 (the worst) |
+
+Chosen: K = 30, home_adv = 100, v = 0.8, 1/3 to 1500, multiplier on. The floor is flat: any
+K from 20 to 40 with a home edge of 100 to 120 and v = 0.8 lands within 0.002. The home edge
+is large because MLS home sides win almost half their matches; v = 0.8 gives 27.6% draws
+between equals, close to the league rate. Written to `game_win_prob` as `home_win_prob` and
+`draw_prob` (method `elo_draw_v1`); a pledge on the away side carries 1 - home - draw.

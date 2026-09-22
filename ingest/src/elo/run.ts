@@ -8,7 +8,14 @@
  *   (existing rows for games already started are never overwritten: probabilities are frozen).
  * - Prints backtest log loss over final games, which is the number to record in docs/elo-backtest.md.
  */
-import { ELO_PARAMS, runElo, type EloGameInput, type Sport } from '@jinx/core';
+import {
+  ELO_PARAMS,
+  THREE_WAY_PARAMS,
+  runElo,
+  runEloThreeWay,
+  type EloGameInput,
+  type Sport,
+} from '@jinx/core';
 
 import { createDb, selectAll, upsertRows } from '../db.js';
 
@@ -31,8 +38,6 @@ function arg(name: string): string | null {
 }
 
 export async function computeElo(sport: Sport, opts: { write: boolean }): Promise<void> {
-  if (sport === 'mls')
-    throw new Error('MLS win probabilities need a draw-aware model; Elo publishing is disabled');
   const db = createDb();
   const rows = await selectAll<GameRow>(
     db,
@@ -50,10 +55,15 @@ export async function computeElo(sport: Sport, opts: { write: boolean }): Promis
     awayScore: r.status === 'final' ? r.away_score : null,
     isNeutralSite: r.is_neutral_site,
   }));
-  const params = ELO_PARAMS[sport];
-  const run = runElo(games, params);
+  // MLS: the three-outcome model (draws), scored three ways; the others: the binary one.
+  const params = sport === 'mls' ? THREE_WAY_PARAMS.mls : ELO_PARAMS[sport];
+  const run =
+    sport === 'mls'
+      ? runEloThreeWay(games, THREE_WAY_PARAMS.mls, { scoreFromSeason: 2018 })
+      : runElo(games, ELO_PARAMS[sport]);
+  const drawNote = sport === 'mls' ? `, draw=${THREE_WAY_PARAMS.mls.draw}` : '';
   console.log(
-    `${sport}: ${games.length} games, ${run.scoredGames} scored; log loss ${run.logLoss?.toFixed(4) ?? 'n/a'} (K=${params.k}, home_adv=${params.homeAdv}, regression=${params.seasonRegression.toFixed(3)})`,
+    `${sport}: ${games.length} games, ${run.scoredGames} scored; log loss ${run.logLoss?.toFixed(4) ?? 'n/a'} (K=${params.k}, home_adv=${params.homeAdv}, regression=${params.seasonRegression.toFixed(3)}${drawNote})`,
   );
   if (!opts.write) return;
 
@@ -76,7 +86,10 @@ export async function computeElo(sport: Sport, opts: { write: boolean }): Promis
   const probRows = run.results.map((r) => ({
     game_id: r.id,
     home_win_prob: Number(r.homeWinProb.toFixed(5)),
-    method: 'elo_v1',
+    // MLS carries the draw too; the away probability is what is left.
+    draw_prob:
+      'drawProb' in r && typeof r.drawProb === 'number' ? Number(r.drawProb.toFixed(5)) : null,
+    method: sport === 'mls' ? 'elo_draw_v1' : 'elo_v1',
     computed_at: new Date().toISOString(),
   }));
   // Games not yet started: refresh. Games already started: insert only if missing (frozen).

@@ -854,3 +854,14 @@ attended games: on the Phillies at Dodgers game of 2025-09-16 the rule names Oht
 homered and pitched five scoreless) and leaves out the four other home-run hitters because
 none is a superstar; on Bears at Eagles 2025-11-28 it names Byard (All-Pro, an interception)
 and A.J. Brown (franchise player, 2 TD, 132 yards) and leaves out D'Andre Swift's touchdown.
+
+## MLS draws (next-wave E.1, E.2) — 2026-09-22
+
+Base rates on local, 2018 to 2025, 4,069 finals: home wins 48.1%, draws 24.9%, away wins
+27.0%. The three-outcome Elo (`docs/elo-backtest.md`) is written for every match with the
+draw; the pledged side's probability is its own (an away pick carries 1 minus home minus draw,
+never "one minus the other side", which would count the draw for it). A pledge at a match
+that ends level on goals is void with reason `draw`, whatever the penalties decided: the brief
+recommended it and it reads right against the record rule already in place (a shootout win is
+a win for the *fan's own* record, `gameResult` honours the explicit winner; the *pledge* is a
+prediction of the match, which drew). Dean should confirm that reading (the report asks).

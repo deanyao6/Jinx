@@ -22,6 +22,8 @@ export type GameContext = {
   final_at: string | null;
   home: ContextTeam;
   away: ContextTeam;
+  /** MLS: the chance the match is drawn; the two sides' win_prob leave it out. Null elsewhere. */
+  draw_prob?: number | null;
   venue: {
     venue_id: string | null;
     name: string | null;

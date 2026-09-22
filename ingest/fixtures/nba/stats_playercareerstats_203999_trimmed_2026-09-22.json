@@ -1,0 +1,95 @@
+{
+ "_note": "stats.nba.com playercareerstats?PlayerID=203999 (Nikola Jokić) fetched 2026-09-22 through NbaClient; SeasonTotalsRegularSeason trimmed to the columns used to check that an honor season matches the team the player was on. Used for all 74 honorees; only this one is kept as the fixture.",
+ "_fetched": "2026-09-22",
+ "resultSets": [
+  {
+   "name": "SeasonTotalsRegularSeason",
+   "headers": [
+    "PLAYER_ID",
+    "SEASON_ID",
+    "TEAM_ID",
+    "TEAM_ABBREVIATION",
+    "GP"
+   ],
+   "rowSet": [
+    [
+     203999,
+     "2015-16",
+     1610612743,
+     "DEN",
+     80
+    ],
+    [
+     203999,
+     "2016-17",
+     1610612743,
+     "DEN",
+     73
+    ],
+    [
+     203999,
+     "2017-18",
+     1610612743,
+     "DEN",
+     75
+    ],
+    [
+     203999,
+     "2018-19",
+     1610612743,
+     "DEN",
+     80
+    ],
+    [
+     203999,
+     "2019-20",
+     1610612743,
+     "DEN",
+     73
+    ],
+    [
+     203999,
+     "2020-21",
+     1610612743,
+     "DEN",
+     72
+    ],
+    [
+     203999,
+     "2021-22",
+     1610612743,
+     "DEN",
+     74
+    ],
+    [
+     203999,
+     "2022-23",
+     1610612743,
+     "DEN",
+     69
+    ],
+    [
+     203999,
+     "2023-24",
+     1610612743,
+     "DEN",
+     79
+    ],
+    [
+     203999,
+     "2024-25",
+     1610612743,
+     "DEN",
+     70
+    ],
+    [
+     203999,
+     "2025-26",
+     1610612743,
+     "DEN",
+     65
+    ]
+   ]
+  }
+ ]
+}

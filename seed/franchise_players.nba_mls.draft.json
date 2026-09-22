@@ -1,0 +1,1985 @@
+{
+  "_about": "DRAFT for Dean to merge into seed/franchise_players.json, written by an agent on 2026-09-22. Same shape as that file: `team` null is the transcendent tier, `from`/`to` are seasons (NBA: the season's start year, so Kobe Bryant's last season 2015-16 is `to: 2015`; MLS: the calendar year), `to` null means still there. Every tenure was read from the player's English Wikipedia infobox on 2026-09-22 (the `source` URL on each row; the loader ignores that key); nothing was written from memory, and a candidate whose infobox did not show the club was dropped rather than guessed. NBA tenures are clipped at 2000 and MLS at 2016, the floors of the games table, the way Derek Jeter is 2000 in the main file. Names are Wikipedia's display names, which is what ingest/src/famous/franchise.ts will search; that script needs an NBA and an MLS resolver before this can load. No `id` fields: the NBA person ids and ESPN ids for the honorees are in seed/nba_awards.json and seed/mls_awards.json, and the resolver should refuse ambiguous names the same way it does for MLB.",
+  "transcendent": [
+    {
+      "sport": "nba",
+      "name": "LeBron James",
+      "from": 2003,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/LeBron_James"
+    },
+    {
+      "sport": "nba",
+      "name": "Stephen Curry",
+      "from": 2009,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Stephen_Curry"
+    },
+    {
+      "sport": "nba",
+      "name": "Kevin Durant",
+      "from": 2007,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Kevin_Durant"
+    },
+    {
+      "sport": "nba",
+      "name": "Giannis Antetokounmpo",
+      "from": 2013,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Giannis_Antetokounmpo"
+    },
+    {
+      "sport": "nba",
+      "name": "Nikola Jokić",
+      "from": 2015,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Nikola_Jokić"
+    },
+    {
+      "sport": "nba",
+      "name": "Kobe Bryant",
+      "from": 2000,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Kobe_Bryant"
+    },
+    {
+      "sport": "nba",
+      "name": "Shaquille O'Neal",
+      "from": 2000,
+      "to": 2008,
+      "source": "https://en.wikipedia.org/wiki/Shaquille_O'Neal"
+    },
+    {
+      "sport": "nba",
+      "name": "Tim Duncan",
+      "from": 2000,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Tim_Duncan"
+    },
+    {
+      "sport": "nba",
+      "name": "Luka Dončić",
+      "from": 2018,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Luka_Dončić"
+    },
+    {
+      "sport": "nba",
+      "name": "Shai Gilgeous-Alexander",
+      "from": 2019,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Shai_Gilgeous-Alexander"
+    },
+    {
+      "sport": "mls",
+      "name": "Lionel Messi",
+      "from": 2023,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Lionel_Messi"
+    },
+    {
+      "sport": "mls",
+      "name": "Zlatan Ibrahimović",
+      "from": 2018,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Zlatan_Ibrahimović"
+    },
+    {
+      "sport": "mls",
+      "name": "Wayne Rooney",
+      "from": 2018,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Wayne_Rooney"
+    },
+    {
+      "sport": "mls",
+      "name": "Sebastian Giovinco",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Sebastian_Giovinco"
+    },
+    {
+      "sport": "mls",
+      "name": "David Villa",
+      "from": 2016,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/David_Villa"
+    },
+    {
+      "sport": "mls",
+      "name": "Carlos Vela",
+      "from": 2018,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Carlos_Vela"
+    },
+    {
+      "sport": "mls",
+      "name": "Josef Martínez",
+      "from": 2017,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Josef_Martínez"
+    },
+    {
+      "sport": "mls",
+      "name": "Kaká",
+      "from": 2016,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Kaká"
+    }
+  ],
+  "teams": [
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Joe Johnson",
+      "from": 2005,
+      "to": 2011,
+      "source": "https://en.wikipedia.org/wiki/Joe_Johnson_(basketball)"
+    },
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Al Horford",
+      "from": 2007,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Al_Horford"
+    },
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Trae Young",
+      "from": 2018,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Trae_Young"
+    },
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Jalen Johnson",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Jalen_Johnson"
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Paul Pierce",
+      "from": 2000,
+      "to": 2012,
+      "source": "https://en.wikipedia.org/wiki/Paul_Pierce"
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Kevin Garnett",
+      "from": 2007,
+      "to": 2012,
+      "source": "https://en.wikipedia.org/wiki/Kevin_Garnett"
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Jayson Tatum",
+      "from": 2017,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Jayson_Tatum"
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Jaylen Brown",
+      "from": 2016,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Jaylen_Brown"
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Jason Kidd",
+      "from": 2001,
+      "to": 2007,
+      "source": "https://en.wikipedia.org/wiki/Jason_Kidd"
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Vince Carter",
+      "from": 2004,
+      "to": 2008,
+      "source": "https://en.wikipedia.org/wiki/Vince_Carter"
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Kevin Durant",
+      "from": 2019,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Kevin_Durant"
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Brook Lopez",
+      "from": 2008,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Brook_Lopez"
+    },
+    {
+      "sport": "nba",
+      "team": "CHA",
+      "name": "Kemba Walker",
+      "from": 2011,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Kemba_Walker"
+    },
+    {
+      "sport": "nba",
+      "team": "CHA",
+      "name": "LaMelo Ball",
+      "from": 2020,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/LaMelo_Ball"
+    },
+    {
+      "sport": "nba",
+      "team": "CHA",
+      "name": "Gerald Wallace",
+      "from": 2004,
+      "to": 2010,
+      "source": "https://en.wikipedia.org/wiki/Gerald_Wallace"
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "Derrick Rose",
+      "from": 2008,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Derrick_Rose"
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "Jimmy Butler",
+      "from": 2011,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Jimmy_Butler"
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "Zach LaVine",
+      "from": 2017,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Zach_LaVine"
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "DeMar DeRozan",
+      "from": 2021,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/DeMar_DeRozan"
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "LeBron James",
+      "from": 2003,
+      "to": 2009,
+      "source": "https://en.wikipedia.org/wiki/LeBron_James"
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "LeBron James",
+      "from": 2014,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/LeBron_James"
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "Kyrie Irving",
+      "from": 2011,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Kyrie_Irving"
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "Donovan Mitchell",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Donovan_Mitchell"
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "Evan Mobley",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Evan_Mobley"
+    },
+    {
+      "sport": "nba",
+      "team": "DAL",
+      "name": "Dirk Nowitzki",
+      "from": 2000,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Dirk_Nowitzki"
+    },
+    {
+      "sport": "nba",
+      "team": "DAL",
+      "name": "Luka Dončić",
+      "from": 2018,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Luka_Dončić"
+    },
+    {
+      "sport": "nba",
+      "team": "DAL",
+      "name": "Cooper Flagg",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Cooper_Flagg"
+    },
+    {
+      "sport": "nba",
+      "team": "DEN",
+      "name": "Carmelo Anthony",
+      "from": 2003,
+      "to": 2010,
+      "source": "https://en.wikipedia.org/wiki/Carmelo_Anthony"
+    },
+    {
+      "sport": "nba",
+      "team": "DEN",
+      "name": "Nikola Jokić",
+      "from": 2015,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Nikola_Jokić"
+    },
+    {
+      "sport": "nba",
+      "team": "DEN",
+      "name": "Jamal Murray",
+      "from": 2016,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Jamal_Murray"
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Chauncey Billups",
+      "from": 2002,
+      "to": 2008,
+      "source": "https://en.wikipedia.org/wiki/Chauncey_Billups"
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Ben Wallace",
+      "from": 2000,
+      "to": 2005,
+      "source": "https://en.wikipedia.org/wiki/Ben_Wallace_(basketball)"
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Ben Wallace",
+      "from": 2009,
+      "to": 2011,
+      "source": "https://en.wikipedia.org/wiki/Ben_Wallace_(basketball)"
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Cade Cunningham",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Cade_Cunningham"
+    },
+    {
+      "sport": "nba",
+      "team": "GSW",
+      "name": "Stephen Curry",
+      "from": 2009,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Stephen_Curry"
+    },
+    {
+      "sport": "nba",
+      "team": "GSW",
+      "name": "Klay Thompson",
+      "from": 2011,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Klay_Thompson"
+    },
+    {
+      "sport": "nba",
+      "team": "GSW",
+      "name": "Draymond Green",
+      "from": 2012,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Draymond_Green"
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "Yao Ming",
+      "from": 2002,
+      "to": 2010,
+      "source": "https://en.wikipedia.org/wiki/Yao_Ming"
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "Tracy McGrady",
+      "from": 2004,
+      "to": 2009,
+      "source": "https://en.wikipedia.org/wiki/Tracy_McGrady"
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "James Harden",
+      "from": 2012,
+      "to": 2020,
+      "source": "https://en.wikipedia.org/wiki/James_Harden"
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "Alperen Şengün",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Alperen_Şengün"
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Reggie Miller",
+      "from": 2000,
+      "to": 2004,
+      "source": "https://en.wikipedia.org/wiki/Reggie_Miller"
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Jermaine O'Neal",
+      "from": 2000,
+      "to": 2007,
+      "source": "https://en.wikipedia.org/wiki/Jermaine_O'Neal"
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Paul George",
+      "from": 2010,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Paul_George"
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Tyrese Haliburton",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Tyrese_Haliburton"
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Chris Paul",
+      "from": 2011,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Chris_Paul"
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Blake Griffin",
+      "from": 2009,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Blake_Griffin"
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Kawhi Leonard",
+      "from": 2019,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Kawhi_Leonard"
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Paul George",
+      "from": 2019,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Paul_George"
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Kobe Bryant",
+      "from": 2000,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Kobe_Bryant"
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Shaquille O'Neal",
+      "from": 2000,
+      "to": 2003,
+      "source": "https://en.wikipedia.org/wiki/Shaquille_O'Neal"
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "LeBron James",
+      "from": 2018,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/LeBron_James"
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Anthony Davis",
+      "from": 2019,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Anthony_Davis"
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Luka Dončić",
+      "from": 2024,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Luka_Dončić"
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Zach Randolph",
+      "from": 2009,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Zach_Randolph"
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Marc Gasol",
+      "from": 2008,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Marc_Gasol"
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Mike Conley",
+      "from": 2007,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Mike_Conley_(basketball)"
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Ja Morant",
+      "from": 2019,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Ja_Morant"
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Dwyane Wade",
+      "from": 2003,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Dwyane_Wade"
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Dwyane Wade",
+      "from": 2017,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Dwyane_Wade"
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "LeBron James",
+      "from": 2010,
+      "to": 2013,
+      "source": "https://en.wikipedia.org/wiki/LeBron_James"
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Jimmy Butler",
+      "from": 2019,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Jimmy_Butler"
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Bam Adebayo",
+      "from": 2017,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Bam_Adebayo"
+    },
+    {
+      "sport": "nba",
+      "team": "MIL",
+      "name": "Giannis Antetokounmpo",
+      "from": 2013,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Giannis_Antetokounmpo"
+    },
+    {
+      "sport": "nba",
+      "team": "MIL",
+      "name": "Khris Middleton",
+      "from": 2013,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Khris_Middleton"
+    },
+    {
+      "sport": "nba",
+      "team": "MIL",
+      "name": "Damian Lillard",
+      "from": 2023,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Damian_Lillard"
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Kevin Garnett",
+      "from": 2000,
+      "to": 2006,
+      "source": "https://en.wikipedia.org/wiki/Kevin_Garnett"
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Kevin Garnett",
+      "from": 2014,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Kevin_Garnett"
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Karl-Anthony Towns",
+      "from": 2015,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Karl-Anthony_Towns"
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Anthony Edwards",
+      "from": 2020,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Anthony_Edwards_(basketball)"
+    },
+    {
+      "sport": "nba",
+      "team": "NOP",
+      "name": "Chris Paul",
+      "from": 2005,
+      "to": 2010,
+      "source": "https://en.wikipedia.org/wiki/Chris_Paul"
+    },
+    {
+      "sport": "nba",
+      "team": "NOP",
+      "name": "Anthony Davis",
+      "from": 2012,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Anthony_Davis"
+    },
+    {
+      "sport": "nba",
+      "team": "NOP",
+      "name": "Zion Williamson",
+      "from": 2019,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Zion_Williamson"
+    },
+    {
+      "sport": "nba",
+      "team": "NYK",
+      "name": "Carmelo Anthony",
+      "from": 2010,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Carmelo_Anthony"
+    },
+    {
+      "sport": "nba",
+      "team": "NYK",
+      "name": "Jalen Brunson",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Jalen_Brunson"
+    },
+    {
+      "sport": "nba",
+      "team": "NYK",
+      "name": "Karl-Anthony Towns",
+      "from": 2024,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Karl-Anthony_Towns"
+    },
+    {
+      "sport": "nba",
+      "team": "OKC",
+      "name": "Kevin Durant",
+      "from": 2007,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Kevin_Durant"
+    },
+    {
+      "sport": "nba",
+      "team": "OKC",
+      "name": "Russell Westbrook",
+      "from": 2008,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Russell_Westbrook"
+    },
+    {
+      "sport": "nba",
+      "team": "OKC",
+      "name": "Shai Gilgeous-Alexander",
+      "from": 2019,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Shai_Gilgeous-Alexander"
+    },
+    {
+      "sport": "nba",
+      "team": "ORL",
+      "name": "Tracy McGrady",
+      "from": 2000,
+      "to": 2003,
+      "source": "https://en.wikipedia.org/wiki/Tracy_McGrady"
+    },
+    {
+      "sport": "nba",
+      "team": "ORL",
+      "name": "Dwight Howard",
+      "from": 2004,
+      "to": 2011,
+      "source": "https://en.wikipedia.org/wiki/Dwight_Howard"
+    },
+    {
+      "sport": "nba",
+      "team": "ORL",
+      "name": "Paolo Banchero",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Paolo_Banchero"
+    },
+    {
+      "sport": "nba",
+      "team": "PHI",
+      "name": "Allen Iverson",
+      "from": 2000,
+      "to": 2006,
+      "source": "https://en.wikipedia.org/wiki/Allen_Iverson"
+    },
+    {
+      "sport": "nba",
+      "team": "PHI",
+      "name": "Joel Embiid",
+      "from": 2014,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Joel_Embiid"
+    },
+    {
+      "sport": "nba",
+      "team": "PHI",
+      "name": "Tyrese Maxey",
+      "from": 2020,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Tyrese_Maxey"
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Steve Nash",
+      "from": 2004,
+      "to": 2011,
+      "source": "https://en.wikipedia.org/wiki/Steve_Nash"
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Amar'e Stoudemire",
+      "from": 2002,
+      "to": 2009,
+      "source": "https://en.wikipedia.org/wiki/Amar'e_Stoudemire"
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Devin Booker",
+      "from": 2015,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Devin_Booker"
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Kevin Durant",
+      "from": 2022,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Kevin_Durant"
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "Brandon Roy",
+      "from": 2006,
+      "to": 2010,
+      "source": "https://en.wikipedia.org/wiki/Brandon_Roy"
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "LaMarcus Aldridge",
+      "from": 2006,
+      "to": 2014,
+      "source": "https://en.wikipedia.org/wiki/LaMarcus_Aldridge"
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "Damian Lillard",
+      "from": 2012,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Damian_Lillard"
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "Damian Lillard",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Damian_Lillard"
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "Chris Webber",
+      "from": 2000,
+      "to": 2004,
+      "source": "https://en.wikipedia.org/wiki/Chris_Webber"
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "DeMarcus Cousins",
+      "from": 2010,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/DeMarcus_Cousins"
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "De'Aaron Fox",
+      "from": 2017,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/De'Aaron_Fox"
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "Domantas Sabonis",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Domantas_Sabonis"
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Tim Duncan",
+      "from": 2000,
+      "to": 2015,
+      "source": "https://en.wikipedia.org/wiki/Tim_Duncan"
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Tony Parker",
+      "from": 2001,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Tony_Parker"
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Manu Ginóbili",
+      "from": 2002,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Manu_Ginóbili"
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Kawhi Leonard",
+      "from": 2011,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Kawhi_Leonard"
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Victor Wembanyama",
+      "from": 2023,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Victor_Wembanyama"
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Vince Carter",
+      "from": 2000,
+      "to": 2004,
+      "source": "https://en.wikipedia.org/wiki/Vince_Carter"
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Chris Bosh",
+      "from": 2003,
+      "to": 2009,
+      "source": "https://en.wikipedia.org/wiki/Chris_Bosh"
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "DeMar DeRozan",
+      "from": 2009,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/DeMar_DeRozan"
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Kyle Lowry",
+      "from": 2012,
+      "to": 2020,
+      "source": "https://en.wikipedia.org/wiki/Kyle_Lowry"
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Scottie Barnes",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Scottie_Barnes"
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Karl Malone",
+      "from": 2000,
+      "to": 2002,
+      "source": "https://en.wikipedia.org/wiki/Karl_Malone"
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Deron Williams",
+      "from": 2005,
+      "to": 2010,
+      "source": "https://en.wikipedia.org/wiki/Deron_Williams"
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Donovan Mitchell",
+      "from": 2017,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Donovan_Mitchell"
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Rudy Gobert",
+      "from": 2013,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Rudy_Gobert"
+    },
+    {
+      "sport": "nba",
+      "team": "WAS",
+      "name": "Gilbert Arenas",
+      "from": 2003,
+      "to": 2010,
+      "source": "https://en.wikipedia.org/wiki/Gilbert_Arenas"
+    },
+    {
+      "sport": "nba",
+      "team": "WAS",
+      "name": "John Wall",
+      "from": 2010,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/John_Wall"
+    },
+    {
+      "sport": "nba",
+      "team": "WAS",
+      "name": "Bradley Beal",
+      "from": 2012,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Bradley_Beal"
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Josef Martínez",
+      "from": 2017,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Josef_Martínez"
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Miguel Almirón",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Miguel_Almirón"
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Miguel Almirón",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Miguel_Almirón"
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Thiago Almada",
+      "from": 2022,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Thiago_Almada"
+    },
+    {
+      "sport": "mls",
+      "team": "ATX",
+      "name": "Sebastián Driussi",
+      "from": 2021,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Sebastián_Driussi"
+    },
+    {
+      "sport": "mls",
+      "team": "ATX",
+      "name": "Brad Stuver",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Brad_Stuver"
+    },
+    {
+      "sport": "mls",
+      "team": "MTL",
+      "name": "Ignacio Piatti",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Ignacio_Piatti"
+    },
+    {
+      "sport": "mls",
+      "team": "MTL",
+      "name": "Victor Wanyama",
+      "from": 2020,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Victor_Wanyama"
+    },
+    {
+      "sport": "mls",
+      "team": "CLT",
+      "name": "Karol Świderski",
+      "from": 2022,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Karol_Świderski"
+    },
+    {
+      "sport": "mls",
+      "team": "CLT",
+      "name": "Kristijan Kahlina",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Kristijan_Kahlina"
+    },
+    {
+      "sport": "mls",
+      "team": "CLT",
+      "name": "Wilfried Zaha",
+      "from": 2025,
+      "to": 2026,
+      "source": "https://en.wikipedia.org/wiki/Wilfried_Zaha"
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Nemanja Nikolić",
+      "from": 2017,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Nemanja_Nikolić_(footballer,_born_1987)"
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Bastian Schweinsteiger",
+      "from": 2017,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Bastian_Schweinsteiger"
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Xherdan Shaqiri",
+      "from": 2022,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Xherdan_Shaqiri"
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Hugo Cuypers",
+      "from": 2024,
+      "to": 2026,
+      "source": "https://en.wikipedia.org/wiki/Hugo_Cuypers"
+    },
+    {
+      "sport": "mls",
+      "team": "COL",
+      "name": "Tim Howard",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Tim_Howard"
+    },
+    {
+      "sport": "mls",
+      "team": "COL",
+      "name": "Axel Sjöberg",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Axel_Sjöberg_(footballer,_born_1991)"
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Federico Higuaín",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Federico_Higuaín"
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Gyasi Zardes",
+      "from": 2018,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Gyasi_Zardes"
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Lucas Zelarayán",
+      "from": 2020,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Lucas_Zelarayán"
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Cucho Hernández",
+      "from": 2022,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Cucho_Hernández"
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Darlington Nagbe",
+      "from": 2020,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Darlington_Nagbe"
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Wayne Rooney",
+      "from": 2018,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Wayne_Rooney"
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Luciano Acosta",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Luciano_Acosta"
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Christian Benteke",
+      "from": 2022,
+      "to": 2026,
+      "source": "https://en.wikipedia.org/wiki/Christian_Benteke"
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Bill Hamid",
+      "from": 2016,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Bill_Hamid"
+    },
+    {
+      "sport": "mls",
+      "team": "CIN",
+      "name": "Luciano Acosta",
+      "from": 2021,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Luciano_Acosta"
+    },
+    {
+      "sport": "mls",
+      "team": "CIN",
+      "name": "Brandon Vázquez",
+      "from": 2020,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Brandon_Vázquez"
+    },
+    {
+      "sport": "mls",
+      "team": "CIN",
+      "name": "Evander",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Evander_(footballer)"
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Matt Hedges",
+      "from": 2016,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Matt_Hedges"
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Matt Hedges",
+      "from": 2025,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Matt_Hedges"
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Mauro Díaz",
+      "from": 2016,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Mauro_Díaz"
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Jesús Ferreira",
+      "from": 2017,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Jesús_Ferreira"
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Ricardo Pepi",
+      "from": 2019,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Ricardo_Pepi"
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Petar Musa",
+      "from": 2024,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Petar_Musa"
+    },
+    {
+      "sport": "mls",
+      "team": "HOU",
+      "name": "DaMarcus Beasley",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/DaMarcus_Beasley"
+    },
+    {
+      "sport": "mls",
+      "team": "HOU",
+      "name": "Héctor Herrera",
+      "from": 2022,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Héctor_Herrera"
+    },
+    {
+      "sport": "mls",
+      "team": "HOU",
+      "name": "Héctor Herrera",
+      "from": 2026,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Héctor_Herrera"
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Lionel Messi",
+      "from": 2023,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Lionel_Messi"
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Jordi Alba",
+      "from": 2023,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Jordi_Alba"
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Sergio Busquets",
+      "from": 2023,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Sergio_Busquets"
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Luis Suárez",
+      "from": 2024,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Luis_Suárez"
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Gonzalo Higuaín",
+      "from": 2020,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Gonzalo_Higuaín"
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Robbie Keane",
+      "from": 2016,
+      "to": 2016,
+      "source": "https://en.wikipedia.org/wiki/Robbie_Keane"
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Zlatan Ibrahimović",
+      "from": 2018,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Zlatan_Ibrahimović"
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Javier Hernández",
+      "from": 2020,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Javier_Hernández"
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Riqui Puig",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Riqui_Puig"
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Giovani dos Santos",
+      "from": 2016,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Giovani_dos_Santos"
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Carlos Vela",
+      "from": 2018,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Carlos_Vela"
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Diego Rossi",
+      "from": 2018,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Diego_Rossi"
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Denis Bouanga",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Denis_Bouanga"
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Giorgio Chiellini",
+      "from": 2022,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Giorgio_Chiellini"
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Emanuel Reynoso",
+      "from": 2020,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Emanuel_Reynoso_(footballer,_born_1995)"
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Dayne St. Clair",
+      "from": 2019,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Dayne_St._Clair"
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Darwin Quintero",
+      "from": 2018,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Darwin_Quintero"
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Robin Lod",
+      "from": 2019,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Robin_Lod"
+    },
+    {
+      "sport": "mls",
+      "team": "NSH",
+      "name": "Hany Mukhtar",
+      "from": 2020,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Hany_Mukhtar"
+    },
+    {
+      "sport": "mls",
+      "team": "NSH",
+      "name": "Walker Zimmerman",
+      "from": 2020,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Walker_Zimmerman"
+    },
+    {
+      "sport": "mls",
+      "team": "NSH",
+      "name": "Sam Surridge",
+      "from": 2023,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Sam_Surridge"
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Carles Gil",
+      "from": 2019,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Carles_Gil"
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Gustavo Bou",
+      "from": 2019,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Gustavo_Bou"
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Matt Turner",
+      "from": 2016,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Matt_Turner_(soccer)"
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Matt Turner",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Matt_Turner_(soccer)"
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "David Villa",
+      "from": 2016,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/David_Villa"
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "Maxi Moralez",
+      "from": 2017,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Maxi_Moralez"
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "Taty Castellanos",
+      "from": 2018,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Taty_Castellanos"
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "Andrea Pirlo",
+      "from": 2016,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Andrea_Pirlo"
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Bradley Wright-Phillips",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Bradley_Wright-Phillips"
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Bradley Wright-Phillips",
+      "from": 2022,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Bradley_Wright-Phillips"
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Sacha Kljestan",
+      "from": 2016,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Sacha_Kljestan"
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Luis Robles",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Luis_Robles"
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Emil Forsberg",
+      "from": 2024,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Emil_Forsberg"
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Kaká",
+      "from": 2016,
+      "to": 2017,
+      "source": "https://en.wikipedia.org/wiki/Kaká"
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Nani",
+      "from": 2019,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Nani_(footballer)"
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Pedro Gallese",
+      "from": 2020,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Pedro_Gallese"
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Facundo Torres",
+      "from": 2022,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Facundo_Torres"
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Andre Blake",
+      "from": 2016,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Andre_Blake"
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Kai Wagner",
+      "from": 2019,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Kai_Wagner"
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Jakob Glesnes",
+      "from": 2020,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Jakob_Glesnes"
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Dániel Gazdag",
+      "from": 2021,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Dániel_Gazdag"
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Alejandro Bedoya",
+      "from": 2016,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Alejandro_Bedoya"
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Diego Valeri",
+      "from": 2016,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Diego_Valeri"
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Sebastián Blanco",
+      "from": 2017,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Sebastián_Blanco"
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Diego Chará",
+      "from": 2016,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Diego_Chará"
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Evander",
+      "from": 2023,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Evander_(footballer)"
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Kyle Beckerman",
+      "from": 2016,
+      "to": 2020,
+      "source": "https://en.wikipedia.org/wiki/Kyle_Beckerman"
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Nick Rimando",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Nick_Rimando"
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Albert Rusnák",
+      "from": 2017,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Albert_Rusnák_(footballer,_born_1994)"
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Diego Luna",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Diego_Luna_(soccer,_born_2003)"
+    },
+    {
+      "sport": "mls",
+      "team": "SD",
+      "name": "Hirving Lozano",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Hirving_Lozano"
+    },
+    {
+      "sport": "mls",
+      "team": "SD",
+      "name": "Anders Dreyer",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Anders_Dreyer"
+    },
+    {
+      "sport": "mls",
+      "team": "SJ",
+      "name": "Chris Wondolowski",
+      "from": 2016,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Chris_Wondolowski"
+    },
+    {
+      "sport": "mls",
+      "team": "SJ",
+      "name": "Cristian Espinoza",
+      "from": 2019,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Cristian_Espinoza"
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Nicolás Lodeiro",
+      "from": 2016,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Nicolás_Lodeiro"
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Raúl Ruidíaz",
+      "from": 2018,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Raúl_Ruidíaz"
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Jordan Morris",
+      "from": 2016,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Jordan_Morris"
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Cristian Roldan",
+      "from": 2016,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Cristian_Roldan"
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Stefan Frei",
+      "from": 2016,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Stefan_Frei"
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Clint Dempsey",
+      "from": 2016,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Clint_Dempsey"
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Tim Melia",
+      "from": 2016,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Tim_Melia"
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Graham Zusi",
+      "from": 2016,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Graham_Zusi"
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Johnny Russell",
+      "from": 2018,
+      "to": 2024,
+      "source": "https://en.wikipedia.org/wiki/Johnny_Russell_(footballer)"
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Matt Besler",
+      "from": 2016,
+      "to": 2020,
+      "source": "https://en.wikipedia.org/wiki/Matt_Besler"
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Dániel Sallói",
+      "from": 2016,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Dániel_Sallói"
+    },
+    {
+      "sport": "mls",
+      "team": "STL",
+      "name": "Roman Bürki",
+      "from": 2022,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Roman_Bürki"
+    },
+    {
+      "sport": "mls",
+      "team": "STL",
+      "name": "Eduard Löwen",
+      "from": 2022,
+      "to": 2026,
+      "source": "https://en.wikipedia.org/wiki/Eduard_Löwen"
+    },
+    {
+      "sport": "mls",
+      "team": "STL",
+      "name": "João Klauss",
+      "from": 2022,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/João_Klauss"
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Sebastian Giovinco",
+      "from": 2016,
+      "to": 2019,
+      "source": "https://en.wikipedia.org/wiki/Sebastian_Giovinco"
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Michael Bradley",
+      "from": 2016,
+      "to": 2023,
+      "source": "https://en.wikipedia.org/wiki/Michael_Bradley_(soccer)"
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Jozy Altidore",
+      "from": 2016,
+      "to": 2021,
+      "source": "https://en.wikipedia.org/wiki/Jozy_Altidore"
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Alejandro Pozuelo",
+      "from": 2019,
+      "to": 2022,
+      "source": "https://en.wikipedia.org/wiki/Alejandro_Pozuelo"
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Federico Bernardeschi",
+      "from": 2022,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Federico_Bernardeschi"
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Lorenzo Insigne",
+      "from": 2022,
+      "to": 2025,
+      "source": "https://en.wikipedia.org/wiki/Lorenzo_Insigne"
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Kendall Waston",
+      "from": 2016,
+      "to": 2018,
+      "source": "https://en.wikipedia.org/wiki/Kendall_Waston"
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Brian White",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Brian_White_(soccer)"
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Ryan Gauld",
+      "from": 2021,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Ryan_Gauld"
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Thomas Müller",
+      "from": 2025,
+      "to": null,
+      "source": "https://en.wikipedia.org/wiki/Thomas_Müller"
+    }
+  ],
+  "dropped": [
+    "nba PHX Steve Nash: stint 1996-1997 ends before 2000, dropped",
+    "mls SJ Chris Wondolowski: stint 2005-2005 ends before 2016, dropped"
+  ]
+}

@@ -130,7 +130,10 @@ function Live({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
       ...base,
       // The rule, in words, next to the timer. For the NFL the timer is only an estimate and
       // the copy has to say so (SPEC 6.4.4).
-      explainer: `${base.explainer} ${lockRuleCopy(ctx.sport_id)}.`,
+      // MLS: a draw voids the pick, so say how likely one is (the sides' numbers leave it out).
+      explainer: `${base.explainer} ${lockRuleCopy(ctx.sport_id)}.${
+        ctx.draw_prob != null ? ` Draw ${pctLabel(ctx.draw_prob)}: a draw voids the pick.` : ''
+      }`,
       away: { ...base.away, record: records.data?.away ?? '' },
       home: { ...base.home, record: records.data?.home ?? '' },
       storylines: rows.map((r) => ({ text: r.text, source: r.source })),

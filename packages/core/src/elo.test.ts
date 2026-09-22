@@ -7,6 +7,9 @@ import {
   regressForNewSeason,
   runElo,
   type EloGameInput,
+  threeWayProbabilities,
+  runEloThreeWay,
+  THREE_WAY_PARAMS,
 } from './elo.js';
 
 function game(partial: Partial<EloGameInput> & { id: string }): EloGameInput {
@@ -119,5 +122,44 @@ describe('runElo', () => {
   it('mov multiplier grows with margin and shrinks for expected blowouts', () => {
     expect(movMultiplier(20, 0)).toBeGreaterThan(movMultiplier(3, 0));
     expect(movMultiplier(20, 200)).toBeLessThan(movMultiplier(20, 0));
+  });
+});
+
+describe('three-way Elo for MLS (draws)', () => {
+  it('sums to one, favours the draw between equals and thins it as the sides diverge', () => {
+    const even = threeWayProbabilities(1500, 1500, 0, 0.9);
+    expect(even.home + even.draw + even.away).toBeCloseTo(1, 10);
+    expect(even.home).toBeCloseTo(even.away, 10);
+    expect(even.draw).toBeCloseTo(0.9 / 2.9, 10);
+    const lopsided = threeWayProbabilities(1700, 1400, 60, 0.9);
+    expect(lopsided.home).toBeGreaterThan(0.65);
+    expect(lopsided.draw).toBeLessThan(even.draw);
+    expect(lopsided.home + lopsided.draw + lopsided.away).toBeCloseTo(1, 10);
+    // No draw term: the binary model.
+    const binary = threeWayProbabilities(1550, 1500, 0, 0);
+    expect(binary.draw).toBe(0);
+    expect(binary.home).toBeCloseTo(homeWinProbability(1550, 1500, 0), 10);
+  });
+
+  it('runs chronologically: a draw moves the favourite down, a home win moves it up, and every game gets three numbers', () => {
+    const games: EloGameInput[] = [
+      { id: 'a', season: 2025, scheduledStart: '2025-03-01T00:00:00Z', homeTeamId: 'H', awayTeamId: 'A', homeScore: 1, awayScore: 1, isNeutralSite: false },
+      { id: 'b', season: 2025, scheduledStart: '2025-03-08T00:00:00Z', homeTeamId: 'H', awayTeamId: 'A', homeScore: 3, awayScore: 0, isNeutralSite: false },
+      { id: 'c', season: 2025, scheduledStart: '2025-03-15T00:00:00Z', homeTeamId: 'A', awayTeamId: 'H', homeScore: null, awayScore: null, isNeutralSite: true },
+    ];
+    const run = runEloThreeWay(games, THREE_WAY_PARAMS.mls, { minPriorGames: 0 });
+    expect(run.results).toHaveLength(3);
+    // Game a: the home side was favoured (home advantage) and drew, so it lost ground.
+    const afterA = run.results[1]!;
+    expect(afterA.homeEloPre).toBeLessThan(1500);
+    expect(afterA.awayEloPre).toBeGreaterThan(1500);
+    // Game b: a 3-0 home win, so H is now ahead of A.
+    const afterB = run.results[2]!;
+    expect(afterB.awayEloPre).toBeGreaterThan(afterB.homeEloPre);
+    // Game c is unplayed and neutral: probabilities only, no home edge.
+    const c = run.results[2]!;
+    expect(c.homeWinProb + c.drawProb + c.awayWinProb).toBeCloseTo(1, 10);
+    expect(run.scoredGames).toBe(2);
+    expect(run.logLoss).toBeGreaterThan(0);
   });
 });

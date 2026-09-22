@@ -267,7 +267,7 @@ export default function GameDetailScreen() {
   const pledgeResult: { label: string; tone: ResultTone } | null = !pl
     ? null
     : pl.status === 'void'
-      ? { label: 'Void', tone: 'neutral' }
+      ? { label: pl.void_reason === 'draw' ? 'Drawn' : 'Void', tone: 'neutral' }
       : pl.status === 'valid' && pl.result
         ? pl.result === 'win'
           ? { label: 'Won', tone: 'win' }
@@ -420,7 +420,14 @@ export default function GameDetailScreen() {
           <SideTheme team={pl.team_id}>
             <Card>
               <CardHead label="Your pledge" pill={pledgeResult} />
-              {pl.status === 'void' ? (
+              {pl.status === 'void' && pl.void_reason === 'draw' ? (
+                <>
+                  <Text variant="bodyStrong">Drawn, no result</Text>
+                  <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
+                    The match ended level, so your pick does not count either way.
+                  </Text>
+                </>
+              ) : pl.status === 'void' ? (
                 <>
                   <Text variant="bodyStrong">Did not count</Text>
                   <Text variant="sub" color="muted" style={{ marginTop: 2 }}>

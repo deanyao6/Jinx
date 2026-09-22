@@ -1,0 +1,2290 @@
+[
+  {
+    "season": 2025,
+    "honor": "mvp",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2025,
+    "honor": "mvp_top5",
+    "person_id": "1630595",
+    "name": "Cade Cunningham",
+    "team": "DET",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2026/05/Kia-NBA-Most-Valuable-Player-Voting-Results-scaled.jpg"
+  },
+  {
+    "season": 2025,
+    "honor": "mvp_top5",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "LAL",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2026/05/Kia-NBA-Most-Valuable-Player-Voting-Results-scaled.jpg"
+  },
+  {
+    "season": 2025,
+    "honor": "mvp_top5",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2026/05/Kia-NBA-Most-Valuable-Player-Voting-Results-scaled.jpg"
+  },
+  {
+    "season": 2025,
+    "honor": "mvp_top5",
+    "person_id": "1641705",
+    "name": "Victor Wembanyama",
+    "team": "SAS",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2026/05/Kia-NBA-Most-Valuable-Player-Voting-Results-scaled.jpg"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_1st",
+    "person_id": "1630595",
+    "name": "Cade Cunningham",
+    "team": "DET",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_1st",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_1st",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_1st",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_1st",
+    "person_id": "1641705",
+    "name": "Victor Wembanyama",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_2nd",
+    "person_id": "1628378",
+    "name": "Donovan Mitchell",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_2nd",
+    "person_id": "1628973",
+    "name": "Jalen Brunson",
+    "team": "NYK",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_2nd",
+    "person_id": "1627759",
+    "name": "Jaylen Brown",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_2nd",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_2nd",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_3rd",
+    "person_id": "1631096",
+    "name": "Chet Holmgren",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_3rd",
+    "person_id": "1631105",
+    "name": "Jalen Duren",
+    "team": "DET",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_3rd",
+    "person_id": "1630552",
+    "name": "Jalen Johnson",
+    "team": "ATL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_3rd",
+    "person_id": "1627750",
+    "name": "Jamal Murray",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "all_nba_3rd",
+    "person_id": "1630178",
+    "name": "Tyrese Maxey",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2025,
+    "honor": "roy",
+    "person_id": "1642843",
+    "name": "Cooper Flagg",
+    "team": "DAL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2025,
+    "honor": "finals_mvp",
+    "person_id": "1628973",
+    "name": "Jalen Brunson",
+    "team": "NYK",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2024,
+    "honor": "mvp",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2024,
+    "honor": "mvp_top5",
+    "person_id": "1628378",
+    "name": "Donovan Mitchell",
+    "team": "CLE",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2025/05/2024-25-Kia-NBA-Most-Valuable-Player-Voting-Results-.jpg"
+  },
+  {
+    "season": 2024,
+    "honor": "mvp_top5",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2025/05/2024-25-Kia-NBA-Most-Valuable-Player-Voting-Results-.jpg"
+  },
+  {
+    "season": 2024,
+    "honor": "mvp_top5",
+    "person_id": "1628369",
+    "name": "Jayson Tatum",
+    "team": "BOS",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2025/05/2024-25-Kia-NBA-Most-Valuable-Player-Voting-Results-.jpg"
+  },
+  {
+    "season": 2024,
+    "honor": "mvp_top5",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2025/05/2024-25-Kia-NBA-Most-Valuable-Player-Voting-Results-.jpg"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_1st",
+    "person_id": "1628378",
+    "name": "Donovan Mitchell",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_1st",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_1st",
+    "person_id": "1628369",
+    "name": "Jayson Tatum",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_1st",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_1st",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_2nd",
+    "person_id": "1630162",
+    "name": "Anthony Edwards",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_2nd",
+    "person_id": "1630596",
+    "name": "Evan Mobley",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_2nd",
+    "person_id": "1628973",
+    "name": "Jalen Brunson",
+    "team": "NYK",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_2nd",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_2nd",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_3rd",
+    "person_id": "1630595",
+    "name": "Cade Cunningham",
+    "team": "DET",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_3rd",
+    "person_id": "1631114",
+    "name": "Jalen Williams",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_3rd",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_3rd",
+    "person_id": "1626157",
+    "name": "Karl-Anthony Towns",
+    "team": "NYK",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "all_nba_3rd",
+    "person_id": "1630169",
+    "name": "Tyrese Haliburton",
+    "team": "IND",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2024,
+    "honor": "roy",
+    "person_id": "1642264",
+    "name": "Stephon Castle",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2024,
+    "honor": "finals_mvp",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2023,
+    "honor": "mvp",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2023,
+    "honor": "mvp_top5",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2024/05/2023-24-Kia-NBA-MVP-Voting-Results.pdf"
+  },
+  {
+    "season": 2023,
+    "honor": "mvp_top5",
+    "person_id": "1628973",
+    "name": "Jalen Brunson",
+    "team": "NYK",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2024/05/2023-24-Kia-NBA-MVP-Voting-Results.pdf"
+  },
+  {
+    "season": 2023,
+    "honor": "mvp_top5",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2024/05/2023-24-Kia-NBA-MVP-Voting-Results.pdf"
+  },
+  {
+    "season": 2023,
+    "honor": "mvp_top5",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2024/05/2023-24-Kia-NBA-MVP-Voting-Results.pdf"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_1st",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_1st",
+    "person_id": "1628369",
+    "name": "Jayson Tatum",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_1st",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_1st",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_1st",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_2nd",
+    "person_id": "203076",
+    "name": "Anthony Davis",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_2nd",
+    "person_id": "1630162",
+    "name": "Anthony Edwards",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_2nd",
+    "person_id": "1628973",
+    "name": "Jalen Brunson",
+    "team": "NYK",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_2nd",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_2nd",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "PHX",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_3rd",
+    "person_id": "1626164",
+    "name": "Devin Booker",
+    "team": "PHX",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_3rd",
+    "person_id": "1627734",
+    "name": "Domantas Sabonis",
+    "team": "SAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_3rd",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_3rd",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "all_nba_3rd",
+    "person_id": "1630169",
+    "name": "Tyrese Haliburton",
+    "team": "IND",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2023,
+    "honor": "roy",
+    "person_id": "1641705",
+    "name": "Victor Wembanyama",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2023,
+    "honor": "finals_mvp",
+    "person_id": "1627759",
+    "name": "Jaylen Brown",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2022,
+    "honor": "mvp",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2022,
+    "honor": "mvp_top5",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2023/05/2022-23-Kia-NBA-Most-Valuable-Player-Voting-Results.pdf"
+  },
+  {
+    "season": 2022,
+    "honor": "mvp_top5",
+    "person_id": "1628369",
+    "name": "Jayson Tatum",
+    "team": "BOS",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2023/05/2022-23-Kia-NBA-Most-Valuable-Player-Voting-Results.pdf"
+  },
+  {
+    "season": 2022,
+    "honor": "mvp_top5",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2023/05/2022-23-Kia-NBA-Most-Valuable-Player-Voting-Results.pdf"
+  },
+  {
+    "season": 2022,
+    "honor": "mvp_top5",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2023/05/2022-23-Kia-NBA-Most-Valuable-Player-Voting-Results.pdf"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_1st",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_1st",
+    "person_id": "1628369",
+    "name": "Jayson Tatum",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_1st",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_1st",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_1st",
+    "person_id": "1628983",
+    "name": "Shai Gilgeous-Alexander",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_2nd",
+    "person_id": "1628378",
+    "name": "Donovan Mitchell",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_2nd",
+    "person_id": "1627759",
+    "name": "Jaylen Brown",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_2nd",
+    "person_id": "202710",
+    "name": "Jimmy Butler",
+    "team": "MIA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_2nd",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_2nd",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_3rd",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_3rd",
+    "person_id": "1628368",
+    "name": "De'Aaron Fox",
+    "team": "SAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_3rd",
+    "person_id": "1627734",
+    "name": "Domantas Sabonis",
+    "team": "SAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_3rd",
+    "person_id": "203944",
+    "name": "Julius Randle",
+    "team": "NYK",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "all_nba_3rd",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2022,
+    "honor": "roy",
+    "person_id": "1631094",
+    "name": "Paolo Banchero",
+    "team": "ORL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2022,
+    "honor": "finals_mvp",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2021,
+    "honor": "mvp",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2021,
+    "honor": "mvp_top5",
+    "person_id": "1626164",
+    "name": "Devin Booker",
+    "team": "PHX",
+    "source": "https://pr.nba.com/nikola-jokic-wins-2021-22-kia-nba-mvp-award/"
+  },
+  {
+    "season": 2021,
+    "honor": "mvp_top5",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://pr.nba.com/nikola-jokic-wins-2021-22-kia-nba-mvp-award/"
+  },
+  {
+    "season": 2021,
+    "honor": "mvp_top5",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://pr.nba.com/nikola-jokic-wins-2021-22-kia-nba-mvp-award/"
+  },
+  {
+    "season": 2021,
+    "honor": "mvp_top5",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://pr.nba.com/nikola-jokic-wins-2021-22-kia-nba-mvp-award/"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_1st",
+    "person_id": "1626164",
+    "name": "Devin Booker",
+    "team": "PHX",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_1st",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_1st",
+    "person_id": "1628369",
+    "name": "Jayson Tatum",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_1st",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_1st",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_2nd",
+    "person_id": "201942",
+    "name": "DeMar DeRozan",
+    "team": "CHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_2nd",
+    "person_id": "1629630",
+    "name": "Ja Morant",
+    "team": "MEM",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_2nd",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_2nd",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "BKN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_2nd",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_3rd",
+    "person_id": "101108",
+    "name": "Chris Paul",
+    "team": "PHX",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_3rd",
+    "person_id": "1626157",
+    "name": "Karl-Anthony Towns",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_3rd",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_3rd",
+    "person_id": "1627783",
+    "name": "Pascal Siakam",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "all_nba_3rd",
+    "person_id": "1629027",
+    "name": "Trae Young",
+    "team": "ATL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2021,
+    "honor": "roy",
+    "person_id": "1630567",
+    "name": "Scottie Barnes",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2021,
+    "honor": "finals_mvp",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2020,
+    "honor": "mvp",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2020,
+    "honor": "mvp_top5",
+    "person_id": "101108",
+    "name": "Chris Paul",
+    "team": "PHX",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2021/06/2020-21-NBA-MVP-Voting-Results-Announcement.pdf"
+  },
+  {
+    "season": 2020,
+    "honor": "mvp_top5",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2021/06/2020-21-NBA-MVP-Voting-Results-Announcement.pdf"
+  },
+  {
+    "season": 2020,
+    "honor": "mvp_top5",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2021/06/2020-21-NBA-MVP-Voting-Results-Announcement.pdf"
+  },
+  {
+    "season": 2020,
+    "honor": "mvp_top5",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2021/06/2020-21-NBA-MVP-Voting-Results-Announcement.pdf"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_1st",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_1st",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_1st",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_1st",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_1st",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_2nd",
+    "person_id": "101108",
+    "name": "Chris Paul",
+    "team": "PHX",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_2nd",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_2nd",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_2nd",
+    "person_id": "203944",
+    "name": "Julius Randle",
+    "team": "NYK",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_2nd",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_3rd",
+    "person_id": "203078",
+    "name": "Bradley Beal",
+    "team": "WAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_3rd",
+    "person_id": "202710",
+    "name": "Jimmy Butler",
+    "team": "MIA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_3rd",
+    "person_id": "202681",
+    "name": "Kyrie Irving",
+    "team": "BKN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_3rd",
+    "person_id": "202331",
+    "name": "Paul George",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "all_nba_3rd",
+    "person_id": "203497",
+    "name": "Rudy Gobert",
+    "team": "UTA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2020,
+    "honor": "roy",
+    "person_id": "1630163",
+    "name": "LaMelo Ball",
+    "team": "CHA",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2020,
+    "honor": "finals_mvp",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2019,
+    "honor": "mvp",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2019,
+    "honor": "mvp_top5",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://pr.nba.com/19-20-mvp-antetokounmpo/"
+  },
+  {
+    "season": 2019,
+    "honor": "mvp_top5",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "LAC",
+    "source": "https://pr.nba.com/19-20-mvp-antetokounmpo/"
+  },
+  {
+    "season": 2019,
+    "honor": "mvp_top5",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://pr.nba.com/19-20-mvp-antetokounmpo/"
+  },
+  {
+    "season": 2019,
+    "honor": "mvp_top5",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://pr.nba.com/19-20-mvp-antetokounmpo/"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_1st",
+    "person_id": "203076",
+    "name": "Anthony Davis",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_1st",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_1st",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_1st",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_1st",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_2nd",
+    "person_id": "101108",
+    "name": "Chris Paul",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_2nd",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_2nd",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_2nd",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_2nd",
+    "person_id": "1627783",
+    "name": "Pascal Siakam",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_3rd",
+    "person_id": "1627732",
+    "name": "Ben Simmons",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_3rd",
+    "person_id": "1628369",
+    "name": "Jayson Tatum",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_3rd",
+    "person_id": "202710",
+    "name": "Jimmy Butler",
+    "team": "MIA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_3rd",
+    "person_id": "203497",
+    "name": "Rudy Gobert",
+    "team": "UTA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "all_nba_3rd",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2019,
+    "honor": "roy",
+    "person_id": "1629630",
+    "name": "Ja Morant",
+    "team": "MEM",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2019,
+    "honor": "finals_mvp",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2018,
+    "honor": "mvp",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2018,
+    "honor": "mvp_top5",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2019/06/2018-19-NBA-Most-Valuable-Player-Award-Voting-Totals.pdf"
+  },
+  {
+    "season": 2018,
+    "honor": "mvp_top5",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2019/06/2018-19-NBA-Most-Valuable-Player-Award-Voting-Totals.pdf"
+  },
+  {
+    "season": 2018,
+    "honor": "mvp_top5",
+    "person_id": "202331",
+    "name": "Paul George",
+    "team": "OKC",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2019/06/2018-19-NBA-Most-Valuable-Player-Award-Voting-Totals.pdf"
+  },
+  {
+    "season": 2018,
+    "honor": "mvp_top5",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2019/06/2018-19-NBA-Most-Valuable-Player-Award-Voting-Totals.pdf"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_1st",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_1st",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_1st",
+    "person_id": "203999",
+    "name": "Nikola Jokić",
+    "team": "DEN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_1st",
+    "person_id": "202331",
+    "name": "Paul George",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_1st",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_2nd",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_2nd",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_2nd",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_2nd",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_2nd",
+    "person_id": "202681",
+    "name": "Kyrie Irving",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_3rd",
+    "person_id": "201933",
+    "name": "Blake Griffin",
+    "team": "DET",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_3rd",
+    "person_id": "202689",
+    "name": "Kemba Walker",
+    "team": "CHA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_3rd",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "LAL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_3rd",
+    "person_id": "203497",
+    "name": "Rudy Gobert",
+    "team": "UTA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "all_nba_3rd",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2018,
+    "honor": "roy",
+    "person_id": "1629029",
+    "name": "Luka Dončić",
+    "team": "DAL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2018,
+    "honor": "finals_mvp",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2017,
+    "honor": "mvp",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2017,
+    "honor": "mvp_top5",
+    "person_id": "203076",
+    "name": "Anthony Davis",
+    "team": "NOP",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2018/06/2017-18-Kia-Most-Valuable-Player-Award-Voting-Results.pdf"
+  },
+  {
+    "season": 2017,
+    "honor": "mvp_top5",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2018/06/2017-18-Kia-Most-Valuable-Player-Award-Voting-Results.pdf"
+  },
+  {
+    "season": 2017,
+    "honor": "mvp_top5",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2018/06/2017-18-Kia-Most-Valuable-Player-Award-Voting-Results.pdf"
+  },
+  {
+    "season": 2017,
+    "honor": "mvp_top5",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/46/2018/06/2017-18-Kia-Most-Valuable-Player-Award-Voting-Results.pdf"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_1st",
+    "person_id": "203076",
+    "name": "Anthony Davis",
+    "team": "NOP",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_1st",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_1st",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_1st",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_1st",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_2nd",
+    "person_id": "201942",
+    "name": "DeMar DeRozan",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_2nd",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_2nd",
+    "person_id": "203954",
+    "name": "Joel Embiid",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_2nd",
+    "person_id": "200746",
+    "name": "LaMarcus Aldridge",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_2nd",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_3rd",
+    "person_id": "202710",
+    "name": "Jimmy Butler",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_3rd",
+    "person_id": "1626157",
+    "name": "Karl-Anthony Towns",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_3rd",
+    "person_id": "202331",
+    "name": "Paul George",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_3rd",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "all_nba_3rd",
+    "person_id": "203506",
+    "name": "Victor Oladipo",
+    "team": "IND",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2017,
+    "honor": "roy",
+    "person_id": "1627732",
+    "name": "Ben Simmons",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2017,
+    "honor": "finals_mvp",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2016,
+    "honor": "mvp",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2016,
+    "honor": "mvp_top5",
+    "person_id": "202738",
+    "name": "Isaiah Thomas",
+    "team": "BOS",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/4/2017/06/2016-17-Kia-NBA-Most-Valuable-Player-of-the-Year-Award.pdf"
+  },
+  {
+    "season": 2016,
+    "honor": "mvp_top5",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/4/2017/06/2016-17-Kia-NBA-Most-Valuable-Player-of-the-Year-Award.pdf"
+  },
+  {
+    "season": 2016,
+    "honor": "mvp_top5",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "SAS",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/4/2017/06/2016-17-Kia-NBA-Most-Valuable-Player-of-the-Year-Award.pdf"
+  },
+  {
+    "season": 2016,
+    "honor": "mvp_top5",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://ak-static.cms.nba.com/wp-content/uploads/sites/4/2017/06/2016-17-Kia-NBA-Most-Valuable-Player-of-the-Year-Award.pdf"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_1st",
+    "person_id": "203076",
+    "name": "Anthony Davis",
+    "team": "NOP",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_1st",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_1st",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_1st",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_1st",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_2nd",
+    "person_id": "203507",
+    "name": "Giannis Antetokounmpo",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_2nd",
+    "person_id": "202738",
+    "name": "Isaiah Thomas",
+    "team": "BOS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_2nd",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_2nd",
+    "person_id": "203497",
+    "name": "Rudy Gobert",
+    "team": "UTA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_2nd",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_3rd",
+    "person_id": "201599",
+    "name": "DeAndre Jordan",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_3rd",
+    "person_id": "201942",
+    "name": "DeMar DeRozan",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_3rd",
+    "person_id": "203110",
+    "name": "Draymond Green",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_3rd",
+    "person_id": "202710",
+    "name": "Jimmy Butler",
+    "team": "CHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "all_nba_3rd",
+    "person_id": "202322",
+    "name": "John Wall",
+    "team": "WAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2016,
+    "honor": "roy",
+    "person_id": "1627763",
+    "name": "Malcolm Brogdon",
+    "team": "MIL",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2016,
+    "honor": "finals_mvp",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2015,
+    "honor": "mvp",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2015,
+    "honor": "mvp_top5",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "SAS",
+    "source": "https://pr.nba.com/stephen-curry-2015-16-kia-nba-mvp-award-warriors/"
+  },
+  {
+    "season": 2015,
+    "honor": "mvp_top5",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "OKC",
+    "source": "https://pr.nba.com/stephen-curry-2015-16-kia-nba-mvp-award-warriors/"
+  },
+  {
+    "season": 2015,
+    "honor": "mvp_top5",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://pr.nba.com/stephen-curry-2015-16-kia-nba-mvp-award-warriors/"
+  },
+  {
+    "season": 2015,
+    "honor": "mvp_top5",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://pr.nba.com/stephen-curry-2015-16-kia-nba-mvp-award-warriors/"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_1st",
+    "person_id": "201599",
+    "name": "DeAndre Jordan",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_1st",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_1st",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_1st",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_1st",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_2nd",
+    "person_id": "101108",
+    "name": "Chris Paul",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_2nd",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_2nd",
+    "person_id": "202326",
+    "name": "DeMarcus Cousins",
+    "team": "SAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_2nd",
+    "person_id": "203110",
+    "name": "Draymond Green",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_2nd",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_3rd",
+    "person_id": "203083",
+    "name": "Andre Drummond",
+    "team": "DET",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_3rd",
+    "person_id": "202691",
+    "name": "Klay Thompson",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_3rd",
+    "person_id": "200768",
+    "name": "Kyle Lowry",
+    "team": "TOR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_3rd",
+    "person_id": "200746",
+    "name": "LaMarcus Aldridge",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "all_nba_3rd",
+    "person_id": "202331",
+    "name": "Paul George",
+    "team": "IND",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2015,
+    "honor": "roy",
+    "person_id": "1626157",
+    "name": "Karl-Anthony Towns",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2015,
+    "honor": "finals_mvp",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2014,
+    "honor": "mvp",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2014,
+    "honor": "mvp_top5",
+    "person_id": "203076",
+    "name": "Anthony Davis",
+    "team": "NOP",
+    "source": "https://pr.nba.com/stephen-curry-kia-most-valuable-player-golden-state-warriors/"
+  },
+  {
+    "season": 2014,
+    "honor": "mvp_top5",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://pr.nba.com/stephen-curry-kia-most-valuable-player-golden-state-warriors/"
+  },
+  {
+    "season": 2014,
+    "honor": "mvp_top5",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://pr.nba.com/stephen-curry-kia-most-valuable-player-golden-state-warriors/"
+  },
+  {
+    "season": 2014,
+    "honor": "mvp_top5",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://pr.nba.com/stephen-curry-kia-most-valuable-player-golden-state-warriors/"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_1st",
+    "person_id": "203076",
+    "name": "Anthony Davis",
+    "team": "NOP",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_1st",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_1st",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_1st",
+    "person_id": "201188",
+    "name": "Marc Gasol",
+    "team": "MEM",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_1st",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_2nd",
+    "person_id": "101108",
+    "name": "Chris Paul",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_2nd",
+    "person_id": "202326",
+    "name": "DeMarcus Cousins",
+    "team": "SAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_2nd",
+    "person_id": "200746",
+    "name": "LaMarcus Aldridge",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_2nd",
+    "person_id": "2200",
+    "name": "Pau Gasol",
+    "team": "CHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_2nd",
+    "person_id": "201566",
+    "name": "Russell Westbrook",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_3rd",
+    "person_id": "201933",
+    "name": "Blake Griffin",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_3rd",
+    "person_id": "201599",
+    "name": "DeAndre Jordan",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_3rd",
+    "person_id": "202691",
+    "name": "Klay Thompson",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_3rd",
+    "person_id": "202681",
+    "name": "Kyrie Irving",
+    "team": "CLE",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "all_nba_3rd",
+    "person_id": "1495",
+    "name": "Tim Duncan",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2014,
+    "honor": "roy",
+    "person_id": "203952",
+    "name": "Andrew Wiggins",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2014,
+    "honor": "finals_mvp",
+    "person_id": "2738",
+    "name": "Andre Iguodala",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  },
+  {
+    "season": 2013,
+    "honor": "mvp",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/NBA_Most_Valuable_Player"
+  },
+  {
+    "season": 2013,
+    "honor": "mvp_top5",
+    "person_id": "201933",
+    "name": "Blake Griffin",
+    "team": "LAC",
+    "source": "https://pr.nba.com/kevin-durant-2013-14-kia-nba-mvp/"
+  },
+  {
+    "season": 2013,
+    "honor": "mvp_top5",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://pr.nba.com/kevin-durant-2013-14-kia-nba-mvp/"
+  },
+  {
+    "season": 2013,
+    "honor": "mvp_top5",
+    "person_id": "201149",
+    "name": "Joakim Noah",
+    "team": "CHI",
+    "source": "https://pr.nba.com/kevin-durant-2013-14-kia-nba-mvp/"
+  },
+  {
+    "season": 2013,
+    "honor": "mvp_top5",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "MIA",
+    "source": "https://pr.nba.com/kevin-durant-2013-14-kia-nba-mvp/"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_1st",
+    "person_id": "101108",
+    "name": "Chris Paul",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_1st",
+    "person_id": "201935",
+    "name": "James Harden",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_1st",
+    "person_id": "201149",
+    "name": "Joakim Noah",
+    "team": "CHI",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_1st",
+    "person_id": "201142",
+    "name": "Kevin Durant",
+    "team": "OKC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_1st",
+    "person_id": "2544",
+    "name": "LeBron James",
+    "team": "MIA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_2nd",
+    "person_id": "201933",
+    "name": "Blake Griffin",
+    "team": "LAC",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_2nd",
+    "person_id": "2730",
+    "name": "Dwight Howard",
+    "team": "HOU",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_2nd",
+    "person_id": "201567",
+    "name": "Kevin Love",
+    "team": "MIN",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_2nd",
+    "person_id": "201939",
+    "name": "Stephen Curry",
+    "team": "GSW",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_2nd",
+    "person_id": "2225",
+    "name": "Tony Parker",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_3rd",
+    "person_id": "2744",
+    "name": "Al Jefferson",
+    "team": "CHA",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_3rd",
+    "person_id": "203081",
+    "name": "Damian Lillard",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_3rd",
+    "person_id": "201609",
+    "name": "Goran Dragić",
+    "team": "PHX",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_3rd",
+    "person_id": "200746",
+    "name": "LaMarcus Aldridge",
+    "team": "POR",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "all_nba_3rd",
+    "person_id": "202331",
+    "name": "Paul George",
+    "team": "IND",
+    "source": "https://en.wikipedia.org/wiki/All-NBA_Team"
+  },
+  {
+    "season": 2013,
+    "honor": "roy",
+    "person_id": "203487",
+    "name": "Michael Carter-Williams",
+    "team": "PHI",
+    "source": "https://en.wikipedia.org/wiki/NBA_Rookie_of_the_Year"
+  },
+  {
+    "season": 2013,
+    "honor": "finals_mvp",
+    "person_id": "202695",
+    "name": "Kawhi Leonard",
+    "team": "SAS",
+    "source": "https://en.wikipedia.org/wiki/NBA_Finals_Most_Valuable_Player"
+  }
+]

@@ -1,0 +1,357 @@
+{
+ "_note": "GET https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/summary?event=532605 (2019 Philadelphia Union v Toronto FC) fetched 2026-09-22; only rosters kept, athletes trimmed to id and names. This is how every espn_id in seed/mls_awards.json was verified: the player appears by that id in the lineup of a match his club played in the honor season (lineup_verified in the report).",
+ "_fetched": "2026-09-22",
+ "event": "532605",
+ "season": {
+  "year": 2019,
+  "current": false,
+  "type": 8620,
+  "name": "2019 MLS, Regular Season"
+ },
+ "rosters": [
+  {
+   "homeAway": "home",
+   "team": {
+    "id": "10739",
+    "displayName": "Philadelphia Union",
+    "abbreviation": "PHI"
+   },
+   "roster": [
+    {
+     "starter": true,
+     "jersey": "18",
+     "athlete": {
+      "id": "186943",
+      "displayName": "Andre Blake",
+      "fullName": "Andre Blake"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "26",
+     "athlete": {
+      "id": "228619",
+      "displayName": "Auston Trusty",
+      "fullName": "Auston Trusty"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "3",
+     "athlete": {
+      "id": "233813",
+      "displayName": "Jack Elliott",
+      "fullName": "Jack Elliott"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "6",
+     "athlete": {
+      "id": "166944",
+      "displayName": "Haris Medunjanin",
+      "fullName": "Haris Medunjanin"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "27",
+     "athlete": {
+      "id": "261317",
+      "displayName": "Kai Wagner",
+      "fullName": "Kai Wagner"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "28",
+     "athlete": {
+      "id": "171677",
+      "displayName": "Raymon Gaddis",
+      "fullName": "Raymon Gaddis"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "10",
+     "athlete": {
+      "id": "120884",
+      "displayName": "Marco Fabián",
+      "fullName": "Marco Fabián"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "11",
+     "athlete": {
+      "id": "134066",
+      "displayName": "Alejandro Bedoya",
+      "fullName": "Alejandro Bedoya"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "25",
+     "athlete": {
+      "id": "178488",
+      "displayName": "Ilsinho",
+      "fullName": "Ilsinho"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "9",
+     "athlete": {
+      "id": "211678",
+      "displayName": "Fafà Picault",
+      "fullName": "Fafà Picault"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "19",
+     "athlete": {
+      "id": "227598",
+      "displayName": "Cory Burke",
+      "fullName": "Cory Burke"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "7",
+     "athlete": {
+      "id": "177547",
+      "displayName": "David Accam",
+      "fullName": "David Accam"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "22",
+     "athlete": {
+      "id": "259653",
+      "displayName": "Brenden Aaronson",
+      "fullName": "Brenden Aaronson"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "4",
+     "athlete": {
+      "id": "77072",
+      "displayName": "Mark McKenzie",
+      "fullName": "Mark McKenzie"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "31",
+     "athlete": {
+      "id": "215961",
+      "displayName": "Carlos Coronel",
+      "fullName": "Carlos Coronel"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "15",
+     "athlete": {
+      "id": "246855",
+      "displayName": "Olivier Mbaizo",
+      "fullName": "Olivier Mbaizo"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "17",
+     "athlete": {
+      "id": "214446",
+      "displayName": "Sergio Santos",
+      "fullName": "Sergio Santos"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "2",
+     "athlete": {
+      "id": "171632",
+      "displayName": "Warren Creavalle",
+      "fullName": "Warren Creavalle"
+     }
+    }
+   ]
+  },
+  {
+   "homeAway": "away",
+   "team": {
+    "id": "7318",
+    "displayName": "Toronto FC",
+    "abbreviation": "TOR"
+   },
+   "roster": [
+    {
+     "starter": true,
+     "jersey": "25",
+     "athlete": {
+      "id": "217514",
+      "displayName": "Alex Bono",
+      "fullName": "Alex Bono"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "3",
+     "athlete": {
+      "id": "56962",
+      "displayName": "Drew Moor",
+      "fullName": "Drew Moor"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "23",
+     "athlete": {
+      "id": "131466",
+      "displayName": "Chris Mavinga",
+      "fullName": "Chris Mavinga"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "26",
+     "athlete": {
+      "id": "183076",
+      "displayName": "Laurent Ciman",
+      "fullName": "Laurent Ciman"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "4",
+     "athlete": {
+      "id": "41952",
+      "displayName": "Michael Bradley",
+      "fullName": "Michael Bradley"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "8",
+     "athlete": {
+      "id": "193171",
+      "displayName": "Mark Delgado",
+      "fullName": "Mark Delgado"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "2",
+     "athlete": {
+      "id": "146407",
+      "displayName": "Justin Morrow",
+      "fullName": "Justin Morrow"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "96",
+     "athlete": {
+      "id": "195353",
+      "displayName": "Auro",
+      "fullName": "Auro"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "7",
+     "athlete": {
+      "id": "172039",
+      "displayName": "Jordan Hamilton",
+      "fullName": "Jordan Hamilton"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "21",
+     "athlete": {
+      "id": "184221",
+      "displayName": "Jonathan Osorio",
+      "fullName": "Jonathan Osorio"
+     }
+    },
+    {
+     "starter": true,
+     "jersey": "18",
+     "athlete": {
+      "id": "171587",
+      "displayName": "Nick DeLeon",
+      "fullName": "Nick DeLeon"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "16",
+     "athlete": {
+      "id": "85074",
+      "displayName": "Quentin Westberg",
+      "fullName": "Quentin Westberg"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "27",
+     "athlete": {
+      "id": "252901",
+      "displayName": "Liam Fraser",
+      "fullName": "Liam Fraser"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "14",
+     "athlete": {
+      "id": "159398",
+      "displayName": "Jay Chapman",
+      "fullName": "Jay Chapman"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "91",
+     "athlete": {
+      "id": "167916",
+      "displayName": "Terrence Boyd",
+      "fullName": "Terrence Boyd"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "15",
+     "athlete": {
+      "id": "183779",
+      "displayName": "Eriq Zavaleta",
+      "fullName": "Eriq Zavaleta"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "5",
+     "athlete": {
+      "id": "153081",
+      "displayName": "Ashtone Morgan",
+      "fullName": "Ashtone Morgan"
+     }
+    },
+    {
+     "starter": false,
+     "jersey": "20",
+     "athlete": {
+      "id": "266022",
+      "displayName": "Ayo Akinola",
+      "fullName": "Ayo Akinola"
+     }
+    }
+   ]
+  }
+ ]
+}

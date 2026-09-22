@@ -1,0 +1,61 @@
+{
+ "_note": "GET https://site.api.espn.com/apis/search/v2?query=Diego%20Valeri fetched 2026-09-22 with plain fetch (no User-Agent). Trimmed to the player result type: uid s:600~a:<athleteId> is the ESPN soccer athlete id, description is the last competition ESPN saw, subtitle the last club. The v3 endpoint site.web.api.espn.com/apis/common/v3/search answered {\"count\":0,...,\"items\":[]} for every query tried (with and without limit, type=player, sport=soccer) and is recorded next to this file.",
+ "_fetched": "2026-09-22",
+ "totalFound": 2,
+ "resultTypes": [
+  {
+   "totalFound": 2,
+   "type": "player",
+   "displayName": "Players"
+  },
+  {
+   "totalFound": 69458,
+   "type": "article",
+   "displayName": "Articles"
+  }
+ ],
+ "results": [
+  {
+   "type": "player",
+   "totalFound": 2,
+   "page": 1,
+   "limit": 5,
+   "displayName": "Players",
+   "contents": [
+    {
+     "id": "22d2f3d8-f970-567e-a3a8-ad6ec9e1079b",
+     "uid": "s:600~a:86179",
+     "guid": "22d2f3d8-f970-567e-a3a8-ad6ec9e1079b",
+     "type": "player",
+     "displayName": "Diego Valeri",
+     "description": "Leagues Cup",
+     "subtitle": "Portland Timbers",
+     "link": {
+      "app": "sportscenter://x-callback-url/showClubhouse?uid=s:600~a:86179",
+      "web": "https://www.espn.com/soccer/player/_/id/86179/diego-valeri"
+     },
+     "image": {
+      "default": "https://a.espncdn.com/i/headshots/soccer/players/full/86179.png",
+      "defaultDark": "https://a.espncdn.com/i/headshots/soccer/players/full/86179.png"
+     },
+     "defaultLeagueSlug": "concacaf.leagues.cup",
+     "sport": "soccer"
+    },
+    {
+     "id": "bd2a8be3-4796-3b08-b0cc-90a6073b49a0",
+     "uid": "s:600~a:178025",
+     "guid": "bd2a8be3-4796-3b08-b0cc-90a6073b49a0",
+     "type": "player",
+     "displayName": "Diego Valerio",
+     "description": "Malaysian Super League",
+     "link": {
+      "app": "sportscenter://x-callback-url/showClubhouse?uid=s:600~a:178025",
+      "web": "https://www.espn.com/soccer/player/_/id/178025/diego-valerio"
+     },
+     "defaultLeagueSlug": "mys.1",
+     "sport": "soccer"
+    }
+   ]
+  }
+ ]
+}
