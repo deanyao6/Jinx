@@ -865,3 +865,13 @@ that ends level on goals is void with reason `draw`, whatever the penalties deci
 recommended it and it reads right against the record rule already in place (a shootout win is
 a win for the *fan's own* record, `gameResult` honours the explicit winner; the *pledge* is a
 prediction of the match, which drew). Dean should confirm that reading (the report asks).
+
+## ESPN MLS rosters (next-wave E.3) — VERIFIED 2026-09-22
+
+`https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/teams/{teamId}/roster` answers a
+plain fetch for all 30 clubs (no custom User-Agent). `athletes[]` rows carry `id` (the ESPN
+athlete id, stored as `players.provider_player_id` under provider `espn_mls`), `displayName`,
+`fullName`, `jersey`, `position.{abbreviation, displayName}` (G, D, M, F) and `dateOfBirth`; no
+status field, so every listed player is active. Fixture
+`ingest/fixtures/mls/espn_roster_20232_trimmed_2026-09-22.json`. Loaded 945 players across the
+30 clubs (28 to 37 each) on 2026-09-22.

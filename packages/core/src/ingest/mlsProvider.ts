@@ -3,6 +3,8 @@ import {
   isMlsLeagueEvent,
   parseMlsEvent,
   parseMlsTeam,
+  parseMlsRoster,
+  type MlsRoster,
   type MlsScoreboard,
   type MlsSummary,
   type MlsTeam,
@@ -72,6 +74,11 @@ export class MlsProvider implements SportsDataProvider {
     if (!Array.isArray(d.events) || d.events.length >= 1000)
       throw new Error(`Incomplete MLS month ${key}`);
     return d;
+  }
+
+  /** Today's squad for one club, cached for a day. */
+  async fetchRoster(providerTeamId: string) {
+    return parseMlsRoster(await this.get<MlsRoster>(`teams/${providerTeamId}/roster`, 86400000));
   }
 
   /** ESPN's match summary: key events with wall clocks, commentary, the win probability line. */

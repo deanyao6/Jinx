@@ -224,8 +224,10 @@ probability, the explainer says "Draw 27%: a draw voids the pick", the lock is t
 halftime with the phone's live feed), and **a draw voids the pledge**: `void`, reason `draw`,
 no result, "Drawn, no result" on the screens and in the notification, out of every count; a
 shootout is a drawn match and voids too, extra time scores (migration `20260923000800`, test
-`021`). Still deliberately unavailable: rosters and favorite players, Relive, Wrapped; the game
-screen says so.
+`021`). Rosters and favorite players are on: `ingest/src/mls/rosters.ts` loads ESPN's `teams/{id}/roster`
+(945 players across 30 clubs on local and hosted, daily in `mls-ingest.yml`), the players
+prompt lists them (`docs/evidence/mls/journey/players-prompt-inter-miami.png`). Still
+deliberately unavailable: Relive, Wrapped; the game screen says so.
 
 Not done, and known:
 

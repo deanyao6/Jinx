@@ -35,7 +35,7 @@ export default function LeagueRoute() {
       fallback={players ? '/settings/favorites?tab=players' : '/settings/favorites'}
     >
       <SectionHeader title="Choose a league" />
-      {LEAGUES.filter((l) => !players || l.id !== 'mls').map((l) => (
+      {LEAGUES.map((l) => (
         <PickRow
           key={l.id}
           badge={sportLabel(l.id)}

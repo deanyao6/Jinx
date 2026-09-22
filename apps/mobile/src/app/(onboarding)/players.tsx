@@ -68,5 +68,5 @@ export default function PlayersStep() {
   const favorites = useFavoriteTeams();
   // A failed favourites query still gets a page with a way forward, not a spinner forever.
   if (favorites.isLoading) return <Loading />;
-  return <PlayersPage teams={(favorites.data ?? []).filter((t) => t.sport_id !== 'mls')} />;
+  return <PlayersPage teams={favorites.data ?? []} />;
 }

@@ -5,6 +5,7 @@ import {
   mlsScoreboardFinalAt,
   mlsSummaryFinalAt,
   parseMlsLiveState,
+  parseMlsRoster,
   parseMlsEvent,
   mlsStatus,
   stoppageMinutes,
@@ -387,5 +388,26 @@ describe('live state from the summary header (the app reads it from the phone)',
       homeScore: 2,
       awayScore: 2,
     });
+  });
+});
+
+describe('rosters from ESPN (favourite players, E.3)', () => {
+  it('reads Inter Miami\'s roster fixture: id, name, position, jersey, every row active', () => {
+    const doc = JSON.parse(
+      readFileSync(
+        new URL('../../../../../ingest/fixtures/mls/espn_roster_20232_trimmed_2026-09-22.json', import.meta.url),
+        'utf8',
+      ),
+    );
+    const roster = parseMlsRoster(doc);
+    expect(roster.length).toBeGreaterThan(0);
+    expect(roster[0]).toEqual({
+      providerPlayerId: '231059',
+      fullName: 'Dayne St. Clair',
+      position: 'G',
+      jersey: '97',
+      status: 'A',
+    });
+    expect(parseMlsRoster({ athletes: [{ id: 1, displayName: 'A' }, { id: 1, displayName: 'A' }, { id: 2 }] })).toHaveLength(1);
   });
 });

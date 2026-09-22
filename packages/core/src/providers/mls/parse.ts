@@ -1,4 +1,4 @@
-import type { CanonicalGame, CanonicalTeam, GameStatus, LiveState } from '../../types.js';
+import type { CanonicalGame, CanonicalTeam, GameStatus, LiveState, RosterEntry } from '../../types.js';
 
 export const MLS_PROVIDER = 'espn_mls';
 
@@ -304,4 +304,35 @@ export function parseMlsLiveState(doc: MlsSummaryHeader, fetchedAt: string): Liv
     awayScore: score(away?.score) ?? 0,
     fetchedAt,
   };
+}
+
+/** ESPN's `teams/{id}/roster`: one athlete per row (docs/verification.md, 2026-09-22). */
+export interface MlsRoster {
+  athletes?: {
+    id: string | number;
+    displayName?: string;
+    fullName?: string;
+    jersey?: string;
+    position?: { abbreviation?: string; displayName?: string };
+  }[];
+}
+
+/** Today's squad as the favourites picker lists it. ESPN carries no status; every row is active. */
+export function parseMlsRoster(doc: MlsRoster): RosterEntry[] {
+  const out: RosterEntry[] = [];
+  const seen = new Set<string>();
+  for (const a of doc.athletes ?? []) {
+    const id = String(a.id);
+    const name = (a.displayName ?? a.fullName ?? '').trim();
+    if (!name || seen.has(id)) continue;
+    seen.add(id);
+    out.push({
+      providerPlayerId: id,
+      fullName: name,
+      position: a.position?.abbreviation ?? null,
+      jersey: a.jersey ? String(a.jersey) : null,
+      status: 'A',
+    });
+  }
+  return out;
 }

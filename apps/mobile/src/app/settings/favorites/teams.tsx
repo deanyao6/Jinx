@@ -65,7 +65,7 @@ export default function TeamsRoute() {
       setFavorites.mutate(favoriteList.filter((t) => t.id !== team.id));
     } else {
       setFavorites.mutate([...favoriteList, team]);
-      if (team.sport_id !== 'mls') router.push(rosterPromptHref(team));
+      router.push(rosterPromptHref(team));
     }
   };
 
