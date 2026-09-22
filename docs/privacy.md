@@ -17,6 +17,6 @@ Jinx is a passport for sports fans. This policy explains what we collect and why
 
 **Your controls**: export everything from Settings as JSON, delete your account from Settings (removes all data and files), block and report users.
 
-**Data sources**: game data comes from MLB Advanced Media and nflverse (CC-BY-4.0). Jinx is not affiliated with MLB or the NFL.
+**Data sources**: game data comes from MLB Advanced Media, nflverse (CC-BY-4.0), NBA.com's public feeds and ESPN. Jinx is not affiliated with MLB, the NFL, the NBA, MLS or ESPN.
 
 **Contact**: support email on the About screen.

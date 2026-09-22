@@ -737,3 +737,17 @@ wrote nothing new: no match had gone final since the backfill. The scheduled 08:
 had not yet happened at the time of writing; judge them by `gh run list
 --workflow=mls-ingest.yml` and by the hosted 2026 final count moving after match days
 (`select count(*) from games where sport_id = 'mls' and season = 2026 and status = 'final'`).
+
+## ESPN venue ids are per sport — FOUND AND FIXED 2026-09-22
+
+Found while reading hosted back after the MLS coordinates: the one MLS venue without an
+elevation was Accor Arena in Paris, which had 17 of New England's 2026 home matches. ESPN's
+soccer scoreboard gives Gillette Stadium venue id `10660`; its basketball scoreboard gives
+Accor Arena `10660` (and `6271`). `venues.provider_ids.espn_venue_ids` held both under one
+key, `loadVenueMaps` built one map from it, and whichever row loaded last won: on hosted the
+NBA seed's row, so every Revolution home match ingested after 2026-09-18 resolved to Paris
+(local loaded in the other order and had none). Fix, migration `20260923000300`: soccer ids
+live under `espn_soccer_venue_ids` (51 venues, generated from `seed/mls_venues.json`), the
+writer picks the map by `venueLookup`, the MLS backfill reads and writes the new key, and the
+17 matches are back at Gillette Stadium (hosted read back: 0 at Accor Arena, 17 of 2026 at
+Gillette). Test `048`. The NBA's ids are untouched, so Paris games still resolve.

@@ -75,7 +75,7 @@ for t in load("nba_teams.json")["teams"]:
 mls_venues = merged_venues()
 for t in load("mls_teams.json")["teams"]:
     vid = t["home_venue_key"].removeprefix("mls-espn-")
-    home = next((k for k,v in mls_venues.items() if vid in v["provider_ids"].get("espn_venue_ids", [])), None)
+    home = next((k for k,v in mls_venues.items() if vid in v["provider_ids"].get("espn_soccer_venue_ids", [])), None)
     teams.append(("mls", "espn_mls", t["provider_team_id"], t["franchise"], t["name"], t["city"], t["abbr"], t["color"], t["active"], set(t["aliases"]), t.get("division"), ("key", home), t["nickname"]))
 
 ONLY = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None

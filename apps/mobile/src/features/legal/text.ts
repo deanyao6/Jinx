@@ -7,11 +7,10 @@ export const ATTRIBUTION_MD = `# Data attribution (shown on the About screen)
 
 **MLB game data** is retrieved from the MLB Stats API (statsapi.mlb.com) and is the property of MLB Advanced Media, L.P. Used for personal, non-commercial purposes. Jinx is not affiliated with, endorsed by, or sponsored by Major League Baseball or any of its clubs.
 
-**NFL game data** comes from nflverse (github.com/nflverse), licensed under Creative Commons Attribution 4.0 (CC-BY-4.0). Jinx is not affiliated with, endorsed by, or sponsored by the National Football League or any of its clubs.
-
+Venue coordinates are compiled from public sources: OpenStreetMap (© OpenStreetMap contributors, Open Database License, via Nominatim) and Wikipedia. Elevations are from the USGS 3D Elevation Program, Natural Resources Canada's Canadian Digital Elevation Model and Open-Elevation. Timezones are resolved from OpenStreetMap boundaries through timezonefinder.
 Team and league names appear as plain text for identification only. No logos, wordmarks, or other marks are used.
 
-Venue coordinates are compiled from public sources including Wikipedia.
+Venue coordinates are compiled from public sources: OpenStreetMap (OpenStreetMap contributors, Open Database License, via Nominatim) and Wikipedia. Elevations are from the USGS 3D Elevation Program, Natural Resources Canada's Canadian Digital Elevation Model and Open-Elevation. Timezones are resolved from OpenStreetMap boundaries through timezonefinder.
 `;
 
 export const TERMS_MD = `# Terms of use (draft)
@@ -48,7 +47,7 @@ Jinx is a passport for sports fans. This policy explains what we collect and why
 
 **Your controls**: export everything from Settings as JSON, delete your account from Settings (removes all data and files), block and report users.
 
-**Data sources**: game data comes from MLB Advanced Media and nflverse (CC-BY-4.0). Jinx is not affiliated with MLB or the NFL.
+**Data sources**: game data comes from MLB Advanced Media, nflverse (CC-BY-4.0), NBA.com's public feeds and ESPN. Jinx is not affiliated with MLB, the NFL, the NBA, MLS or ESPN.
 
 **Contact**: support email on the About screen.
 `;

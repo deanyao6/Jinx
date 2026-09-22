@@ -122,11 +122,14 @@ def merged_venues():
             rec = venues[target]
             rec["sports"].add("mls")
             rec["aliases"] |= names
-            rec["provider_ids"]["espn_venue_ids"] = sorted(set(rec["provider_ids"].get("espn_venue_ids", [])) | set(v["provider_ids"]["espn_venue_ids"]))
+            # ESPN numbers venues per sport (10660 is Gillette Stadium in soccer and Accor Arena in
+            # basketball), so the MLS file's ids are stored under their own key.
+            rec["provider_ids"]["espn_soccer_venue_ids"] = sorted(set(rec["provider_ids"].get("espn_soccer_venue_ids", [])) | set(v["provider_ids"]["espn_venue_ids"]))
         else:
             venues[v["key"]] = {
                 **v, "tz": v.get("tz"), "opened_year": v.get("opened_year"), "closed_year": v.get("closed_year"),
                 "sports": set(v["sports"]), "aliases": names,
+                "provider_ids": {"espn_soccer_venue_ids": sorted(v["provider_ids"]["espn_venue_ids"])},
             }
     # The resolved zones, for any venue whose own seed file carries none.
     for key, tz in load_timezones().items():

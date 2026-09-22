@@ -105,8 +105,14 @@ export async function loadTeamMap(db: MinimalDb, provider: string): Promise<Map<
 export interface VenueMaps {
   byMlbVenueId: Map<string, string>;
   byNflverseStadiumId: Map<string, string>;
-  /** ESPN venue ids (`provider_ids.espn_venue_ids`), which the NBA schedule carries. */
+  /** ESPN basketball venue ids (`provider_ids.espn_venue_ids`), which the NBA schedule carries. */
   byEspnVenueId: Map<string, string>;
+  /**
+   * ESPN soccer venue ids (`provider_ids.espn_soccer_venue_ids`). ESPN numbers venues per sport:
+   * 10660 is Gillette Stadium in soccer and Accor Arena in basketball, and one shared map sent
+   * New England's 2026 home matches to Paris on hosted (docs/verification.md, 2026-09-22).
+   */
+  byEspnSoccerVenueId: Map<string, string>;
   /** Every venue name and alias, lower-cased, for feeds that name the building. */
   byAlias: Map<string, string>;
   byKey: Map<string, string>;
@@ -128,6 +134,7 @@ export async function loadVenueMaps(db: MinimalDb): Promise<VenueMaps> {
     byMlbVenueId: new Map(),
     byNflverseStadiumId: new Map(),
     byEspnVenueId: new Map(),
+    byEspnSoccerVenueId: new Map(),
     byAlias: new Map(),
     byKey: new Map(),
   };
@@ -140,6 +147,9 @@ export async function loadVenueMaps(db: MinimalDb): Promise<VenueMaps> {
     if (Array.isArray(nfl)) for (const id of nfl) maps.byNflverseStadiumId.set(String(id), r.id);
     const espn = r.provider_ids['espn_venue_ids'];
     if (Array.isArray(espn)) for (const id of espn) maps.byEspnVenueId.set(String(id), r.id);
+    const soccer = r.provider_ids['espn_soccer_venue_ids'];
+    if (Array.isArray(soccer))
+      for (const id of soccer) maps.byEspnSoccerVenueId.set(String(id), r.id);
   }
   // An alias shared by two buildings (a renamed arena's old name reused elsewhere) keeps the
   // first; the name set above wins over an alias that collides with it.

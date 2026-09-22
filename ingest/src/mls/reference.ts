@@ -58,7 +58,7 @@ await write(`${draftDir}/mls_venues.json`, {
     geofence_m: 400,
     sports: ['mls'],
     aliases: [v.fullName],
-    provider_ids: { espn_venue_ids: [v.id] },
+    provider_ids: { espn_soccer_venue_ids: [v.id] },
   })),
 });
 await mkdir('ingest/fixtures/mls', { recursive: true });

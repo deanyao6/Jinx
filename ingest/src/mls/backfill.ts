@@ -62,7 +62,7 @@ async function main() {
           const v = e.competitions[0]?.venue;
           if (
             v &&
-            !venueMaps.byEspnVenueId.has(v.id) &&
+            !venueMaps.byEspnSoccerVenueId.has(v.id) &&
             !venueMaps.byAlias.has(v.fullName.toLowerCase())
           )
             added.set(v.id, v);
@@ -76,7 +76,7 @@ async function main() {
               name: v.fullName,
               city: v.address?.city ?? null,
               country: v.address?.country ?? null,
-              provider_ids: { espn_venue_ids: [v.id] },
+              provider_ids: { espn_soccer_venue_ids: [v.id] },
             })),
             'key',
           );
@@ -85,7 +85,7 @@ async function main() {
             db,
             'venue_aliases',
             [...added.values()].map((v) => ({
-              venue_id: venueMaps.byEspnVenueId.get(v.id),
+              venue_id: venueMaps.byEspnSoccerVenueId.get(v.id),
               alias: v.fullName,
             })),
             'venue_id,alias',
@@ -94,7 +94,7 @@ async function main() {
         for (const game of games.values()) {
           if (
             game.providerVenueId &&
-            !venueMaps.byEspnVenueId.has(game.providerVenueId.slice(5)) &&
+            !venueMaps.byEspnSoccerVenueId.has(game.providerVenueId.slice(5)) &&
             game.venueName
           ) {
             const id = venueMaps.byAlias.get(game.venueName.toLowerCase());

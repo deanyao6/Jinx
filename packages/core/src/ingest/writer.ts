@@ -33,8 +33,14 @@ export function resolveVenue(ctx: GameWriteContext): RowContext['resolveVenue'] 
       // The NBA parser tags what it has: an ESPN venue id for history, the CDN's arena name
       // for the current season (resolved through venue aliases, so a renamed arena still
       // lands), or a venue row's own id when the caller already knew it.
-      if (providerVenueId.startsWith('espn:'))
-        return ctx.venueMaps.byEspnVenueId.get(providerVenueId.slice(5)) ?? null;
+      // ESPN numbers venues per sport, so soccer ids live in their own map.
+      if (providerVenueId.startsWith('espn:')) {
+        const espnMap =
+          ctx.venueLookup === 'mls'
+            ? ctx.venueMaps.byEspnSoccerVenueId
+            : ctx.venueMaps.byEspnVenueId;
+        return espnMap.get(providerVenueId.slice(5)) ?? null;
+      }
       if (providerVenueId.startsWith('name:'))
         return ctx.venueMaps.byAlias.get(providerVenueId.slice(5).trim().toLowerCase()) ?? null;
       if (providerVenueId.startsWith('venue:')) return providerVenueId.slice(6);
