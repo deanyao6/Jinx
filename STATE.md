@@ -285,18 +285,29 @@ them, which closes the "42 venues unresolved" item: the two venues still without
   the attended games. `.claude/settings.json` now pre-approves the hosted push, function deploys
   and the ingest scripts, so an agent can do the next rollout itself: `db push` first, functions
   second, scripts third, and verify each by reading the hosted database (STATE.md section 3).
+- **The data export holds everything (2026-09-22).** `export_my_data()` gained handshakes,
+  favorite players, attendance photos, MLS results (decision, shootout, winner), famous games
+  seen, followers, blocks, reports, reactions, notifications and preferences, device tokens,
+  sign-in and forwarding emails (no OTP hashes) and inbound rejections; migration
+  `20260923000400`, test `049`, on local and hosted.
 - **Easter eggs are built and unseen by Dean.** Eight, each behind a flag in
   `apps/mobile/src/features/eggs/flags.ts`: worn stamps, golden stamps, record rewind, curse
   breaker, rally cap, stretch confetti, certified jinx, secret handshake. Settings > About has a
   dev-only "Easter eggs" row that plays each one. The NFL halves of rally cap and stretch
   confetti are written and cannot fire until live NFL data exists (`EGG_SPORTS.nfl.liveFeed`).
-  `export_my_data()` does not include handshakes yet.
 - **Build 5 needs a fresh native build**, not an update: `expo-sensors` was added for the rally
   cap's shake, and the camera and photo permission strings changed for profile pictures.
 - **`support@example.com` is the support address in the app**, and the privacy text still carries
   a "Replace Jinx with the final name" line and "(draft)" titles. Fix before external TestFlight.
-- **`games.final_at` is never filled** on hosted (0 of 2,734 finals this season). Check-in falls
-  back to six hours after the start, so nothing breaks, but the column is dead.
+- **`games.final_at` is filled (2026-09-22).** It was dead because the 15-minute schedule
+  refresh wrote null over what the detail pass had written. Now: `upsertGames` leaves the column
+  out when it has nothing, trigger `games_keep_final_at` never lets a schedule write replace a
+  detail value, MLB schedules carry `hydrate=gameInfo` (first pitch plus duration, within two
+  minutes), the NBA takes the Game End action's wall clock, MLS estimates from the display clock
+  and `ingest/src/mls/finals.ts` writes ESPN's exact wall clock for attended and recent
+  matches daily. Hosted after the backfill: every 2026 MLB final, all four attended MLB games
+  exact, Dean's MLS match exact, all NFL; NBA finals get it when someone logs one. The game
+  page's check-in button now reads it. `docs/verification.md` has the per-feed facts.
 ---
 
 ## 6. Rules that are not negotiable

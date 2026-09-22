@@ -100,13 +100,19 @@ export class MlbClient {
     return (await res.json()) as T;
   }
 
+  // `hydrate=gameInfo` adds firstPitch, gameDurationMinutes and delayDurationMinutes to every
+  // final, which is how a schedule refresh learns roughly when a game ended (docs/verification.md).
   schedule(startDate: string, endDate: string): Promise<MlbScheduleResponse> {
-    return this.getJson(`v1/schedule?sportId=1&startDate=${startDate}&endDate=${endDate}`);
+    return this.getJson(
+      `v1/schedule?sportId=1&startDate=${startDate}&endDate=${endDate}&hydrate=gameInfo`,
+    );
   }
 
   /** Regular season and the four postseason rounds. Spring training (S) is not asked for. */
   seasonSchedule(season: number): Promise<MlbScheduleResponse> {
-    return this.getJson(`v1/schedule?sportId=1&season=${season}&gameType=R,F,D,L,W`);
+    return this.getJson(
+      `v1/schedule?sportId=1&season=${season}&gameType=R,F,D,L,W&hydrate=gameInfo`,
+    );
   }
 
   feed(gamePk: string | number): Promise<MlbFeed> {

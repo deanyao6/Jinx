@@ -46,6 +46,7 @@ import {
   parseGameLog,
   parseNbaRoster,
   parseStatsDetail,
+  nbaGameEndTime,
 } from './parse.js';
 import {
   MAX_STEPS,
@@ -250,6 +251,26 @@ describe('game log + ESPN', () => {
     expect(espnKey('2024-01-01', 'Portland Trail Blazers', 'Philadelphia 76ers')).toBe(
       '2024-01-01|blazers|76ers',
     );
+  });
+});
+
+describe('game end time', () => {
+  const doc = load<{
+    games: Record<string, { lastActions: { actionType: string; subType: string | null; timeActual: string | null }[] }>;
+  }>('cdn_playbyplay_game_end_0042500405_0022400001_0022500001_2026-09-22.json');
+  it('is the Game End action wall clock: 2026 Finals G5, the 2024-25 opener, a double-overtime opener', () => {
+    expect(nbaGameEndTime(doc.games['0042500405']!.lastActions)).toBe('2026-06-14T03:29:26.5Z');
+    expect(nbaGameEndTime(doc.games['0022400001']!.lastActions)).toBe('2024-11-13T02:24:23.8Z');
+    expect(nbaGameEndTime(doc.games['0022500001']!.lastActions)).toBe('2025-10-22T02:59:51.2Z');
+  });
+  it('falls back to the last stamped play, then null', () => {
+    expect(
+      nbaGameEndTime([
+        { actionType: '2pt', subType: 'Jump Shot', timeActual: '2025-01-01T03:00:00Z' },
+        { actionType: 'period', subType: 'end', timeActual: null },
+      ]),
+    ).toBe('2025-01-01T03:00:00Z');
+    expect(nbaGameEndTime([{ actionType: '2pt', subType: null, timeActual: null }])).toBeNull();
   });
 });
 

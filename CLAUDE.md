@@ -134,6 +134,7 @@ npx tsx ingest/src/nba/fit_wp.ts                           # refit the NBA in-ga
 node scripts/mls-local.mjs --from 2016 --to 2026          # MLS schedules + results into the LOCAL database (reads keys from supabase status)
 npx tsx ingest/src/mls/backfill.ts --from 2026 --to 2026   # same against whatever SUPABASE_URL points at; --force re-reads finals
 npx tsx ingest/src/mls/probe.ts                            # can this machine reach ESPN's MLS scoreboard at all
+npx tsx ingest/src/mls/finals.ts --attended --recent 14   # exact final_at from ESPN's summary wall clocks for attended and recent matches
 npx tsx ingest/src/famous/curated.ts [--check]             # famous games: seed/famous_games.json by local date (refuses on 0 or 2+ matches), then the championship rows
 npx tsx ingest/src/famous/franchise.ts [--check]           # curated superstars from seed/franchise_players.json (refuses on an ambiguous name)
 npx tsx ingest/src/mlb/honors.ts [--from 1997 --to 2026]   # MLB MVP, Cy Young, ROY winners and All-Stars into player_honors

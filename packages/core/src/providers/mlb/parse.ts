@@ -52,6 +52,32 @@ export interface MlbScheduleGame {
   resumeDate?: string;
   resumedFrom?: number | null;
   scheduledInnings?: number;
+  /** Present with `hydrate=gameInfo`. Times are ISO UTC; durations in minutes. */
+  gameInfo?: {
+    attendance?: number;
+    firstPitch?: string;
+    gameDurationMinutes?: number;
+    delayDurationMinutes?: number;
+  };
+}
+
+/**
+ * Roughly when a final ended, from the schedule's gameInfo: first pitch plus the game's
+ * duration. `gameDurationMinutes` excludes delays, and `delayDurationMinutes` counts them
+ * whether they came before the first pitch (already inside firstPitch) or during the game (not),
+ * so only the part of the delay that did not precede the first pitch is added back. Verified
+ * on 2026-09-22 against the last play's end time: within two minutes for 20 finals, within one
+ * for three delayed games (docs/verification.md). A detail pass replaces it with the exact time.
+ */
+export function mlbScheduleFinalAt(g: MlbScheduleGame): string | null {
+  const info = g.gameInfo;
+  if (!info?.firstPitch || info.gameDurationMinutes == null) return null;
+  const first = Date.parse(info.firstPitch);
+  const scheduled = Date.parse(g.gameDate);
+  if (!Number.isFinite(first)) return null;
+  const preGameMinutes = Number.isFinite(scheduled) ? Math.max(0, (first - scheduled) / 60_000) : 0;
+  const inGameDelay = Math.max(0, (info.delayDurationMinutes ?? 0) - preGameMinutes);
+  return new Date(first + (info.gameDurationMinutes + inGameDelay) * 60_000).toISOString();
 }
 
 export interface MlbScheduleResponse {
@@ -248,7 +274,7 @@ export function parseMlbScheduleGame(
     rescheduledFromProviderGameId: g.rescheduledFrom ? String(g.rescheduledFrom) : null,
     rescheduledToProviderGameId: g.rescheduledTo ? String(g.rescheduledTo) : null,
     isNeutralSite,
-    finalAt: null,
+    finalAt: status === 'final' ? mlbScheduleFinalAt(g) : null,
   };
 }
 

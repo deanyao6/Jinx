@@ -175,12 +175,14 @@ export default function GameDetailScreen() {
       ].filter(Boolean)
     : [];
   const priceLabel = formatPriceCents(a?.seat?.price_cents);
-  // final_at is not on the detail row; when the game is final the window is treated as closed.
+  // The window runs to an hour after the game ended (games.final_at, filled since 2026-09-22).
+  // A final whose end is not known yet is treated as closed rather than left open for the
+  // six-hour fallback.
   const canCheckIn =
-    g.status !== 'final' &&
     g.status !== 'postponed' &&
     g.status !== 'cancelled' &&
-    isWithinCheckInWindow(openedAt, g.scheduled_start, null);
+    (g.status !== 'final' || g.final_at != null) &&
+    isWithinCheckInWindow(openedAt, g.scheduled_start, g.final_at ?? null);
   const pl = pledge.data;
   const pledgeTeam = teamName(pl?.team_id ?? null);
   const shareGame = () => openShare(router, shareGameFor(g, a));

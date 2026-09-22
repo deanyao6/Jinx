@@ -36,6 +36,8 @@ export type GameDetail = {
   away_shootout_score?: number | null;
   game_type: string;
   scheduled_start: string;
+  /** When the game ended (games.final_at): exact after a detail pass, an estimate before. */
+  final_at?: string | null;
   status: string;
   home_team_id: string;
   away_team_id: string;

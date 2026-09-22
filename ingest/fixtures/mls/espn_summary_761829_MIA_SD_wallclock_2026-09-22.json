@@ -1,0 +1,662 @@
+{
+  "_note": "summary?event=761829 trimmed: keyEvents[] each carry wallclock (ISO UTC). The last keyEvent is type.text End Regular Time at 90+6 with the wall clock the match ended; meta.lastPlayWallClock repeats it. commentary[] entries carry play.wallclock except the untimed Match ends line.",
+  "_fetched": "2026-09-22",
+  "header": {
+    "date": "2026-09-20T23:00Z",
+    "status": {
+      "type": {
+        "id": "28",
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "description": "Full Time",
+        "detail": "FT",
+        "shortDetail": "FT"
+      }
+    },
+    "competitors": [
+      {
+        "id": "20232",
+        "abbreviation": "MIA",
+        "homeAway": "home",
+        "score": "2"
+      },
+      {
+        "id": "22529",
+        "abbreviation": "SD",
+        "homeAway": "away",
+        "score": "2"
+      }
+    ]
+  },
+  "meta": {
+    "gp_topic": "gp-soccer-usa.1-761829",
+    "gameSwitcherEnabled": false,
+    "picker_topic": "picker-soccer-usa.1",
+    "lastUpdatedAt": "2026-09-21T01:15:29Z",
+    "firstPlayWallClock": "2026-09-20T23:15:33Z",
+    "lastPlayWallClock": "2026-09-21T01:15:29Z",
+    "gameState": "post",
+    "syncUrl": "https://client.espncdn.com/fauxcast/stats/770/761829/en/us/"
+  },
+  "wallclockAvailable": true,
+  "keyEvents": [
+    {
+      "type": {
+        "id": "80",
+        "text": "Kickoff",
+        "type": "kickoff"
+      },
+      "clock": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:13:49Z"
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 241,
+        "displayValue": "5'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:17:50Z",
+      "text": "Delay in match because of an injury Yannick Bright (Inter Miami CF)."
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 241,
+        "displayValue": "5'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:17:50Z"
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 275,
+        "displayValue": "5'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:18:25Z",
+      "text": "Delay over. They are ready to continue."
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 275,
+        "displayValue": "5'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:18:25Z"
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 295,
+        "displayValue": "5'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:18:44Z",
+      "text": "Delay in match because of an injury Yannick Bright (Inter Miami CF)."
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 295,
+        "displayValue": "5'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:18:45Z"
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 445,
+        "displayValue": "8'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:21:15Z",
+      "text": "Delay over. They are ready to continue."
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 445,
+        "displayValue": "8'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:21:15Z"
+    },
+    {
+      "type": {
+        "id": "70",
+        "text": "Goal",
+        "type": "goal"
+      },
+      "clock": {
+        "value": 713,
+        "displayValue": "12'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:25:43Z",
+      "text": "Goal! Inter Miami CF 0, San Diego 1. Anders Dreyer (San Diego) left footed shot from the centre of the box to the centre of the goal. Assisted by Jeppe Tverskov with a through ball."
+    },
+    {
+      "type": {
+        "id": "138",
+        "text": "Goal - Free-kick",
+        "type": "goal---free-kick"
+      },
+      "clock": {
+        "value": 1392,
+        "displayValue": "24'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:37:02Z",
+      "text": "Goal! Inter Miami CF 1, San Diego 1. Lionel Messi (Inter Miami CF) from a free kick with a left footed shot to the top left corner."
+    },
+    {
+      "type": {
+        "id": "94",
+        "text": "Yellow Card",
+        "type": "yellow-card"
+      },
+      "clock": {
+        "value": 1938,
+        "displayValue": "33'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T23:46:07Z",
+      "text": "Ian Murphy (San Diego) is shown the yellow card for a bad foul."
+    },
+    {
+      "type": {
+        "id": "81",
+        "text": "Halftime",
+        "type": "halftime"
+      },
+      "clock": {
+        "value": 2700,
+        "displayValue": "45'+6'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-21T00:04:12Z"
+    },
+    {
+      "type": {
+        "id": "82",
+        "text": "Start 2nd Half",
+        "type": "start-2nd-half"
+      },
+      "clock": {
+        "value": 2700,
+        "displayValue": "45'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:24:28Z",
+      "text": "Second Half begins Inter Miami CF 1, San Diego 1."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 3673,
+        "displayValue": "62'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:40:42Z",
+      "text": "Substitution, San Diego. Cédric Bakambu replaces Marcus Ingvartsen."
+    },
+    {
+      "type": {
+        "id": "94",
+        "text": "Yellow Card",
+        "type": "yellow-card"
+      },
+      "clock": {
+        "value": 3833,
+        "displayValue": "64'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:43:22Z",
+      "text": "Yannick Bright (Inter Miami CF) is shown the yellow card for a bad foul."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4083,
+        "displayValue": "69'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:47:32Z",
+      "text": "Substitution, Inter Miami CF. Sergio Reguilón replaces Fricio Caicedo."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4085,
+        "displayValue": "69'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:47:33Z",
+      "text": "Substitution, Inter Miami CF. Alexander Shaw replaces Matías Galarza."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4352,
+        "displayValue": "73'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:52:01Z",
+      "text": "Substitution, San Diego. Christopher McVey replaces Ian Murphy."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4362,
+        "displayValue": "73'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:52:11Z",
+      "text": "Substitution, San Diego. Alejandro Alvarado replaces Aníbal Godoy."
+    },
+    {
+      "type": {
+        "id": "70",
+        "text": "Goal",
+        "type": "goal"
+      },
+      "clock": {
+        "value": 4434,
+        "displayValue": "74'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T00:53:22Z",
+      "text": "Goal! Inter Miami CF 2, San Diego 1. Luis Suárez (Inter Miami CF) right footed shot from the right side of the box to the bottom left corner. Assisted by Rodrigo De Paul with a through ball."
+    },
+    {
+      "type": {
+        "id": "94",
+        "text": "Yellow Card",
+        "type": "yellow-card"
+      },
+      "clock": {
+        "value": 4858,
+        "displayValue": "81'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T01:00:26Z",
+      "text": "Alexander Shaw (Inter Miami CF) is shown the yellow card for a bad foul."
+    },
+    {
+      "type": {
+        "id": "70",
+        "text": "Goal",
+        "type": "goal"
+      },
+      "clock": {
+        "value": 4877,
+        "displayValue": "82'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T01:00:46Z",
+      "text": "Goal! Inter Miami CF 2, San Diego 2. Anders Dreyer (San Diego) left footed shot from the centre of the box to the bottom right corner. Assisted by Jeppe Tverskov with a through ball."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 5183,
+        "displayValue": "87'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T01:05:52Z",
+      "text": "Substitution, Inter Miami CF. Dániel Pintér replaces Germán Berterame."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 5350,
+        "displayValue": "90'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T01:08:38Z",
+      "text": "Substitution, San Diego. Sam Vines replaces Dagur Thórhallsson."
+    },
+    {
+      "type": {
+        "id": "83",
+        "text": "End Regular Time",
+        "type": "end-regular-time"
+      },
+      "clock": {
+        "value": 5400,
+        "displayValue": "90'+6'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-21T01:15:29Z",
+      "text": "Second Half ends, Inter Miami CF 2, San Diego 2."
+    }
+  ],
+  "commentaryHeadTail": [
+    {
+      "sequence": 0,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "Lineups are announced and players are warming up."
+    },
+    {
+      "sequence": 1,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "First Half begins."
+    },
+    {
+      "sequence": 2,
+      "time": {
+        "value": 104,
+        "displayValue": "2'"
+      },
+      "text": "Foul by Casemiro (Inter Miami CF).",
+      "play": {
+        "type": {
+          "id": "66",
+          "text": "Foul",
+          "type": "foul"
+        },
+        "clock": {
+          "value": 104,
+          "displayValue": "2'"
+        },
+        "period": {
+          "number": 1
+        },
+        "wallclock": "2026-09-20T23:15:33Z"
+      }
+    },
+    {
+      "sequence": 112,
+      "time": {
+        "value": 5712,
+        "displayValue": "90'+6'"
+      },
+      "text": "Attempt saved. Lionel Messi (Inter Miami CF) right footed shot from the left side of the box is saved in the bottom left corner by CJ dos Santos (San Diego). Assisted by Rodrigo De Paul.",
+      "play": {
+        "type": {
+          "id": "106",
+          "text": "Shot On Target",
+          "type": "shot-on-target"
+        },
+        "clock": {
+          "value": 5400,
+          "displayValue": "90'+6'"
+        },
+        "period": {
+          "number": 2
+        },
+        "wallclock": "2026-09-21T01:14:40Z"
+      }
+    },
+    {
+      "sequence": 113,
+      "time": {
+        "value": 5748,
+        "displayValue": "90'+6'"
+      },
+      "text": "Attempt saved. Kieran Sargeant (San Diego) left footed shot from the centre of the box is saved in the centre of the goal by Dayne St. Clair (Inter Miami CF). Assisted by Elias Achouri.",
+      "play": {
+        "type": {
+          "id": "106",
+          "text": "Shot On Target",
+          "type": "shot-on-target"
+        },
+        "clock": {
+          "value": 5400,
+          "displayValue": "90'+6'"
+        },
+        "period": {
+          "number": 2
+        },
+        "wallclock": "2026-09-21T01:15:16Z"
+      }
+    },
+    {
+      "sequence": 114,
+      "time": {
+        "value": 5760,
+        "displayValue": "90'+6'"
+      },
+      "text": "Second Half ends, Inter Miami CF 2, San Diego 2.",
+      "play": {
+        "type": {
+          "id": "83",
+          "text": "End Regular Time",
+          "type": "end-regular-time"
+        },
+        "clock": {
+          "value": 5400,
+          "displayValue": "90'+6'"
+        },
+        "period": {
+          "number": 2
+        },
+        "wallclock": "2026-09-21T01:15:29Z"
+      }
+    },
+    {
+      "sequence": 115,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "Match ends, Inter Miami CF 2, San Diego 2."
+    }
+  ],
+  "halfMarkers": [
+    {
+      "sequence": 1,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "First Half begins."
+    },
+    {
+      "sequence": 48,
+      "time": {
+        "value": 3022,
+        "displayValue": "45'+6'"
+      },
+      "text": "First Half ends, Inter Miami CF 1, San Diego 1."
+    },
+    {
+      "sequence": 49,
+      "time": {
+        "value": 2700,
+        "displayValue": "45'"
+      },
+      "wallclock": "2026-09-21T00:24:28Z",
+      "text": "Second Half begins Inter Miami CF 1, San Diego 1."
+    },
+    {
+      "sequence": 114,
+      "time": {
+        "value": 5760,
+        "displayValue": "90'+6'"
+      },
+      "wallclock": "2026-09-21T01:15:29Z",
+      "text": "Second Half ends, Inter Miami CF 2, San Diego 2."
+    },
+    {
+      "sequence": 115,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "Match ends, Inter Miami CF 2, San Diego 2."
+    }
+  ],
+  "gameInfo": {
+    "venue": {
+      "id": "10661",
+      "fullName": "Nu Stadium",
+      "shortName": "Nu Stadium",
+      "address": {
+        "city": "Miami, Florida",
+        "country": "USA"
+      },
+      "images": []
+    },
+    "attendance": 0,
+    "officials": [
+      {
+        "fullName": "Rosendo Mendoza",
+        "displayName": "Rosendo Mendoza",
+        "position": {
+          "name": "Referee",
+          "displayName": "Referee",
+          "id": "1"
+        },
+        "order": 1
+      }
+    ]
+  },
+  "summaryTopKeys": [
+    "boxscore",
+    "format",
+    "gameInfo",
+    "lastFiveGames",
+    "leaders",
+    "broadcasts",
+    "pickcenter",
+    "odds",
+    "hasOdds",
+    "news",
+    "rosters",
+    "videos",
+    "header",
+    "keyEvents",
+    "commentary",
+    "wallclockAvailable",
+    "meta",
+    "standings"
+  ]
+}

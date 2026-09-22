@@ -1,0 +1,97 @@
+{
+  "_note": "End-time candidates in a 9-inning final. gameDurationMinutesDelay does not exist; delayDurationMinutes appears in the live feed only when nonzero. No explicit end timestamp: the last play about.endTime is the one used.",
+  "_fetched": "2026-09-22",
+  "source": "https://statsapi.mlb.com/api/v1.1/game/825031/feed/live",
+  "gamePk": "825031",
+  "teams": "MIA@AZ",
+  "gameData": {
+    "status": {
+      "abstractGameState": "Final",
+      "codedGameState": "F",
+      "detailedState": "Final",
+      "statusCode": "F",
+      "startTimeTBD": false,
+      "abstractGameCode": "F"
+    },
+    "datetime": {
+      "dateTime": "2026-09-17T01:40:00Z",
+      "originalDate": "2026-09-16",
+      "officialDate": "2026-09-16",
+      "dayNight": "night",
+      "time": "6:40",
+      "ampm": "PM"
+    },
+    "gameInfo": {
+      "attendance": 22162,
+      "firstPitch": "2026-09-17T01:41:00.000Z",
+      "gameDurationMinutes": 171
+    }
+  },
+  "liveData": {
+    "linescore": {
+      "currentInning": 9,
+      "currentInningOrdinal": "9th",
+      "keys": [
+        "currentInning",
+        "currentInningOrdinal",
+        "inningState",
+        "inningHalf",
+        "isTopInning",
+        "scheduledInnings",
+        "innings",
+        "teams",
+        "defense",
+        "offense",
+        "balls",
+        "strikes",
+        "outs"
+      ]
+    },
+    "plays": {
+      "allPlays_first": {
+        "about": {
+          "startTime": "2026-09-17T01:41:32.439Z"
+        }
+      },
+      "allPlays_last": {
+        "atBatIndex": 77,
+        "about": {
+          "atBatIndex": 77,
+          "halfInning": "bottom",
+          "isTopInning": false,
+          "inning": 9,
+          "startTime": "2026-09-17T04:30:51.401Z",
+          "endTime": "2026-09-17T04:31:27.249Z",
+          "isComplete": true,
+          "isScoringPlay": false,
+          "hasReview": true,
+          "hasOut": true,
+          "captivatingIndex": 17
+        },
+        "playEndTime": "2026-09-17T04:31:27.249Z",
+        "lastEventEndTime": "2026-09-17T04:31:27.249Z",
+        "lastEventStartTime": "2026-09-17T04:31:20.827Z",
+        "desc": "Diamondbacks challenged (tag play), call on the field was upheld: Jordan Lawlar caught stealing 2nd base, catcher Joe Mack to shortstop Otto Lopez."
+      }
+    }
+  },
+  "metaData": {
+    "wait": 10,
+    "timeStamp": "20260917_043127",
+    "gameEvents": [
+      "caught_stealing_2b",
+      "game_finished"
+    ],
+    "logicalEvents": [
+      "midInning",
+      "countChange",
+      "count11",
+      "basesEmpty",
+      "gameStateChangeToGameOver"
+    ]
+  },
+  "computed": {
+    "firstPitchPlusDuration": "2026-09-17T04:32:00.000Z",
+    "lastPlayEndMinusFirstPitchPlusDuration_min": -0.54585
+  }
+}

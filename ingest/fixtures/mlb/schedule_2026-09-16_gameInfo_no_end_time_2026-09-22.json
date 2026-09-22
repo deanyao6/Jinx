@@ -1,0 +1,62 @@
+{
+  "_note": "v1/schedule?sportId=1&date=2026-09-16&hydrate=linescore,gameInfo,decisions,flags,venue trimmed to two games: gameDate is the scheduled start, gameInfo has firstPitch, gameDurationMinutes and delayDurationMinutes (always present here, 0 when none), and nothing says when the game ended. The full schedule game has these top-level keys: gamePk,gameGuid,link,gameType,season,gameDate,officialDate,status,teams,linescore,decisions,venue,content,isTie,gameInfo,gameNumber,publicFacing,doubleHeader,gamedayType,tiebreaker,calendarEventID,seasonDisplay,dayNight,scheduledInnings,reverseHomeAwayStatus,inningBreakLength,gamesInSeries,seriesGameNumber,seriesDescription,flags,recordSource,ifNecessary,ifNecessaryDescription.",
+  "_fetched": "2026-09-22",
+  "games": [
+    {
+      "gamePk": 823655,
+      "gameDate": "2026-09-16T17:40:00Z",
+      "officialDate": "2026-09-16",
+      "status": {
+        "abstractGameState": "Final",
+        "codedGameState": "F",
+        "detailedState": "Final",
+        "statusCode": "F",
+        "startTimeTBD": false,
+        "abstractGameCode": "F"
+      },
+      "gameInfo": {
+        "attendance": 21887,
+        "firstPitch": "2026-09-16T17:42:00.000Z",
+        "gameDurationMinutes": 228,
+        "delayDurationMinutes": 0
+      },
+      "teams": {
+        "away": "New York Yankees",
+        "home": "Minnesota Twins"
+      },
+      "linescore": {
+        "currentInning": 13,
+        "currentInningOrdinal": "13th",
+        "inningState": "Bottom"
+      }
+    },
+    {
+      "gamePk": 825031,
+      "gameDate": "2026-09-17T01:40:00Z",
+      "officialDate": "2026-09-16",
+      "status": {
+        "abstractGameState": "Final",
+        "codedGameState": "F",
+        "detailedState": "Final",
+        "statusCode": "F",
+        "startTimeTBD": false,
+        "abstractGameCode": "F"
+      },
+      "gameInfo": {
+        "attendance": 22162,
+        "firstPitch": "2026-09-17T01:41:00.000Z",
+        "gameDurationMinutes": 171,
+        "delayDurationMinutes": 0
+      },
+      "teams": {
+        "away": "Miami Marlins",
+        "home": "Arizona Diamondbacks"
+      },
+      "linescore": {
+        "currentInning": 9,
+        "currentInningOrdinal": "9th",
+        "inningState": "Bottom"
+      }
+    }
+  ]
+}

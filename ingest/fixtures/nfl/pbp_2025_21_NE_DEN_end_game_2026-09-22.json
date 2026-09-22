@@ -1,0 +1,182 @@
+{
+  "_note": "play_by_play_2025.csv.gz rows for one game trimmed to the fields that matter: the END GAME marker row has time_of_day null; the last non-null time_of_day is the snap of the final play, the row just before it. nullTimeOfDayRows lists every row without a wall clock.",
+  "_fetched": "2026-09-22",
+  "game_id": "2025_21_NE_DEN",
+  "rowCount": 164,
+  "nullTimeOfDayRows": [
+    {
+      "order_sequence": "1",
+      "qtr": "1",
+      "desc": "GAME"
+    },
+    {
+      "order_sequence": "946",
+      "qtr": "1",
+      "desc": "END QUARTER 1"
+    },
+    {
+      "order_sequence": "2186",
+      "qtr": "2",
+      "desc": "END QUARTER 2"
+    },
+    {
+      "order_sequence": "3029",
+      "qtr": "3",
+      "desc": "END QUARTER 3"
+    },
+    {
+      "order_sequence": "3939",
+      "qtr": "4",
+      "desc": "END GAME"
+    }
+  ],
+  "head": [
+    {
+      "play_id": "1",
+      "order_sequence": "1",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "GAME",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "1/25/26, 15:03:06"
+    },
+    {
+      "play_id": "39",
+      "order_sequence": "39",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": "2026-01-25T20:03:07.807Z",
+      "play_type": "kickoff",
+      "desc": "36-A.Borregales kicks 65 yards from NE 35 to end zone, Touchback to the DEN 35.",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "1/25/26, 15:03:06"
+    },
+    {
+      "play_id": "56",
+      "order_sequence": "56",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": "2026-01-25T20:03:53.907Z",
+      "play_type": "run",
+      "desc": "(15:00) 12-R.Harvey left guard to DEN 36 for 1 yard (14-R.Spillane).",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "1/25/26, 15:03:06"
+    }
+  ],
+  "tail": [
+    {
+      "play_id": "3813",
+      "order_sequence": "3813",
+      "qtr": "4",
+      "time": "01:57",
+      "game_seconds_remaining": "117",
+      "time_of_day": "2026-01-25T22:59:04.153Z",
+      "play_type": "run",
+      "desc": "(1:57) 74-T.Munford reported in as eligible. 10-D.Maye left end pushed ob at NE 48 for 7 yards (52-J.Elliss).",
+      "home_score": "7",
+      "away_score": "10",
+      "start_time": "1/25/26, 15:03:06"
+    },
+    {
+      "play_id": "3849",
+      "order_sequence": "3849",
+      "qtr": "4",
+      "time": "01:51",
+      "game_seconds_remaining": "111",
+      "time_of_day": "2026-01-25T22:59:51Z",
+      "play_type": "no_play",
+      "desc": "(1:51) PENALTY on DEN-93-D.Jones, Encroachment, 5 yards, enforced at NE 48 - No Play.",
+      "home_score": "7",
+      "away_score": "10",
+      "start_time": "1/25/26, 15:03:06"
+    },
+    {
+      "play_id": "3873",
+      "order_sequence": "3873",
+      "qtr": "4",
+      "time": "01:51",
+      "game_seconds_remaining": "111",
+      "time_of_day": "2026-01-25T23:00:35.437Z",
+      "play_type": "qb_kneel",
+      "desc": "(1:51) 10-D.Maye kneels to DEN 48 for -1 yards.",
+      "home_score": "7",
+      "away_score": "10",
+      "start_time": "1/25/26, 15:03:06"
+    },
+    {
+      "play_id": "3895",
+      "order_sequence": "3895",
+      "qtr": "4",
+      "time": "01:11",
+      "game_seconds_remaining": "71",
+      "time_of_day": "2026-01-25T23:01:16.043Z",
+      "play_type": "qb_kneel",
+      "desc": "(1:11) 10-D.Maye kneels to DEN 49 for -1 yards.",
+      "home_score": "7",
+      "away_score": "10",
+      "start_time": "1/25/26, 15:03:06"
+    },
+    {
+      "play_id": "3917",
+      "order_sequence": "3917",
+      "qtr": "4",
+      "time": "00:38",
+      "game_seconds_remaining": "38",
+      "time_of_day": "2026-01-25T23:01:49.587Z",
+      "play_type": "qb_kneel",
+      "desc": "(:38) 10-D.Maye kneels to 50 for -1 yards.",
+      "home_score": "7",
+      "away_score": "10",
+      "start_time": "1/25/26, 15:03:06"
+    },
+    {
+      "play_id": "3939",
+      "order_sequence": "3939",
+      "qtr": "4",
+      "time": "00:00",
+      "game_seconds_remaining": "0",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "END GAME",
+      "home_score": "7",
+      "away_score": "10",
+      "start_time": "1/25/26, 15:03:06"
+    }
+  ],
+  "endGameRows": [
+    {
+      "play_id": "3939",
+      "order_sequence": "3939",
+      "qtr": "4",
+      "time": "00:00",
+      "game_seconds_remaining": "0",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "END GAME",
+      "home_score": "7",
+      "away_score": "10",
+      "start_time": "1/25/26, 15:03:06"
+    }
+  ],
+  "lastNonNullTimeOfDay": {
+    "play_id": "3917",
+    "order_sequence": "3917",
+    "qtr": "4",
+    "time": "00:38",
+    "game_seconds_remaining": "38",
+    "time_of_day": "2026-01-25T23:01:49.587Z",
+    "play_type": "qb_kneel",
+    "desc": "(:38) 10-D.Maye kneels to 50 for -1 yards.",
+    "home_score": "7",
+    "away_score": "10",
+    "start_time": "1/25/26, 15:03:06"
+  }
+}

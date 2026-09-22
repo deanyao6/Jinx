@@ -1,0 +1,182 @@
+{
+  "_note": "play_by_play_2025.csv.gz rows for one game trimmed to the fields that matter: the END GAME marker row has time_of_day null; the last non-null time_of_day is the snap of the final play, the row just before it. nullTimeOfDayRows lists every row without a wall clock.",
+  "_fetched": "2026-09-22",
+  "game_id": "2025_22_SEA_NE",
+  "rowCount": 193,
+  "nullTimeOfDayRows": [
+    {
+      "order_sequence": "1",
+      "qtr": "1",
+      "desc": "GAME"
+    },
+    {
+      "order_sequence": "902",
+      "qtr": "1",
+      "desc": "END QUARTER 1"
+    },
+    {
+      "order_sequence": "2083",
+      "qtr": "2",
+      "desc": "END QUARTER 2"
+    },
+    {
+      "order_sequence": "3076",
+      "qtr": "3",
+      "desc": "END QUARTER 3"
+    },
+    {
+      "order_sequence": "4651",
+      "qtr": "4",
+      "desc": "END GAME"
+    }
+  ],
+  "head": [
+    {
+      "play_id": "1",
+      "order_sequence": "1",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "GAME",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "2/8/26, 18:40:22"
+    },
+    {
+      "play_id": "40",
+      "order_sequence": "40",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": "2026-02-08T23:40:22.770Z",
+      "play_type": "kickoff",
+      "desc": "36-A.Borregales kicks 65 yards from NE 35 to end zone, Touchback to the SEA 35.",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "2/8/26, 18:40:22"
+    },
+    {
+      "play_id": "57",
+      "order_sequence": "57",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": "2026-02-08T23:41:06.947Z",
+      "play_type": "run",
+      "desc": "(15:00) 9-K.Walker left end pushed ob at SEA 45 for 10 yards (7-C.Davis).",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "2/8/26, 18:40:22"
+    }
+  ],
+  "tail": [
+    {
+      "play_id": "4512",
+      "order_sequence": "4512",
+      "qtr": "4",
+      "time": "00:53",
+      "game_seconds_remaining": "53",
+      "time_of_day": "2026-02-09T03:20:07.597Z",
+      "play_type": "no_play",
+      "desc": "(:53) (No Huddle, Shotgun) 10-D.Maye sacked at NE 27 for -1 yards (99-L.Williams). PENALTY on SEA-7-U.Nwosu, Defensive Offside, 5 yards, enforced at NE 28 - No Play.",
+      "home_score": "13",
+      "away_score": "29",
+      "start_time": "2/8/26, 18:40:22"
+    },
+    {
+      "play_id": "4544",
+      "order_sequence": "4544",
+      "qtr": "4",
+      "time": "00:47",
+      "game_seconds_remaining": "47",
+      "time_of_day": "2026-02-09T03:20:46.340Z",
+      "play_type": "no_play",
+      "desc": "(:47) (No Huddle, Shotgun) 10-D.Maye pass incomplete deep right [53-B.Mafe]. PENALTY on SEA-27-T.Woolen, Illegal Use of Hands, 5 yards, enforced at NE 33 - No Play.",
+      "home_score": "13",
+      "away_score": "29",
+      "start_time": "2/8/26, 18:40:22"
+    },
+    {
+      "play_id": "4578",
+      "order_sequence": "4578",
+      "qtr": "4",
+      "time": "00:39",
+      "game_seconds_remaining": "39",
+      "time_of_day": "2026-02-09T03:21:42.590Z",
+      "play_type": "pass",
+      "desc": "(:39) (No Huddle, Shotgun) 10-D.Maye pass short middle to 3-D.Douglas to NE 47 for 9 yards (13-E.Jones).",
+      "home_score": "13",
+      "away_score": "29",
+      "start_time": "2/8/26, 18:40:22"
+    },
+    {
+      "play_id": "4603",
+      "order_sequence": "4603",
+      "qtr": "4",
+      "time": "00:20",
+      "game_seconds_remaining": "20",
+      "time_of_day": "2026-02-09T03:22:01.987Z",
+      "play_type": "pass",
+      "desc": "(:20) (No Huddle, Shotgun) 10-D.Maye pass incomplete deep right to 9-K.Boutte.",
+      "home_score": "13",
+      "away_score": "29",
+      "start_time": "2/8/26, 18:40:22"
+    },
+    {
+      "play_id": "4626",
+      "order_sequence": "4626",
+      "qtr": "4",
+      "time": "00:12",
+      "game_seconds_remaining": "12",
+      "time_of_day": "2026-02-09T03:22:41.403Z",
+      "play_type": "pass",
+      "desc": "(:12) (No Huddle, Shotgun) 10-D.Maye pass short right to 32-T.Henderson to SEA 29 for 24 yards (20-J.Love).",
+      "home_score": "13",
+      "away_score": "29",
+      "start_time": "2/8/26, 18:40:22"
+    },
+    {
+      "play_id": "4651",
+      "order_sequence": "4651",
+      "qtr": "4",
+      "time": "00:00",
+      "game_seconds_remaining": "0",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "END GAME",
+      "home_score": "13",
+      "away_score": "29",
+      "start_time": "2/8/26, 18:40:22"
+    }
+  ],
+  "endGameRows": [
+    {
+      "play_id": "4651",
+      "order_sequence": "4651",
+      "qtr": "4",
+      "time": "00:00",
+      "game_seconds_remaining": "0",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "END GAME",
+      "home_score": "13",
+      "away_score": "29",
+      "start_time": "2/8/26, 18:40:22"
+    }
+  ],
+  "lastNonNullTimeOfDay": {
+    "play_id": "4626",
+    "order_sequence": "4626",
+    "qtr": "4",
+    "time": "00:12",
+    "game_seconds_remaining": "12",
+    "time_of_day": "2026-02-09T03:22:41.403Z",
+    "play_type": "pass",
+    "desc": "(:12) (No Huddle, Shotgun) 10-D.Maye pass short right to 32-T.Henderson to SEA 29 for 24 yards (20-J.Love).",
+    "home_score": "13",
+    "away_score": "29",
+    "start_time": "2/8/26, 18:40:22"
+  }
+}

@@ -51,3 +51,5 @@ jobs:
       - run: npm ci
       - name: Refresh schedules and settle final scores
         run: npx tsx ingest/src/mls/backfill.ts --from $(date -u +%Y) --to $(date -u +%Y) --force
+      - name: Exact end times for attended and recent matches (games.final_at)
+        run: npx tsx ingest/src/mls/finals.ts --attended --recent 14

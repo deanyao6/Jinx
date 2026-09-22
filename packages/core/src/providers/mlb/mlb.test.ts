@@ -13,6 +13,8 @@ import {
   type MlbFeed,
   type MlbScheduleResponse,
   type MlbTeamsResponse,
+  mlbScheduleFinalAt,
+  type MlbScheduleGame,
 } from './parse.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -197,5 +199,38 @@ describe('MLB moments', () => {
     const d = parseMlbFeed(feeds.noHitter());
     expect(detectNoHitter({ ...d, inningsOrPeriods: 6 })).toEqual([]);
     expect(detectNoHitter({ ...d, status: 'live' })).toEqual([]);
+  });
+});
+
+describe('when a game ended, from the schedule (hydrate=gameInfo)', () => {
+  const doc = load<{ games: MlbScheduleGame[] }>(
+    'schedule_2026-09-16_gameInfo_no_end_time_2026-09-22.json',
+  );
+  it('is first pitch plus the duration: a 13-inning game and a 9-inning game, both undelayed', () => {
+    const [nyyMin, miaAz] = doc.games;
+    // Read against the feeds' last plays: 21:31:28Z and 04:31:27Z (docs/verification.md).
+    expect(mlbScheduleFinalAt(nyyMin!)).toBe('2026-09-16T21:30:00.000Z');
+    expect(mlbScheduleFinalAt(miaAz!)).toBe('2026-09-17T04:32:00.000Z');
+  });
+  it('adds back only the part of a delay that came after the first pitch', () => {
+    const base = doc.games[0]!;
+    // 822686 ATL@WSH: an 86-minute delay in the 4th; the last play ended 21:03:24Z.
+    const midGame = {
+      ...base,
+      gameDate: '2026-09-02T17:05:00Z',
+      gameInfo: { firstPitch: '2026-09-02T17:06:00.000Z', gameDurationMinutes: 151, delayDurationMinutes: 86 },
+    };
+    expect(mlbScheduleFinalAt(midGame)).toBe('2026-09-02T21:02:00.000Z');
+    // 824424 DET@CLE: a 64-minute delay entirely before the first pitch; last play 21:56:44Z.
+    const preGame = {
+      ...base,
+      gameDate: '2026-09-04T18:10:00Z',
+      gameInfo: { firstPitch: '2026-09-04T19:14:00.000Z', gameDurationMinutes: 162, delayDurationMinutes: 64 },
+    };
+    expect(mlbScheduleFinalAt(preGame)).toBe('2026-09-04T21:56:00.000Z');
+  });
+  it('is null without gameInfo, and a schedule row without one never wipes a detail value', () => {
+    const { gameInfo: _omit, ...withoutInfo } = doc.games[0]!;
+    expect(mlbScheduleFinalAt(withoutInfo)).toBeNull();
   });
 });

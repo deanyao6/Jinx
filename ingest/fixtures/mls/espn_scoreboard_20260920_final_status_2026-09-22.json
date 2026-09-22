@@ -1,0 +1,169 @@
+{
+  "_note": "scoreboard?dates=20260920 trimmed to one final (761829 MIA v SD). competitions[].status has no timestamp; competitions[].date equals the scheduled kickoff; details[] carry a match clock only. The string wallclock does not occur anywhere in the scoreboard response.",
+  "_fetched": "2026-09-22",
+  "eventId": "761829",
+  "name": "San Diego FC at Inter Miami CF",
+  "eventDate": "2026-09-20T23:00Z",
+  "eventStatus": {
+    "clock": 5400,
+    "displayClock": "90'+6'",
+    "period": 2,
+    "type": {
+      "id": "28",
+      "name": "STATUS_FULL_TIME",
+      "state": "post",
+      "completed": true,
+      "description": "Full Time",
+      "detail": "FT",
+      "shortDetail": "FT"
+    }
+  },
+  "competition": {
+    "id": "761829",
+    "date": "2026-09-20T23:00Z",
+    "startDate": "2026-09-20T23:00Z",
+    "timeValid": true,
+    "status": {
+      "clock": 5400,
+      "displayClock": "90'+6'",
+      "period": 2,
+      "type": {
+        "id": "28",
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "description": "Full Time",
+        "detail": "FT",
+        "shortDetail": "FT"
+      }
+    },
+    "competitors": [
+      {
+        "id": "20232",
+        "homeAway": "home",
+        "name": "Inter Miami CF",
+        "score": "2"
+      },
+      {
+        "id": "22529",
+        "homeAway": "away",
+        "name": "San Diego FC",
+        "score": "2"
+      }
+    ],
+    "details": [
+      {
+        "type": {
+          "id": "70",
+          "text": "Goal"
+        },
+        "clock": {
+          "value": 713,
+          "displayValue": "12'"
+        },
+        "team": "22529",
+        "scoringPlay": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+      },
+      {
+        "type": {
+          "id": "138",
+          "text": "Goal - Free-kick"
+        },
+        "clock": {
+          "value": 1392,
+          "displayValue": "24'"
+        },
+        "team": "20232",
+        "scoringPlay": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+      },
+      {
+        "type": {
+          "id": "94",
+          "text": "Yellow Card"
+        },
+        "clock": {
+          "value": 1938,
+          "displayValue": "33'"
+        },
+        "team": "22529",
+        "scoringPlay": false,
+        "redCard": false,
+        "yellowCard": true,
+        "penaltyKick": false,
+        "ownGoal": false
+      },
+      {
+        "type": {
+          "id": "94",
+          "text": "Yellow Card"
+        },
+        "clock": {
+          "value": 3833,
+          "displayValue": "64'"
+        },
+        "team": "20232",
+        "scoringPlay": false,
+        "redCard": false,
+        "yellowCard": true,
+        "penaltyKick": false,
+        "ownGoal": false
+      },
+      {
+        "type": {
+          "id": "70",
+          "text": "Goal"
+        },
+        "clock": {
+          "value": 4434,
+          "displayValue": "74'"
+        },
+        "team": "20232",
+        "scoringPlay": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+      },
+      {
+        "type": {
+          "id": "94",
+          "text": "Yellow Card"
+        },
+        "clock": {
+          "value": 4858,
+          "displayValue": "81'"
+        },
+        "team": "20232",
+        "scoringPlay": false,
+        "redCard": false,
+        "yellowCard": true,
+        "penaltyKick": false,
+        "ownGoal": false
+      },
+      {
+        "type": {
+          "id": "70",
+          "text": "Goal"
+        },
+        "clock": {
+          "value": 4877,
+          "displayValue": "82'"
+        },
+        "team": "22529",
+        "scoringPlay": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+      }
+    ]
+  }
+}

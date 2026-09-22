@@ -560,6 +560,19 @@ function endOfFirstReliable(plays: readonly NbaPlay[]): boolean {
   return end?.timeActual != null;
 }
 
+/**
+ * The wall clock of the "Game End" action (actionType game, subType end), which the CDN
+ * play-by-play always closes with (docs/verification.md, 2026-09-22); otherwise the last play
+ * stamped at all, and null for the stats.nba.com path, which carries no wall clock.
+ */
+export function nbaGameEndTime(plays: readonly Pick<NbaPlay, 'actionType' | 'subType' | 'timeActual'>[]): string | null {
+  return (
+    plays.find((a) => a.actionType === 'game' && a.subType === 'end')?.timeActual ??
+    [...plays].reverse().find((a) => a.timeActual)?.timeActual ??
+    null
+  );
+}
+
 function assemble(
   ctx: DetailContext,
   season: number,
@@ -596,7 +609,10 @@ function assemble(
     rescheduledFromProviderGameId: null,
     rescheduledToProviderGameId: null,
     isNeutralSite: ctx.isNeutralSite,
-    finalAt: extra.final ? (plays[plays.length - 1]?.timeActual ?? null) : null,
+    // The wall clock of the "Game End" action (actionType game, subType end), which the CDN
+    // play-by-play always closes with (docs/verification.md, 2026-09-22); the last play stamped
+    // at all when a feed lacks it.
+    finalAt: extra.final ? nbaGameEndTime(plays) : null,
     temperatureF: null,
     durationMinutes: extra.durationMinutes,
     attendance: extra.attendance,

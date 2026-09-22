@@ -1,0 +1,98 @@
+{
+  "_note": "End-time candidates in a 13-inning final.",
+  "_fetched": "2026-09-22",
+  "source": "https://statsapi.mlb.com/api/v1.1/game/823655/feed/live",
+  "gamePk": "823655",
+  "teams": "NYY@MIN",
+  "gameData": {
+    "status": {
+      "abstractGameState": "Final",
+      "codedGameState": "F",
+      "detailedState": "Final",
+      "statusCode": "F",
+      "startTimeTBD": false,
+      "abstractGameCode": "F"
+    },
+    "datetime": {
+      "dateTime": "2026-09-16T17:40:00Z",
+      "originalDate": "2026-09-16",
+      "officialDate": "2026-09-16",
+      "dayNight": "day",
+      "time": "12:40",
+      "ampm": "PM"
+    },
+    "gameInfo": {
+      "attendance": 21887,
+      "firstPitch": "2026-09-16T17:42:00.000Z",
+      "gameDurationMinutes": 228
+    }
+  },
+  "liveData": {
+    "linescore": {
+      "currentInning": 13,
+      "currentInningOrdinal": "13th",
+      "keys": [
+        "note",
+        "currentInning",
+        "currentInningOrdinal",
+        "inningState",
+        "inningHalf",
+        "isTopInning",
+        "scheduledInnings",
+        "innings",
+        "teams",
+        "defense",
+        "offense",
+        "balls",
+        "strikes",
+        "outs"
+      ]
+    },
+    "plays": {
+      "allPlays_first": {
+        "about": {
+          "startTime": "2026-09-16T17:42:43.470Z"
+        }
+      },
+      "allPlays_last": {
+        "atBatIndex": 98,
+        "about": {
+          "atBatIndex": 98,
+          "halfInning": "bottom",
+          "isTopInning": false,
+          "inning": 13,
+          "startTime": "2026-09-16T21:30:36.994Z",
+          "endTime": "2026-09-16T21:31:28.830Z",
+          "isComplete": true,
+          "isScoringPlay": true,
+          "hasReview": false,
+          "hasOut": false,
+          "captivatingIndex": 60
+        },
+        "playEndTime": "2026-09-16T21:31:28.830Z",
+        "lastEventEndTime": "2026-09-16T21:31:28.830Z",
+        "lastEventStartTime": "2026-09-16T21:31:16.113Z",
+        "desc": "Victor Caratini singles on a ground ball to center fielder Spencer Jones. Luke Keaschall scores."
+      }
+    }
+  },
+  "metaData": {
+    "wait": 10,
+    "timeStamp": "20260916_213128",
+    "gameEvents": [
+      "single",
+      "game_finished"
+    ],
+    "logicalEvents": [
+      "countChange",
+      "count01",
+      "newLeftHandedHit",
+      "runnerOnFirst",
+      "gameStateChangeToGameOver"
+    ]
+  },
+  "computed": {
+    "firstPitchPlusDuration": "2026-09-16T21:30:00.000Z",
+    "lastPlayEndMinusFirstPitchPlusDuration_min": 1.4805
+  }
+}

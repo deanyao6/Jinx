@@ -751,3 +751,49 @@ live under `espn_soccer_venue_ids` (51 venues, generated from `seed/mls_venues.j
 writer picks the map by `venueLookup`, the MLS backfill reads and writes the new key, and the
 17 matches are back at Gillette Stadium (hosted read back: 0 at Accor Arena, 17 of 2026 at
 Gillette). Test `048`. The NBA's ids are untouched, so Paris games still resolve.
+
+## When a game ended: `games.final_at` per feed (next-wave B.4) — VERIFIED 2026-09-22
+
+Live fetches from Node, fixtures trimmed and dated `2026-09-22` under `ingest/fixtures/<sport>/`.
+Why it was empty: the MLB and NBA detail parsers already wrote it, and the schedule refresh
+(every 15 minutes through `mlb-sync`) upserted `final_at: null` over it; hosted had 4 of 2,734
+MLB finals filled, the 4 detailed after the last refresh. `upsertGames` now leaves the column
+out when a row has nothing, and trigger `games_keep_final_at` (migration `20260923000500`,
+test `042`) refuses a null and refuses a non-detail write over a detail value.
+
+- **MLB, no explicit end field.** `gameData.datetime.*` is the start; `gameDurationMinutesDelay`
+  does not exist (the field is `gameInfo.delayDurationMinutes`). Exact: the last play's
+  `about.endTime` (= `playEndTime`, = `metaData.timeStamp`), which `parse.ts` stores from the
+  feed. Estimate for every final from the schedule with `hydrate=gameInfo`:
+  `firstPitch + gameDurationMinutes`, within -0.5 to +1.5 minutes on 20 finals, plus the part of
+  `delayDurationMinutes` that did not precede the first pitch (822686: an 86-minute 4th-inning
+  delay the duration excludes; 824424 and 824471: pre-game delays already inside `firstPitch`).
+  `mlbScheduleFinalAt`. Fixtures `feed_825031_MIA_AZ_9inn_end_time`, `feed_823655_NYY_MIN_13inn`,
+  `feed_delayed_822686_824424_824471`, `schedule_2026-09-16_gameInfo`.
+- **NBA CDN: no `gameEndTimeUTC`.** The boxscore's `game` keys are `gameId, gameTimeLocal,
+  gameTimeUTC, gameTimeHome, gameTimeAway, gameEt, duration, gameCode, gameStatusText,
+  gameStatus, regulationPeriods, period, gameClock, attendance, sellout, arena, officials,
+  homeTeam, awayTeam`. `duration` counts from the tip, not `gameTimeUTC` (10 to 14 minutes
+  later). Exact: the play-by-play's closing `{actionType: "game", subType: "end"}` action's
+  `timeActual` (0042500405 `2026-06-14T03:29:26.5Z`, 0022400001 `2024-11-13T02:24:23.8Z`, the
+  double-overtime 0022500001 `2025-10-22T02:59:51.2Z`); `nbaGameEndTime` asserts the type and
+  falls back to the last stamped play. The stats.nba.com path has no wall clock: null.
+  `todaysScoreboard_00.json` was empty in the off-season and its final shape is unchecked.
+- **NFL:** `time_of_day` is null on the `END GAME` row in every game read; the last non-null
+  stamp is the final snap (12 to 38 seconds of clock left in the three games). Kept as is:
+  never late, at most minutes early; kickoff plus 4 hours when a season has no stamps.
+- **MLS scoreboard: no wall clock anywhere** (`competitions[].status` is
+  `{clock: 5400, displayClock: "90'+6'", period: 2, type: {...STATUS_FULL_TIME}}`; `date` is
+  the scheduled kickoff; the word `wallclock` does not occur). **The summary has one:** every
+  `keyEvents[]` item carries `wallclock` and `meta.lastPlayWallClock` equals the last
+  (761829: kickoff `23:13:49Z` for a 23:00 schedule, End Regular Time `2026-09-21T01:15:29Z`;
+  761828 `04:38:47Z`). Old matches carry re-processing timestamps instead (a 2016 match
+  "ending" `2021-11-17`), so `mlsSummaryFinalAt` refuses anything outside four hours of
+  kickoff. Estimate for every final from the scoreboard, `mlsScoreboardFinalAt`: kickoff plus
+  13 (observed lag 11 to 14), 90, the display clock's stoppage, 3 and a 17-minute interval, more
+  for extra time and a shootout: `01:09Z` against the real `01:15:29Z`. `ingest/src/mls/finals.ts`
+  writes the exact time for attended and recent matches (44 on local on first run, 44 exact).
+  ESPN answers 403 to a custom User-Agent; the provider sends none.
+
+After the backfill on 2026-09-22, local: MLB 2,343 of 2,343 finals of 2026 and both attended
+games exact; NBA 4 of 5 attended (0021600001 is the stats path); MLS 44; NFL all 7,033.

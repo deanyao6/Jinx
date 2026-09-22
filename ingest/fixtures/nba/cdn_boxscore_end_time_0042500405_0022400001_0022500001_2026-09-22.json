@@ -1,0 +1,138 @@
+{
+  "_note": "Top level of game in boxscore_{gameId}.json for three finals (2026 Finals G5, 2024-25 opener, 2025-26 opener in double OT). There is NO gameEndTimeUTC. duration is minutes from tip-off (first period-start action timeActual) to the game-end action, not from gameTimeUTC. Nested objects are elided as <object>/<array>; homeTeam/awayTeam/arena kept in brief.",
+  "_fetched": "2026-09-22",
+  "games": {
+    "0042500405": {
+      "meta": {
+        "version": 1,
+        "code": 200,
+        "request": "http://nba.cloud/games/0042500405/boxscore?Format=json",
+        "time": "2026-06-14 01:36:48.773869"
+      },
+      "game": {
+        "gameId": "0042500405",
+        "gameTimeLocal": "2026-06-13T19:30:00-05:00",
+        "gameTimeUTC": "2026-06-14T00:30:00Z",
+        "gameTimeHome": "2026-06-13T19:30:00-05:00",
+        "gameTimeAway": "2026-06-13T20:30:00-04:00",
+        "gameEt": "2026-06-13T20:30:00-04:00",
+        "duration": 166,
+        "gameCode": "20260613/NYKSAS",
+        "gameStatusText": "Final",
+        "gameStatus": 3,
+        "regulationPeriods": 4,
+        "period": 4,
+        "gameClock": "PT00M00.00S",
+        "attendance": 18984,
+        "sellout": "1",
+        "arena": {
+          "arenaId": 1000118,
+          "arenaName": "Frost Bank Center",
+          "arenaCity": "San Antonio",
+          "arenaState": "TX",
+          "arenaCountry": "US",
+          "arenaTimezone": "America/Chicago"
+        },
+        "officials": "<array>",
+        "homeTeam": {
+          "teamId": 1610612759,
+          "teamTricode": "SAS",
+          "score": 90
+        },
+        "awayTeam": {
+          "teamId": 1610612752,
+          "teamTricode": "NYK",
+          "score": 94
+        }
+      }
+    },
+    "0022400001": {
+      "meta": {
+        "version": 1,
+        "code": 200,
+        "request": "http://nba.cloud/games/0022400001/boxscore?Format=json",
+        "time": "2024-11-12 23:26:27.077688"
+      },
+      "game": {
+        "gameId": "0022400001",
+        "gameTimeLocal": "2024-11-12T19:00:00-05:00",
+        "gameTimeUTC": "2024-11-13T00:00:00Z",
+        "gameTimeHome": "2024-11-12T19:00:00-05:00",
+        "gameTimeAway": "2024-11-12T19:00:00-05:00",
+        "gameEt": "2024-11-12T19:00:00-05:00",
+        "duration": 133,
+        "gameCode": "20241112/ATLBOS",
+        "gameStatusText": "Final",
+        "gameStatus": 3,
+        "regulationPeriods": 4,
+        "period": 4,
+        "gameClock": "PT00M00.00S",
+        "attendance": 19156,
+        "sellout": "1",
+        "arena": {
+          "arenaId": 17,
+          "arenaName": "TD Garden",
+          "arenaCity": "Boston",
+          "arenaState": "MA",
+          "arenaCountry": "US",
+          "arenaTimezone": "America/New_York"
+        },
+        "officials": "<array>",
+        "homeTeam": {
+          "teamId": 1610612738,
+          "teamTricode": "BOS",
+          "score": 116
+        },
+        "awayTeam": {
+          "teamId": 1610612737,
+          "teamTricode": "ATL",
+          "score": 117
+        }
+      }
+    },
+    "0022500001": {
+      "meta": {
+        "version": 1,
+        "code": 200,
+        "request": "http://nba.cloud/games/0022500001/boxscore?Format=json",
+        "time": "2025-10-22 01:01:53.170402"
+      },
+      "game": {
+        "gameId": "0022500001",
+        "gameTimeLocal": "2025-10-21T18:30:00-05:00",
+        "gameTimeUTC": "2025-10-21T23:30:00Z",
+        "gameTimeHome": "2025-10-21T18:30:00-05:00",
+        "gameTimeAway": "2025-10-21T18:30:00-05:00",
+        "gameEt": "2025-10-21T19:30:00-04:00",
+        "duration": 196,
+        "gameCode": "20251021/HOUOKC",
+        "gameStatusText": "Final",
+        "gameStatus": 3,
+        "regulationPeriods": 4,
+        "period": 6,
+        "gameClock": "PT00M00.00S",
+        "attendance": 18203,
+        "sellout": "1",
+        "arena": {
+          "arenaId": 1000052,
+          "arenaName": "Paycom Center",
+          "arenaCity": "Oklahoma City",
+          "arenaState": "OK",
+          "arenaCountry": "US",
+          "arenaTimezone": "America/Chicago"
+        },
+        "officials": "<array>",
+        "homeTeam": {
+          "teamId": 1610612760,
+          "teamTricode": "OKC",
+          "score": 125
+        },
+        "awayTeam": {
+          "teamId": 1610612745,
+          "teamTricode": "HOU",
+          "score": 124
+        }
+      }
+    }
+  }
+}

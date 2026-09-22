@@ -1,0 +1,192 @@
+{
+  "_note": "play_by_play_2025.csv.gz rows for one game trimmed to the fields that matter: the END GAME marker row has time_of_day null; the last non-null time_of_day is the snap of the final play, the row just before it. nullTimeOfDayRows lists every row without a wall clock.",
+  "_fetched": "2026-09-22",
+  "game_id": "2025_01_DAL_PHI",
+  "rowCount": 163,
+  "nullTimeOfDayRows": [
+    {
+      "order_sequence": "1",
+      "qtr": "1",
+      "desc": "GAME"
+    },
+    {
+      "order_sequence": "887",
+      "qtr": "1",
+      "desc": "END QUARTER 1"
+    },
+    {
+      "order_sequence": "2118",
+      "qtr": "2",
+      "desc": "END QUARTER 2"
+    },
+    {
+      "order_sequence": "2707",
+      "qtr": "3",
+      "desc": "The game has been suspended. Lightning in the area."
+    },
+    {
+      "order_sequence": "2742",
+      "qtr": "3",
+      "desc": "The game has resumed. Total delay time of 1 hour and 3 minutes."
+    },
+    {
+      "order_sequence": "2964",
+      "qtr": "3",
+      "desc": "END QUARTER 3"
+    },
+    {
+      "order_sequence": "3968",
+      "qtr": "4",
+      "desc": "END GAME"
+    }
+  ],
+  "head": [
+    {
+      "play_id": "1",
+      "order_sequence": "1",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "GAME",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "9/4/25, 20:23:01"
+    },
+    {
+      "play_id": "40",
+      "order_sequence": "40",
+      "qtr": "1",
+      "time": "15:00",
+      "game_seconds_remaining": "3600",
+      "time_of_day": "2025-09-05T00:23:01.813Z",
+      "play_type": "kickoff",
+      "desc": "4-J.Elliott kicks 60 yards from PHI 35 to DAL 5. 9-K.Turpin pushed ob at DAL 32 for 27 yards (83-K.Granson). PHI-43-B.VanSumeren was injured during the play. PENALTY on PHI-98-J.Carter, Disqualification, 15 yards, enforced at DAL 32.",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "9/4/25, 20:23:01"
+    },
+    {
+      "play_id": "71",
+      "order_sequence": "71",
+      "qtr": "1",
+      "time": "14:54",
+      "game_seconds_remaining": "3594",
+      "time_of_day": "2025-09-05T00:27:09.830Z",
+      "play_type": "run",
+      "desc": "(14:54) 33-J.Williams left tackle to PHI 46 for 7 yards (33-C.DeJean).",
+      "home_score": "0",
+      "away_score": "0",
+      "start_time": "9/4/25, 20:23:01"
+    }
+  ],
+  "tail": [
+    {
+      "play_id": "3861",
+      "order_sequence": "3861",
+      "qtr": "4",
+      "time": "01:45",
+      "game_seconds_remaining": "105",
+      "time_of_day": "2025-09-05T04:15:42.910Z",
+      "play_type": "run",
+      "desc": "(1:45) (Shotgun) 1-J.Hurts scrambles up the middle to DAL 33 for 4 yards (95-K.Clark).",
+      "home_score": "24",
+      "away_score": "20",
+      "start_time": "9/4/25, 20:23:01"
+    },
+    {
+      "play_id": "3907",
+      "order_sequence": "3878",
+      "qtr": "4",
+      "time": "01:29",
+      "game_seconds_remaining": "89",
+      "time_of_day": "2025-09-05T04:16:05Z",
+      "play_type": "no_play",
+      "desc": "Timeout #3 by DAL at 01:29.",
+      "home_score": "24",
+      "away_score": "20",
+      "start_time": "9/4/25, 20:23:01"
+    },
+    {
+      "play_id": "3895",
+      "order_sequence": "3895",
+      "qtr": "4",
+      "time": "01:29",
+      "game_seconds_remaining": "89",
+      "time_of_day": "2025-09-05T04:16:50.223Z",
+      "play_type": "qb_kneel",
+      "desc": "(1:29) 1-J.Hurts kneels to DAL 34 for -1 yards.",
+      "home_score": "24",
+      "away_score": "20",
+      "start_time": "9/4/25, 20:23:01"
+    },
+    {
+      "play_id": "3924",
+      "order_sequence": "3924",
+      "qtr": "4",
+      "time": "00:49",
+      "game_seconds_remaining": "49",
+      "time_of_day": "2025-09-05T04:17:30.483Z",
+      "play_type": "qb_kneel",
+      "desc": "(:49) 1-J.Hurts kneels to DAL 35 for -1 yards.",
+      "home_score": "24",
+      "away_score": "20",
+      "start_time": "9/4/25, 20:23:01"
+    },
+    {
+      "play_id": "3946",
+      "order_sequence": "3946",
+      "qtr": "4",
+      "time": "00:33",
+      "game_seconds_remaining": "33",
+      "time_of_day": "2025-09-05T04:17:46.890Z",
+      "play_type": "qb_kneel",
+      "desc": "(:33) 1-J.Hurts kneels to DAL 36 for -1 yards.",
+      "home_score": "24",
+      "away_score": "20",
+      "start_time": "9/4/25, 20:23:01"
+    },
+    {
+      "play_id": "3968",
+      "order_sequence": "3968",
+      "qtr": "4",
+      "time": "00:00",
+      "game_seconds_remaining": "0",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "END GAME",
+      "home_score": "24",
+      "away_score": "20",
+      "start_time": "9/4/25, 20:23:01"
+    }
+  ],
+  "endGameRows": [
+    {
+      "play_id": "3968",
+      "order_sequence": "3968",
+      "qtr": "4",
+      "time": "00:00",
+      "game_seconds_remaining": "0",
+      "time_of_day": null,
+      "play_type": null,
+      "desc": "END GAME",
+      "home_score": "24",
+      "away_score": "20",
+      "start_time": "9/4/25, 20:23:01"
+    }
+  ],
+  "lastNonNullTimeOfDay": {
+    "play_id": "3946",
+    "order_sequence": "3946",
+    "qtr": "4",
+    "time": "00:33",
+    "game_seconds_remaining": "33",
+    "time_of_day": "2025-09-05T04:17:46.890Z",
+    "play_type": "qb_kneel",
+    "desc": "(:33) 1-J.Hurts kneels to DAL 36 for -1 yards.",
+    "home_score": "24",
+    "away_score": "20",
+    "start_time": "9/4/25, 20:23:01"
+  }
+}

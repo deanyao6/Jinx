@@ -1,6 +1,15 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { isMlsLeagueEvent, parseMlsEvent, mlsStatus, type MlsEvent } from './parse.js';
+import {
+  isMlsLeagueEvent,
+  mlsScoreboardFinalAt,
+  mlsSummaryFinalAt,
+  parseMlsEvent,
+  mlsStatus,
+  stoppageMinutes,
+  type MlsEvent,
+  type MlsSummary,
+} from './parse.js';
 import { gameRow } from '../../rows.js';
 import { gameResult } from '../../records.js';
 import { MlsProvider } from '../../ingest/mlsProvider.js';
@@ -295,4 +304,42 @@ it('uses the sourced venue correction only for the missing Union–Toronto venue
   });
   e.id = 'unmapped';
   expect(parseMlsEvent(e).providerVenueId).toBeNull();
+});
+
+describe('when a match ended', () => {
+  const summary = (name: string) =>
+    JSON.parse(
+      readFileSync(new URL(`../../../../../ingest/fixtures/mls/${name}`, import.meta.url), 'utf8'),
+    ) as MlsSummary;
+  it('estimates from the scoreboard, which has no wall clock: kickoff lag, 90 minutes, stoppage, the interval', () => {
+    expect(stoppageMinutes("90'+6'")).toBe(6);
+    expect(stoppageMinutes("90'")).toBe(0);
+    expect(stoppageMinutes(undefined)).toBe(0);
+    // 761829, scheduled 23:00Z, really ended 01:15:29Z: within seven minutes.
+    expect(mlsScoreboardFinalAt('2026-09-20T23:00Z', { displayClock: "90'+6'", period: 2 })).toBe(
+      '2026-09-21T01:09:00.000Z',
+    );
+    // Extra time and a shootout push it out; a bad kickoff gives nothing.
+    expect(mlsScoreboardFinalAt('2026-09-20T23:00Z', { displayClock: "120'+2'", period: 5 })).toBe(
+      '2026-09-21T01:53:00.000Z',
+    );
+    expect(mlsScoreboardFinalAt('nonsense', {})).toBeNull();
+  });
+  it('takes the last key event wall clock from the summary when it is the match\'s own', () => {
+    expect(mlsSummaryFinalAt(summary('espn_summary_761829_MIA_SD_wallclock_2026-09-22.json'), '2026-09-20T23:00Z')).toBe(
+      '2026-09-21T01:15:29.000Z',
+    );
+    expect(mlsSummaryFinalAt(summary('espn_summary_761828_POR_ATL_wallclock_2026-09-22.json'), '2026-09-20T02:30Z')).toBe(
+      '2026-09-20T04:38:47.000Z',
+    );
+  });
+  it('refuses a re-processing timestamp on an old match', () => {
+    // 440952 (2016-03-06) carries 2021-11-17 as its last wall clock.
+    const old: MlsSummary = {
+      meta: { lastPlayWallClock: '2021-11-17T15:51:11Z' },
+      keyEvents: [{ type: { text: 'End Regular Time' }, wallclock: '2021-11-17T15:51:11Z' }],
+    };
+    expect(mlsSummaryFinalAt(old, '2016-03-06T18:30Z')).toBeNull();
+    expect(mlsSummaryFinalAt({}, '2016-03-06T18:30Z')).toBeNull();
+  });
 });

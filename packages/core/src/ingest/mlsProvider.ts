@@ -4,6 +4,7 @@ import {
   parseMlsEvent,
   parseMlsTeam,
   type MlsScoreboard,
+  type MlsSummary,
   type MlsTeam,
 } from '../providers/mls/parse.js';
 import type { ResponseCache } from './nbaClient.js';
@@ -71,6 +72,11 @@ export class MlsProvider implements SportsDataProvider {
     if (!Array.isArray(d.events) || d.events.length >= 1000)
       throw new Error(`Incomplete MLS month ${key}`);
     return d;
+  }
+
+  /** ESPN's match summary: key events with wall clocks, commentary, the win probability line. */
+  async summary(eventId: string, force = false): Promise<MlsSummary> {
+    return this.get<MlsSummary>(`summary?event=${eventId}`, force ? 0 : 86400000);
   }
 
   async fetchSchedule(range: DateRange) {

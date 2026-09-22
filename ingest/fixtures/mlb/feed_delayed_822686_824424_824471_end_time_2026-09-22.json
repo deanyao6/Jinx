@@ -1,0 +1,77 @@
+{
+  "_note": "Three finals with delayDurationMinutes > 0. 822686 had an 86-minute in-game rain delay (inning 4): gameDurationMinutes EXCLUDES it, so firstPitch + gameDurationMinutes is 86 minutes early and only + delayDurationMinutes lands on the last play. 824424 and 824471 were delayed BEFORE first pitch (scheduled 18:10 and 22:10, first pitch 19:14 and 23:00): firstPitch + gameDurationMinutes is right and adding the delay is an hour late. The fields alone cannot say which case a game is; the last play about.endTime is right in both.",
+  "_fetched": "2026-09-22",
+  "scheduledStart": {
+    "822686": "2026-09-02T17:05:00Z",
+    "824424": "2026-09-04T18:10:00Z",
+    "824471": "2026-09-04T22:10:00Z"
+  },
+  "games": [
+    {
+      "gamePk": 822686,
+      "teams": "ATL@WSH",
+      "liveFeedGameInfo": {
+        "attendance": 15248,
+        "firstPitch": "2026-09-02T17:06:00.000Z",
+        "gameDurationMinutes": 151,
+        "delayDurationMinutes": 86
+      },
+      "scheduleGameInfo": {
+        "attendance": 15248,
+        "firstPitch": "2026-09-02T17:06:00.000Z",
+        "gameDurationMinutes": 151,
+        "delayDurationMinutes": 86
+      },
+      "lastPlayEnd": "2026-09-02T21:03:24.241Z",
+      "fpPlusDur": "2026-09-02T19:37:00.000Z",
+      "fpPlusDurPlusDelay": "2026-09-02T21:03:00.000Z",
+      "lastPlayEnd_minus_firstPitch_min": 237.40401666666668,
+      "maxGapBetweenPlays_min": 86.22495,
+      "gapAt": "2026-09-02T17:55:00.400Z -> 2026-09-02T19:21:13.897Z (inning 4)"
+    },
+    {
+      "gamePk": 824424,
+      "teams": "DET@CLE",
+      "liveFeedGameInfo": {
+        "attendance": 23562,
+        "firstPitch": "2026-09-04T19:14:00.000Z",
+        "gameDurationMinutes": 162,
+        "delayDurationMinutes": 64
+      },
+      "scheduleGameInfo": {
+        "attendance": 23562,
+        "firstPitch": "2026-09-04T19:14:00.000Z",
+        "gameDurationMinutes": 162,
+        "delayDurationMinutes": 64
+      },
+      "lastPlayEnd": "2026-09-04T21:56:44.291Z",
+      "fpPlusDur": "2026-09-04T21:56:00.000Z",
+      "fpPlusDurPlusDelay": "2026-09-04T23:00:00.000Z",
+      "lastPlayEnd_minus_firstPitch_min": 162.73818333333332,
+      "maxGapBetweenPlays_min": 5.983383333333333,
+      "gapAt": "2026-09-04T21:29:50.695Z -> 2026-09-04T21:35:49.698Z (inning 8)"
+    },
+    {
+      "gamePk": 824471,
+      "teams": "MIL@CIN",
+      "liveFeedGameInfo": {
+        "attendance": 30450,
+        "firstPitch": "2026-09-04T23:00:00.000Z",
+        "gameDurationMinutes": 192,
+        "delayDurationMinutes": 50
+      },
+      "scheduleGameInfo": {
+        "attendance": 30450,
+        "firstPitch": "2026-09-04T23:00:00.000Z",
+        "gameDurationMinutes": 192,
+        "delayDurationMinutes": 50
+      },
+      "lastPlayEnd": "2026-09-05T02:13:19.343Z",
+      "fpPlusDur": "2026-09-05T02:12:00.000Z",
+      "fpPlusDurPlusDelay": "2026-09-05T03:02:00.000Z",
+      "lastPlayEnd_minus_firstPitch_min": 193.32238333333333,
+      "maxGapBetweenPlays_min": 3.1736666666666666,
+      "gapAt": "2026-09-05T02:02:02.658Z -> 2026-09-05T02:05:13.078Z (inning 9)"
+    }
+  ]
+}

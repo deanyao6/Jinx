@@ -1,0 +1,636 @@
+{
+  "_note": "Second match with the same shape: End Regular Time at 90+5, wallclock 2026-09-20T04:38:47Z, kickoff keyEvent 02:40:41Z against a scheduled 02:30Z.",
+  "_fetched": "2026-09-22",
+  "header": {
+    "date": "2026-09-20T02:30Z",
+    "status": {
+      "type": {
+        "id": "28",
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "description": "Full Time",
+        "detail": "FT",
+        "shortDetail": "FT"
+      }
+    },
+    "competitors": [
+      {
+        "id": "9723",
+        "abbreviation": "POR",
+        "homeAway": "home",
+        "score": "0"
+      },
+      {
+        "id": "18418",
+        "abbreviation": "ATL",
+        "homeAway": "away",
+        "score": "1"
+      }
+    ]
+  },
+  "meta": {
+    "gp_topic": "gp-soccer-usa.1-761828",
+    "gameSwitcherEnabled": false,
+    "picker_topic": "picker-soccer-usa.1",
+    "lastUpdatedAt": "2026-09-20T04:38:47Z",
+    "firstPlayWallClock": "2026-09-20T02:40:41Z",
+    "lastPlayWallClock": "2026-09-20T04:38:47Z",
+    "gameState": "post",
+    "syncUrl": "https://client.espncdn.com/fauxcast/stats/770/761828/en/us/"
+  },
+  "wallclockAvailable": true,
+  "keyEvents": [
+    {
+      "type": {
+        "id": "80",
+        "text": "Kickoff",
+        "type": "kickoff"
+      },
+      "clock": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T02:40:41Z",
+      "text": "First Half begins."
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 36,
+        "displayValue": "1'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T02:41:18Z",
+      "text": "Delay in match because of an injury Paulo Díaz (Atlanta United)."
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 36,
+        "displayValue": "1'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T02:41:19Z"
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 135,
+        "displayValue": "3'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T02:42:56Z",
+      "text": "Delay over. They are ready to continue."
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 135,
+        "displayValue": "3'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T02:42:57Z"
+    },
+    {
+      "type": {
+        "id": "94",
+        "text": "Yellow Card",
+        "type": "yellow-card"
+      },
+      "clock": {
+        "value": 1451,
+        "displayValue": "25'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:04:52Z",
+      "text": "Diego Chará (Portland Timbers) is shown the yellow card for a bad foul."
+    },
+    {
+      "type": {
+        "id": "70",
+        "text": "Goal",
+        "type": "goal"
+      },
+      "clock": {
+        "value": 1633,
+        "displayValue": "28'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:07:54Z",
+      "text": "Goal! Portland Timbers 0, Atlanta United 1. Aleksey Miranchuk (Atlanta United) left footed shot from the centre of the box to the bottom left corner."
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 1849,
+        "displayValue": "31'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:11:31Z",
+      "text": "Delay in match because of an injury Tomás Jacob (Atlanta United)."
+    },
+    {
+      "type": {
+        "id": "129",
+        "text": "Start Delay",
+        "type": "start-delay"
+      },
+      "clock": {
+        "value": 1849,
+        "displayValue": "31'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:11:32Z"
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 1919,
+        "displayValue": "32'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:12:41Z",
+      "text": "Substitution, Atlanta United. Matt Edwards replaces Tomás Jacob because of an injury."
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 1925,
+        "displayValue": "33'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:12:47Z",
+      "text": "Delay over. They are ready to continue."
+    },
+    {
+      "type": {
+        "id": "130",
+        "text": "End Delay",
+        "type": "end-delay"
+      },
+      "clock": {
+        "value": 1925,
+        "displayValue": "33'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:12:48Z"
+    },
+    {
+      "type": {
+        "id": "94",
+        "text": "Yellow Card",
+        "type": "yellow-card"
+      },
+      "clock": {
+        "value": 2700,
+        "displayValue": "45'+1'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:26:25Z",
+      "text": "Joel Waterman (Portland Timbers) is shown the yellow card."
+    },
+    {
+      "type": {
+        "id": "94",
+        "text": "Yellow Card",
+        "type": "yellow-card"
+      },
+      "clock": {
+        "value": 2700,
+        "displayValue": "45'+1'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:26:26Z",
+      "text": "Giuliano Galoppo (Atlanta United) is shown the yellow card."
+    },
+    {
+      "type": {
+        "id": "81",
+        "text": "Halftime",
+        "type": "halftime"
+      },
+      "clock": {
+        "value": 2700,
+        "displayValue": "45'+5'"
+      },
+      "period": {
+        "number": 1
+      },
+      "wallclock": "2026-09-20T03:30:01Z",
+      "text": "First Half ends, Portland Timbers 0, Atlanta United 1."
+    },
+    {
+      "type": {
+        "id": "82",
+        "text": "Start 2nd Half",
+        "type": "start-2nd-half"
+      },
+      "clock": {
+        "value": 2700,
+        "displayValue": "45'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T03:46:02Z",
+      "text": "Second Half begins Portland Timbers 0, Atlanta United 1."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 3445,
+        "displayValue": "58'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T03:58:27Z",
+      "text": "Substitution, Portland Timbers. Vincent Janssen replaces Antony."
+    },
+    {
+      "type": {
+        "id": "94",
+        "text": "Yellow Card",
+        "type": "yellow-card"
+      },
+      "clock": {
+        "value": 3832,
+        "displayValue": "64'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:04:55Z",
+      "text": "Tristan Muyumba (Atlanta United) is shown the yellow card for a bad foul."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 3881,
+        "displayValue": "65'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:05:43Z",
+      "text": "Substitution, Atlanta United. Cooper Sanchez replaces Giuliano Galoppo."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4467,
+        "displayValue": "75'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:15:29Z",
+      "text": "Substitution, Portland Timbers. Ian Smith replaces Jimer Fory."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4476,
+        "displayValue": "75'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:15:39Z",
+      "text": "Substitution, Portland Timbers. Joao Ortiz replaces Diego Chará."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4480,
+        "displayValue": "75'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:15:42Z",
+      "text": "Substitution, Portland Timbers. Omir Fernandez replaces Cole Bassett."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4899,
+        "displayValue": "82'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:22:41Z",
+      "text": "Substitution, Atlanta United. Jay Fortune replaces Tristan Muyumba."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 4903,
+        "displayValue": "82'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:22:46Z",
+      "text": "Substitution, Atlanta United. Enea Mihaj replaces Paulo Díaz."
+    },
+    {
+      "type": {
+        "id": "76",
+        "text": "Substitution",
+        "type": "substitution"
+      },
+      "clock": {
+        "value": 5099,
+        "displayValue": "85'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:26:02Z",
+      "text": "Substitution, Portland Timbers. Gage Guerra replaces Ronald Hernández."
+    },
+    {
+      "type": {
+        "id": "83",
+        "text": "End Regular Time",
+        "type": "end-regular-time"
+      },
+      "clock": {
+        "value": 5400,
+        "displayValue": "90'+5'"
+      },
+      "period": {
+        "number": 2
+      },
+      "wallclock": "2026-09-20T04:38:47Z",
+      "text": "Second Half ends, Portland Timbers 0, Atlanta United 1."
+    }
+  ],
+  "commentaryHeadTail": [
+    {
+      "sequence": 0,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "Lineups are announced and players are warming up."
+    },
+    {
+      "sequence": 1,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "First Half begins.",
+      "play": {
+        "type": {
+          "id": "80",
+          "text": "Kickoff",
+          "type": "kickoff"
+        },
+        "clock": {
+          "value": 0,
+          "displayValue": ""
+        },
+        "period": {
+          "number": 1
+        },
+        "wallclock": "2026-09-20T02:40:41Z"
+      }
+    },
+    {
+      "sequence": 2,
+      "time": {
+        "value": 36,
+        "displayValue": "1'"
+      },
+      "text": "Delay in match because of an injury Paulo Díaz (Atlanta United).",
+      "play": {
+        "type": {
+          "id": "129",
+          "text": "Start Delay",
+          "type": "start-delay"
+        },
+        "clock": {
+          "value": 36,
+          "displayValue": "1'"
+        },
+        "period": {
+          "number": 1
+        },
+        "wallclock": "2026-09-20T02:41:18Z"
+      }
+    },
+    {
+      "sequence": 98,
+      "time": {
+        "value": 5623,
+        "displayValue": "90'+4'"
+      },
+      "text": "Foul by Miguel Almirón (Atlanta United).",
+      "play": {
+        "type": {
+          "id": "66",
+          "text": "Foul",
+          "type": "foul"
+        },
+        "clock": {
+          "value": 5400,
+          "displayValue": "90'+4'"
+        },
+        "period": {
+          "number": 2
+        },
+        "wallclock": "2026-09-20T04:34:45Z"
+      }
+    },
+    {
+      "sequence": 99,
+      "time": {
+        "value": 5623,
+        "displayValue": "90'+4'"
+      },
+      "text": "Omir Fernandez (Portland Timbers) wins a free kick on the right wing.",
+      "play": {
+        "type": {
+          "id": "66",
+          "text": "Foul",
+          "type": "foul"
+        },
+        "clock": {
+          "value": 5400,
+          "displayValue": "90'+4'"
+        },
+        "period": {
+          "number": 2
+        },
+        "wallclock": "2026-09-20T04:34:45Z"
+      }
+    },
+    {
+      "sequence": 100,
+      "time": {
+        "value": 5679,
+        "displayValue": "90'+5'"
+      },
+      "text": "Second Half ends, Portland Timbers 0, Atlanta United 1.",
+      "play": {
+        "type": {
+          "id": "83",
+          "text": "End Regular Time",
+          "type": "end-regular-time"
+        },
+        "clock": {
+          "value": 5400,
+          "displayValue": "90'+5'"
+        },
+        "period": {
+          "number": 2
+        },
+        "wallclock": "2026-09-20T04:38:47Z"
+      }
+    },
+    {
+      "sequence": 101,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "Match ends, Portland Timbers 0, Atlanta United 1."
+    }
+  ],
+  "halfMarkers": [
+    {
+      "sequence": 1,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "wallclock": "2026-09-20T02:40:41Z",
+      "text": "First Half begins."
+    },
+    {
+      "sequence": 51,
+      "time": {
+        "value": 2959,
+        "displayValue": "45'+5'"
+      },
+      "wallclock": "2026-09-20T03:30:01Z",
+      "text": "First Half ends, Portland Timbers 0, Atlanta United 1."
+    },
+    {
+      "sequence": 52,
+      "time": {
+        "value": 2700,
+        "displayValue": "45'"
+      },
+      "wallclock": "2026-09-20T03:46:02Z",
+      "text": "Second Half begins Portland Timbers 0, Atlanta United 1."
+    },
+    {
+      "sequence": 100,
+      "time": {
+        "value": 5679,
+        "displayValue": "90'+5'"
+      },
+      "wallclock": "2026-09-20T04:38:47Z",
+      "text": "Second Half ends, Portland Timbers 0, Atlanta United 1."
+    },
+    {
+      "sequence": 101,
+      "time": {
+        "value": 0,
+        "displayValue": ""
+      },
+      "text": "Match ends, Portland Timbers 0, Atlanta United 1."
+    }
+  ]
+}

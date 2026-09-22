@@ -1,0 +1,90 @@
+{
+  "_note": "One completed match per sampled month, summary?event= trimmed to the wall-clock fields. wallclockAvailable is true and every keyEvent has a wallclock back to 2016, but three of the four carry a wallclock from a later RE-PROCESSING (2016 match ends in 2021, 2021 match in 2022, 2024 match 11 days late), so a wallclock is only usable when it falls inside a window after the scheduled kickoff. 2024-11-01 also shows the last keyEvent type End Match (playoff) instead of End Regular Time.",
+  "_fetched": "2026-09-22",
+  "samples": [
+    {
+      "month": "201603",
+      "eventId": "440952",
+      "name": "Toronto FC at Red Bull New York",
+      "date": "2016-03-06T18:30Z",
+      "displayClock": "90'+4'",
+      "wallclockAvailable": true,
+      "meta": {
+        "firstPlayWallClock": "2016-03-06T18:41:59Z",
+        "lastPlayWallClock": "2021-11-17T15:51:11Z",
+        "lastUpdatedAt": "2021-11-17T15:51:11Z"
+      },
+      "keyEvents": 15,
+      "keyEventsWithWallclock": 15,
+      "lastKeyEvent": {
+        "type": "End Regular Time",
+        "clock": "90'+4'",
+        "wallclock": "2021-11-17T15:51:11Z"
+      },
+      "commentaryCount": 99
+    },
+    {
+      "month": "201810",
+      "eventId": "502394",
+      "name": "Columbus Crew at CF Montréal",
+      "date": "2018-10-06T19:00Z",
+      "displayClock": "90'+3'",
+      "wallclockAvailable": true,
+      "meta": {
+        "firstPlayWallClock": "2018-10-06T19:13:13Z",
+        "lastPlayWallClock": "2018-10-06T20:58:35Z",
+        "lastUpdatedAt": "2018-10-06T20:58:35Z"
+      },
+      "keyEvents": 15,
+      "keyEventsWithWallclock": 15,
+      "lastKeyEvent": {
+        "type": "End Regular Time",
+        "clock": "90'+3'",
+        "wallclock": "2018-10-06T20:59:16Z"
+      },
+      "commentaryCount": 102
+    },
+    {
+      "month": "202108",
+      "eventId": "597901",
+      "name": "Chicago Fire FC at Philadelphia Union",
+      "date": "2021-08-01T22:00Z",
+      "displayClock": "90'+11'",
+      "wallclockAvailable": true,
+      "meta": {
+        "firstPlayWallClock": "2021-08-04T05:30:52Z",
+        "lastPlayWallClock": "2022-08-08T12:25:47Z",
+        "lastUpdatedAt": "2022-08-08T12:25:47Z"
+      },
+      "keyEvents": 17,
+      "keyEventsWithWallclock": 17,
+      "lastKeyEvent": {
+        "type": "End Regular Time",
+        "clock": "90'+11'",
+        "wallclock": "2022-08-08T12:25:47Z"
+      },
+      "commentaryCount": 107
+    },
+    {
+      "month": "202411",
+      "eventId": "722583",
+      "name": "Orlando City SC at Charlotte FC",
+      "date": "2024-11-01T23:30Z",
+      "displayClock": "101'",
+      "wallclockAvailable": true,
+      "meta": {
+        "firstPlayWallClock": "2024-11-12T14:08:58Z",
+        "lastPlayWallClock": "2024-11-12T14:09:18Z",
+        "lastUpdatedAt": "2024-11-12T14:09:18Z"
+      },
+      "keyEvents": 17,
+      "keyEventsWithWallclock": 17,
+      "lastKeyEvent": {
+        "type": "End Match",
+        "clock": "101'",
+        "wallclock": "2024-11-12T14:08:59Z"
+      },
+      "commentaryCount": 107
+    }
+  ]
+}

@@ -37,7 +37,12 @@ export interface MlsEvent {
     neutralSite?: boolean;
     leg?: { value: number; displayValue?: string };
     venue?: { id: string; fullName: string; address?: { city?: string; country?: string } };
-    status: { type: { name: string; state: string; completed: boolean } };
+    status: {
+      type: { name: string; state: string; completed: boolean };
+      /** "90'+6'": the match clock at the end, stoppage included. Only the scoreboard has it. */
+      displayClock?: string;
+      period?: number;
+    };
     competitors: {
       homeAway: string;
       team: MlsTeam;
@@ -190,6 +195,70 @@ export function parseMlsEvent(e: MlsEvent): CanonicalGame {
     rescheduledFromProviderGameId: null,
     rescheduledToProviderGameId: null,
     isNeutralSite: c.neutralSite ?? false,
-    finalAt: null,
+    finalAt: status === 'final' ? mlsScoreboardFinalAt(start, c.status) : null,
   };
+}
+
+/** Minutes of stoppage in a display clock such as "90'+6'" or "45'+3'"; 0 when it has none. */
+export function stoppageMinutes(displayClock: string | undefined): number {
+  const m = /\+(\d+)'/.exec(displayClock ?? '');
+  return m ? Number(m[1]) : 0;
+}
+
+/**
+ * Roughly when a match ended, from the scoreboard alone, which carries no wall clock
+ * (docs/verification.md, 2026-09-22): the scheduled kickoff plus the lag kickoffs were
+ * observed to run (11 to 14 minutes), 90 minutes of play, the second half's stoppage from the
+ * display clock, an average first-half stoppage, a 17-minute interval, and extra time and a
+ * shootout when the period says so. Within about five minutes of the real end on the two
+ * matches checked. `ingest/src/mls/finals.ts` replaces it with ESPN's last-play wall clock for
+ * the matches someone attended.
+ */
+export function mlsScoreboardFinalAt(
+  start: string,
+  status: { displayClock?: string; period?: number },
+): string | null {
+  const kickoff = Date.parse(start);
+  if (!Number.isFinite(kickoff)) return null;
+  const period = status.period ?? 2;
+  let minutes = 13 + 45 + 3 + 17 + 45 + stoppageMinutes(status.displayClock);
+  if (period > 2) minutes += 5 + 30 + 3; // extra time: a break, two halves, its stoppage
+  if (period > 4) minutes += 10; // a shootout
+  return new Date(kickoff + minutes * 60_000).toISOString();
+}
+
+/** The parts of ESPN's `summary?event=` that carry a wall clock (docs/verification.md). */
+export interface MlsSummary {
+  meta?: { firstPlayWallClock?: string; lastPlayWallClock?: string };
+  keyEvents?: {
+    type?: { text?: string; type?: string };
+    clock?: { value?: number; displayValue?: string };
+    period?: { number?: number };
+    wallclock?: string;
+    text?: string;
+  }[];
+}
+
+/** How long after kickoff a wall clock can still be the match's own, not a later re-processing. */
+const MLS_WALLCLOCK_WINDOW_MS = 4 * 60 * 60_000;
+
+/**
+ * When a match ended, from the summary's key events: the latest wall clock among them (which is
+ * `meta.lastPlayWallClock`), accepted only when it falls within four hours after the scheduled
+ * kickoff. Older matches carry ESPN's re-processing timestamps instead (a 2016 match "ending" in
+ * 2021), which the window refuses; the caller keeps the scoreboard estimate then.
+ */
+export function mlsSummaryFinalAt(summary: MlsSummary, scheduledStart: string): string | null {
+  const kickoff = Date.parse(scheduledStart);
+  if (!Number.isFinite(kickoff)) return null;
+  const stamps = [
+    ...(summary.keyEvents ?? []).map((e) => e.wallclock),
+    summary.meta?.lastPlayWallClock,
+  ]
+    .map((w) => (w ? Date.parse(w) : NaN))
+    .filter((t) => Number.isFinite(t));
+  if (stamps.length === 0) return null;
+  const last = Math.max(...stamps);
+  if (last < kickoff || last > kickoff + MLS_WALLCLOCK_WINDOW_MS) return null;
+  return new Date(last).toISOString();
 }

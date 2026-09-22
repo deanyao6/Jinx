@@ -94,12 +94,17 @@ export async function upsertGames(
   const byId = new Map<string, CanonicalGame>();
   for (const g of games) byId.set(g.providerGameId, g);
   games = [...byId.values()];
-  await upsertRows(
-    db,
-    'games',
-    games.map((g) => gameRow(g, rc)),
-    'provider,provider_game_id',
-  );
+  // A schedule row knows when a game ended only sometimes (the MLB schedule's gameInfo, the
+  // NFL schedule's estimate); a detail pass knows it exactly. A row that does not know must not
+  // wipe what a detail pass wrote, so `final_at` is left out of the upsert when it is null.
+  // PostgREST wants one key set per request, so the two kinds go in two batches.
+  const rows = games.map((g) => gameRow(g, rc));
+  const withEnd = rows.filter((r) => r.final_at != null);
+  const withoutEnd = rows
+    .filter((r) => r.final_at == null)
+    .map(({ final_at: _omit, ...rest }) => rest);
+  if (withEnd.length > 0) await upsertRows(db, 'games', withEnd, 'provider,provider_game_id');
+  if (withoutEnd.length > 0) await upsertRows(db, 'games', withoutEnd, 'provider,provider_game_id');
 
   const links = games.filter(
     (g) => g.rescheduledFromProviderGameId || g.rescheduledToProviderGameId,
