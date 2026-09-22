@@ -623,3 +623,13 @@ Found by Dean trying to search for an NBA game the day the NBA landed.
   0.15 s. An earlier attempt that put the per-token arrays in a plain CTE made it 74 s, because
   the planner re-evaluated them per row; `as materialized` is what makes it fast.
 - Regression test: `supabase/tests/041_search_local_date.test.sql`, 8 assertions.
+
+## MLS historical verification (2026-09-21)
+
+ESPN monthly scoreboards were scanned from 2016 through 2026. Captured minimal fixtures in
+`ingest/fixtures/mls/historical.json` cover `final`, conference semifinal spellings, play-in
+rounds, wild cards and 2020 excluded tournament rounds. Unknown labels fail loudly.
+Official MLS/club comparisons and counts are recorded in
+[evidence/mls/local-rollout.md](evidence/mls/local-rollout.md). ESPN may omit a played venue
+(Union–Toronto, 623627), misstate a city (Toyota Stadium), or use multiple IDs for the same
+physical venue. A resolved venue row does not establish verified coordinates/timezone.

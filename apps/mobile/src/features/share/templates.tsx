@@ -158,8 +158,16 @@ export function GameTemplate({ t }: { t: ShareGame }) {
   const theme = useTheme();
   const c = theme.colors;
   const final = t.status === 'final' && t.homeScore != null && t.awayScore != null;
-  const awayWon = final && (t.awayScore as number) > (t.homeScore as number);
-  const homeWon = final && (t.homeScore as number) > (t.awayScore as number);
+  const awayWon =
+    final &&
+    (t.winner !== undefined
+      ? t.winner === 'away'
+      : (t.awayScore as number) > (t.homeScore as number));
+  const homeWon =
+    final &&
+    (t.winner !== undefined
+      ? t.winner === 'home'
+      : (t.homeScore as number) > (t.awayScore as number));
   const resultWord =
     t.result === 'win' ? 'Win' : t.result === 'loss' ? 'Loss' : t.result === 'tie' ? 'Tie' : null;
   return (

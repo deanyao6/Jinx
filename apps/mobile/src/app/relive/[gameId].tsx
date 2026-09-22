@@ -1,6 +1,10 @@
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 
+import { Loading } from '@/components/Loading';
+import { Notice } from '@/components/Notice';
+import { Screen } from '@/components/Screen';
+import { useGame } from '@/features/games/queries';
 import { ReliveScreen } from '@/features/relive/reference/ReliveScreen';
 
 /**
@@ -12,5 +16,17 @@ import { ReliveScreen } from '@/features/relive/reference/ReliveScreen';
  */
 export default function ReliveRoute() {
   const { gameId } = useLocalSearchParams<{ gameId: string }>();
+  const game = useGame(gameId);
+  if (game.isPending) return <Loading label="Loading game" />;
+  if (game.data?.sport_id === 'mls') {
+    return (
+      <Screen>
+        <Notice>
+          Relive is not available for MLS yet. Schedules, results and attendance logging are
+          available from the game page.
+        </Notice>
+      </Screen>
+    );
+  }
   return <ReliveScreen gameId={gameId} />;
 }

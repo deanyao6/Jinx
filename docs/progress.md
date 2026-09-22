@@ -185,3 +185,12 @@ Decisions made during the build:
 - **MLB has no voting placements**, so its bar is winners plus All-Stars.
 - **The NFL bar is MVP, MVP top five and first-team All-Pro, not the Pro Bowl** (Dean, 2026-09-18).
 - **NFL "first touchdown" is a touchdown scored, not thrown.**
+
+## MLS continuation (2026-09-21, local only)
+
+2016–2026 schedules/results are loaded locally (4,962 rows). Full forced rerun preserved game
+IDs and attendance references. Historical fixtures now cover conference format variations,
+MLS Is Back exclusions, single-match penalties and aggregate advancement. Explicit-winner
+results propagate through Passport replay and share highlighting. See
+[evidence/mls/local-rollout.md](evidence/mls/local-rollout.md) and
+[MLS_ROLLOUT.md](MLS_ROLLOUT.md) for checks and blockers. This is not a hosted or app release.

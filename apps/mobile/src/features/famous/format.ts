@@ -32,14 +32,16 @@ export type FamousListItem = FamousItem & {
 };
 
 /** League names, keyed by sport so a new league is a row. */
-const LEAGUE_LABEL: Record<string, string> = { mlb: 'MLB', nfl: 'NFL', nba: 'NBA' };
+const LEAGUE_LABEL: Record<string, string> = { mlb: 'MLB', nfl: 'NFL', nba: 'NBA', mls: 'MLS' };
 
 export function leagueLabel(sportId: string): string {
   return LEAGUE_LABEL[sportId] ?? sportId.toUpperCase();
 }
 
 /** What the card or row says: the famous title, or the personal badge's sentence. */
-export function famousTitle(item: Pick<FamousItem, 'personal' | 'title' | 'kind' | 'playerName' | 'teamNickname' | 'sportId'>): string {
+export function famousTitle(
+  item: Pick<FamousItem, 'personal' | 'title' | 'kind' | 'playerName' | 'teamNickname' | 'sportId'>,
+): string {
   if (!item.personal) return item.title;
   return personalBadgeTitle({
     kind: item.kind,
@@ -80,7 +82,11 @@ export function groupFamous(items: readonly FamousListItem[]): FamousLeagueGroup
   for (const item of items) {
     const teams = leagues.get(item.sportId) ?? new Map<string, FamousTeamGroup>();
     const key = item.teamId ?? 'league';
-    const group = teams.get(key) ?? { teamId: item.teamId, title: item.teamNickname ?? leagueLabel(item.sportId), items: [] };
+    const group = teams.get(key) ?? {
+      teamId: item.teamId,
+      title: item.teamNickname ?? leagueLabel(item.sportId),
+      items: [],
+    };
     group.items.push(item);
     teams.set(key, group);
     leagues.set(item.sportId, teams);
@@ -90,7 +96,10 @@ export function groupFamous(items: readonly FamousListItem[]): FamousLeagueGroup
       sportId,
       title: leagueLabel(sportId),
       teams: [...teams.values()]
-        .map((t) => ({ ...t, items: [...t.items].sort((a, b) => b.scheduledStart.localeCompare(a.scheduledStart)) }))
+        .map((t) => ({
+          ...t,
+          items: [...t.items].sort((a, b) => b.scheduledStart.localeCompare(a.scheduledStart)),
+        }))
         .sort((a, b) => b.items.length - a.items.length || a.title.localeCompare(b.title)),
     }))
     .sort((a, b) => a.title.localeCompare(b.title));

@@ -100,6 +100,7 @@ function sportWord(sport: Sport | null, plural: boolean): string {
   if (sport === 'mlb') return plural ? 'MLB games' : 'an MLB game';
   if (sport === 'nfl') return plural ? 'NFL games' : 'an NFL game';
   if (sport === 'nba') return plural ? 'NBA games' : 'an NBA game';
+  if (sport === 'mls') return plural ? 'MLS matches' : 'an MLS match';
   return plural ? 'games' : 'a game';
 }
 

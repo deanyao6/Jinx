@@ -238,7 +238,7 @@ export default function NewGoalScreen() {
                 selected={custom.sport === null}
                 onPress={() => patch({ sport: null })}
               />
-              {(['mlb', 'nfl', 'nba'] as Sport[]).map((sp) => (
+              {(['mlb', 'nfl', 'nba', 'mls'] as Sport[]).map((sp) => (
                 <Chip
                   key={sp}
                   label={sportLabel(sp)}

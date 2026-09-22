@@ -21,7 +21,8 @@ export interface EloParams {
   movMultiplier: boolean;
 }
 
-export const ELO_PARAMS: Record<Sport, EloParams> = {
+// MLS needs a calibrated draw-aware model; no binary probability is published for it.
+export const ELO_PARAMS: Record<Exclude<Sport, 'mls'>, EloParams> = {
   mlb: { k: 4, homeAdv: 24, seasonRegression: 1 / 3, base: 1500, movMultiplier: false },
   nfl: { k: 20, homeAdv: 48, seasonRegression: 1 / 3, base: 1505, movMultiplier: true },
   nba: { k: 8, homeAdv: 50, seasonRegression: 1 / 3, base: 1500, movMultiplier: true },

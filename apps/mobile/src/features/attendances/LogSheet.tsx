@@ -161,11 +161,15 @@ function LogForm({ gameId, game: g, existing }: FormProps) {
         winner={
           g.status !== 'final' || g.home_score == null || g.away_score == null
             ? null
-            : g.home_score > g.away_score
-              ? 'home'
-              : g.away_score > g.home_score
-                ? 'away'
-                : null
+            : g.winner_team_id
+              ? g.winner_team_id === g.home_team_id
+                ? 'home'
+                : 'away'
+              : g.home_score > g.away_score
+                ? 'home'
+                : g.away_score > g.home_score
+                  ? 'away'
+                  : null
         }
         status={[g.status === 'final' ? 'Final' : null, formatGameDateLong(g.scheduled_start), dh]
           .filter(Boolean)

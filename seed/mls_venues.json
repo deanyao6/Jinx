@@ -1,0 +1,562 @@
+{
+  "source": "ESPN 2026 scoreboards. Coordinates unknown until independently verified; check-in unavailable at unmapped venues.",
+  "venues": [
+    {
+      "key": "mls-espn-10421",
+      "name": "Energizer Park",
+      "city": "St. Louis, Missouri",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Energizer Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["10421"]
+      }
+    },
+    {
+      "key": "mls-espn-8674",
+      "name": "TQL Stadium",
+      "city": "Cincinnati, Ohio",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["TQL Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["8674"]
+      }
+    },
+    {
+      "key": "mls-espn-7604",
+      "name": "Audi Field",
+      "city": "Washington, District of Columbia",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Audi Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["7604"]
+      }
+    },
+    {
+      "key": "mls-espn-6971",
+      "name": "Inter&Co Stadium",
+      "city": "Orlando, Florida",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Inter&Co Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["6971"]
+      }
+    },
+    {
+      "key": "mls-espn-4370",
+      "name": "BC Place",
+      "city": "Vancouver",
+      "country": "Canada",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["BC Place"],
+      "provider_ids": {
+        "espn_venue_ids": ["4370"]
+      }
+    },
+    {
+      "key": "mls-espn-8673",
+      "name": "Q2 Stadium",
+      "city": "Austin, Texas",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Q2 Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["8673"]
+      }
+    },
+    {
+      "key": "mls-espn-7474",
+      "name": "Toyota Stadium",
+      "city": "Frisco",
+      "country": "USA",
+      "state": "TX",
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Toyota Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["7474"]
+      },
+      "tz": "America/Chicago",
+      "source": "https://www.fcdallas.com/stadium/contact"
+    },
+    {
+      "key": "mls-espn-4791",
+      "name": "Shell Energy Stadium",
+      "city": "Houston, Texas",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Shell Energy Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["4791"]
+      }
+    },
+    {
+      "key": "mls-espn-8993",
+      "name": "GEODIS Park",
+      "city": "Nashville, Tennessee",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["GEODIS Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["8993"]
+      }
+    },
+    {
+      "key": "mls-espn-1722",
+      "name": "Los Angeles Memorial Coliseum",
+      "city": "Los Angeles, California",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Los Angeles Memorial Coliseum"],
+      "provider_ids": {
+        "espn_venue_ids": ["1722"]
+      }
+    },
+    {
+      "key": "mls-espn-4383",
+      "name": "Providence Park",
+      "city": "Portland, Oregon",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Providence Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["4383"]
+      }
+    },
+    {
+      "key": "mls-espn-9195",
+      "name": "Snapdragon Stadium",
+      "city": "San Diego, California",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Snapdragon Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["9195"]
+      }
+    },
+    {
+      "key": "mls-espn-6072",
+      "name": "PayPal Park",
+      "city": "San Jose, California",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["PayPal Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["6072"]
+      }
+    },
+    {
+      "key": "mls-espn-1423",
+      "name": "Dignity Health Sports Park",
+      "city": "Carson, California",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Dignity Health Sports Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["1423"]
+      }
+    },
+    {
+      "key": "mls-espn-4485",
+      "name": "Lumen Field",
+      "city": "Seattle, Washington",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Lumen Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["4485"]
+      }
+    },
+    {
+      "key": "mls-espn-1452",
+      "name": "Soldier Field",
+      "city": "Chicago, Illinois",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Soldier Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["1452"]
+      }
+    },
+    {
+      "key": "mls-espn-9606",
+      "name": "Red Bull Arena",
+      "city": "Harrison, New Jersey",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Red Bull Arena"],
+      "provider_ids": {
+        "espn_venue_ids": ["9606"]
+      }
+    },
+    {
+      "key": "mls-espn-2731",
+      "name": "Dick's Sporting Goods Park",
+      "city": "Commerce City, Colorado",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Dick's Sporting Goods Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["2731"]
+      }
+    },
+    {
+      "key": "mls-espn-6538",
+      "name": "Allianz Field",
+      "city": "Saint Paul, Minnesota",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Allianz Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["6538"]
+      }
+    },
+    {
+      "key": "mls-espn-3714",
+      "name": "America First Field",
+      "city": "Sandy, Utah",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["America First Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["3714"]
+      }
+    },
+    {
+      "key": "mls-espn-6587",
+      "name": "Sporting Park",
+      "city": "Kansas City, Kansas",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Sporting Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["6587"]
+      }
+    },
+    {
+      "key": "mls-espn-4061",
+      "name": "Subaru Park",
+      "city": "Chester, Pennsylvania",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Subaru Park"],
+      "provider_ids": {
+        "espn_venue_ids": ["4061"]
+      }
+    },
+    {
+      "key": "mls-espn-4896",
+      "name": "Yankee Stadium",
+      "city": "New York City",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Yankee Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["4896"]
+      }
+    },
+    {
+      "key": "mls-espn-3873",
+      "name": "M&T Bank Stadium",
+      "city": "Baltimore, Maryland",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["M&T Bank Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["3873"]
+      }
+    },
+    {
+      "key": "mls-espn-7485",
+      "name": "Mercedes-Benz Stadium",
+      "city": "Atlanta, Georgia",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Mercedes-Benz Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["7485"]
+      }
+    },
+    {
+      "key": "mls-espn-4418",
+      "name": "Bank of America Stadium",
+      "city": "Charlotte, North Carolina",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Bank of America Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["4418"]
+      }
+    },
+    {
+      "key": "mls-espn-8689",
+      "name": "ScottsMiracle-Gro Field",
+      "city": "Columbus, Ohio",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["ScottsMiracle-Gro Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["8689"]
+      }
+    },
+    {
+      "key": "mls-espn-7605",
+      "name": "BMO Stadium",
+      "city": "Los Angeles, California",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["BMO Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["7605"]
+      }
+    },
+    {
+      "key": "mls-espn-10143",
+      "name": "BMO Field",
+      "city": "Toronto",
+      "country": "Canada",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["BMO Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["10143"]
+      }
+    },
+    {
+      "key": "mls-espn-10660",
+      "name": "Gillette Stadium",
+      "city": "Foxborough, Massachusetts",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Gillette Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["10660"]
+      }
+    },
+    {
+      "key": "mls-espn-10661",
+      "name": "Nu Stadium",
+      "city": "Miami, Florida",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Nu Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["10661"]
+      }
+    },
+    {
+      "key": "mls-espn-5146",
+      "name": "Citi Field",
+      "city": "New York, New York",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Citi Field"],
+      "provider_ids": {
+        "espn_venue_ids": ["5146"]
+      }
+    },
+    {
+      "key": "mls-espn-3278",
+      "name": "Stade Saputo",
+      "city": "Montreal",
+      "country": "Canada",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Stade Saputo"],
+      "provider_ids": {
+        "espn_venue_ids": ["3278"]
+      }
+    },
+    {
+      "key": "mls-espn-1419",
+      "name": "Empower Field at Mile High",
+      "city": "Denver, Colorado",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Empower Field at Mile High"],
+      "provider_ids": {
+        "espn_venue_ids": ["1419"]
+      }
+    },
+    {
+      "key": "mls-espn-3869",
+      "name": "Stanford Stadium",
+      "city": "Stanford, California",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Stanford Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["3869"]
+      }
+    },
+    {
+      "key": "mls-espn-5960",
+      "name": "Levi's Stadium",
+      "city": "Santa Clara, California",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["Levi's Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["5960"]
+      }
+    },
+    {
+      "key": "mls-espn-2266",
+      "name": "SeatGeek Stadium",
+      "city": "Bridgeview, Illinois",
+      "country": "USA",
+      "state": null,
+      "lat": null,
+      "lng": null,
+      "geofence_m": 400,
+      "sports": ["mls"],
+      "aliases": ["SeatGeek Stadium"],
+      "provider_ids": {
+        "espn_venue_ids": ["2266"]
+      }
+    }
+  ]
+}

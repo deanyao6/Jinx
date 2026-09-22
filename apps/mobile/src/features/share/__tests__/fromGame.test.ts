@@ -56,3 +56,33 @@ describe('shareGameFor', () => {
     expect(shareGameFor({ ...game, venue: null }, null).venue).toBeNull();
   });
 });
+
+describe('MLS share results', () => {
+  const mls = { ...game, sport_id: 'mls', home_score: 3, away_score: 3, winner_team_id: 'phi' };
+  it('counts a single-match shootout winner without adding penalties to goals', () => {
+    expect(shareGameFor(mls, { rooting_team_id: 'phi', verified: false })).toMatchObject({
+      result: 'win',
+      homeScore: 3,
+      awayScore: 3,
+      sport: 'mls',
+      winner: 'home',
+    });
+    expect(shareGameFor(mls, { rooting_team_id: 'chi', verified: false }).result).toBe('loss');
+  });
+  it('uses the individual match winner supplied for a two-leg playoff', () => {
+    expect(
+      shareGameFor(
+        { ...mls, home_score: 0, away_score: 1, winner_team_id: 'chi' },
+        { rooting_team_id: 'phi', verified: false },
+      ).result,
+    ).toBe('loss');
+  });
+  it('preserves draws', () => {
+    expect(
+      shareGameFor(
+        { ...mls, winner_team_id: null, is_tie: true },
+        { rooting_team_id: 'phi', verified: false },
+      ).result,
+    ).toBe('tie');
+  });
+});

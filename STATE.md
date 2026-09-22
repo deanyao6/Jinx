@@ -4,7 +4,7 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**; the NBA **2026-09-18, 01:10 PDT**; venue timezones and search **2026-09-18, 09:40 PDT**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**; the NBA **2026-09-18, 01:10 PDT**; venue timezones and search **2026-09-18, 09:40 PDT**; the MLS merge **2026-09-22**, by running the commands quoted, not by reading commits.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -12,7 +12,7 @@ Keep it that way: when you change what is true, change this file in the same com
 ## 1. What Jinx is
 
 A passport for sports fans: every game you attend becomes part of a living record. iOS only,
-MLB, NFL and (from 2026-09-18) the NBA, v1 in TestFlight. `SPEC.md` is the product and engineering spec and it is
+MLB, NFL, (from 2026-09-18) the NBA and (from 2026-09-22) MLS, v1 in TestFlight. `SPEC.md` is the product and engineering spec and it is
 authoritative. `design/reference.html` is the single visual source of truth.
 
 Hobby project, near-zero running cost: $0 data sources, Supabase free tier, Anthropic Haiku
@@ -44,8 +44,8 @@ orphan a loaded database.
 
 | | What it is | State |
 |---|---|---|
-| **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA). Every migration. 261 MB. Where you develop |
-| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA. All 27 migrations as of 2026-09-18 |
+| **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA), plus MLS 2016 onward (4,962 on Arjun's machine; see section 5 for this one). Every migration. Where you develop |
+| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. All 32 migrations as of 2026-09-22 |
 | **TestFlight** | EAS `@deanyao/jinx` | Build 4 submitted 2026-09-17, waiting on Apple processing |
 
 **Hosted, as verified today:**
@@ -138,6 +138,42 @@ on local and 3.1 s on hosted, now 0.12 s and 0.15 s. `seed/scripts/fill_timezone
 zone from each venue's coordinates and needs `pip install timezonefinder`. 42 venues with no
 coordinates in the seed (spring training and minor league parks, 1,000 games between them) still
 fall back to America/New_York.
+
+**MLS is merged and on hosted (2026-09-22).** Arjun built it on branch `MLS` with an agent and
+rolled it out to hosted himself before the merge: five migrations (`20260919000100` to
+`20260922000100`), 30 clubs with palettes, 37 stadiums, 4,962 matches 2016 onward with 4,817
+finals, ticket parsing that knows the sport, and `parse-ticket` redeployed. Handoff and limits:
+`docs/MLS_ROLLOUT.md`; evidence: `docs/evidence/mls/`; SQL tests `043` and `044` (renumbered
+at the merge because `041` was already the search test). In the app: league picker, favorites,
+schedules, results, logging, Passport, stamps, bucket list, share cards. A shootout is stored
+apart from goals (`decision_method`, `home_shootout_score`, `away_shootout_score`,
+`winner_team_id`), and `gameResult` honours an explicit winner, so a 3–3 match won on
+penalties is a win. **Deliberately unavailable for MLS** until a draw-aware model exists:
+Elo and win probability, Pick a side (`make_pledge` answers `sport_not_supported`), live state,
+rosters and favorite players, Relive, Wrapped. The game screen says so.
+
+Not done, and known:
+
+- **38 of the 39 MLS-only stadiums have no timezone and no coordinates**, on hosted and in the
+  seed (`seed/mls_venues.json` carries neither; only Toyota Stadium is curated). So at those
+  stadiums search and the famous-game matcher fall back to America/New_York, the very bug fixed
+  for the other sports on 2026-09-18, and geofenced check-in cannot work. The eleven MLS clubs
+  that share an NFL building (Seattle, New England, Atlanta, Charlotte, LA Galaxy, and so on)
+  are fine. The fix is coordinates for 36 stadiums from a real source, then
+  `python3 seed/scripts/fill_timezones.py`, `build_seed_sql.py` and a migration. No
+  coordinates were guessed, on purpose.
+- **Nothing refreshes MLS results yet.** `.github/workflows/mls-ingest.yml` is gated on a
+  repository variable `MLS_INGEST_ENABLED` that is not set, and no Edge Function touches
+  ESPN. Until Dean sets it after a successful runner probe (`workflow_dispatch`, mode `probe`),
+  the 123 scheduled 2026 matches go final only when someone runs
+  `npx tsx ingest/src/mls/backfill.ts --from 2026 --to 2026 --force` against hosted.
+- **The 30 MLS palettes** (`seed/mls_colors.json`) were tuned to the contrast rule, not to
+  Dean's eye.
+- **Not seen on a device.** Arjun's session reached the league picker on the simulator against
+  hosted and stopped at sign-in. The MLS journey (favorite, search, log, stamp, share) has not
+  been walked, and it is only in build 5.
+- **Local on Dean's machine**: the MLS backfill was started at the merge; section 3 says what
+  Arjun's had.
 
 **The NBA is built and verified on local and rolled out to hosted (2026-09-18).** Brief:
 `docs/prompts/nba.md`; evidence: the NBA table in `docs/progress.md` and `docs/evidence/nba/`;

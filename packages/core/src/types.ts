@@ -3,7 +3,7 @@
  * Everything here is plain data; no provider-specific shapes leak past the adapters.
  */
 
-export type Sport = 'mlb' | 'nfl' | 'nba';
+export type Sport = 'mlb' | 'nfl' | 'nba' | 'mls';
 
 export type GameStatus = 'scheduled' | 'live' | 'final' | 'postponed' | 'suspended' | 'cancelled';
 
@@ -56,6 +56,14 @@ export interface CanonicalGame {
   providerGameId: string;
   sport: Sport;
   season: number;
+  /** Stable identity distinct from the display year (MLS changes calendars in 2027). */
+  seasonKey?: string;
+  seasonLabel?: string;
+  /** Penalties stay separate from goals; aggregate_shootout does not change the match winner. */
+  decisionMethod?: 'regulation' | 'extra_time' | 'shootout' | 'aggregate_shootout' | null;
+  homeShootoutScore?: number | null;
+  awayShootoutScore?: number | null;
+  winnerProviderTeamId?: string | null;
   gameType: GameType;
   scheduledStart: IsoTimestamp;
   providerVenueId: string | null;

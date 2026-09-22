@@ -7,7 +7,7 @@ import { FormScreen } from '@/components/FormScreen';
 import { Loading } from '@/components/Loading';
 import { Notice, errorMessage } from '@/components/Notice';
 import { TextField } from '@/components/TextField';
-import { useAuth } from '@/features/auth/hooks';
+import { useAuth, useSignOut } from '@/features/auth/hooks';
 import { StepIntro } from '@/features/onboarding/ui/StepIntro';
 import {
   useHandleAvailable,
@@ -27,6 +27,7 @@ function HandleForm({ profile, metaName }: { profile: Profile; metaName: string 
   const theme = useTheme();
   const router = useRouter();
   const update = useUpdateProfile();
+  const signOut = useSignOut();
   const [handle, setHandle] = useState(isPlaceholderHandle(profile.handle) ? '' : profile.handle);
   const [name, setName] = useState(profile.display_name || metaName);
   const [touched, setTouched] = useState(false);
@@ -99,6 +100,7 @@ function HandleForm({ profile, metaName }: { profile: Profile; metaName: string 
           loading={update.isPending}
           disabled={!canContinue}
         />
+        <Button title="Use a different email" variant="ghost" onPress={signOut} />
       </View>
     </FormScreen>
   );

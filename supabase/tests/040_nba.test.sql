@@ -16,7 +16,7 @@ select is((select provider_team_id from public.teams where sport_id = 'nba' and 
 select is((select nickname from public.teams where provider = 'nba' and provider_team_id = '1610612757'), 'Trail Blazers', 'a two-word nickname is stored, not derived');
 select is((select count(*)::int from public.teams t join public.team_colors c on c.team_id = t.id where t.sport_id = 'nba'), 30, 'every active NBA team has a palette');
 select is((select count(*)::int from public.teams where sport_id = 'nba' and active and home_venue_id is null), 0, 'every active NBA team has a home arena');
-select is((select count(*)::int from public.venues where provider_ids ? 'espn_venue_ids'), 72, 'the arenas carry ESPN venue ids');
+select ok((select count(*)::int from public.venues where provider_ids ? 'espn_venue_ids') >= 72, 'the original arenas retain ESPN venue ids as other sports are added');
 select is((select shape_key from public.venue_shapes s join public.venues v on v.id = s.venue_id where v.key = 'td-garden'), 'arena', 'an arena is drawn as one');
 select is((select count(*)::int from public.team_aliases a join public.teams t on t.id = a.team_id where t.provider = 'nba' and lower(a.alias) in ('sixers', 'cavs', 't-wolves', 'blazers')), 4, 'the nicknames tickets print are aliases');
 select ok((select elevation_ft from public.venues where key = 'ball-arena') >= 5000, 'Ball Arena is a mile high');

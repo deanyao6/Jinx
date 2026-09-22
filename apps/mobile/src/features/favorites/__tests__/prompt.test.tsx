@@ -2,6 +2,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import LeagueRoute from '@/app/settings/favorites/league';
 import RosterRoute from '@/app/settings/favorites/roster';
 import TeamsRoute, { rosterPromptHref } from '@/app/settings/favorites/teams';
 import type { RosterPlayer } from '@/features/players/queries';
@@ -33,10 +34,11 @@ const team = (id: string, city: string, nickname: string): Team => ({
 });
 const mockPHI = team('phi', 'Philadelphia', 'Phillies');
 const mockNYM = team('nym', 'New York', 'Mets');
+const mockMLS = { ...team('union', 'Philadelphia', 'Union'), sport_id: 'mls' };
 
 const mockSetTeams = jest.fn();
 jest.mock('@/features/teams/queries', () => ({
-  useTeams: () => ({ data: [mockPHI, mockNYM], isPending: false }),
+  useTeams: () => ({ data: [mockPHI, mockNYM, mockMLS], isPending: false }),
 }));
 jest.mock('@/features/profile/queries', () => ({
   useFavoriteTeams: () => ({ data: [mockNYM] }),
@@ -141,5 +143,26 @@ describe('the roster page as the prompt', () => {
     expect(queryByText('Any favorite Phillies?')).toBeNull();
     expect(queryByText('Done')).toBeNull();
     expect(queryByText('Not now')).toBeNull();
+  });
+});
+
+describe('MLS favorite capabilities', () => {
+  it('offers MLS for teams and hides it for players', async () => {
+    mockParams.mockReturnValue({ mode: 'teams' });
+    const teams = await renderRoute(<LeagueRoute />);
+    await fireEvent.press(teams.getByText('Major League Soccer'));
+    expect(mockPush).toHaveBeenCalledWith('/settings/favorites/teams?sport=mls');
+    await teams.unmount();
+    mockParams.mockReturnValue({ mode: 'players' });
+    const players = await renderRoute(<LeagueRoute />);
+    expect(players.queryByText('Major League Soccer')).toBeNull();
+  });
+  it('saves an MLS favorite without opening an unavailable roster', async () => {
+    mockParams.mockReturnValue({ sport: 'mls' });
+    const { getByLabelText, queryByText } = await renderRoute(<TeamsRoute />);
+    expect(queryByText('Philadelphia Phillies')).toBeNull();
+    await fireEvent.press(getByLabelText('Philadelphia Union, add to favorites'));
+    expect(mockSetTeams).toHaveBeenCalledWith([mockNYM, mockMLS]);
+    expect(mockPush).not.toHaveBeenCalled();
   });
 });

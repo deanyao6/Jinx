@@ -17,6 +17,7 @@ export type ReplayGame = {
   awayTeamId: string;
   homeScore: number | null;
   awayScore: number | null;
+  winnerTeamId?: string | null;
   /** The side the person was on. Null is a neutral game, which no record counts. */
   rootingTeamId: string | null;
   homeAbbreviation: string | null;
@@ -91,6 +92,7 @@ export function replaySteps(
         awayTeamId: g.awayTeamId,
         homeScore: g.homeScore,
         awayScore: g.awayScore,
+        winnerTeamId: g.winnerTeamId,
         rootingTeamId: g.rootingTeamId,
         rootingBasis: null,
       },

@@ -21,6 +21,7 @@ import { sportLabel } from '@/lib/format';
 const LEAGUES = [
   { id: 'mlb', name: 'Major League Baseball', meta: '30 teams' },
   { id: 'nfl', name: 'National Football League', meta: '32 teams' },
+  { id: 'mls', name: 'Major League Soccer', meta: '30 clubs' },
 ];
 
 export default function LeagueRoute() {
@@ -34,7 +35,7 @@ export default function LeagueRoute() {
       fallback={players ? '/settings/favorites?tab=players' : '/settings/favorites'}
     >
       <SectionHeader title="Choose a league" />
-      {LEAGUES.map((l) => (
+      {LEAGUES.filter((l) => !players || l.id !== 'mls').map((l) => (
         <PickRow
           key={l.id}
           badge={sportLabel(l.id)}

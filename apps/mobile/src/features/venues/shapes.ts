@@ -40,5 +40,6 @@ export function useVenueShapes() {
 export function defaultShapeKey(sports: readonly string[]): ShapeKey {
   if (sports.includes('mlb')) return 'ballparkA';
   if (sports.length > 0 && sports.every((s) => s === 'nba')) return 'arena';
+  if (sports.includes('mls') && !sports.includes('mlb')) return 'bowl';
   return 'bowl';
 }

@@ -54,7 +54,7 @@ export function importBadgeCount(imports: readonly ImportLike[]): number {
 }
 
 export type ParsedTicket = {
-  sport?: 'mlb' | 'nfl' | 'nba' | 'unknown' | null;
+  sport?: 'mlb' | 'nfl' | 'nba' | 'mls' | 'unknown' | null;
   home_team?: string | null;
   away_team?: string | null;
   date_local?: string | null;

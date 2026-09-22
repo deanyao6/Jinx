@@ -813,3 +813,71 @@ describe('rankCandidates fixture suite', () => {
     });
   }
 });
+
+describe('MLS tickets', () => {
+  const mlsTeams: TeamRef[] = [
+    {
+      id: 'lafc',
+      sport: 'mls',
+      name: 'Los Angeles FC',
+      city: 'Los Angeles',
+      abbreviation: 'LAFC',
+      aliases: ['LAFC'],
+    },
+    {
+      id: 'union',
+      sport: 'mls',
+      name: 'Philadelphia Union',
+      city: 'Chester',
+      abbreviation: 'PHI',
+      aliases: ['Union', 'Philadelphia'],
+    },
+  ];
+  const mlsContext: MatchContext = {
+    teams: [...teams, ...mlsTeams],
+    venues: [
+      {
+        id: 'bmo',
+        name: 'BMO Stadium',
+        aliases: ['Banc of California Stadium'],
+        tz: 'America/Los_Angeles',
+      },
+    ],
+  };
+  const cup: CandidateGame = {
+    id: 'mls-cup-2022',
+    sport: 'mls',
+    status: 'final',
+    scheduledStart: '2022-11-05T20:00:00Z',
+    homeTeamId: 'lafc',
+    awayTeamId: 'union',
+    venueId: 'bmo',
+    doubleheaderNumber: null,
+    rescheduledToGameId: null,
+  };
+  it('resolves a historical stadium name and MLS abbreviations', () => {
+    const result = rankCandidates(
+      ticket({
+        sport: 'mls',
+        home_team: 'LAFC',
+        away_team: 'PHI',
+        date_local: '2022-11-05',
+        time_local: '13:00',
+        venue: 'Banc of California Stadium',
+      }),
+      [cup],
+      mlsContext,
+    );
+    expect(result.decision).toBe('matched');
+    expect(result.candidates[0]?.game.id).toBe(cup.id);
+  });
+  it('keeps Philadelphia soccer separate from baseball and football', () => {
+    expect(matchTeams('PHI', mlsContext.teams, 'mls')[0]?.team.id).toBe('union');
+    const result = rankCandidates(
+      ticket({ sport: 'nfl', home_team: 'LAFC', away_team: 'PHI', date_local: '2022-11-05' }),
+      [cup],
+      mlsContext,
+    );
+    expect(result.decision).toBe('failed');
+  });
+});

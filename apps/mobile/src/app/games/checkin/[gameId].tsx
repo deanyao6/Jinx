@@ -52,7 +52,13 @@ export default function CheckInScreen() {
   // until the pick is settled; after that this route shows the result card below.
   const c = ctx.data;
   const settled = !!c.pledge && c.pledge.status !== 'provisional';
-  if (c.checked_in_at && c.neutral_for_user && !c.both_favorites && !settled) {
+  if (
+    c.sport_id !== 'mls' &&
+    c.checked_in_at &&
+    c.neutral_for_user &&
+    !c.both_favorites &&
+    !settled
+  ) {
     return (
       <>
         <Stack.Screen options={{ headerShown: false }} />
@@ -194,6 +200,10 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
           </Card>
         ) : ctx.both_favorites ? (
           <SidePicker gameId={gameId} ctx={ctx} />
+        ) : ctx.neutral_for_user && ctx.sport_id === 'mls' ? (
+          <Card>
+            <Text>You are checked in. Neutral picks are not available for MLS yet.</Text>
+          </Card>
         ) : ctx.neutral_for_user ? (
           <PledgePanel gameId={gameId} ctx={ctx} />
         ) : (
@@ -218,6 +228,7 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
 }
 
 function headline(ctx: GameContext): string {
+  if (ctx.sport_id === 'mls' && ctx.neutral_for_user) return 'At the match';
   if (ctx.both_favorites) return 'Pick a side';
   if (ctx.neutral_for_user) return 'Pick a side';
   const fav = ctx.home.favorite ? ctx.home : ctx.away;

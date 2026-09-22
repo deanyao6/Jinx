@@ -73,6 +73,8 @@ export const LOCK_RULES: Record<
   mlb: { estimateMinutes: 30, firstScoreLocks: true, live: true },
   nfl: { estimateMinutes: 12, firstScoreLocks: true, live: false },
   nba: { estimateMinutes: 30, firstScoreLocks: false, live: true },
+  // Capability-gated in the app and SQL until a draw-aware probability model exists.
+  mls: { estimateMinutes: 0, firstScoreLocks: false, live: false },
 };
 
 /**

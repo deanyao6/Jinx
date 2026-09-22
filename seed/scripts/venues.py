@@ -106,6 +106,29 @@ def merged_venues():
             "provider_ids": {"espn_venue_ids": v["provider_ids"].get("espn_venue_ids", [])},
             "sports": set(v.get("sports", ["nba"])), "aliases": set(v.get("aliases", [])) | {v["name"]},
         }
+    # MLS stadiums shared with another league must retain the existing key and coordinates.
+    for v in load("mls_venues.json")["venues"]:
+        names = set(v.get("aliases", [])) | {v["name"]}
+        target = v.get("merge_into")
+        if not target:
+            matches = [k for k, old in venues.items() if {n.lower() for n in names} & {n.lower() for n in old["aliases"]}]
+            if len(matches) > 1:
+                raise ValueError(f"Ambiguous MLS venue {v['name']}: {matches}; set merge_into")
+            target = matches[0] if matches else None
+        if target:
+            rec = venues[target]
+            rec["sports"].add("mls")
+            rec["aliases"] |= names
+            rec["provider_ids"]["espn_venue_ids"] = sorted(set(rec["provider_ids"].get("espn_venue_ids", [])) | set(v["provider_ids"]["espn_venue_ids"]))
+        else:
+            venues[v["key"]] = {
+                **v, "tz": v.get("tz"), "opened_year": v.get("opened_year"), "closed_year": v.get("closed_year"),
+                "sports": set(v["sports"]), "aliases": names,
+            }
+    # The resolved zones, for any venue whose own seed file carries none.
+    for key, tz in load_timezones().items():
+        if key in venues and not venues[key].get("tz"):
+            venues[key]["tz"] = tz
     return venues
 
 

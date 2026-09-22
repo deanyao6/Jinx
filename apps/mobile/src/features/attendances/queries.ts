@@ -22,6 +22,7 @@ export type AttendanceGame = {
   home_score: number | null;
   away_score: number | null;
   is_tie: boolean;
+  winner_team_id?: string | null;
   doubleheader_number: number | null;
   home: GameTeam | null;
   away: GameTeam | null;
@@ -55,7 +56,7 @@ export type Attendance = {
 const ATTENDANCE_SELECT = `id, user_id, game_id, source, status, verified, verified_via, note,
   rooting_team_id, rooting_basis, created_at,
   game:games(id, sport_id, season, game_type, scheduled_start, status, home_team_id, away_team_id,
-    home_score, away_score, is_tie, doubleheader_number,
+    home_score, away_score, is_tie, winner_team_id, doubleheader_number,
     home:teams!games_home_team_id_fkey(${GAME_TEAM_COLUMNS}),
     away:teams!games_away_team_id_fkey(${GAME_TEAM_COLUMNS}),
     venue:venues(id, name, city, state)),

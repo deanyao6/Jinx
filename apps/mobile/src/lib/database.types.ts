@@ -928,7 +928,9 @@ export type Database = {
         Row: {
           attendance: number | null
           away_score: number | null
+          away_shootout_score: number | null
           away_team_id: string
+          decision_method: string | null
           detail_ingested_at: string | null
           detail_rechecked_at: string | null
           doubleheader_number: number | null
@@ -936,6 +938,7 @@ export type Database = {
           final_at: string | null
           game_type: string
           home_score: number | null
+          home_shootout_score: number | null
           home_team_id: string
           id: string
           innings_or_periods: number | null
@@ -950,6 +953,8 @@ export type Database = {
           rescheduled_to_game_id: string | null
           scheduled_start: string
           season: number
+          season_key: string | null
+          season_label: string | null
           sport_id: string
           status: string
           temperature_f: number | null
@@ -961,7 +966,9 @@ export type Database = {
         Insert: {
           attendance?: number | null
           away_score?: number | null
+          away_shootout_score?: number | null
           away_team_id: string
+          decision_method?: string | null
           detail_ingested_at?: string | null
           detail_rechecked_at?: string | null
           doubleheader_number?: number | null
@@ -969,6 +976,7 @@ export type Database = {
           final_at?: string | null
           game_type: string
           home_score?: number | null
+          home_shootout_score?: number | null
           home_team_id: string
           id?: string
           innings_or_periods?: number | null
@@ -983,6 +991,8 @@ export type Database = {
           rescheduled_to_game_id?: string | null
           scheduled_start: string
           season: number
+          season_key?: string | null
+          season_label?: string | null
           sport_id: string
           status: string
           temperature_f?: number | null
@@ -994,7 +1004,9 @@ export type Database = {
         Update: {
           attendance?: number | null
           away_score?: number | null
+          away_shootout_score?: number | null
           away_team_id?: string
+          decision_method?: string | null
           detail_ingested_at?: string | null
           detail_rechecked_at?: string | null
           doubleheader_number?: number | null
@@ -1002,6 +1014,7 @@ export type Database = {
           final_at?: string | null
           game_type?: string
           home_score?: number | null
+          home_shootout_score?: number | null
           home_team_id?: string
           id?: string
           innings_or_periods?: number | null
@@ -1016,6 +1029,8 @@ export type Database = {
           rescheduled_to_game_id?: string | null
           scheduled_start?: string
           season?: number
+          season_key?: string | null
+          season_label?: string | null
           sport_id?: string
           status?: string
           temperature_f?: number | null
@@ -2895,7 +2910,9 @@ export type Database = {
         Returns: {
           attendance: number | null
           away_score: number | null
+          away_shootout_score: number | null
           away_team_id: string
+          decision_method: string | null
           detail_ingested_at: string | null
           detail_rechecked_at: string | null
           doubleheader_number: number | null
@@ -2903,6 +2920,7 @@ export type Database = {
           final_at: string | null
           game_type: string
           home_score: number | null
+          home_shootout_score: number | null
           home_team_id: string
           id: string
           innings_or_periods: number | null
@@ -2917,6 +2935,8 @@ export type Database = {
           rescheduled_to_game_id: string | null
           scheduled_start: string
           season: number
+          season_key: string | null
+          season_label: string | null
           sport_id: string
           status: string
           temperature_f: number | null

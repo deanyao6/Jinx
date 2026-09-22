@@ -72,6 +72,12 @@ for t in load("nba_teams.json")["teams"]:
     aliases = set(t["aliases"]) | {full, t["name"], t["city"], t["abbr"]}
     teams.append(("nba", "nba", t["provider_team_id"], t["franchise"], full, t["city"], t["abbr"], None, t["active"], aliases, t.get("division"), ("key", t.get("home_venue_key")), t["name"]))
 
+mls_venues = merged_venues()
+for t in load("mls_teams.json")["teams"]:
+    vid = t["home_venue_key"].removeprefix("mls-espn-")
+    home = next((k for k,v in mls_venues.items() if vid in v["provider_ids"].get("espn_venue_ids", [])), None)
+    teams.append(("mls", "espn_mls", t["provider_team_id"], t["franchise"], t["name"], t["city"], t["abbr"], t["color"], t["active"], set(t["aliases"]), t.get("division"), ("key", home), t["nickname"]))
+
 ONLY = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
 if ONLY:
     teams = [t for t in teams if t[0] == ONLY]
@@ -97,8 +103,8 @@ for sport, provider, pid, franchise, name, city, abbr, color, active, aliases, _
 palette_cols = ("fill_hex", "on_fill_hex", "primary_light_hex", "secondary_light_hex", "primary_dark_hex", "secondary_dark_hex", "source")
 lines.append("")
 lines.append("-- team colors")
-for p in load("team_colors.json")["teams"]:
-    if ONLY and {"mlb": "mlb", "nfl": "nflverse", "nba": "nba"}[ONLY] != p["provider"]:
+for p in load("team_colors.json")["teams"] + load("mls_colors.json")["teams"]:
+    if ONLY and {"mlb": "mlb", "nfl": "nflverse", "nba": "nba", "mls": "espn_mls"}[ONLY] != p["provider"]:
         continue
     lines.append(
         "insert into public.team_colors (team_id, " + ", ".join(palette_cols) + ") select id, "
@@ -211,7 +217,7 @@ out = os.path.join(ROOT, "supabase", "seed.sql")
 with open(out, "w", encoding="utf8") as f:
     f.write("\n".join(lines))
 no_coords = [v["name"] for v in venues.values() if v["lat"] is None]
-palettes = len(load("team_colors.json")["teams"])
+palettes = len(load("team_colors.json")["teams"]) + len(load("mls_colors.json")["teams"])
 shapes_desc = ", ".join(f"{n} {k}" for k, n in sorted(shape_counts.items(), key=lambda kv: -kv[1]))
 print(f"wrote {out}: {len(teams)} teams, {palettes} team palettes, {len(venues)} venues ({len(no_coords)} without coordinates)", file=sys.stderr)
 print(f"  venue shapes: {shapes_desc}", file=sys.stderr)

@@ -29,6 +29,11 @@ export type GameDetail = {
   provider_game_id?: string | null;
   sport_id: string;
   season: number;
+  season_key?: string | null;
+  season_label?: string | null;
+  decision_method?: string | null;
+  home_shootout_score?: number | null;
+  away_shootout_score?: number | null;
   game_type: string;
   scheduled_start: string;
   status: string;

@@ -1,0 +1,53 @@
+name: MLS schedules and results
+
+on:
+  schedule:
+    - cron: '45 8 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Probe ESPN access only, or refresh the current season
+        type: choice
+        options: [probe, sync]
+        default: probe
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mls-ingest
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    if: github.event_name == 'workflow_dispatch' || vars.MLS_INGEST_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Verify ESPN access and supported responses without database credentials
+        run: node --import tsx ingest/src/mls/probe.ts
+
+  sync:
+    needs: probe
+    # Enable only after the MLS migrations and a successful runner probe are verified.
+    if: vars.MLS_INGEST_ENABLED == 'true' && (github.event_name == 'schedule' || inputs.mode == 'sync')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Refresh schedules and settle final scores
+        run: npx tsx ingest/src/mls/backfill.ts --from $(date -u +%Y) --to $(date -u +%Y) --force

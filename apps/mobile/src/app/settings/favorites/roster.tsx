@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
+import { Notice } from '@/components/Notice';
 import { Loading } from '@/components/Loading';
 import { PageIntro } from '@/components/PageIntro';
 import { useGoBack } from '@/components/reference/BackHeader';
@@ -58,7 +59,7 @@ export default function RosterRoute() {
     return () => clearTimeout(id);
   }, [query]);
 
-  const roster = useTeamRoster(teamId, debounced);
+  const roster = useTeamRoster(sport === 'mls' ? undefined : teamId, debounced);
   const favorites = useFavoritePlayers();
   const toggle = useToggleFavoritePlayer();
 
@@ -66,6 +67,16 @@ export default function RosterRoute() {
     () => new Set((favorites.data ?? []).map((p) => p.id)),
     [favorites.data],
   );
+
+  if (sport === 'mls') {
+    return (
+      <SettingsFrame title="MLS players" fallback="/settings/favorites">
+        <Notice>
+          MLS player rosters are not available yet. You can add favorite clubs from the Teams tab.
+        </Notice>
+      </SettingsFrame>
+    );
+  }
 
   const list = roster.data ?? [];
   /** The prompt's question and its buttons wear the team's colours, like the rows. */

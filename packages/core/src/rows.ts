@@ -22,7 +22,7 @@ export function gameRow(g: CanonicalGame, ctx: RowContext): GameRow {
       `unknown team for game ${g.provider}:${g.providerGameId} (${g.homeProviderTeamId} vs ${g.awayProviderTeamId})`,
     );
   }
-  const winner =
+  const scoreWinner =
     g.status === 'final' &&
     g.homeScore !== null &&
     g.awayScore !== null &&
@@ -31,6 +31,10 @@ export function gameRow(g: CanonicalGame, ctx: RowContext): GameRow {
         ? home
         : away
       : null;
+  const winner =
+    g.status === 'final' && g.winnerProviderTeamId
+      ? (ctx.teamMap.get(g.winnerProviderTeamId) ?? null)
+      : scoreWinner;
   return {
     sport_id: g.sport,
     season: g.season,
@@ -49,6 +53,15 @@ export function gameRow(g: CanonicalGame, ctx: RowContext): GameRow {
     provider: g.provider,
     provider_game_id: g.providerGameId,
     final_at: g.finalAt,
+    ...(g.sport === 'mls'
+      ? {
+          season_key: g.seasonKey,
+          season_label: g.seasonLabel,
+          decision_method: g.decisionMethod ?? null,
+          home_shootout_score: g.homeShootoutScore ?? null,
+          away_shootout_score: g.awayShootoutScore ?? null,
+        }
+      : {}),
   };
 }
 

@@ -31,6 +31,8 @@ function arg(name: string): string | null {
 }
 
 export async function computeElo(sport: Sport, opts: { write: boolean }): Promise<void> {
+  if (sport === 'mls')
+    throw new Error('MLS win probabilities need a draw-aware model; Elo publishing is disabled');
   const db = createDb();
   const rows = await selectAll<GameRow>(
     db,

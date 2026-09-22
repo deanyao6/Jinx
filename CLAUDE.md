@@ -4,12 +4,21 @@
 > what is half done, what is switched off on purpose, what only Dean can do, and the traps that
 > cost previous sessions hours. This file is layout, commands and conventions.
 
-A passport for sports fans: every game you attend becomes part of a living record. iOS first; MLB, NFL and NBA.
+A passport for sports fans: every game you attend becomes part of a living record. iOS first; MLB, NFL, NBA and MLS.
 
 **The full product and engineering spec is [SPEC.md](SPEC.md). Read it before changing anything.**
 `design/reference.html` is the single visual source of truth; `docs/turnstile-ui.html` is the older
 concept mockup, kept for structure only. `CLAUDE_CODE_PROMPT.md` was the kickoff brief and is
 history now: where it disagrees with STATE.md, STATE.md is right.
+
+## MLS (merged 2026-09-22)
+
+Arjun's branch `MLS` brought a fourth sport: 30 clubs, palettes, stadiums, 2016 on schedules and
+results, favorites, attendance logging, Passport and ticket parsing. It is on hosted (five
+migrations, 4,962 matches) and merged to main. Rosters, Relive, Wrapped, live state and Pick a
+side are deliberately unavailable for MLS until a draw-aware model exists. Read
+[docs/MLS_ROLLOUT.md](docs/MLS_ROLLOUT.md) for the handoff and its limits, and STATE.md for what
+is still missing (most MLS-only stadiums have no coordinates or timezone yet).
 
 ## Where things stand (2026-09-17)
 
@@ -122,6 +131,9 @@ npx tsx ingest/src/nba/detail.ts --pending                 # NBA details for att
 npx tsx ingest/src/nba/rosters.ts                          # NBA current rosters into team_rosters
 npx tsx ingest/src/nba/relive.ts --attended                # NBA win probability (ESPN, or the state model) + story steps
 npx tsx ingest/src/nba/fit_wp.ts                           # refit the NBA in-game model (docs/elo-backtest.md)
+node scripts/mls-local.mjs --from 2016 --to 2026          # MLS schedules + results into the LOCAL database (reads keys from supabase status)
+npx tsx ingest/src/mls/backfill.ts --from 2026 --to 2026   # same against whatever SUPABASE_URL points at; --force re-reads finals
+npx tsx ingest/src/mls/probe.ts                            # can this machine reach ESPN's MLS scoreboard at all
 npx tsx ingest/src/famous/curated.ts [--check]             # famous games: seed/famous_games.json by local date (refuses on 0 or 2+ matches), then the championship rows
 npx tsx ingest/src/famous/franchise.ts [--check]           # curated superstars from seed/franchise_players.json (refuses on an ambiguous name)
 npx tsx ingest/src/mlb/honors.ts [--from 1997 --to 2026]   # MLB MVP, Cy Young, ROY winners and All-Stars into player_honors

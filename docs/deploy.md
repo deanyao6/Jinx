@@ -399,3 +399,16 @@ button on TestFlight calls a function that does not exist; and no scheduled job 
 - **Game detail on the hosted project** builds itself once the rollout above has run: MLB inside
   `mlb-sync` every 15 minutes, NFL in the nightly GitHub workflow. Before that, Relive has nothing
   to show for a newly logged game.
+
+## MLS rollout (2026-09-21, not deployed)
+
+Follow [MLS_ROLLOUT.md](MLS_ROLLOUT.md). The four MLS migrations are applied locally only.
+Link only Jinx `vekdufflzklfxljqufbq`, inspect remote migration history/dry-run before pushing,
+then deploy the changed `parse-ticket` function and backfill MLS after schema checks. Do not
+run generic hosted-rollout.sh for this change; it also rotates secrets and deploys unrelated code.
+
+`.github/workflows/mls-ingest.yml` defaults manual runs to `probe` with no database credentials.
+Run that in GitHub to prove runner access, then verify hosted schema/reference rows before
+setting repository variable `MLS_INGEST_ENABLED=true`. Both scheduled and manual syncs stay
+gated until then. No Supabase MLS cron is installed. 2027+ stops intentionally until season
+identity is verified. App release still needs simulator validation and the ordinary EAS flow.

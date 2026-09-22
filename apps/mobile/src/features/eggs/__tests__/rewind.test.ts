@@ -11,6 +11,17 @@ import { history } from '@/test/eggHistory';
 const day = (iso: string) => iso.slice(0, 10);
 
 describe('replaySteps', () => {
+  it('counts shootout wins and losses without changing the goals', () => {
+    const games = history('TTT').map((g, i) => ({
+      ...g,
+      winnerTeamId: i === 0 ? g.homeTeamId : i === 1 ? g.awayTeamId : null,
+    }));
+    expect(replaySteps(games).map(({ w, l, t }) => [w, l, t])).toEqual([
+      [1, 0, 0],
+      [1, 1, 0],
+      [1, 1, 1],
+    ]);
+  });
   it('ticks the record game by game, oldest first, and names each game', () => {
     const steps = replaySteps(history('WLW').reverse(), { formatDate: day });
     expect(steps.map(({ w, l, t }) => [w, l, t])).toEqual([
