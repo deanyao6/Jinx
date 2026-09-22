@@ -147,22 +147,27 @@ describe('the roster page as the prompt', () => {
 });
 
 describe('MLS favorite capabilities', () => {
-  it('offers MLS for teams and hides it for players', async () => {
+  // MLS has rosters since 2026-09-22 (next-wave E.3: ingest/src/mls/rosters.ts), so the league
+  // is offered for players as well as teams, and adding a club asks about its players like any
+  // other sport.
+  it('offers MLS for teams and for players', async () => {
     mockParams.mockReturnValue({ mode: 'teams' });
     const teams = await renderRoute(<LeagueRoute />);
     await fireEvent.press(teams.getByText('Major League Soccer'));
     expect(mockPush).toHaveBeenCalledWith('/settings/favorites/teams?sport=mls');
     await teams.unmount();
+    mockPush.mockClear();
     mockParams.mockReturnValue({ mode: 'players' });
     const players = await renderRoute(<LeagueRoute />);
-    expect(players.queryByText('Major League Soccer')).toBeNull();
+    await fireEvent.press(players.getByText('Major League Soccer'));
+    expect(mockPush).toHaveBeenCalledWith('/settings/favorites/players?sport=mls');
   });
-  it('saves an MLS favorite without opening an unavailable roster', async () => {
+  it('saves an MLS favorite and then asks about its players', async () => {
     mockParams.mockReturnValue({ sport: 'mls' });
     const { getByLabelText, queryByText } = await renderRoute(<TeamsRoute />);
     expect(queryByText('Philadelphia Phillies')).toBeNull();
     await fireEvent.press(getByLabelText('Philadelphia Union, add to favorites'));
     expect(mockSetTeams).toHaveBeenCalledWith([mockNYM, mockMLS]);
-    expect(mockPush).not.toHaveBeenCalled();
+    expect(mockPush).toHaveBeenCalledWith(rosterPromptHref(mockMLS));
   });
 });

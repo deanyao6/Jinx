@@ -3,7 +3,6 @@ import React from 'react';
 
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
-import { Notice } from '@/components/Notice';
 import { Loading } from '@/components/Loading';
 import { PageIntro } from '@/components/PageIntro';
 import { useGoBack } from '@/components/reference/BackHeader';
