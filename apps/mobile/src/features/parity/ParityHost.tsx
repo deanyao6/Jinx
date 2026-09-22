@@ -12,6 +12,8 @@ import { GameDayScreen } from '@/features/plan/reference/GameDayScreen';
 import { ReliveScreen } from '@/features/relive/reference/ReliveScreen';
 import { GamesScreen } from '@/features/games/reference/GamesScreen';
 import { PassportScreen } from '@/features/passport/reference/PassportScreen';
+import { WelcomeActions } from '@/features/onboarding/ui/WelcomeActions';
+import { WelcomeArt } from '@/features/onboarding/ui/WelcomeArt';
 
 import { ParityMarker } from './ParityMarker';
 import { SELFTEST_ID, SELFTEST_INK } from './marker';
@@ -48,7 +50,17 @@ const PORTED: Partial<Record<ParityScreenId, () => React.ReactNode>> = {
   'guide-seats': () => <StadiumGuideScreen tab="seats" />,
   profile: () => <ProfileScreen />,
   friends: () => <ProfileScreen initialPanel="friends" />,
+  // Frozen: the bundled six cards, every loop at phase zero, counters at their final values.
+  // The reference is captured under Reduce Motion, which is the same still frame. Only the
+  // Apple button is drawn, as the reference has one button.
+  welcome: () => (
+    <WelcomeArt frozen>
+      <WelcomeActions apple email={false} busy={false} error={null} onApple={noop} onEmail={noop} />
+    </WelcomeArt>
+  ),
 };
+
+function noop() {}
 
 function SelfTest() {
   const insets = useSafeAreaInsets();

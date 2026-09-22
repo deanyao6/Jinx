@@ -18,6 +18,9 @@
 
 export const THEMES = ['light', 'dark'];
 
+// Which reference file a screen lives in when it is not design/reference.html.
+export const WELCOME_REFERENCE = 'design/welcome-reference.html';
+
 export const SCREENS = [
   {
     id: 'passport-all',
@@ -144,6 +147,16 @@ export const SCREENS = [
     nth: 6,
     label: 'Profile',
     route: 'jinx://parity/profile',
+  },
+  {
+    // The welcome screen has its own reference file. Its wall is in motion, so both sides are
+    // captured still: the reference under Reduce Motion (its CSS stops every animation and its
+    // counters print their targets), the app with its frozen flag, which is the same frame.
+    id: 'welcome',
+    nth: 0,
+    file: WELCOME_REFERENCE,
+    label: 'Welcome',
+    route: 'jinx://parity/welcome',
   },
   {
     id: 'friends',

@@ -129,7 +129,8 @@ async function main() {
       });
       const page = await context.newPage();
       await page.addInitScript(FREEZE_CLOCK);
-      await page.goto(pathToFileURL(REFERENCE).href, { waitUntil: 'load' });
+      const file = screen.file ? resolve(screen.file) : REFERENCE;
+      await page.goto(pathToFileURL(file).href, { waitUntil: 'load' });
       await page.addStyleTag({ content: FREEZE_MOTION });
 
       // The reference's own toggle sets data-theme; setting it directly is the same

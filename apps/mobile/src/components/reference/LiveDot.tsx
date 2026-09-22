@@ -20,21 +20,36 @@ import { motion } from '@/theme/reference/tokens';
  * That is the right still frame: the dot means "live", and the pulse is decoration on top
  * of a state the colour already carries.
  */
-export function LiveDot({ color, size = 6 }: { color: string; size?: number }) {
+export function LiveDot({
+  color,
+  size = 6,
+  durationMs = motion.livePulseMs,
+  low = 0.3,
+  still = false,
+}: {
+  color: string;
+  size?: number;
+  /** One full pulse. The welcome wall's live card runs `pulse 1.5s` to 25%. */
+  durationMs?: number;
+  low?: number;
+  /** Hold at full opacity, as Reduce Motion does: for a screen frozen for a screenshot. */
+  still?: boolean;
+}) {
   const reduceMotion = useReducedMotion();
   const opacity = useSharedValue(1);
 
   React.useEffect(() => {
-    if (reduceMotion) {
+    if (reduceMotion || still) {
       opacity.value = 1;
       return;
     }
+    opacity.value = 1;
     opacity.value = withRepeat(
-      withTiming(0.3, { duration: motion.livePulseMs / 2, easing: Easing.inOut(Easing.ease) }),
+      withTiming(low, { duration: durationMs / 2, easing: Easing.inOut(Easing.ease) }),
       -1,
       true,
     );
-  }, [opacity, reduceMotion]);
+  }, [durationMs, low, opacity, reduceMotion, still]);
 
   const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
 

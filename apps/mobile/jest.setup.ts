@@ -20,10 +20,26 @@ jest.mock('react-native-reanimated', () => {
     withTiming: identity,
     withRepeat: identity,
     withSpring: identity,
+    withSequence: (...steps: unknown[]) => steps[steps.length - 1],
+    withDelay: (_ms: number, value: unknown) => value,
+    // The welcome wall's counters derive from a shared clock; run the reaction once, after
+    // mount, with the clock where it starts. Not during render: the reaction sets state.
+    useAnimatedReaction: (prepare: () => unknown, react: (c: unknown, p: unknown) => void) => {
+      const { useEffect } = require('react') as typeof import('react');
+      useEffect(() => {
+        react(prepare(), null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+    },
+    runOnJS: (fn: (...args: unknown[]) => void) => fn,
+    cancelAnimation: () => undefined,
     Easing: {
       bezier: () => identity,
       inOut: identity,
       ease: identity,
+      linear: identity,
+      out: identity,
+      cubic: identity,
     },
   };
 });

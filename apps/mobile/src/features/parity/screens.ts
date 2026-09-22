@@ -23,6 +23,7 @@ export type ParityScreenId =
   | 'guide-seats'
   | 'profile'
   | 'friends'
+  | 'welcome'
   | 'parity-selftest';
 
 type Params = Record<string, string | undefined>;
@@ -56,6 +57,9 @@ export function resolveParityScreen(path: string, params: Params): ParityScreenI
     }
     case 'profile':
       return params.panel === 'friends' ? 'friends' : 'profile';
+    // design/welcome-reference.html, frozen at phase zero (features/onboarding/ui/WelcomeArt).
+    case 'welcome':
+      return 'welcome';
     // Proves the harness end to end without depending on a ported screen.
     case 'selftest':
       return 'parity-selftest';

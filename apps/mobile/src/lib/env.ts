@@ -24,6 +24,12 @@ export const env = {
    * too for Node-side tooling (the parity harness and tests), where it does reach us.
    */
   demo: isOn(process.env.EXPO_PUBLIC_DEMO) || isOn(process.env.DEMO),
+  /**
+   * Freeze the welcome screen for a screenshot (SPEC.md 8.8): the six bundled game cards, every
+   * loop held at phase zero, the counters at their final values. The parity harness sets it on
+   * its own; this flag is for a hand-taken shot that has to be byte-comparable.
+   */
+  welcomeFrozen: isOn(process.env.EXPO_PUBLIC_WELCOME_FROZEN),
 };
 
 /**
