@@ -70,14 +70,21 @@ export function GamesScreen({
   initialSegment = 'History',
   segment,
   onSegment,
+  banner,
 }: {
   initialSegment?: string;
   segment?: string;
   onSegment?: (segment: string) => void;
+  /**
+   * Drawn under the segments, above the list: the app's post drafts and games waiting for
+   * "Post this" (features/feed/ui/YourPost.tsx). The parity harness passes none, so the
+   * reference comparison is unchanged.
+   */
+  banner?: React.ReactNode;
 }) {
   return (
     <ReferenceThemeProvider team="none">
-      <Body initialSegment={initialSegment} controlled={segment} onSegment={onSegment} />
+      <Body initialSegment={initialSegment} controlled={segment} onSegment={onSegment} banner={banner} />
     </ReferenceThemeProvider>
   );
 }
@@ -135,10 +142,12 @@ function Body({
   initialSegment,
   controlled,
   onSegment,
+  banner,
 }: {
   initialSegment: string;
   controlled?: string;
   onSegment?: (segment: string) => void;
+  banner?: React.ReactNode;
 }) {
   const { base } = useReferenceTheme();
   const repo = useRepository();
@@ -224,6 +233,8 @@ function Body({
         <GamesSessionCards />
 
         <Segmented options={SEGMENTS} selected={segment} onSelect={selectSegment} />
+
+        {banner}
 
         {rows.map((game, i) => (
           <TeamTheme key={`${game.title}-${i}`} team={game.team}>

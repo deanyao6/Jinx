@@ -8,6 +8,8 @@ export const NOTIFICATION_KINDS = [
   'new_stamp',
   'milestone',
   'tagged',
+  'kudos',
+  'comment',
   'person_linked',
   'new_follower',
   'follow_request',
@@ -39,7 +41,12 @@ export const KIND_LABELS: Record<NotificationKind, { title: string; body: string
   goal_completed: { title: 'Goals completed', body: 'When you finish a goal.' },
   new_stamp: { title: 'New stamps', body: 'A new venue or milestone stamp on your passport.' },
   milestone: { title: 'Milestones', body: 'Round-number games, venues, and streaks.' },
-  tagged: { title: 'Tagged at a game', body: 'Someone you follow tagged you at a game.' },
+  tagged: {
+    title: 'Tagged at a game',
+    body: 'Someone says you were at a game with them. Nothing shows until you say yes.',
+  },
+  kudos: { title: 'Kudos', body: 'People giving your posts kudos, a few at a time.' },
+  comment: { title: 'Comments', body: 'Someone commented on one of your posts.' },
   person_linked: {
     title: 'Linked to you',
     body: 'A friend linked one of their companions to your account.',

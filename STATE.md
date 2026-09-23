@@ -237,10 +237,82 @@ Not done, and known: the feed's copy of the check-in banner waits for prompt 2's
 (`GamesSessionCards` is ready to mount); the NBA four-point play is not detectable from a
 30-second scoreboard poll and is not attempted; the NFL fourth-down-then-score rule needs
 play-by-play and is overnight-only; `send-push` runs every two minutes on hosted, so a push
-arrives up to two minutes after the banner; the local pgTAP suite carries three red files from
-the other two social sessions (`063`, `066`, `067`) whose migrations and data sit in the shared
-local database. **Before hosted:** the three migrations, `mlb-live` redeployed, the bucket, and
+arrives up to two minutes after the banner. On the merged `social-v2` tree every gate is green
+(1,029 unit tests, pgTAP 836 checks across 55 files, typecheck, lint, 2026-09-23). **Before hosted:** the three migrations, `mlb-live` redeployed, the bucket, and
 a native build carrying `expo-camera`.
+
+**Social v2, prompt 4 (communities, leaderboards, streaks, badges, counts, four favorites), on
+branch `social-v2-communities` off `social-v2` (2026-09-23, not merged, not on hosted).** Brief:
+`docs/prompts/social/04_communities_and_leaderboards.md`; `00_repo_reality.md` wins where they
+disagree; design note on what shipped and what did not: `docs/COMMUNITIES.md`. Migrations
+`20260924030000` to `030200`, pgTAP `090`. `goal_games()` gained the six fields badges need
+(timezone, temperature, doubleheader, Opening Day, new-state, distance from home); `packages/core`
+gained `streaks.ts`, `leaderboard.ts` and `badges.ts` (25 launch badges plus the eight
+`features/eggs/flags.ts` eggs as `is_secret` badges, five new predicate types on the goals
+evaluator, SPEC 6.13, R6). `supabase/functions/evaluate-social` computes badges and season streaks
+per user, called from `process_game_final` and `attendances_after_write` the same way
+`evaluate-goals` already is. Communities are seeded for real: 122 team, 114 venue, 1 school
+(Caltech), across all four sports (00, R3). Screens: `/communities`, `/community/[slug]` (header,
+two leaderboard previews, the member feed, join/leave/report), `/community/[slug]/leaderboard`
+(stat chips scoped to the community's kind and sport, period segmented control, friends-only,
+the verified-attendance notice, the viewer's row pinned when off-page), `/passport/badges`,
+`/passport/favorites` (a same-screen picker over the fan's attended games), and
+`/passport/streak/[teamId]`. The Passport screen gained three preview sections (streak patches,
+capped at the three longest; a four-favorites preview; an earned-badges preview) in the same
+place and the same `env.demo`-gated pattern `FavoritePlayers` already used, so the parity harness
+is untouched. **Walked on the simulator signed in as a real user against real backend data**
+(minted magic link, `docs/simulator.md`), not just typechecked: three real bugs were found and
+fixed this way that `tsc` and Jest could not have caught (`Notice`'s children prop breaks on
+interpolated JSX children rather than a single string, so two screens threw "Text strings must be
+rendered within a `<Text>`" at runtime and showed blank; the community screen's Join/Leave/Report
+buttons were unreadable, accent-colored text on an accent-colored card; a community page's
+leaderboard previews queried a `(period, season)` pair the check constraint forbids and always
+read "Not ranked yet"). Screenshots before and after each fix: `docs/evidence/social/communities/`.
+Two migration-correctness bugs a peer session's review caught before merge (a non-idempotent
+`drop constraint` and trigger create, and a `revoke` naming the wrong function signature) are
+fixed and reverified from a database with the function fully dropped first, not just against
+already-patched local state. Not done, and said plainly in `docs/COMMUNITIES.md`: user-created
+communities (`kind='custom'` exists in the schema only), an "unofficial" self-reported
+leaderboard, the streak "at risk" nudge (the pure function exists and is tested; nothing calls it
+server side), and Profile's counts block (`useCounts()` and `user_counts` are real and tested;
+no screen renders it).
+
+**Social v2, prompt 2: the feed, on branch `social-v2-feed` then `social-v2` (2026-09-23, local
+only, not on hosted, not on main).** Migrations `20260924010000` to `010500`, pgTAP `070` to
+`076`, app code in `features/feed/`. **Posts supersede the v1 feed in the app; `feed_events`
+stays** as the server's event log: builds 4 and 5 still read it through `feed()` (and write emoji
+to `feed_reactions`), the export carries it, and a trigger turns its stamp, milestone, goal and
+Wrapped events into system posts, so no rule is written twice. The v1 Feed segment and its UI
+(`FeedSegment`, `FeedEventCard`, `useFeed`, `useReact`) are deleted; a famous game now shows as
+a gold pill on the game post instead of its own event. **Auto-post**: the server drafts a game
+post 15 minutes after the final and publishes it at 30 (pg_cron `auto-post`, every 5 minutes),
+once per fan and game ever (`auto_post_runs`); turning it off mid-window deletes the draft; a
+game logged more than two days after it ended waits for "Post this" instead, and a stamp or
+milestone from a game more than a week old makes no post, which keeps onboarding backfill out of
+followers' feeds. The draft shows on the game page ("Your post") and as a banner on Games.
+**Feed**: Following and Discover, reverse chronological, keyset pages on (published_at, id),
+counts per viewer so a block hides a kudos from the number too; Discover is creators (ranked
+daily, `creator-rankings` cron) and fans at your games plus creator and community posts.
+**Kudos and comments**: no kudos on your own post, one batched notification ("Maya and 3 others
+gave kudos."), 500-character flat comments, delete by either author, a soft profanity warning.
+**Rate limits** answer `JX429` and **profane names** `JX451`, both turned into sentences.
+**Profanity is one list** (`packages/core/src/profanity.ts`; `lib/profanity.ts` re-exports it,
+SQL `contains_profanity` mirrors it and a test compares them). **Contacts**: onboarding step 2 of
+7 and Friends > Find people; salted SHA-256 on the phone, hashes only over the wire (tested on the
+payload), matched against each account's sign-in email and phone, nothing stored;
+`discoverable_by_contacts` switch in Privacy; `seven_follows_at` and the service-only view
+`onboarding_follow_goal` measure the 7-follow goal. **Compatibility** (mutuals only, cached a
+day, `packages/core/src/compatibility.ts` and its SQL twin) and the record together sit on a
+profile, with the creator badge and note, their posts, and Mute. **Companion consent (R5)**: a
+placeholder like "Dad" is confirmed silently as before; a linked user is asked "Dean says you were
+at Mets at Phillies, Sep 20. Add it?" at the top of their feed, accept logs the game and drafts a
+post if their auto-post is on, decline removes the tag silently and drops any re-tag of that
+person at that game by that tagger, and a blocked tagger's tag never lands. Editing a log now only
+adds and removes the tags that changed, so a friend is never asked twice. Moderation process:
+`docs/moderation.md` (queue: `report_queue`, service role). Creators are set by
+`supabase/scripts/creator.sql`. **`expo-contacts` is new native code: this needs a native build,
+not an `eas update`**, and App Store Connect's privacy answers need Contacts (not linked).
+The invite rows share `APP_DOWNLOAD_TEXT`, which still has no real link.
 
 **The welcome screen is rebuilt (2026-09-22), and its wall restocks itself weekly.**
 `design/welcome-reference.html` is its source of truth; `app/(auth)/welcome.tsx` composes

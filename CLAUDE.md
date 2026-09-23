@@ -164,6 +164,7 @@ npx tsx ingest/src/mls/honors.ts                           # MLS honors (MVP and
 npx tsx ingest/src/nfl/moves.ts [--from 2016 --to 2026]    # NFL joins from the weekly rosters
 npx tsx ingest/src/nfl/firsts.ts [--from 2000 --to 2026]   # NFL first touchdowns (play-by-play) and rookie seasons
 npx tsx ingest/src/nfl/relabel.ts [--game 2026_03_ATL_GB]  # rewrite coarse live NFL reaction prompts to the real play (nightly, after relive)
+npx tsx ingest/src/social/seedBadges.ts                    # badges table from packages/core's BADGE_CATALOG (social v2, prompt 4)
 ```
 
 ## Conventions

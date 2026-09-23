@@ -10,6 +10,7 @@ import { Screen } from '@/components/Screen';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
 import { ToggleRow } from '@/features/account/ui/ToggleRow';
+import { PostSettings } from '@/features/feed/ui/PostSettings';
 import { useProfile, useUpdateProfile, type ProfilePatch } from '@/features/profile/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -83,14 +84,16 @@ export default function PrivacyScreen() {
           </Card>
         </>
       ) : null}
+      <PostSettings />
       <SectionHeader title="Always private" />
       <Card tone="accent">
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing.md }}>
           <IconTile icon="i-lock" />
           <Text variant="sub" style={{ flex: 1 }}>
             Your location is used only when you tap Check in and is never stored. Ticket images are
-            private and deleted after processing. Blocks hide you and the other person from each
-            other everywhere.
+            private and deleted after processing. Contacts are matched on your phone and nothing
+            from your address book is kept. Blocks hide you and the other person from each other
+            everywhere.
           </Text>
         </View>
       </Card>

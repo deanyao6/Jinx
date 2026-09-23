@@ -17,8 +17,6 @@ insert into public.communities (id, slug, name, kind, team_id) values
   ('b6600000-0000-4000-8000-0000000000c1', 'nba-club-team', 'Club Team fans', 'team', '00000000-0000-0000-0000-00000066a001');
 insert into public.communities (id, slug, name, kind, is_official, is_private) values
   ('b6600000-0000-4000-8000-0000000000c2', 'secret-club', 'Secret club', 'custom', false, true);
-insert into public.leaderboard_stats (user_id, community_id, period, season, stat_key, value)
-values ('b6600000-0000-4000-8000-0000000000a1', 'b6600000-0000-4000-8000-0000000000c1', 'season', 2026, 'games', 7);
 insert into public.posts (id, author_id, kind, visibility) values
   ('b6600000-0000-4000-8000-0000000000d1', 'b6600000-0000-4000-8000-0000000000a1', 'milestone', 'public'),
   ('b6600000-0000-4000-8000-0000000000d2', 'b6600000-0000-4000-8000-0000000000b1', 'milestone', 'public');
@@ -37,6 +35,13 @@ select throws_ok(
   '42501', null, 'nobody makes themselves an owner');
 insert into public.community_members (community_id, user_id) values ('b6600000-0000-4000-8000-0000000000c1', auth.uid());
 select is((select member_count from public.communities where id = 'b6600000-0000-4000-8000-0000000000c1'), 1, 'joining counts a member');
+-- Seeded after the join (prompt 4, social v2): joining recomputes this user's real leaderboard
+-- rows for the community, which would otherwise wipe a row seeded before it.
+reset role;
+insert into public.leaderboard_stats (user_id, community_id, period, season, stat_key, value)
+values ('b6600000-0000-4000-8000-0000000000a1', 'b6600000-0000-4000-8000-0000000000c1', 'season', 2026, 'games', 7);
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"b6600000-0000-4000-8000-0000000000a1","role":"authenticated"}';
 select throws_ok(
   $$insert into public.community_members (community_id, user_id) values ('b6600000-0000-4000-8000-0000000000c2', auth.uid())$$,
   '42501', null, 'a private community cannot be joined by yourself');

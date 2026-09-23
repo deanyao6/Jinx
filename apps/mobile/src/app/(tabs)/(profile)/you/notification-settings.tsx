@@ -43,6 +43,8 @@ const GROUP_OF: Record<NotificationKind, Group> = {
   milestone: 'passport',
   wrapped_ready: 'passport',
   tagged: 'friends',
+  kudos: 'friends',
+  comment: 'friends',
   person_linked: 'friends',
   new_follower: 'friends',
   follow_request: 'friends',

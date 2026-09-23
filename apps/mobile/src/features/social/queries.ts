@@ -1,19 +1,11 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-  type InfiniteData,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/features/auth/store';
 import type { Json } from '@/lib/database.types';
 import { supabase, type Rpc } from '@/lib/supabase';
-import type { FeedEvent, ReactionEmoji } from './copy';
 
 export const socialKeys = {
   all: ['social'] as const,
-  feed: (userId: string | null) => ['social', 'feed', userId] as const,
   rivalries: (userId: string | null) => ['social', 'rivalries', userId] as const,
   overlaps: (userId: string | null) => ['social', 'overlaps', userId] as const,
   mutualsAtGame: (userId: string | null, gameId: string) =>
@@ -25,111 +17,6 @@ export const socialKeys = {
   following: (userId: string | null) => ['social', 'following', userId] as const,
   blocked: (userId: string | null) => ['social', 'blocked', userId] as const,
 };
-
-// ---------------------------------------------------------------------------
-// Feed
-// ---------------------------------------------------------------------------
-
-const FEED_PAGE = 30;
-
-function toFeedEvent(row: Rpc<'feed'>[number]): FeedEvent {
-  return {
-    id: row.id,
-    actor_user_id: row.actor_user_id,
-    actor_handle: row.actor_handle,
-    actor_display_name: row.actor_display_name,
-    actor_avatar_path: row.actor_avatar_path ?? null,
-    type: row.type,
-    game_id: row.game_id ?? null,
-    payload: (row.payload as Record<string, Json | undefined> | null) ?? null,
-    created_at: row.created_at,
-    game: (row.game as FeedEvent['game'] | null) ?? null,
-    reactions: (row.reactions as Record<string, number> | null) ?? {},
-    my_reaction: row.my_reaction ?? null,
-  };
-}
-
-export function useFeed() {
-  const userId = useAuthStore((s) => s.userId);
-  return useInfiniteQuery({
-    queryKey: socialKeys.feed(userId),
-    initialPageParam: null as string | null,
-    queryFn: async ({ pageParam }): Promise<FeedEvent[]> => {
-      const { data, error } = await supabase.rpc('feed', {
-        p_before: pageParam ?? undefined,
-        p_limit: FEED_PAGE,
-      });
-      if (error) throw error;
-      return data.map(toFeedEvent);
-    },
-    getNextPageParam: (last) =>
-      last.length < FEED_PAGE ? undefined : (last[last.length - 1]?.created_at ?? undefined),
-    enabled: !!userId,
-    staleTime: 30_000,
-  });
-}
-
-type FeedData = InfiniteData<FeedEvent[], string | null>;
-
-function patchFeedEvent(
-  data: FeedData | undefined,
-  eventId: string,
-  patch: (e: FeedEvent) => FeedEvent,
-): FeedData | undefined {
-  if (!data) return data;
-  return {
-    ...data,
-    pages: data.pages.map((page) => page.map((e) => (e.id === eventId ? patch(e) : e))),
-  };
-}
-
-/** Toggles my reaction on a feed event: same emoji removes it, another emoji replaces it. */
-export function useReact() {
-  const queryClient = useQueryClient();
-  const userId = useAuthStore((s) => s.userId);
-  return useMutation({
-    mutationFn: async (input: { event: FeedEvent; emoji: ReactionEmoji }) => {
-      if (!userId) throw new Error('Not signed in');
-      if (input.event.my_reaction === input.emoji) {
-        const { error } = await supabase
-          .from('feed_reactions')
-          .delete()
-          .eq('feed_event_id', input.event.id)
-          .eq('user_id', userId);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from('feed_reactions')
-          .upsert(
-            { feed_event_id: input.event.id, user_id: userId, emoji: input.emoji },
-            { onConflict: 'feed_event_id,user_id' },
-          );
-        if (error) throw error;
-      }
-    },
-    onMutate: async ({ event, emoji }) => {
-      const key = socialKeys.feed(userId);
-      await queryClient.cancelQueries({ queryKey: key });
-      const previous = queryClient.getQueryData<FeedData>(key);
-      queryClient.setQueryData<FeedData>(key, (data) =>
-        patchFeedEvent(data, event.id, (e) => {
-          const reactions = { ...e.reactions };
-          if (e.my_reaction) {
-            reactions[e.my_reaction] = Math.max(0, (reactions[e.my_reaction] ?? 1) - 1);
-            if (reactions[e.my_reaction] === 0) delete reactions[e.my_reaction];
-          }
-          const removing = e.my_reaction === emoji;
-          if (!removing) reactions[emoji] = (reactions[emoji] ?? 0) + 1;
-          return { ...e, reactions, my_reaction: removing ? null : emoji };
-        }),
-      );
-      return { previous };
-    },
-    onError: (_e, _input, ctx) => {
-      if (ctx?.previous) queryClient.setQueryData(socialKeys.feed(userId), ctx.previous);
-    },
-  });
-}
 
 // ---------------------------------------------------------------------------
 // Rivalries, overlap, mutuals at a game
@@ -297,7 +184,11 @@ export function useProfileView(handle: string | undefined) {
 
 function useInvalidateSocial() {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: socialKeys.all });
+  return () => {
+    queryClient.invalidateQueries({ queryKey: socialKeys.all });
+    // Following someone changes what the v2 feed and Discover show.
+    queryClient.invalidateQueries({ queryKey: ['feed'] });
+  };
 }
 
 /** Inserts a follow row; the server marks it 'requested' for private accounts. */
@@ -486,7 +377,16 @@ export function useUnblock() {
   });
 }
 
-export type ReportTarget = 'user' | 'attendance' | 'feed_event' | 'person' | 'attendance_photo' | 'reaction';
+export type ReportTarget =
+  | 'user'
+  | 'attendance'
+  | 'feed_event'
+  | 'person'
+  | 'attendance_photo'
+  | 'community'
+  | 'post'
+  | 'comment'
+  | 'reaction';
 
 export const REPORT_REASONS = [
   'Impersonation',

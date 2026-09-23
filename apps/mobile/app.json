@@ -23,11 +23,20 @@
         "NSLocationWhenInUseUsageDescription": "Jinx uses your location only when you tap Check in, to confirm you are at the stadium. Your coordinates are never stored.",
         "NSPhotoLibraryUsageDescription": "Jinx reads the photos you choose: a ticket screenshot to log a game, pictures from a game you went to, or a profile photo.",
         "NSCameraUsageDescription": "Jinx uses the camera to photograph a ticket so it can log the game, for your profile photo, and for a reaction at a game: one shot of the field, then a selfie.",
+        "NSContactsUsageDescription": "Jinx checks which of your contacts are already on Jinx so you can follow them. Contacts are scrambled on your phone before anything is sent, and nothing from your address book is stored.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "privacyManifests": {
         "NSPrivacyTracking": false,
         "NSPrivacyCollectedDataTypes": [
+          {
+            "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeContacts",
+            "NSPrivacyCollectedDataTypeLinked": false,
+            "NSPrivacyCollectedDataTypeTracking": false,
+            "NSPrivacyCollectedDataTypePurposes": [
+              "NSPrivacyCollectedDataTypePurposeAppFunctionality"
+            ]
+          },
           {
             "NSPrivacyCollectedDataType": "NSPrivacyCollectedDataTypeEmailAddress",
             "NSPrivacyCollectedDataTypeLinked": true,

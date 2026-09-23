@@ -56,6 +56,7 @@ import { shareGameFor } from '@/features/share/fromGame';
 import { ShareButton } from '@/features/share/ShareButton';
 import { AlsoThere } from '@/features/social/ui/AlsoThere';
 import { FamousCard } from '@/features/famous/ui/FamousCard';
+import { YourPost } from '@/features/feed/ui/YourPost';
 import { useGameFamous } from '@/features/famous/queries';
 import { hasLiveFeed } from '@/features/eggs/live';
 import { isUnderWay, liveStatusLabel } from '@/features/live/format';
@@ -206,8 +207,9 @@ export default function GameDetailScreen() {
     .filter(Boolean)
     .join(' · ');
   const rootedName = teamName(a?.rooting_team_id ?? null);
+  // A friend with an account who has not said yes yet is "asked"; a name you typed is just a name.
   const companions = (a?.companions ?? [])
-    .map((x) => x.person?.display_name)
+    .map((x) => (x.person?.display_name ? `${x.person.display_name}${x.status === 'pending' ? ' (asked)' : ''}` : null))
     .filter(Boolean) as string[];
   const seatParts = a?.seat
     ? [
@@ -572,6 +574,8 @@ export default function GameDetailScreen() {
             />
           </Card>
         )}
+
+        {a && a.status === 'attended' && g.status === 'final' ? <YourPost gameId={g.id} /> : null}
 
         {cards.length ? (
           <>

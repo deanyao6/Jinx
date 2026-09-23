@@ -50,7 +50,7 @@ export type Attendance = {
   created_at: string;
   game: AttendanceGame;
   seat: Seat | null;
-  companions: { person: { id: string; display_name: string } | null }[];
+  companions: { status: string; person: { id: string; display_name: string } | null }[];
 };
 
 const ATTENDANCE_SELECT = `id, user_id, game_id, source, status, verified, verified_via, note,
@@ -61,7 +61,7 @@ const ATTENDANCE_SELECT = `id, user_id, game_id, source, status, verified, verif
     away:teams!games_away_team_id_fkey(${GAME_TEAM_COLUMNS}),
     venue:venues(id, name, city, state)),
   seat:attendance_seats(section, row, seat, price_cents),
-  companions:attendance_companions(person:people(id, display_name))`;
+  companions:attendance_companions(status, person:people(id, display_name))`;
 
 export const attendanceKeys = {
   all: ['attendances'] as const,
@@ -192,6 +192,19 @@ export function useLogAttendance() {
 
 export type UpdateInput = LogInput & { attendanceId: string };
 
+/** Which tags an edit removes and which it adds; the ones in both are left alone. */
+export function companionDiff(
+  current: readonly string[],
+  next: readonly string[],
+): { removed: string[]; added: string[] } {
+  const now = new Set(current);
+  const want = new Set(next);
+  return {
+    removed: [...now].filter((id) => !want.has(id)),
+    added: [...want].filter((id) => !now.has(id)),
+  };
+}
+
 export function useUpdateAttendance() {
   const userId = useAuthStore((s) => s.userId);
   const invalidate = useInvalidateAttendances();
@@ -222,14 +235,28 @@ export function useUpdateAttendance() {
         if (seatError) throw seatError;
       }
 
-      const { error: delError } = await supabase
+      // Only the difference: a tag that stays is never deleted and re-made, because a tag of a
+      // real user starts pending and asks them again (social brief 02, section 7).
+      const { data: current, error: curError } = await supabase
         .from('attendance_companions')
-        .delete()
+        .select('person_id')
         .eq('attendance_id', input.attendanceId);
-      if (delError) throw delError;
-      if (input.companionIds.length) {
+      if (curError) throw curError;
+      const { removed, added } = companionDiff(
+        current.map((c) => c.person_id),
+        input.companionIds,
+      );
+      if (removed.length) {
+        const { error: delError } = await supabase
+          .from('attendance_companions')
+          .delete()
+          .eq('attendance_id', input.attendanceId)
+          .in('person_id', removed);
+        if (delError) throw delError;
+      }
+      if (added.length) {
         const { error: compError } = await supabase.from('attendance_companions').insert(
-          input.companionIds.map((person_id) => ({
+          added.map((person_id) => ({
             attendance_id: input.attendanceId,
             person_id,
           })),

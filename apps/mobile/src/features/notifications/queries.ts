@@ -122,8 +122,15 @@ export function notificationRoute(n: { kind: string; data: unknown }): string | 
     }
     case 'pledge_result':
     case 'pledge_void':
-    case 'tagged':
       return gameId ? `/games/${gameId}` : null;
+    case 'tagged':
+      // A tag waiting for a yes or no is answered at the top of the feed (social brief 02,
+      // section 7); an older, already confirmed one opens its game.
+      if (data.pending === true) return '/feed';
+      return gameId ? `/games/${gameId}` : null;
+    case 'kudos':
+    case 'comment':
+      return typeof data.post_id === 'string' ? `/post/${data.post_id}` : '/feed';
     case 'import_review':
       return '/games/imports';
     case 'email_verified':

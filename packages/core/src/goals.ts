@@ -29,6 +29,15 @@ export interface GoalGame {
   companions: string[];
   /** True when this game was the user's first ever visit to its venue. */
   isNewVenue: boolean;
+  /** True when this game was the user's first ever visit to its venue's state (badges only). */
+  isNewState: boolean;
+  /** The venue's IANA time zone, when known (badges only). */
+  timezone: string | null;
+  temperatureF: number | null;
+  isDoubleheader: boolean;
+  isOpeningDay: boolean;
+  /** Great-circle miles from the user's home to the venue, when both are known (badges only). */
+  distanceFromHomeMiles: number | null;
   pledge?: { status: 'provisional' | 'valid' | 'void'; winProbAtPledge: number } | undefined;
   /** True when the game was final at evaluation time. */
   isFinal: boolean;
@@ -47,6 +56,13 @@ export interface GoalFilter {
   result?: GameResult;
   new_venue?: boolean;
   venue_ids?: string[];
+  doubleheader?: boolean;
+  opening_day?: boolean;
+  new_state?: boolean;
+  /** Degrees Fahrenheit; the game must be at or below this. */
+  temperature_max?: number;
+  /** The venue must be at least this many miles from home. */
+  min_distance_miles?: number;
 }
 
 export type GoalDefinition =
@@ -57,7 +73,26 @@ export type GoalDefinition =
   | { type: 'record'; filter?: GoalFilter; min_win_pct: number; min_games: number }
   | { type: 'vs_expected'; min: number; filter?: GoalFilter }
   | { type: 'all_of'; items: GoalDefinition[] }
-  | { type: 'any_of'; items: GoalDefinition[] };
+  | { type: 'any_of'; items: GoalDefinition[] }
+  /** Most distinct venues reachable within any `windowDays`-day span ("3 parks in one weekend"). */
+  | { type: 'distinct_venues_in_window'; target: number; windowDays: number; filter?: GoalFilter }
+  | { type: 'distinct_timezones'; target: number; filter?: GoalFilter }
+  /**
+   * The best (or worst) win rate with any single companion, at `minGames` or more decided games
+   * together. Set `minWinPct` for "undefeated with one companion", `maxWinPct` for the opposite
+   * ("certified jinx"). Exactly one of the two is read.
+   */
+  | {
+      type: 'companion_record';
+      minGames: number;
+      minWinPct?: number;
+      maxWinPct?: number;
+      filter?: GoalFilter;
+    }
+  /** A losing streak of `minLosses` or more, immediately followed by a win. */
+  | { type: 'streak_break'; minLosses: number; filter?: GoalFilter }
+  /** The most visits to any single venue reaches `target` ("a stamp worn from repeat visits"). */
+  | { type: 'max_venue_visits'; target: number; filter?: GoalFilter };
 
 export interface GoalProgress {
   /** Current value toward the target (games, venues, people, wins...). */
@@ -83,6 +118,16 @@ export function matchesFilter(g: GoalGame, f: GoalFilter | undefined): boolean {
   if (f.result && g.result !== f.result) return false;
   if (f.new_venue && !g.isNewVenue) return false;
   if (f.venue_ids && (g.venueId === null || !f.venue_ids.includes(g.venueId))) return false;
+  if (f.doubleheader && !g.isDoubleheader) return false;
+  if (f.opening_day && !g.isOpeningDay) return false;
+  if (f.new_state && !g.isNewState) return false;
+  if (f.temperature_max !== undefined && (g.temperatureF === null || g.temperatureF > f.temperature_max))
+    return false;
+  if (
+    f.min_distance_miles !== undefined &&
+    (g.distanceFromHomeMiles === null || g.distanceFromHomeMiles < f.min_distance_miles)
+  )
+    return false;
   return true;
 }
 
@@ -145,6 +190,77 @@ export function evaluateGoal(def: GoalDefinition, games: GoalGame[]): GoalProgre
       const done = items.filter((i) => i.completed).length;
       return { current: Math.min(done, 1), target: 1, completed: done >= 1, items };
     }
+    case 'distinct_venues_in_window': {
+      const matched = finals
+        .filter((g) => matchesFilter(g, def.filter) && g.venueId !== null)
+        .map((g) => ({ t: Date.parse(g.scheduledStart), venueId: g.venueId as string }))
+        .sort((a, b) => a.t - b.t);
+      const windowMs = def.windowDays * 86_400_000;
+      let best = 0;
+      for (let i = 0; i < matched.length; i++) {
+        const set = new Set<string>();
+        for (let j = i; j < matched.length && matched[j]!.t - matched[i]!.t <= windowMs; j++) {
+          set.add(matched[j]!.venueId);
+        }
+        best = Math.max(best, set.size);
+      }
+      return { current: best, target: def.target, completed: best >= def.target };
+    }
+    case 'distinct_timezones': {
+      const zones = new Set(
+        finals
+          .filter((g) => matchesFilter(g, def.filter) && g.timezone !== null)
+          .map((g) => g.timezone as string),
+      );
+      return { current: zones.size, target: def.target, completed: zones.size >= def.target };
+    }
+    case 'companion_record': {
+      const decided = finals.filter(
+        (g) => matchesFilter(g, def.filter) && (g.result === 'win' || g.result === 'loss'),
+      );
+      const byCompanion = new Map<string, { wins: number; games: number }>();
+      for (const game of decided) {
+        for (const companion of game.companions) {
+          const row = byCompanion.get(companion) ?? { wins: 0, games: 0 };
+          row.games++;
+          if (game.result === 'win') row.wins++;
+          byCompanion.set(companion, row);
+        }
+      }
+      let found = false;
+      for (const row of byCompanion.values()) {
+        if (row.games < def.minGames) continue;
+        const pct = row.wins / row.games;
+        if (def.minWinPct !== undefined && pct >= def.minWinPct) found = true;
+        if (def.maxWinPct !== undefined && pct <= def.maxWinPct) found = true;
+      }
+      return { current: found ? 1 : 0, target: 1, completed: found };
+    }
+    case 'streak_break': {
+      const decided = finals
+        .filter((g) => matchesFilter(g, def.filter) && (g.result === 'win' || g.result === 'loss'))
+        .sort((a, b) => Date.parse(a.scheduledStart) - Date.parse(b.scheduledStart));
+      let run = 0;
+      let found = false;
+      for (const game of decided) {
+        if (game.result === 'loss') {
+          run++;
+        } else {
+          if (run >= def.minLosses) found = true;
+          run = 0;
+        }
+      }
+      return { current: found ? 1 : 0, target: 1, completed: found };
+    }
+    case 'max_venue_visits': {
+      const counts = new Map<string, number>();
+      for (const game of finals) {
+        if (!matchesFilter(game, def.filter) || game.venueId === null) continue;
+        counts.set(game.venueId, (counts.get(game.venueId) ?? 0) + 1);
+      }
+      const best = counts.size ? Math.max(...counts.values()) : 0;
+      return { current: best, target: def.target, completed: best >= def.target };
+    }
   }
 }
 
@@ -175,6 +291,27 @@ export function validateGoalDefinition(input: unknown, depth = 0): input is Goal
         d['items'].length <= 10 &&
         d['items'].every((i) => validateGoalDefinition(i, depth + 1))
       );
+    case 'distinct_venues_in_window':
+      return (
+        okFilter &&
+        typeof d['target'] === 'number' &&
+        d['target'] >= 1 &&
+        typeof d['windowDays'] === 'number' &&
+        d['windowDays'] >= 1
+      );
+    case 'distinct_timezones':
+      return okFilter && typeof d['target'] === 'number' && d['target'] >= 1;
+    case 'companion_record':
+      return (
+        okFilter &&
+        typeof d['minGames'] === 'number' &&
+        d['minGames'] >= 1 &&
+        (typeof d['minWinPct'] === 'number' || typeof d['maxWinPct'] === 'number')
+      );
+    case 'streak_break':
+      return okFilter && typeof d['minLosses'] === 'number' && d['minLosses'] >= 1;
+    case 'max_venue_visits':
+      return okFilter && typeof d['target'] === 'number' && d['target'] >= 1;
     default:
       return false;
   }

@@ -4481,7 +4481,7 @@ export type Database = {
       }
       recompute_user_counts: { Args: { p_user: string }; Returns: undefined }
       recompute_user_leaderboard_stats: {
-        Args: { p_user: string }
+        Args: { p_community_id?: string; p_user: string }
         Returns: undefined
       }
       record_json: {

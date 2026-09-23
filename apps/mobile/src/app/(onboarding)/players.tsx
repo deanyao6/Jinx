@@ -14,7 +14,7 @@ import type { Team } from '@/features/teams/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /** The step after the teams one, so it is numbered from there. */
-export const PLAYERS_STEP = 3;
+export const PLAYERS_STEP = 4;
 
 /**
  * Favourite players, straight after favourite teams (Dean, 2026-09-17): a section per team
