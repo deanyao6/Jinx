@@ -10,7 +10,7 @@
 
 **MLS game data** comes from ESPN's soccer scoreboard service. Jinx is not affiliated with, endorsed by, or sponsored by Major League Soccer or any of its clubs.
 
-Team and league names appear as plain text for identification only. No logos, wordmarks, or other marks are used.
+Team and league names appear as plain text for identification only. No logos, wordmarks, or other marks are used. Team colours are the clubs' published brand colours, hand-tuned for contrast (seed/team_colors.json); they were cross-checked on 2026-09-22 against ESPN's team records (`color` and `alternateColor`) and against jimniels/teamcolors on GitHub, a reference of the leagues' official colour values. That repository carries no licence file, so nothing was copied from it: it was read to compare, and the diff is in docs/verification.md.
 
 Venue coordinates are compiled from public sources: OpenStreetMap (© OpenStreetMap contributors, Open Database License, via Nominatim) and Wikipedia. Elevations are from the USGS 3D Elevation Program, Natural Resources Canada's Canadian Digital Elevation Model and Open-Elevation. Timezones are resolved from OpenStreetMap boundaries through timezonefinder.
 

@@ -957,3 +957,77 @@ Year); test `023`.
 Not collected: NBA All-Stars (`honor_kinds` has the row; no rows were asked for). The
 `seed/franchise_players.nba_mls.draft.json` file was merged into the main file and removed.
 
+## Team palettes against two sources (next-wave F) — CHECKED 2026-09-22
+
+**VERIFY, the licence.** `jimniels/teamcolors` has no LICENSE file, no `license` field in
+package.json and GitHub reports none (checked 2026-09-22). Nothing was copied from it: it was
+read to compare, the comparison lives in `docs/palette-diff.md`, and the values written to the
+seed come from ESPN's team records (`color`, `alternateColor`), which the app already uses
+under the ESPN attribution. `docs/attribution.md` says so.
+
+**VERIFY, the coverage.** 165 teams: NFL 32, MLB 30, NBA 30, MLS 22 of 30 (no Austin,
+Charlotte, Cincinnati, Inter Miami, LAFC, Nashville, San Diego, St. Louis), plus NHL and EPL.
+Its README calls the NBA values official from the 2014-15 composite, the MLB values
+"extracted" from logo slicks, and the MLS values approximations. It is dated: the Grizzlies'
+teal, the Marlins' orange and the Hawks' volt are identities the clubs left years ago, and the
+NBA rows carry a near-black `#061922` where the clubs say black. So the check was run three
+ways (`seed/scripts/compare_team_colors.py`): ours, jimniels/teamcolors and ESPN's current
+pair for every active team, with CIE76 ΔE to the nearest colour of each source. A palette is
+changed only when **both** sources disagree with ours (a missing source does not vote); the
+lead colour stays ours, since the older source lists the Yankees' red before their navy and
+ESPN's `color` is not always the club's lead (the Timberwolves' official navy is ours, ESPN
+says a lighter blue, the older source agrees with ours: kept).
+
+**What it found.** Our fills already match ESPN's colour for every active team but one (the
+hand-tuned rows were built from the same records). The real defect was the **MLS secondaries:
+every one of the 30 MLS rows repeated its primary as `--t2`** (the badge ring and the stripe
+under a scoreboard side were the fill's own colour), and the older source's coverage gaps
+hid nothing because ESPN carries an alternate for all 30. 30 rows changed, 29 of them MLS
+secondaries (the fill untouched), plus the Pistons', Thunder's and Spurs' secondaries to ESPN's
+current alternate. The Marlins are kept on purpose: Caliente red is the club's 2019 identity,
+ESPN lists black and the older source the 2012 orange. Every proposal clears 4.5:1 on both
+screens by construction (`--t2` dark variants lightened along the same hue where needed) and
+`python3 seed/scripts/check_team_colors.py` passes (worst hand-tuned 4.72:1 light, 5.65:1
+dark). Applied to the seed, `supabase/seed.sql`, local and hosted (30 rows read back).
+
+The changed rows (fill / light `--t2` before, the sources, the change):
+
+| Team | Ours: fill / light --t2 | jimniels/teamcolors | ΔE to nearest (fill, --t2) | ESPN colour / alt | ΔE to ESPN (fill, --t2) | Proposed |
+|---|---|---|---|---|---|---|
+| FC Cincinnati (mls) | #003087 / #003087 | - | -, - | #003087 #FE5000 | 0, 133 | --t2 #FE5000 (dark #FE5000) |
+| Chicago Fire FC (mls) | #7CCDEF / #12617d | #AF2626 #0A174A #8A8D8F | 34, 31 | #7CCDEF #FF0000 | 0, 129 | --t2 #FF0000 (dark #FF0000) |
+| Seattle Sounders FC (mls) | #2DC84D / #16712a | #4F8A10 #11568C #212930 | 32, 23 | #2DC84D #0033A0 | 0, 120 | --t2 #0033A0 (dark #3374FF) |
+| Columbus Crew (mls) | #000000 / #252525 | #000000 #FFDB00 #8A8D8F | 0, 44 | #000000 #FEDD00 | 0, 115 | --t2 #8A8D8F (dark #8A8D8F) |
+| New England Revolution (mls) | #022166 / #022166 | #0A2141 #D80016 #8A8D8F | 26, 26 | #022166 #CE0E2D | 0, 98 | --t2 #CE0E2D (dark #F898A8) |
+| San Jose Earthquakes (mls) | #003DA6 / #003da6 | #0051BA #000000 #B1B4B2 | 9, 73 | #003DA6 #FFFFFF | 0, 97 | --t2 #000000 (dark #C2C2C2) |
+| LA Galaxy (mls) | #00235D / #00235d | #00245D #004689 #F1AA00 #FFD200 | 1, 16 | #00235D #FFFFFF | 0, 94 | --t2 #004689 (dark #8CC7FF) |
+| San Diego FC (mls) | #697A7C / #4b5861 | - | -, - | #697A7C #F89E1A | 0, 92 | --t2 #F89E1A (dark #F89E1A) |
+| D.C. United (mls) | #000000 / #252525 | #000000 #DD0000 | 0, 99 | #000000 #D61018 | 0, 91 | --t2 #D61018 (dark #F6898D) |
+| FC Dallas (mls) | #C6093B / #c6093b | #CF0032 #07175C #8A8D8F | 8, 75 | #C6093B #001F5B | 0, 87 | --t2 #001F5B (dark #8AB2FF) |
+| Red Bull New York (mls) | #BA0C2F / #ba0c2f | #D50031 #012055 #FFC800 #8A8D8F | 11, 74 | #BA0C2F #FFC72C | 0, 85 | --t2 #FFC72C (dark #FFC72C) |
+| Philadelphia Union (mls) | #051F31 / #051f31 | #002D55 #5090CD #B38707 #B49759 #F4F4F4 | 16, 16 | #051F31 #E0D0A6 | 0, 82 | --t2 #E0D0A6 (dark #E0D0A6) |
+| Nashville SC (mls) | #ECE83A / #5b5900 | - | -, - | #ECE83A #1F1646 | 0, 82 | --t2 #1F1646 (dark #8472D3) |
+| CF Montréal (mls) | #003DA6 / #003da6 | #122089 #000000 #7A878F | 13, 68 | #003DA6 #C1C5C8 | 0, 82 | --t2 #C1C5C8 (dark #C1C5C8) |
+| Real Salt Lake (mls) | #A32035 / #a32035 | #A50531 #013474 #F2D11A | 6, 76 | #A32035 #DAA900 | 0, 79 | --t2 #DAA900 (dark #DAA900) |
+| Houston Dynamo FC (mls) | #FF6B00 / #a43d00 | #F36600 #2E2926 #85B7EA | 4, 66 | #FF6B00 #101820 | 0, 78 | --t2 #101820 (dark #A2B9D0) |
+| St. Louis CITY SC (mls) | #EC1458 / #bd1046 | - | -, - | #EC1458 #001544 | 0, 78 | --t2 #001544 (dark #85ABFF) |
+| Colorado Rapids (mls) | #8A2432 / #8a2432 | #91022D #85B7EA #8A8D8F #313F49 | 10, 53 | #8A2432 #8AB7E9 | 0, 78 | --t2 #8AB7E9 (dark #8AB7E9) |
+| Toronto FC (mls) | #AA182C / #aa182c | #D80016 #313F49 #A1AAAD | 29, 29 | #AA182C #A2A9AD | 0, 74 | --t2 #A2A9AD (dark #A2A9AD) |
+| Inter Miami CF (mls) | #231F20 / #231f20 | - | -, - | #231F20 #F7B5CD | 0, 73 | --t2 #F7B5CD (dark #F7B5CD) |
+| Austin FC (mls) | #00B140 / #00782a | - | -, - | #00B140 #000000 | 0, 72 | --t2 #000000 (dark #969696) |
+| Portland Timbers (mls) | #2C5234 / #2c5234 | #004812 #EBE72B | 18, 18 | #2C5234 #C99700 | 0, 72 | --t2 #C99700 (dark #C99700) |
+| Minnesota United FC (mls) | #000000 / #252525 | #CFD4D8 #6CADDF #000000 | 0, 63 | #000000 #9BCDE4 | 0, 68 | --t2 #9BCDE4 (dark #9BCDE4) |
+| LAFC (mls) | #000000 / #252525 | - | -, - | #000000 #C7A36F | 0, 63 | --t2 #C7A36F (dark #C7A36F) |
+| Atlanta United FC (mls) | #9D2235 / #9d2235 | #A29061 #80000B #000000 | 16, 16 | #9D2235 #AA9767 | 0, 58 | --t2 #AA9767 (dark #AA9767) |
+| Charlotte FC (mls) | #0085CA / #006da6 | - | -, - | #0085CA #000000 | 0, 58 | --t2 #000000 (dark #B8B8B8) |
+| New York City FC (mls) | #9FD2FF / #175680 | #6CADDF #00285E #FD4F00 | 15, 24 | #9FD2FF #000229 | 0, 36 | --t2 #000229 (dark #9FA4FF) |
+| Detroit Pistons (nba) | #C8102E / #1D42BA | #ED174C #006BB6 #0F586C | 14, 37 | #1D428A #C8102E | 0, 30 | --t2 #1D428A (dark #8DACE7) |
+| Oklahoma City Thunder (nba) | #00669F / #EF6F1E | #007DC3 #F05133 #FDBB30 #002D62 | 11, 20 | #007AC1 #EF3B24 | 11, 24 | --t2 #EF3B24 (dark #EF3B24) |
+| San Antonio Spurs (nba) | #000000 / #8E9BA3 | #BAC3C9 #061922 | 12, 15 | #000000 #C4CED4 | 0, 19 | --t2 #C4CED4 (dark #C4CED4) |
+
+Before and after, the ten biggest (badge ring and the stripe under the scoreboard side):
+`docs/evidence/palettes/before-after.png`, with the full pages as `before-<club>.png` and
+`after-<club>.png` for Cincinnati, Chicago, Seattle, Columbus, New England, San Jose, LA
+Galaxy, San Diego, D.C. and Dallas. Dean may adjust any of them in Figma; the 13 reference rows
+were not touched.
+

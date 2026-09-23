@@ -257,6 +257,9 @@ Not done, and known:
   summed to the 387 hosted already held. Judge the scheduled runs by the workflow log and by
   the hosted 2026 final count moving after match days, not by `net._http_response`
   (no Edge Function is involved).
+- **Palettes were cross-checked on 2026-09-22** (next-wave F) against jimniels/teamcolors and
+  ESPN: the fills all matched ESPN, every MLS `--t2` had been a copy of its primary and now is
+  ESPN's alternate (30 rows changed, `docs/palette-diff.md`, `docs/evidence/palettes/`).
 - **The 30 MLS palettes** (`seed/mls_colors.json`) were tuned to the contrast rule, not to
   Dean's eye.
 - **Not seen on a device.** Arjun's session reached the league picker on the simulator against

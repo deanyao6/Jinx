@@ -970,9 +970,9 @@
       "fill_hex": "#C8102E",
       "on_fill_hex": "#FFFFFF",
       "primary_light_hex": "#C8102E",
-      "secondary_light_hex": "#1D42BA",
+      "secondary_light_hex": "#1D428A",
       "primary_dark_hex": "#F25A70",
-      "secondary_dark_hex": "#7F9FF5",
+      "secondary_dark_hex": "#8DACE7",
       "source": "hand_tuned"
     },
     {
@@ -1126,9 +1126,9 @@
       "fill_hex": "#00669F",
       "on_fill_hex": "#FFFFFF",
       "primary_light_hex": "#00669F",
-      "secondary_light_hex": "#EF6F1E",
+      "secondary_light_hex": "#EF3B24",
       "primary_dark_hex": "#5CB8F5",
-      "secondary_dark_hex": "#F58A45",
+      "secondary_dark_hex": "#EF3B24",
       "source": "hand_tuned"
     },
     {
@@ -1204,7 +1204,7 @@
       "fill_hex": "#000000",
       "on_fill_hex": "#FFFFFF",
       "primary_light_hex": "#000000",
-      "secondary_light_hex": "#8E9BA3",
+      "secondary_light_hex": "#C4CED4",
       "primary_dark_hex": "#E6E8EA",
       "secondary_dark_hex": "#C4CED4",
       "source": "hand_tuned"
