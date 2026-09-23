@@ -24,9 +24,31 @@ if ! xcode-select -p 2>/dev/null | grep -q Xcode; then
   exit 1
 fi
 
+# The native project is generated, and it goes stale the moment a native dependency or an
+# app.json plugin or permission string changes. Before 2026-09-23 this only ran prebuild when
+# ios/ was missing, so adding expo-camera and expo-contacts produced a build that compiled
+# happily and then died at launch with "Cannot find native module 'ExpoContactsNext'". The
+# stamp below is the fingerprint of everything prebuild reads, so a changed dependency
+# regenerates the project and reinstalls the pods instead of failing on the device.
+NATIVE_STAMP="$IOS_DIR/.jinx-native-stamp"
+NATIVE_FINGERPRINT="$(cat "$APP_DIR/package.json" "$APP_DIR/app.json" 2>/dev/null | shasum -a 256 | cut -d" " -f1)"
+NEEDS_PREBUILD=0
 if [ ! -d "$IOS_DIR" ]; then
   echo "==> No ios/ directory, running prebuild"
-  (cd "$APP_DIR" && npx expo prebuild --platform ios)
+  NEEDS_PREBUILD=1
+elif [ ! -f "$NATIVE_STAMP" ] || [ "$(cat "$NATIVE_STAMP")" != "$NATIVE_FINGERPRINT" ]; then
+  echo "==> Native dependencies or app.json changed, regenerating ios/"
+  NEEDS_PREBUILD=1
+fi
+
+if [ "$NEEDS_PREBUILD" = "1" ]; then
+  (cd "$APP_DIR" && npx expo prebuild --platform ios --no-install)
+  echo "==> pod install"
+  (cd "$IOS_DIR" && pod install >/dev/null)
+  printf '%s' "$NATIVE_FINGERPRINT" > "$NATIVE_STAMP"
+  # A regenerated project means the JS almost certainly moved too, and Metro does not watch
+  # reliably here: a stale bundle on a fresh binary is the hardest failure in this repo to read.
+  RESTART_METRO=1
 fi
 
 echo "==> Booting $DEVICE"
@@ -66,7 +88,13 @@ BUNDLE_ID="$(defaults read "$APP/Info.plist" CFBundleIdentifier)"
 echo "==> Installing $BUNDLE_ID"
 xcrun simctl install "$UDID" "$APP"
 
-if curl -fsS -o /dev/null http://127.0.0.1:8081/status 2>/dev/null; then
+if [ "${RESTART_METRO:-0}" = "1" ] && curl -fsS -o /dev/null http://127.0.0.1:8081/status 2>/dev/null; then
+  echo "==> Restarting Metro with a cleared cache (the native project changed)"
+  pkill -f "expo start --port 8081" 2>/dev/null || true
+  sleep 2
+  (cd "$APP_DIR" && npx expo start --port 8081 --clear >/dev/null 2>&1 &)
+  until curl -fsS -o /dev/null http://127.0.0.1:8081/status 2>/dev/null; do sleep 2; done
+elif curl -fsS -o /dev/null http://127.0.0.1:8081/status 2>/dev/null; then
   echo "==> Metro already running on 8081"
 else
   echo "==> Starting Metro"
