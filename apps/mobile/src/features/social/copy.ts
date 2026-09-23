@@ -25,7 +25,8 @@ export type FeedEventType =
   | 'goal_completed'
   | 'milestone'
   | 'wrapped_published'
-  | 'famous_game';
+  | 'famous_game'
+  | 'badge_earned';
 
 export type FeedEvent = {
   id: string;
@@ -159,6 +160,8 @@ export function feedEventCopy(e: FeedEvent): string {
     case 'famous_game':
       // "Dean was at Super Bowl LIX." The title is the famous row's, carried in the payload.
       return `${name} was at ${str(p['title']) ?? 'a famous game'}`;
+    case 'badge_earned':
+      return `${name} earned ${str(p['name']) ?? 'a badge'}`;
     default:
       return `${name} did something`;
   }

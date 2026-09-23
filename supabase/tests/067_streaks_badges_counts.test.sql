@@ -18,12 +18,12 @@ select ('00000000-0000-0000-0000-00000067c00' || n)::uuid, 'mlb', 2026, 'regular
        'final', 'test', 'sb-g' || n
 from generate_series(1, 5) n;
 insert into public.badges (key, name, description, criteria, is_secret) values
-  ('three_parks_weekend', 'Weekend warrior', 'Three stadiums in one weekend', '{"type":"distinct_venues","target":3}', false),
-  ('curse_breaker', 'Curse breaker', 'A secret', '{"type":"count","target":1}', true),
-  ('rally_cap', 'Rally cap', 'Another secret', '{"type":"count","target":1}', true);
+  ('sbtest_weekend', 'Weekend warrior', 'Three stadiums in one weekend', '{"type":"distinct_venues","target":3}', false),
+  ('sbtest_curse', 'Curse breaker', 'A secret', '{"type":"count","target":1}', true),
+  ('sbtest_rally', 'Rally cap', 'Another secret', '{"type":"count","target":1}', true);
 insert into public.user_badges (user_id, badge_key) values
-  ('b6700000-0000-4000-8000-0000000000a1', 'curse_breaker'),
-  ('b6700000-0000-4000-8000-0000000000c1', 'three_parks_weekend');
+  ('b6700000-0000-4000-8000-0000000000a1', 'sbtest_curse'),
+  ('b6700000-0000-4000-8000-0000000000c1', 'sbtest_weekend');
 insert into public.season_streaks (user_id, team_id, sport_id, start_season, end_season, seasons, min_games)
 values ('b6700000-0000-4000-8000-0000000000a1', '00000000-0000-0000-0000-00000067a001', 'mls', 2022, 2026, 5, 2);
 insert into public.user_counts (user_id, sport_id, season, games, verified_games)
@@ -31,10 +31,12 @@ values ('b6700000-0000-4000-8000-0000000000a1', 'mls', 0, 12, 4);
 
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"b6700000-0000-4000-8000-0000000000a1","role":"authenticated"}';
-select results_eq($$select key from public.badges order by key$$, $$values ('curse_breaker'), ('three_parks_weekend')$$,
+-- Scoped to this test's own fixture keys: the launch catalog seeds real badges too (prompt 4),
+-- and this checks the RLS rule, not the full row count.
+select results_eq($$select key from public.badges where key like 'sbtest_%' order by key$$, $$values ('sbtest_curse'), ('sbtest_weekend')$$,
   'a secret badge shows only to someone who has earned it');
 select throws_ok(
-  $$insert into public.user_badges (user_id, badge_key) values (auth.uid(), 'rally_cap')$$,
+  $$insert into public.user_badges (user_id, badge_key) values (auth.uid(), 'sbtest_rally')$$,
   '42501', null, 'nobody awards themselves a badge');
 update public.user_counts set games = 500 where user_id = auth.uid();
 update public.season_streaks set seasons = 50 where user_id = auth.uid();

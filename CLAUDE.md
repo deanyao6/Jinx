@@ -154,6 +154,7 @@ npx tsx ingest/src/nba/honors.ts                           # NBA honors (MVP top
 npx tsx ingest/src/mls/honors.ts                           # MLS honors (MVP and finalists, Best XI, Golden Boot, ROY, Cup MVP) from seed/mls_awards.json
 npx tsx ingest/src/nfl/moves.ts [--from 2016 --to 2026]    # NFL joins from the weekly rosters
 npx tsx ingest/src/nfl/firsts.ts [--from 2000 --to 2026]   # NFL first touchdowns (play-by-play) and rookie seasons
+npx tsx ingest/src/social/seedBadges.ts                    # badges table from packages/core's BADGE_CATALOG (social v2, prompt 4)
 ```
 
 ## Conventions
