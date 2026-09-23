@@ -1062,3 +1062,34 @@ the 2026-09-16 run, so the light-mode walk changed nothing the reference measure
 is relive-mid at 21.03% light (the reference's fixture story against the app's demo story).
 The sheets are in `design/parity/sheets/` (reference | app | diff), for Dean to approve.
 
+
+## ESPN's NFL scoreboard from the phone (social v2, prompt 3; 00_repo_reality.md R1) — CHECKED 2026-09-23
+
+Prompt 3 proposed a paid scores feed for live NFL; the ruling is ESPN's free scoreboard, read
+by the phone like the NBA CDN and ESPN's MLS summary (decision 8). Checked from this laptop
+with `curl` (ESPN takes curl's default agent), fixtures in `ingest/fixtures/nfl/`:
+
+| Request | Answer |
+|---|---|
+| `site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard` (no query) | 200, 283 KB, the current week (`week.number` 3, 16 events, all `STATUS_SCHEDULED` on a Tuesday night) |
+| `…/scoreboard?dates=20260920` | 200, 14 events of that Eastern date, `week.number` 2 |
+| `…/scoreboard?dates=20260921` | 200, 1 event: Giants at Rams, `STATUS_FINAL`, `period` 4, `displayClock` `0:00`, scores as strings (`"28"`, `"6"`) |
+
+Shape read by `packages/core/src/providers/nfl/live.ts`: `events[].competitions[0].status.type.{name,state,completed}`,
+`status.period`, `status.displayClock`, `competitors[].{homeAway,score,team.abbreviation}`.
+A game is matched by club, not by ESPN's id: an nflverse id is `2026_02_NYG_LA` and the two
+abbreviations that differ are **LA → LAR** and **WAS → WSH** (every other club of the 32 spells
+the same on both). So the app asks for the day of the kickoff in Eastern time (`dates=`), which
+is one document a poll and never the wrong week.
+
+**Not seen, because no game was under way on 2026-09-22/23:** the in-progress vocabulary
+(`STATUS_IN_PROGRESS`, `STATUS_HALFTIME`, `STATUS_END_PERIOD`) and `competitions[0].situation`
+(`lastPlay.{text,type.text}`, and `lastPlay.probability.homeWinPercentage`, which ESPN's boards
+carry for other sports). The parser keys on `state === 'in'` and the words HALFTIME and
+END_PERIOD, reads `situation.lastPlay` when present and never requires it, and the coarse rule
+only ever prompts on a score change, so an unexpected status name still reads as live and a
+missing `situation` costs nothing but the return-score case. The probe on the Easter eggs page
+(`jinx:///you/eggs?probe=live`) now has three NFL rows: the 2026-09-21 board, the Giants at
+Rams row through the feed, and today's board with any live game's `situation` summarised.
+The first game of week 3 is Thursday 2026-09-24 at 20:15 EDT; run the probe then to fill this
+in.

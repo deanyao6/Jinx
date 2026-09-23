@@ -61,6 +61,8 @@ export interface NflversePbpRow {
   /** Home team's win probability after the play, as a fraction. Drives Relive (SPEC 6.19). */
   home_wp?: number | null;
   play_type: string | null;
+  /** Yards on the play; a 90-yard run reads 90. Read by the reaction relabel (packages/core/src/reactions/relabel.ts). */
+  yards_gained?: number | null;
   /** Score after the play. */
   total_home_score: number | null;
   total_away_score: number | null;

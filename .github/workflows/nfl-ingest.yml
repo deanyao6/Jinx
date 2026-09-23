@@ -74,6 +74,14 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npx tsx ingest/src/nfl/relive.ts --attended
 
+      # Social v2, reactions: a live NFL prompt only knew the score changed. With the play-by-play
+      # in hand, rewrite it to the real play, recompute its significance and pin it to the line.
+      - name: Relabel live NFL reaction prompts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npx tsx ingest/src/nfl/relabel.ts
+
       # The favourite-player picker shows each team's real roster (team_rosters): the latest
       # week of the nflverse weekly roster release, cached like the other assets above.
       - name: Current rosters

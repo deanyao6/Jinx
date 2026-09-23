@@ -181,3 +181,29 @@ with `PARITY_DEVICE`, `PARITY_WIDTH`, `PARITY_HEIGHT`.
 The top crop is **62pt**, measured rather than assumed: `npm run parity:selftest` renders
 a block of flat colour starting at the app's real top safe-area inset and reports the row
 it lands on. Re-run it after changing device.
+
+## Reactions (social v2, prompt 3), 2026-09-23
+
+### Back then front, not a dual capture
+
+The prototype's capture is one gesture: the field, then the selfie. The app takes them one
+after the other (`features/reactions/capture/CaptureScreen.tsx`): the back camera on the
+shutter, a three-second countdown, then the front camera on its own. True simultaneous dual
+capture needs iOS multi-cam (`AVCaptureMultiCamSession`) through a custom native module, which
+expo-camera does not expose. Not attempted. The two photos are stored as two objects and stitched
+at display time (`StitchedPhoto`: the field with the selfie inset), so a reaction is never a
+third file and a retake is free.
+
+### No Live Activity
+
+The prototype's lock screen card ("Padres 1, Dodgers 2 · your pick · 2 reactions armed") is a
+Live Activity. There is no Expo module for ActivityKit; it needs a native module, a widget
+extension target and an entitlement (00_repo_reality.md, section 4). Cut for v1, as that file
+allows. The session screen and the Games card carry the same information inside the app.
+
+### The simulator has no camera
+
+A development build in the simulator captures a drawn placeholder (a green field, a warm
+selfie) through `react-native-view-shot` instead of a camera frame, so the whole flow, upload
+included, can be walked by script (STATE.md trap 9). A device always uses the real camera; the
+placeholder is dead code outside `__DEV__`.
