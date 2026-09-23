@@ -171,6 +171,42 @@ these migrations their emoji taps fail (and they show pending companion tags as 
 Ship a build carrying this branch first, or accept that. Storage buckets for post and reaction
 photos are not made yet (prompts 2 and 3).
 
+**Social v2, prompt 4 (communities, leaderboards, streaks, badges, counts, four favorites), on
+branch `social-v2-communities` off `social-v2` (2026-09-23, not merged, not on hosted).** Brief:
+`docs/prompts/social/04_communities_and_leaderboards.md`; `00_repo_reality.md` wins where they
+disagree; design note on what shipped and what did not: `docs/COMMUNITIES.md`. Migrations
+`20260924030000` to `030200`, pgTAP `090`. `goal_games()` gained the six fields badges need
+(timezone, temperature, doubleheader, Opening Day, new-state, distance from home); `packages/core`
+gained `streaks.ts`, `leaderboard.ts` and `badges.ts` (25 launch badges plus the eight
+`features/eggs/flags.ts` eggs as `is_secret` badges, five new predicate types on the goals
+evaluator, SPEC 6.13, R6). `supabase/functions/evaluate-social` computes badges and season streaks
+per user, called from `process_game_final` and `attendances_after_write` the same way
+`evaluate-goals` already is. Communities are seeded for real: 122 team, 114 venue, 1 school
+(Caltech), across all four sports (00, R3). Screens: `/communities`, `/community/[slug]` (header,
+two leaderboard previews, the member feed, join/leave/report), `/community/[slug]/leaderboard`
+(stat chips scoped to the community's kind and sport, period segmented control, friends-only,
+the verified-attendance notice, the viewer's row pinned when off-page), `/passport/badges`,
+`/passport/favorites` (a same-screen picker over the fan's attended games), and
+`/passport/streak/[teamId]`. The Passport screen gained three preview sections (streak patches,
+capped at the three longest; a four-favorites preview; an earned-badges preview) in the same
+place and the same `env.demo`-gated pattern `FavoritePlayers` already used, so the parity harness
+is untouched. **Walked on the simulator signed in as a real user against real backend data**
+(minted magic link, `docs/simulator.md`), not just typechecked: three real bugs were found and
+fixed this way that `tsc` and Jest could not have caught (`Notice`'s children prop breaks on
+interpolated JSX children rather than a single string, so two screens threw "Text strings must be
+rendered within a `<Text>`" at runtime and showed blank; the community screen's Join/Leave/Report
+buttons were unreadable, accent-colored text on an accent-colored card; a community page's
+leaderboard previews queried a `(period, season)` pair the check constraint forbids and always
+read "Not ranked yet"). Screenshots before and after each fix: `docs/evidence/social/communities/`.
+Two migration-correctness bugs a peer session's review caught before merge (a non-idempotent
+`drop constraint` and trigger create, and a `revoke` naming the wrong function signature) are
+fixed and reverified from a database with the function fully dropped first, not just against
+already-patched local state. Not done, and said plainly in `docs/COMMUNITIES.md`: user-created
+communities (`kind='custom'` exists in the schema only), an "unofficial" self-reported
+leaderboard, the streak "at risk" nudge (the pure function exists and is tested; nothing calls it
+server side), and Profile's counts block (`useCounts()` and `user_counts` are real and tested;
+no screen renders it).
+
 **The welcome screen is rebuilt (2026-09-22), and its wall restocks itself weekly.**
 `design/welcome-reference.html` is its source of truth; `app/(auth)/welcome.tsx` composes
 `features/onboarding/ui/WelcomeArt.tsx` (the wall, scrim and copy) and `WelcomeActions.tsx`
