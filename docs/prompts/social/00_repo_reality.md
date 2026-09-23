@@ -118,24 +118,18 @@ working code and would be visible to anyone on TestFlight as a feature disappear
 good enough. If he does want it hidden, hide it behind `FEATURE_PLAN=false` rather than deleting
 the code, so nothing is lost.
 
-### Q2. Do the routes get renamed? (prompt 1, section 2)
+### Q2. Routes: DECIDED 2026-09-23, keep the current paths and add only the new ones
 
-The brief's map and the repo's routes differ:
+Dean's call: **keep what exists, add the new stuff.** So:
 
-| Brief | Repo today |
+| Keep exactly as it is | Add |
 |---|---|
-| `/game/[gameId]` | `/games/[gameId]` |
-| `/user/[handle]` | `/u/[handle]` |
-| `/profile/settings` | `/settings` and `/you/*` |
-| `/game/[gameId]/relive` | `/relive/[gameId]` |
-| `/passport/badges` etc. | `/passport`, `/friends`, `/wrapped`, `/guide`, `/invite`, `/share` |
+| `/games/[gameId]`, `/u/[handle]`, `/settings`, `/you/*`, `/relive/[gameId]`, `/passport`, `/friends`, `/wrapped`, `/guide`, `/invite`, `/share` | `/feed`, `/post/[postId]`, `/post/[postId]/comments`, `/communities`, `/community/[slug]`, `/community/[slug]/leaderboard`, `/react/[gameId]`, `/passport/streak/[teamId]`, `/passport/badges`, `/passport/favorites` |
 
-Renaming breaks every share link and push notification already delivered to builds 4 and 5, and
-the reachability test plus the parity harness both key on the current paths.
-
-**Recommendation: keep the existing paths, add only genuinely new ones** (`/feed`, `/post/...`,
-`/communities`, `/community/...`, `/react/...`). If Dean wants the tidier names, add redirects
-from the old paths and keep them forever; do not break a link that is already in the wild.
+Do not rename a route that already exists, and do not add a redirect for a name we are not
+using. Every share link and push notification already delivered to builds 4 and 5 keeps working,
+and the reachability test and parity harness keep their current keys. Where prompt 1's route map
+names a path that differs from the repo's, use the repo's.
 
 ---
 
