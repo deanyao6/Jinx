@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jinx, navigation prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#E7EAEE; --ink:#101318; --muted:#6B7280; --line:#DDE1E6; --card:#fff; --canvas:#F4F5F7; --surface:#EEF0F3;
+  --good:#1B9E5A; --bad:#D63B33; --warn:#C98B12; --link:#2563EB; --frame:#14171C; --brass:#B08A2E;
+  --t:#E81828; --t2:#002D72; --on:#fff;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --page:#07090B; --ink:#F1F3F6; --muted:#98A2B3; --line:#242A31; --card:#161A20; --canvas:#0E1115; --surface:#1C222A;
+  --good:#3CCB7F; --bad:#FF6A60; --warn:#F2B84B; --link:#6EA0FF; --frame:#000; --brass:#D9B65F; --t:#FF3B49; --t2:#7F9DE8;
+}}
+:root[data-theme="dark"]{
+  --page:#07090B; --ink:#F1F3F6; --muted:#98A2B3; --line:#242A31; --card:#161A20; --canvas:#0E1115; --surface:#1C222A;
+  --good:#3CCB7F; --bad:#FF6A60; --warn:#F2B84B; --link:#6EA0FF; --frame:#000; --brass:#D9B65F; --t:#FF3B49; --t2:#7F9DE8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+.top{max-width:1240px;margin:0 auto;padding:36px 24px 0;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
+.top h1{font-size:clamp(36px,6vw,64px);margin:0;font-weight:900;font-variation-settings:"wdth" 62;line-height:.88}
+.top p{color:var(--muted);max-width:66ch;margin:10px 0 0;line-height:1.5;font-size:15.5px}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap}
+.ctrl{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-size:13.5px}
+.ctrl[aria-pressed="true"]{background:var(--ink);color:var(--page);font-weight:700;border-color:var(--ink)}
+.stage{max-width:1240px;margin:0 auto;padding:26px 24px 70px;display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap}
+.phone{width:352px;height:734px;background:var(--frame);border-radius:50px;padding:11px;flex:0 0 auto;box-shadow:0 30px 60px -34px rgba(8,10,14,.5);position:relative}
+.scr{width:100%;height:100%;background:var(--canvas);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.status{display:flex;justify-content:space-between;padding:13px 24px 2px;font-size:12.5px;font-weight:650;color:var(--muted)}
+.hdr{display:flex;align-items:center;gap:10px;padding:6px 16px 10px;border-bottom:1px solid var(--line);background:var(--card)}
+.hdr h2{margin:0;font-size:19px;font-weight:850;flex:1;line-height:1.1}
+.body{flex:1;overflow-y:auto;padding:12px 16px 20px;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+.tabs{display:flex;border-top:1px solid var(--line);background:var(--card);padding:8px 2px 16px}
+.tabs button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--muted);padding:2px 0}
+.tabs button.on{color:var(--t);font-weight:800}
+.tabs svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ib{width:32px;height:32px;border-radius:50%;background:var(--surface);border:0;display:grid;place-items:center}
+.ib svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.seg{display:flex;background:var(--surface);border-radius:10px;padding:3px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:none;padding:7px;border-radius:8px;font-size:13px;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--card);color:var(--ink);font-weight:750}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;width:100%;text-align:left;display:block}
+.card.tap:active{transform:scale(.995)}
+.row{display:flex;align-items:center;gap:10px}
+.av{width:34px;height:34px;border-radius:50%;flex:0 0 auto;background:var(--surface);display:grid;place-items:center;font-weight:800;font-size:12.5px}
+.nm{font-weight:800;font-size:13.5px}
+.sub{font-size:11.5px;color:var(--muted)}
+.big{font-size:17px;font-weight:850;margin:8px 0 2px}
+.meta{font-size:12px;color:var(--muted)}
+.pillrow{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0}
+.pill{border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:11.5px;background:var(--surface)}
+.pill.on{background:var(--t);border-color:var(--t);color:var(--on);font-weight:750}
+.actions{display:flex;gap:16px;border-top:1px solid var(--line);margin-top:10px;padding-top:9px;font-size:12.5px;color:var(--muted)}
+.actions button{background:none;border:0;display:flex;align-items:center;gap:5px;color:inherit;font-size:12.5px;padding:0}
+.actions button.done{color:var(--t);font-weight:750}
+.actions svg,.av svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.av svg{width:17px;height:17px}
+.res{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-weight:900;color:#fff;flex:0 0 auto}
+.res.w{background:var(--good)} .res.l{background:var(--bad)} .res.n{background:var(--muted)}
+.thumb{width:44px;height:44px;border-radius:10px;background:linear-gradient(140deg,var(--t),#1a2233);flex:0 0 auto}
+.photo{border-radius:10px;height:110px;background:linear-gradient(160deg,#1D2B53,#2E7D4F);margin-top:8px;position:relative;overflow:hidden}
+.photo span{position:absolute;left:8px;bottom:6px;font-size:10.5px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.photo.sel{background:linear-gradient(160deg,#3B2C5A,#1D2B53)}
+.dual{position:absolute;right:8px;top:8px;width:46px;height:58px;border-radius:8px;border:2px solid #fff;background:linear-gradient(160deg,#C98B6B,#5A3A2A)}
+.hero{background:linear-gradient(160deg,#1C2331,#0B0F16);color:#fff;border-radius:16px;padding:13px;margin-bottom:10px}
+.hero .n{font-size:44px;font-weight:900;font-variation-settings:"wdth" 62;line-height:.9}
+.hero .lbl{font-size:9.5px;letter-spacing:.07em;font-weight:750;opacity:.65}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px;text-align:left}
+.mini b{display:block;font-size:19px;font-weight:850;font-variation-settings:"wdth" 70}
+.mini span{font-size:10.5px;color:var(--muted)}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:16px 0 8px}
+.sec h3{margin:0;font-size:15px;font-weight:850}
+.sec button{background:none;border:0;color:var(--link);font-size:12px;font-weight:700;padding:0}
+.li{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left}
+.li:first-of-type{border-top:0}
+.li .tx{flex:1;min-width:0}
+.li .tx b{display:block;font-size:13.5px}
+.li .tx span{font-size:11.5px;color:var(--muted)}
+.chev{color:var(--muted);font-size:15px}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:750;background:var(--surface);border:1px solid var(--line)}
+.badge.live{color:var(--bad);border-color:var(--bad)}
+.badge.gold{color:var(--brass);border-color:var(--brass)}
+.toast{position:absolute;left:16px;right:16px;bottom:78px;background:var(--ink);color:var(--page);border-radius:12px;padding:11px 13px;font-size:12.5px;z-index:9;opacity:0;transform:translateY(8px);transition:.25s}
+.toast.show{opacity:1;transform:none}
+.capture{position:absolute;inset:0;background:#0A0D12;color:#fff;display:flex;flex-direction:column;z-index:8;border-radius:40px;overflow:hidden}
+.capture .view{flex:1;background:linear-gradient(160deg,#16233F,#2E7D4F);position:relative;display:grid;place-items:center;text-align:center;padding:20px}
+.capture .count{font-size:74px;font-weight:900;font-variation-settings:"wdth" 62}
+.capture .tip{font-size:13px;opacity:.85;margin-top:6px}
+.capture .bar{padding:16px;display:flex;justify-content:center;gap:14px;align-items:center;background:#0A0D12}
+.shutter{width:62px;height:62px;border-radius:50%;background:#fff;border:5px solid rgba(255,255,255,.35)}
+.notif{position:absolute;left:12px;right:12px;top:12px;background:rgba(240,242,245,.96);color:#101318;border-radius:16px;padding:11px 13px;z-index:10;box-shadow:0 12px 30px -12px rgba(0,0,0,.5);font-size:12.5px}
+.notif b{display:block;font-size:13px;margin-bottom:2px}
+.lock{position:absolute;inset:0;background:linear-gradient(160deg,#101828,#05070B);border-radius:40px;z-index:11;color:#fff;padding:52px 18px;display:flex;flex-direction:column;align-items:center}
+.lock .time{font-size:64px;font-weight:300;font-variation-settings:"wdth" 80}
+.lock .la{margin-top:auto;width:100%;background:rgba(255,255,255,.12);border-radius:18px;padding:12px;backdrop-filter:blur(6px)}
+.wire{flex:1;min-width:320px;position:sticky;top:20px}
+.wire h3{margin:0 0 4px;font-size:20px;font-weight:850}
+.wire .where{font-size:13px;color:var(--muted);margin-bottom:14px}
+.wire .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.wire .box h4{margin:0 0 8px;font-size:13px;letter-spacing:.04em;color:var(--muted);font-weight:750}
+.wire .links{display:flex;flex-wrap:wrap;gap:7px}
+.wire .links button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 11px;font-size:12.5px}
+.wire .links button:hover{border-color:var(--t);color:var(--t)}
+.wire ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.wire ul b{color:var(--ink)}
+.crumbs{font-size:12px;color:var(--muted);margin-bottom:10px;word-break:break-word}
+@media (max-width:820px){.stage{justify-content:center}.wire{position:static}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Jinx prototype</h1>
+    <p>Clickable wiring for the restructured app: five tabs, the Feed, communities and leaderboards, reactions, and how every screen connects. Styling is placeholder; the point is that navigation makes sense. The panel on the right shows where you are and every path out of the current screen.</p>
+  </div>
+  <div class="ctrls">
+    <button class="ctrl" data-mode="system" aria-pressed="true">System</button>
+    <button class="ctrl" data-mode="light" aria-pressed="false">Light</button>
+    <button class="ctrl" data-mode="dark" aria-pressed="false">Dark</button>
+    <button class="ctrl" id="simPush">Simulate reaction prompt</button>
+    <button class="ctrl" id="simLock">Lock screen</button>
+    <button class="ctrl" id="simFirst">First launch</button>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="phone">
+    <div class="scr">
+      <div class="status"><span>7:42</span><span>5G</span></div>
+      <div id="hdr"></div>
+      <div class="body" id="view"></div>
+      <div class="tabs" id="tabs"></div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+
+  <section class="wire">
+    <h3 id="wTitle">Feed</h3>
+    <div class="where" id="wWhere"></div>
+    <div class="crumbs" id="wCrumbs"></div>
+    <div class="box"><h4>GOES TO</h4><div class="links" id="wLinks"></div></div>
+    <div class="box"><h4>NOTES</h4><ul id="wNotes"></ul></div>
+  </section>
+</main>
+
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+/* ---------- icons ---------- */
+var I={
+ feed:'<path d="M4 6.5h16M4 12h16M4 17.5h10"/><circle cx="19" cy="17.5" r="2"/>',
+ passport:'<rect x="5" y="3" width="14" height="18" rx="2.5"/><circle cx="12" cy="10.5" r="3.2"/><path d="M9 17h6"/>',
+ ticket:'<path d="M3 8.5V6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v2a2.5 2.5 0 0 0 0 5v2a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 15.5v-2a2.5 2.5 0 0 0 0-5z"/>',
+ map:'<path d="m3.5 6 5.5-2.5 6 2.5 5.5-2.5v14.5L15 20.5 9 18l-5.5 2.5z"/><path d="M9 3.5V18M15 6v14.5"/>',
+ user:'<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-3.8 4.1-5.6 7.5-5.6s6.3 1.8 7.5 5.6"/>',
+ back:'<path d="M14.5 5.5 8 12l6.5 6.5"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+ search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+ kudos:'<path d="M7 11v8H4v-8zM7 11l4-7a2 2 0 0 1 2 2v3h5a2 2 0 0 1 2 2.3l-1 6A2 2 0 0 1 17 19H7"/>',
+ cmt:'<path d="M20 12a7.5 7.5 0 0 1-10.9 6.7L4 20l1.3-4.4A7.5 7.5 0 1 1 20 12z"/>',
+ cam:'<path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.3l1.5-2.5h5.4L16.2 7h2.3A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.8" r="3.4"/>',
+ trophy:'<path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5.5H4.5v2A3.5 3.5 0 0 0 8 11M17 5.5h2.5v2A3.5 3.5 0 0 1 16 11M9.5 19h5M12 14v5"/>'
+};
+function ico(k,cls){return '<svg viewBox="0 0 24 24" class="'+(cls||'')+'">'+I[k]+'</svg>'}
+
+/* ---------- demo data ---------- */
+var ME={id:'dean',name:'Dean Yao',handle:'@deanyao'};
+var PEOPLE={
+ dean:{name:'Dean Yao',init:'DY'}, maya:{name:'Maya Chen',init:'MC'}, dad:{name:'Dad',init:'D'},
+ jordan:{name:'Jordan Ellis',init:'JE'}, philly:{name:'Philly Phanatic Phil',init:'PP',creator:true,followers:'21.4k'},
+ sam:{name:'Sam Ruiz',init:'SR'}
+};
+var GAMES={
+ g1:{title:'Phillies 7, Mets 2',venue:'Citi Field',date:'Sun, Sep 20',res:'w',who:'maya',side:'Phillies',
+     companions:['dad'],reactions:2,photos:2,kudos:14,comments:3,
+     moments:['Harper 2-run double, 3rd','Bullpen strands 2 in the 8th']},
+ g2:{title:'Eagles 24, Titans 20',venue:'Nissan Stadium',date:'Sun, Sep 20',res:'w',who:'philly',side:'Eagles',
+     companions:[],reactions:4,photos:5,kudos:612,comments:88,
+     moments:['Barkley 90-yard TD run','Goal-line stop, 4th quarter']},
+ g3:{title:'Padres 1, Dodgers 2',venue:'Dodger Stadium',date:'Tonight',res:'live',who:'dean',side:'Neutral, picked Dodgers',
+     companions:['sam'],reactions:1,photos:0,kudos:2,comments:0,moments:[]},
+ g4:{title:'Phillies 4, Braves 1',venue:'Citizens Bank Park',date:'Jul 3',res:'w',who:'dean',side:'Phillies',
+     companions:['dad'],reactions:0,photos:1,kudos:9,comments:1,moments:['Walk-off single, 9th']}
+};
+
+/* ---------- screens ---------- */
+var S={};
+
+S.feed=function(p){
+ var seg=p.seg||'following';
+ var h='<div class="seg" role="tablist">'+
+   ['following','discover'].map(function(k){return '<button role="tab" aria-selected="'+(seg===k?'true':'false')+'" data-go=\'{"s":"feed","p":{"seg":"'+k+'"}}\'>'+(k==='following'?'Following':'Discover')+'</button>'}).join('')+'</div>';
+ if(seg==='following'){
+  h+=post('reaction','maya','g1');
+  h+=post('game','maya','g1');
+  h+=post('stamp','jordan');
+  h+=post('game','philly','g2');
+  h+=post('milestone','dad');
+ } else {
+  h+='<button class="card tap" data-go=\'{"s":"trip"}\'><div class="row"><span class="av">✈</span><div><div class="nm">You are in Chicago this weekend</div><div class="sub">3 games near you, 1 is a new stamp</div></div></div></button>';
+  h+='<div class="sec"><h3>Creators and superfans</h3></div>';
+  h+=['philly','sam'].map(function(k){return '<button class="li" data-go=\'{"s":"profileOther","p":{"id":"'+k+'"}}\'><span class="av">'+PEOPLE[k].init+'</span><span class="tx"><b>'+PEOPLE[k].name+'</b><span>'+(PEOPLE[k].followers||'412')+' followers, 118 games logged</span></span><span class="chev">›</span></button>'}).join('');
+  h+='<div class="sec"><h3>Communities</h3><button data-go=\'{"s":"communities"}\'>See all</button></div>';
+  h+=commRow('Phillies Fans','48,210 members','joined')+commRow('Citizens Bank Park','9,884 members','')+commRow('Caltech','312 members','joined');
+  h+='<div class="sec"><h3>Fans at your games</h3></div>';
+  h+='<button class="li" data-go=\'{"s":"profileOther","p":{"id":"sam"}}\'><span class="av">SR</span><span class="tx"><b>Sam Ruiz</b><span>Also at Padres vs Dodgers tonight</span></span><span class="chev">›</span></button>';
+ }
+ return h;
+};
+function commRow(name,meta,state){
+ return '<button class="li" data-go=\'{"s":"community","p":{"name":"'+name+'"}}\'><span class="av">'+name[0]+'</span><span class="tx"><b>'+name+'</b><span>'+meta+'</span></span><span class="badge">'+(state==='joined'?'Joined':'Join')+'</span></button>';
+}
+function post(kind,who,gid){
+ var P=PEOPLE[who], g=GAMES[gid]||{};
+ var head='<div class="row"><span class="av">'+P.init+'</span><div style="flex:1"><div class="nm">'+P.name+(P.creator?' <span class="badge gold">Superfan</span>':'')+'</div><div class="sub">'+({reaction:'Live reaction, '+g.date,game:g.date+', '+g.venue,stamp:'New stamp, 2 hours ago',milestone:'Milestone, yesterday'})[kind]+'</div></div>'+
+  (kind==='game'?'<span class="res '+g.res+'">'+(g.res==='w'?'W':'L')+'</span>':'')+'</div>';
+ var body='';
+ if(kind==='reaction'){
+   body='<div class="big">Reaction to Harper\'s 2-run double</div><div class="meta">Citi Field, 3rd inning</div>'+
+        '<div class="photo"><span class="dual"></span><span>Front and back, 12 seconds after the play</span></div>';
+ }
+ if(kind==='game'){
+   body='<div class="big">'+g.title+'</div><div class="meta">'+g.venue+' · rooting '+g.side+(g.companions.length?' · with '+g.companions.map(function(c){return PEOPLE[c].name}).join(', '):'')+'</div>'+
+        '<div class="photo sel"><span>'+g.photos+' photos, '+g.reactions+' reactions attached</span></div>';
+ }
+ if(kind==='stamp'){ body='<div class="big">Unlocked Wrigley Field</div><div class="meta">Stamp 12 of 30 ballparks</div>'; }
+ if(kind==='milestone'){ body='<div class="big">50th game attended</div><div class="meta">Since 2011, 14 stadiums</div>'; }
+ var tapTo = (kind==='game'||kind==='reaction') ? ' data-go=\'{"s":"gameDetail","p":{"id":"'+gid+'","owner":"'+who+'"}}\'' : '';
+ return '<div class="card">'+head+'<div class="tap"'+tapTo+' style="cursor:pointer">'+body+'</div>'+
+   '<div class="actions"><button data-kudos>'+ico('kudos')+' '+(g.kudos||31)+'</button>'+
+   '<button data-go=\'{"s":"comments","p":{"id":"'+(gid||'g1')+'"}}\'>'+ico('cmt')+' '+(g.comments||4)+'</button>'+
+   '<button data-go=\'{"s":"profileOther","p":{"id":"'+who+'"}}\' style="margin-left:auto">View profile</button></div></div>';
+}
+
+S.comments=function(p){
+ return '<div class="card"><div class="nm">Phillies 7, Mets 2</div><div class="meta">Maya Chen, Citi Field</div></div>'+
+  [['dad','Great seats. Told you the 300 level was fine.'],['jordan','You jinxed the Mets and I respect it.'],['dean','Was there too, section 320. Did not see you.']]
+  .map(function(c){return '<div class="card"><div class="row"><span class="av">'+PEOPLE[c[0]].init+'</span><div><div class="nm">'+PEOPLE[c[0]].name+'</div><div class="sub">'+c[1]+'</div></div></div></div>'}).join('')+
+  '<div class="card meta">Comment box, report and block live in the overflow menu on every comment.</div>';
+};
+
+S.gameDetail=function(p){
+ var g=GAMES[p.id], owner=p.owner||'dean', mine=owner==='dean';
+ var h='<div class="hero"><div class="lbl">'+(mine?'YOUR GAME':PEOPLE[owner].name.toUpperCase()+'\'S GAME')+'</div><div class="n" style="font-size:26px;margin:6px 0 4px">'+g.title+'</div><div class="meta" style="color:rgba(255,255,255,.7)">'+g.venue+' · '+g.date+'</div></div>';
+ h+='<div class="grid3"><div class="mini"><b>'+(g.res==='w'?'W':g.res==='live'?'LIVE':'L')+'</b><span>Result</span></div><div class="mini"><b>'+g.reactions+'</b><span>Reactions</span></div><div class="mini"><b>'+g.photos+'</b><span>Photos</span></div></div>';
+ h+='<div class="sec"><h3>Relive</h3><button data-go=\'{"s":"relive","p":{"id":"'+p.id+'","owner":"'+owner+'"}}\'>Open</button></div>';
+ h+='<button class="card tap" data-go=\'{"s":"relive","p":{"id":"'+p.id+'","owner":"'+owner+'"}}\'><div class="meta">Play the game back with the win probability line, the moments, and every reaction placed where it happened.</div></button>';
+ h+='<div class="sec"><h3>Who was there</h3></div>';
+ h+=(g.companions.length?g.companions:['(nobody tagged)']).map(function(c){return PEOPLE[c]?'<button class="li" data-go=\'{"s":"profileOther","p":{"id":"'+c+'"}}\'><span class="av">'+PEOPLE[c].init+'</span><span class="tx"><b>'+PEOPLE[c].name+'</b><span>tagged companion</span></span><span class="chev">›</span></button>':'<div class="li"><span class="tx"><span>No companions tagged</span></span></div>'}).join('');
+ if(mine){
+  h+='<div class="sec"><h3>Your post</h3></div><div class="card"><div class="row"><div style="flex:1"><div class="nm">Auto-post after the game</div><div class="sub">On. Posts 30 min after final, you can edit first.</div></div><span class="badge">On</span></div></div>';
+ } else {
+  h+='<div class="actions" style="border:0"><button data-kudos>'+ico('kudos')+' Kudos</button><button data-go=\'{"s":"comments","p":{"id":"'+p.id+'"}}\'>'+ico('cmt')+' Comment</button></div>';
+ }
+ return h;
+};
+
+S.relive=function(p){
+ var g=GAMES[p.id], owner=p.owner||'dean';
+ return '<div class="card"><div class="nm">'+g.title+'</div><div class="meta">'+g.venue+' · '+g.date+' · '+(owner==='dean'?'your seats':PEOPLE[owner].name+'\'s seats')+'</div>'+
+  '<div style="height:78px;border-radius:10px;background:linear-gradient(90deg,var(--surface),var(--card));margin:10px 0;display:grid;place-items:center" class="meta">win probability line, scrubbable</div>'+
+  '<div class="pillrow"><span class="pill">Pregame 55%</span><span class="pill on">Harper 2-run double</span><span class="pill">8th inning escape</span><span class="pill">Final</span></div></div>'+
+  '<div class="sec"><h3>Reactions in this game</h3></div>'+
+  '<div class="card"><div class="row"><span class="av">MC</span><div><div class="nm">Maya, 3rd inning</div><div class="sub">Reaction to Harper\'s 2-run double</div></div></div><div class="photo"><span class="dual"></span><span>attached to this moment</span></div></div>'+
+  '<div class="sec"><h3>Photos</h3></div><div class="card meta">Owner photos, then fan photos from public accounts at the same game.</div>'+
+  '<div class="sec"><h3>Also there</h3></div>'+
+  '<button class="li" data-go=\'{"s":"profileOther","p":{"id":"dad"}}\'><span class="av">D</span><span class="tx"><b>Dad</b><span>tagged, confirmed</span></span><span class="chev">›</span></button>';
+};
+
+S.passport=function(){
+ return '<div class="hero"><div class="lbl">LIFETIME RECORD</div><div class="n">31 – 17</div><div class="meta" style="color:rgba(255,255,255,.7)">48 games · 14 stadiums · .646</div></div>'+
+ '<div style="display:flex;gap:6px;margin:-4px 0 10px"><button class="badge gold" data-go=\'{"s":"streak"}\'>6-season Phillies streak</button><button class="badge" data-go=\'{"s":"streak"}\'>3-season Eagles</button></div>'+
+ '<div class="grid3">'+
+  '<button class="mini" data-go=\'{"s":"recordLog","p":{"t":"Phillies"}}\'><b>12–5</b><span>Phillies</span></button>'+
+  '<button class="mini" data-go=\'{"s":"recordLog","p":{"t":"Eagles"}}\'><b>6–2</b><span>Eagles</span></button>'+
+  '<button class="mini" data-go=\'{"s":"recordLog","p":{"t":"Neutral"}}\'><b>10–9</b><span>As a neutral</span></button>'+
+ '</div>'+
+ '<div class="sec"><h3>Four favorite games</h3><button data-go=\'{"s":"fourFav"}\'>Edit</button></div>'+
+ '<div class="grid3"><div class="mini"><b>2022</b><span>NLCS clincher</span></div><div class="mini"><b>2024</b><span>First Bernabéu</span></div><div class="mini"><b>2019</b><span>Dad, 13 innings</span></div></div>'+
+ '<div class="sec"><h3>Stamps</h3><button data-go=\'{"s":"stamps"}\'>14 of 62</button></div>'+
+ '<div class="card meta tap" data-go=\'{"s":"stamps"}\'>Brass and silver seals, ghost stamps for parks you have not reached.</div>'+
+ '<div class="sec"><h3>Badges</h3><button data-go=\'{"s":"badges"}\'>See all 23</button></div>'+
+ '<div class="pillrow"><span class="pill">Walk-off ×2</span><span class="pill">3 parks in a weekend</span><span class="pill">Coldest: -2°F</span><span class="pill">Most seen: Harper ×14</span></div>'+
+ '<div class="sec"><h3>Recaps</h3><button data-go=\'{"s":"wrapped"}\'>Open</button></div>'+
+ '<button class="card tap" data-go=\'{"s":"wrapped"}\'><div class="nm">Phillies season Wrapped</div><div class="meta">Ready when their season ends. Mid-season recap available now.</div></button>';
+};
+
+S.streak=function(){
+ return '<div class="hero"><div class="lbl">PHILLIES</div><div class="n" style="font-size:34px">6 seasons</div><div class="meta" style="color:rgba(255,255,255,.72)">Never fewer than 2 games in a season</div></div>'+
+ '<div class="card meta">Computed, not set by you: consecutive seasons with at least one Phillies game. The floor is your worst season inside the run, so it rises on its own.</div>'+
+ [['2026','4 games, in progress'],['2025','7 games'],['2024','5 games'],['2023','2 games'],['2022','4 games'],['2021','3 games']]
+ .map(function(r){return '<div class="li"><span class="av">'+r[0].slice(2)+'</span><span class="tx"><b>'+r[0]+'</b><span>'+r[1]+'</span></span></div>'}).join('')+
+ '<div class="card meta">At risk warning fires when the season is nearly over and you have not been. Offseason never breaks it.</div>';
+};
+
+S.recordLog=function(p){
+ var rows=[['Phillies 7, Mets 2','Citi Field, Sep 20','w'],['Phillies 4, Braves 1','Citizens Bank Park, Jul 3','w'],['Phillies 2, Dodgers 5','Dodger Stadium, May 18','l'],['Phillies 8, Marlins 2','Citizens Bank Park, Sep 1','w']];
+ return '<div class="hero"><div class="lbl">'+(p.t||'').toUpperCase()+' RECORD</div><div class="n" style="font-size:34px">12 – 5</div><div class="meta" style="color:rgba(255,255,255,.7)">17 games, .706</div></div>'+
+  rows.map(function(r){return '<button class="li" data-go=\'{"s":"gameDetail","p":{"id":"g4","owner":"dean"}}\'><span class="thumb"></span><span class="tx"><b>'+r[0]+'</b><span>'+r[1]+'</span></span><span class="res '+r[2]+'">'+r[2].toUpperCase()+'</span></button>'}).join('');
+};
+
+S.stamps=function(){return '<div class="grid3">'+['Citizens Bank','Lincoln Financial','Citi Field','Dodger Stadium','SoFi','Wrigley (ghost)'].map(function(n){return '<div class="mini" style="text-align:center"><div style="height:56px;border-radius:50%;border:2px dashed var(--line);margin:4px auto;width:56px"></div><span>'+n+'</span></div>'}).join('')+'</div><div class="card meta">Tap a stamp for the venue page: your games there, your record there, and the stadium guide.</div>'};
+
+S.badges=function(){
+ var b=[['Walk-off witnessed','×2, both at home'],['Three parks in one weekend','Aug 2025'],['Opening Day','×3'],['Coldest game','-2°F at the Linc'],['Road warrior','5,480 miles for the Eagles'],['Undefeated with Dad','7–1']];
+ return '<div class="card meta">Badges are the public, collectible version of superlatives. Locked ones show what to do to earn them.</div>'+
+  b.map(function(x){return '<div class="li"><span class="av">'+ico('trophy')+'</span><span class="tx"><b>'+x[0]+'</b><span>'+x[1]+'</span></span></div>'}).join('')+
+  '<div class="li" style="opacity:.55"><span class="av">?</span><span class="tx"><b>No-hitter</b><span>Locked, see one in person</span></span></div>';
+};
+
+S.fourFav=function(){return '<div class="card meta">Pick four games from your passport. They sit at the top of your profile, like Letterboxd\'s Four Favorites, and are the first thing anyone sees.</div>'+
+ ['2022 NLCS clincher','2024 Real Madrid at the Bernabéu','2019 13 innings with Dad','+ add a fourth'].map(function(x){return '<div class="li"><span class="thumb"></span><span class="tx"><b>'+x+'</b><span>tap to swap</span></span><span class="chev">›</span></div>'}).join('')};
+
+S.games=function(p){
+ var seg=p.seg||'upcoming';
+ var h='<div class="seg">'+[['upcoming','Upcoming'],['history','History'],['imports','Imports']].map(function(k){return '<button aria-selected="'+(seg===k[0]?'true':'false')+'" data-go=\'{"s":"games","p":{"seg":"'+k[0]+'"}}\'>'+k[1]+'</button>'}).join('')+'</div>';
+ if(seg==='history'){
+  h+=[['g4','Phillies 4, Braves 1','Citizens Bank Park, Jul 3','w'],['g1','Phillies 7, Mets 2','Citi Field, Sep 20','w']].map(function(r){
+    return '<button class="li" data-go=\'{"s":"gameDetail","p":{"id":"'+r[0]+'","owner":"dean"}}\'><span class="thumb"></span><span class="tx"><b>'+r[1]+'</b><span>'+r[2]+'</span></span><span class="res '+r[3]+'">'+r[3].toUpperCase()+'</span></button>'}).join('');
+ } else if(seg==='upcoming'){
+  h+='<button class="card tap" data-go=\'{"s":"checkedin"}\'><div class="row"><span class="badge live">● LIVE</span><div style="flex:1;margin-left:8px"><div class="nm">Padres at Dodgers</div><div class="sub">Checked in, top 3rd</div></div></div><div class="meta" style="margin-top:8px">Pick locked: Dodgers at 58%. 1 of 3 reactions used.</div></button>';
+  h+='<button class="card tap" data-go=\'{"s":"checkedin","p":{"state":"prompt"}}\'><div class="nm">Phillies at Mets, tomorrow 7:10</div><div class="meta">Ticket forwarded. We will remind you to check in 30 min before first pitch.</div></button>';
+  h+='<div class="card"><div class="nm">Eagles at Rams, Sunday</div><div class="meta">From a forwarded ticket. Tap to plan the day.</div><div class="pillrow"><button class="pill" data-go=\'{"s":"plan"}\'>Open plan</button><button class="pill" data-go=\'{"s":"logFlow"}\'>Tag companions</button></div></div>';
+ } else {
+  h+='<div class="card"><div class="nm">2 tickets waiting</div><div class="meta">Forwarded from your email. Confirm the match to add them.</div><div class="pillrow"><span class="pill on">Confirm</span><span class="pill">Not me</span></div></div>';
+ }
+ h+='<div class="sec"><h3>Add a game</h3><button data-go=\'{"s":"logFlow"}\'>Log</button></div>';
+ return h;
+};
+
+S.logFlow=function(){
+ return '<div class="card"><div class="nm">1. Which game</div><div class="meta">Search, or pick from nearby and recent.</div><div class="pillrow"><span class="pill on">Phillies at Mets, Sep 20</span><span class="pill">Search</span></div></div>'+
+ '<div class="card"><div class="nm">2. Who was with you</div><div class="meta">Tagged people get a confirmation, and it posts to their feed only after they accept.</div><div class="pillrow"><span class="pill on">Dad</span><span class="pill on">Maya</span><span class="pill">+ add</span></div></div>'+
+ '<div class="card"><div class="nm">3. Seat, photos, note</div><div class="meta">Optional. Photos can be added later from Relive.</div></div>'+
+ '<div class="card"><div class="row"><div style="flex:1"><div class="nm">Auto-post to feed</div><div class="sub">On: posts 30 minutes after final. Off: stays private until you post.</div></div><span class="badge">On</span></div></div>'+
+ '<button class="card tap" data-toast="Logged. Dad and Maya asked to confirm." data-go=\'{"s":"games"}\'><div class="nm" style="color:var(--t)">Save game</div></button>';
+};
+
+S.communities=function(){
+ return '<div class="card meta">Communities are joinable, like a subreddit or an FPL league: one per team, venue, and school at launch. Leaderboards live inside them, so ranking is always winnable.</div>'+
+ [['Phillies Fans','48,210 members','Joined'],['Eagles Fans','61,455 members','Joined'],['Citizens Bank Park','9,884 members','Join'],['Caltech','312 members','Joined'],['LA Transplants: Philly','1,204 members','Join']]
+ .map(function(c){return '<button class="li" data-go=\'{"s":"community","p":{"name":"'+c[0]+'"}}\'><span class="av">'+c[0][0]+'</span><span class="tx"><b>'+c[0]+'</b><span>'+c[1]+'</span></span><span class="badge">'+c[2]+'</span></button>'}).join('');
+};
+
+S.community=function(p){
+ var n=p.name||'Phillies Fans';
+ return '<div class="hero"><div class="lbl">COMMUNITY</div><div class="n" style="font-size:26px;margin:6px 0 2px">'+n+'</div><div class="meta" style="color:rgba(255,255,255,.7)">48,210 members · you rank 312th this season</div></div>'+
+ '<div class="pillrow"><span class="pill on">Joined</span><span class="pill">Notifications</span><span class="pill">Leave</span></div>'+
+ '<div class="sec"><h3>Leaderboards</h3><button data-go=\'{"s":"leaderboard","p":{"name":"'+n+'"}}\'>See all</button></div>'+
+ '<button class="card tap" data-go=\'{"s":"leaderboard","p":{"name":"'+n+'","stat":"games"}}\'><div class="nm">Games attended, this season</div><div class="meta">You: 17, 312th. Friends: 4th.</div></button>'+
+ '<button class="card tap" data-go=\'{"s":"leaderboard","p":{"name":"'+n+'","stat":"hr"}}\'><div class="nm">Home runs seen</div><div class="meta">You: 24. Top: 61.</div></button>'+
+ '<div class="sec"><h3>Community feed</h3></div>'+
+ post('game','philly','g2')+
+ '<div class="card meta">Posts from members you do not follow appear here only, never in Following.</div>';
+};
+
+S.leaderboard=function(p){
+ var stat=p.stat||'games';
+ var stats=[['games','Games attended'],['wins','Wins seen'],['hr','Home runs seen'],['walkoffs','Walk-offs'],['errors','Errors seen']];
+ var rows=[['Philly Phanatic Phil',61],['Sam Ruiz',44],['Maya Chen',29],['You',17],['Jordan Ellis',12]];
+ return '<div class="pillrow" style="margin-bottom:8px">'+stats.map(function(s){return '<button class="pill '+(stat===s[0]?'on':'')+'" data-go=\'{"s":"leaderboard","p":{"name":"'+(p.name||'')+'","stat":"'+s[0]+'"}}\'>'+s[1]+'</button>'}).join('')+'</div>'+
+ '<div class="pillrow" style="margin-bottom:10px"><span class="pill on">This season</span><span class="pill">This month</span><span class="pill">All time</span><span class="pill">Friends only</span></div>'+
+ '<div class="card meta">Verified attendance only: check-in or a matched ticket. Unverified games still count on your own passport.</div>'+
+ rows.map(function(r,i){return '<div class="li"><span class="av">'+(i+1)+'</span><span class="tx"><b>'+r[0]+'</b><span>'+(stat==='hr'?'home runs seen':'games attended')+'</span></span><b>'+r[1]+'</b></div>'}).join('');
+};
+
+S.plan=function(){
+ return '<div style="text-align:center;padding:44px 10px"><div class="av" style="width:64px;height:64px;margin:0 auto">'+ico('map')+'</div>'+
+ '<div class="big" style="margin-top:12px">Game day, coming soon</div>'+
+ '<div class="meta" style="line-height:1.5;margin-top:6px">Tailgates, parking, the right gate, and where your team\'s fans go afterwards. We are building it now.</div>'+
+ '<div class="pillrow" style="justify-content:center;margin-top:16px"><span class="pill on">hello@jinx.app</span></div>'+
+ '<div class="meta" style="margin-top:10px">Want something specific here? Email us.</div></div>';
+};
+
+S.profile=function(){
+ return '<div style="text-align:center;padding:6px 0 10px"><div class="av" style="width:74px;height:74px;margin:0 auto;font-size:22px">DY</div><div class="big">Dean Yao</div><div class="meta">@deanyao · Philly fan in Los Angeles</div>'+
+ '<div class="pillrow" style="justify-content:center"><span class="pill">Phillies</span><span class="pill">Eagles</span></div></div>'+
+ '<div class="grid3" style="margin-bottom:10px"><div class="mini"><b>48</b><span>Games all time</span></div><div class="mini"><b>17</b><span>MLB this season</span></div><div class="mini"><b>3</b><span>NFL this season</span></div></div>'+
+ '<div class="grid3"><div class="mini"><b>132</b><span>Followers</span></div><div class="mini"><b>98</b><span>Following</span></div><div class="mini"><b>23</b><span>Badges</span></div></div>'+
+ '<div class="sec"><h3>Four favorite games</h3><button data-go=\'{"s":"fourFav"}\'>Edit</button></div>'+
+ '<div class="grid3"><div class="mini"><b>2022</b><span>NLCS clincher</span></div><div class="mini"><b>2024</b><span>Bernabéu</span></div><div class="mini"><b>2019</b><span>13 innings</span></div></div>'+
+ '<div class="sec"><h3>Recent games</h3><button data-go=\'{"s":"games","p":{"seg":"history"}}\'>See all</button></div>'+
+ '<button class="li" data-go=\'{"s":"gameDetail","p":{"id":"g4","owner":"dean"}}\'><span class="thumb"></span><span class="tx"><b>Phillies 4, Braves 1</b><span>Citizens Bank Park, Jul 3</span></span><span class="res w">W</span></button>'+
+ '<div class="card meta">Friends, communities, badges, recaps and privacy all live under the gear, top right.</div>';
+};
+
+S.profileOther=function(p){
+ var P=PEOPLE[p.id]||PEOPLE.maya;
+ return '<div style="text-align:center;padding:6px 0 10px"><div class="av" style="width:74px;height:74px;margin:0 auto;font-size:22px">'+P.init+'</div><div class="big">'+P.name+'</div>'+
+ '<div class="meta">'+(P.creator?'Superfan · '+P.followers+' followers':'312 followers · 4 mutuals')+'</div>'+
+ '<div class="pillrow" style="justify-content:center"><span class="pill on">Following</span><span class="pill">Compatibility 82%</span></div></div>'+
+ '<div class="grid3"><div class="mini"><b>118</b><span>Games</span></div><div class="mini"><b>21</b><span>Stadiums</span></div><div class="mini"><b>6–1</b><span>With you</span></div></div>'+
+ '<div class="sec"><h3>Their four favorites</h3></div>'+
+ '<div class="grid3"><div class="mini"><b>2008</b><span>WS Game 5</span></div><div class="mini"><b>2018</b><span>Super Bowl</span></div><div class="mini"><b>2023</b><span>Red October</span></div></div>'+
+ '<div class="sec"><h3>Recent games</h3></div>'+
+ '<button class="li" data-go=\'{"s":"gameDetail","p":{"id":"g2","owner":"'+p.id+'"}}\'><span class="thumb"></span><span class="tx"><b>Eagles 24, Titans 20</b><span>Nissan Stadium, Sep 20</span></span><span class="res w">W</span></button>'+
+ '<div class="card meta">No DMs anywhere. Report, block, and mute live in the overflow menu.</div>';
+};
+
+S.friends=function(){
+ return '<div class="seg"><button aria-selected="true">With</button><button>Following</button><button>Rivals</button></div>'+
+ [['dad','7–1','never lost together'],['maya','4–2','82% compatibility'],['jordan','0–4','rival, Mets fan']]
+ .map(function(f){return '<button class="li" data-go=\'{"s":"profileOther","p":{"id":"'+f[0]+'"}}\'><span class="av">'+PEOPLE[f[0]].init+'</span><span class="tx"><b>'+PEOPLE[f[0]].name+'</b><span>'+f[2]+'</span></span><b>'+f[1]+'</b></button>'}).join('')+
+ '<div class="card meta">Compatibility, rivalries, and overlap only appear for mutual follows.</div>';
+};
+
+S.wrapped=function(){
+ return '<div class="card"><div class="nm">Phillies 2026 Wrapped</div><div class="meta">Unlocks when their season ends. Mid-season recap is live now.</div></div>'+
+ '<div class="hero"><div class="lbl">YOUR ARCHETYPE</div><div class="n" style="font-size:30px;margin:6px 0">Road Warrior</div><div class="meta" style="color:rgba(255,255,255,.75)">You saw more road games than 94% of Phillies fans</div></div>'+
+ '<div class="card meta">Status stats, not raw counts. Each card is a share card.</div>';
+};
+
+S.trip=function(){
+ return '<div class="card"><div class="nm">You are in Chicago</div><div class="meta">Home city is Philadelphia, so this is trip mode. Location is used once, in the foreground.</div></div>'+
+ [['Cubs vs Cardinals, Sat 1:20','Wrigley Field · new stamp'],['Bears vs Packers, Sun 12:00','Soldier Field · neutral, you can pick a side'],['Phillies at White Sox, Fri','Rate Field · your team on the road']]
+ .map(function(x){return '<button class="li" data-go=\'{"s":"games","p":{"seg":"upcoming"}}\'><span class="thumb"></span><span class="tx"><b>'+x[0]+'</b><span>'+x[1]+'</span></span><span class="chev">›</span></button>'}).join('')+
+ '<div class="card meta">Appears in Discover and as a push when a trip is detected.</div>';
+};
+
+S.settings=function(){
+ var links=[['Friends and companions','friends'],['Your communities','communities'],['Badges','badges'],['Recaps and Wrapped','wrapped'],['Four favorite games','fourFav']];
+ return '<div class="sec" style="margin-top:0"><h3>Your stuff</h3></div>'+
+ links.map(function(x){return '<button class="li" data-go=\'{"s":"'+x[1]+'"}\'><span class="tx"><b>'+x[0]+'</b></span><span class="chev">›</span></button>'}).join('')+
+ '<div class="sec"><h3>Preferences</h3></div>'+
+ [['Reaction prompts','On: 1 late-game, up to 2 big moments'],['Auto-post games','On, 30 min after final'],['Default visibility','Followers'],['Companion tagging','Ask me first'],['Show that I am checked in','Mutual friends only'],['Location','Only at check-in'],['Contacts','Matched, then deleted'],['Blocked accounts',''],['Delete account','']]
+ .map(function(x){return '<div class="li"><span class="tx"><b>'+x[0]+'</b><span>'+x[1]+'</span></span><span class="chev">›</span></div>'}).join('');
+};
+
+S.onboardContacts=function(){
+ return '<div class="card"><div class="big">Find people you know</div><div class="meta">Jinx is better with friends: records with companions, rivalries, and a feed worth opening. We match contacts on device, then delete them.</div>'+
+ '<div class="pillrow"><button class="pill on" data-toast="12 contacts matched, 3 followed" data-go=\'{"s":"feed"}\'>Allow contacts</button><button class="pill" data-go=\'{"s":"feed"}\'>Not now</button></div></div>'+
+ '<div class="card meta">Goal of onboarding is 7 follows, not 1 logged game. Suggested: contacts, then superfans of your teams, then people at games you logged.</div>';
+};
+
+S.checkedin=function(p){
+ if(p.state==='prompt'){
+  return '<div class="card"><div class="big">Check in at Citi Field</div><div class="meta">We remind you 30 minutes before first pitch, and again whenever you open Jinx inside the park.</div>'+
+   '<div class="pillrow"><button class="pill on" data-toast="Checked in. Game logged automatically." data-go=\'{"s":"checkedin"}\'>Check in now</button><span class="pill">Not here yet</span></div></div>'+
+   '<div class="card meta">Checking in logs the game for you, verified, and you can edit or delete it afterwards.</div>';
+ }
+ return '<div class="hero"><div class="lbl">● CHECKED IN · TOP 3RD</div><div class="n" style="font-size:30px;margin:6px 0 2px">Padres 1, Dodgers 2</div><div class="meta" style="color:rgba(255,255,255,.72)">Dodger Stadium · session ends 30 min after final</div></div>'+
+ '<div class="card"><div class="row"><div style="flex:1"><div class="nm">Your side: Dodgers</div><div class="sub">Neutral game, picked at 58%, locked</div></div><span class="badge gold">Locked</span></div></div>'+
+ '<div class="card"><div class="row"><div style="flex:1"><div class="nm">Reactions</div><div class="sub">1 of 3 used. One is held back for late in the game.</div></div><button class="pill on" data-toast="Self-triggered reaction opens the camera">React now</button></div></div>'+
+ '<div class="sec"><h3>Also here</h3></div>'+
+ '<button class="li" data-go=\'{"s":"profileOther","p":{"id":"sam"}}\'><span class="av">SR</span><span class="tx"><b>Sam Ruiz</b><span>mutual friend, section 104</span></span><span class="chev">›</span></button>'+
+ '<div class="card meta">Visible to mutual friends only, and you can switch it off in settings.</div>'+
+ '<div class="pillrow"><button class="pill" data-toast="Session ended. Prompts stopped." data-go=\'{"s":"games"}\'>I have left the game</button></div>';
+};
+
+/* reaction capture flow */
+var capStep=0;
+S.capture=function(){ return ''; };
+
+/* ---------- wiring notes ---------- */
+var NOTES={
+ feed:{where:'Tab 1. Two segments: Following (people you follow) and Discover (creators, communities, trip mode, fans at your games).',
+   links:[['Open a game post','gameDetail',{id:'g1',owner:'maya'}],['Comments','comments',{id:'g1'}],['A friend\'s profile','profileOther',{id:'maya'}],['Discover','feed',{seg:'discover'}],['Communities','communities',{}],['Trip mode','trip',{}]],
+   notes:['Following and Discover are a toggle at the top, like a For You versus Friends switch. Switching never adds a back step.','Kudos is one tap and optimistic. Comments open a thread with report, block and mute.','Reaction posts and game posts are separate objects. A reaction can be attached to the game post later.','Community posts from people you do not follow appear in Discover and in the community, never in Following.']},
+ comments:{where:'Thread on a post. No DMs anywhere in the app.',links:[['Back to feed','feed',{}]],notes:['Rate limits, profanity filter, report and block are required by App Review for user content.']},
+ gameDetail:{where:'One game, from your own log or from a friend\'s post.',
+   links:[['Relive it','relive',{id:'g1',owner:'maya'}],['A companion','profileOther',{id:'dad'}],['Comments','comments',{id:'g1'}]],
+   notes:['Same screen for your game and a friend\'s: yours shows the auto-post setting, theirs shows kudos and comments.','Reactions and photos from this game live here and in Relive.']},
+ relive:{where:'The story replay of a game, reachable from any game anywhere in the app.',
+   links:[['Back to the game','gameDetail',{id:'g1',owner:'maya'}],['Someone who was there','profileOther',{id:'dad'}]],
+   notes:['Reactions are pinned to the moment they were taken, on the win probability line.','This is why reactions are worth capturing: they become permanent, not disposable.']},
+ passport:{where:'Tab 2. Your record, streaks, stamps, badges, four favorites, recaps.',
+   links:[['A record\'s game log','recordLog',{t:'Phillies'}],['Stamps','stamps',{}],['Badges','badges',{}],['Four favorites','fourFav',{}],['Recaps','wrapped',{}]],
+   notes:['The season streak is computed: consecutive seasons with at least one game, per team. The "never fewer than 2" floor is derived from your worst season in the run.','Every record tile opens the games behind it.']},
+ recordLog:{where:'The games behind one record.',links:[['A game','gameDetail',{id:'g4',owner:'dean'}],['Back to passport','passport',{}]],notes:['Neutral logs show the pick, the odds, and the vs-expected delta.']},
+ stamps:{where:'Your venue collection.',links:[['Back to passport','passport',{}]],notes:['A stamp opens the venue: your games there, your record there, and later the stadium guide.']},
+ badges:{where:'Public, collectible version of superlatives.',links:[['Back to passport','passport',{}]],notes:['Locked badges show the requirement, which is what makes people chase them.','Keep them specific and weird: "three parks in one weekend" beats "10 games".']},
+ fourFav:{where:'Four games pinned to the top of your profile.',links:[['Back to passport','passport',{}],['Your profile','profile',{}]],notes:['Borrowed from Letterboxd. The cheapest identity feature you can build.']},
+ checkedin:{where:'Live game session. Reached from Upcoming, a push before first pitch, or opening Jinx inside the venue.',
+   links:[['Open the game','gameDetail',{id:'g3',owner:'dean'}],['Somebody else here','profileOther',{id:'sam'}],['Back to games','games',{seg:'upcoming'}]],
+   notes:['Checking in creates the attendance automatically, marked verified. You can edit or delete it after.','A session, not a moment: it ends at final plus 30 minutes, on "I have left", or 6 hours after start.','Reaction prompts and the side pick only exist inside an open session.','Being here is visible to mutual friends only, with an off switch in settings.']},
+ streak:{where:'The detail behind the small streak patch on the passport.',links:[['Back to passport','passport',{}]],
+   notes:['Consecutive seasons with at least one game for that team. The "never fewer than N" floor is derived from the worst season in the run.','One streak per team; the passport shows patches, this screen shows the seasons.']},
+ games:{where:'Tab 3. History, Upcoming (including a live game), and ticket Imports.',
+   links:[['Log a game','logFlow',{}],['The live game','checkedin',{}],['A game to check into','checkedin',{state:'prompt'}],['A past game','gameDetail',{id:'g4',owner:'dean'}],['History','games',{seg:'history'}]],
+   notes:['Order is Upcoming, History, Imports: game day first.','Segments are a toggle, not a push, so there is no back arrow between them.']},
+ logFlow:{where:'Logging a game, before or after it happens.',links:[['Back to games','games',{}]],notes:['Tagging sends the companion a confirmation. It reaches their feed only after they accept.','Auto-post is a per-user default with a per-game override.']},
+ communities:{where:'Joinable communities: teams, venues, schools. Reached from Discover or Profile.',
+   links:[['A community','community',{name:'Phillies Fans'}]],
+   notes:['Official communities at launch. User-created ones need an owner role, reports and bans first.']},
+ community:{where:'One community: leaderboards plus a member feed.',
+   links:[['Leaderboards','leaderboard',{name:'Phillies Fans'}],['A member post','gameDetail',{id:'g2',owner:'philly'}]],
+   notes:['Every leaderboard is scoped to this community, which is what makes rank winnable.']},
+ leaderboard:{where:'Ranked within one community, with stat and period filters.',
+   links:[['Back to community','community',{name:'Phillies Fans'}],['A ranked member','profileOther',{id:'philly'}]],
+   notes:['Serious stats (games, wins, home runs, walk-offs, errors) come from play-by-play.','Self-reported stats such as streakers seen stay off competitive boards until there is an abuse story.','Only verified attendance ranks.']},
+ plan:{where:'Tab 4. Coming soon screen with a feedback email, no fake content.',links:[['Back to games','games',{}]],notes:['Honest empty state beats a demo shell: says what is coming and asks for feature requests by email.']},
+ profile:{where:'Tab 5. You: counts, four favorites, and the doors to everything personal.',
+   links:[['Friends','friends',{}],['Communities','communities',{}],['Badges','badges',{}],['Recaps','wrapped',{}],['Settings','settings',{}]],
+   notes:['Counts, four favorites, and recent games only. Everything else moved under the gear.']},
+ profileOther:{where:'Someone else\'s passport.',links:[['Their game','gameDetail',{id:'g2',owner:'philly'}],['Back to feed','feed',{}]],
+   notes:['Compatibility, record together, rivalry and overlap only render for mutual follows.','Superfan accounts carry a badge and appear in Discover.']},
+ friends:{where:'Companions, follows, and rivals.',links:[['A person','profileOther',{id:'maya'}],['Back to profile','profile',{}]],notes:['"With" is sorted by games together and shows your record with each person.']},
+ wrapped:{where:'Season and mid-season recaps.',links:[['Back to profile','profile',{}]],notes:['Fires when a favorite team\'s season ends, not on Jan 1.','Archetypes exist so casual users have something worth sharing.']},
+ trip:{where:'Trip mode, surfaced in Discover and by push.',links:[['Upcoming games','games',{seg:'upcoming'}],['Back to feed','feed',{}]],notes:['Detected from home city versus current city at check-in or app open, foreground only.']},
+ settings:{where:'Everything that used to be under Profile > More, plus privacy and controls.',
+   links:[['Friends','friends',{}],['Communities','communities',{}],['Badges','badges',{}],['Recaps','wrapped',{}],['Four favorites','fourFav',{}]],
+   notes:['Every social mechanic has an off switch: reaction prompts, auto-post, tagging, checked-in visibility.']},
+ onboardContacts:{where:'First launch, after Sign in with Apple.',links:[['Into the app','feed',{}]],notes:['Contacts are hashed, matched, and deleted. Ask here because friend density is the top retention driver.']}
+};
+
+/* ---------- nav ---------- */
+var TABS=[['feed','Feed','feed'],['passport','Passport','passport'],['games','Games','ticket'],['plan','Plan','map'],['profile','Profile','user']];
+var TITLES={feed:'Feed',checkedin:'Checked in',streak:'Streak',comments:'Comments',gameDetail:'Game',relive:'Relive',passport:'Passport',recordLog:'Game log',stamps:'Stamps',badges:'Badges',fourFav:'Four favorites',games:'Games',logFlow:'Log a game',communities:'Communities',community:'Community',leaderboard:'Leaderboard',plan:'Game day',profile:'Profile',profileOther:'Profile',friends:'Friends',wrapped:'Recaps',trip:'Trip mode',settings:'Settings',onboardContacts:'Welcome'};
+var stack=[{s:'feed',p:{}}];
+function cur(){return stack[stack.length-1]}
+function tabOf(s){
+ if(['feed','comments','trip','communities','community','leaderboard','profileOther'].indexOf(s)>-1)return 'feed';
+ if(['passport','recordLog','stamps','badges','fourFav','wrapped','streak'].indexOf(s)>-1)return 'passport';
+ if(['games','logFlow','gameDetail','relive','checkedin'].indexOf(s)>-1)return 'games';
+ if(s==='plan')return 'plan';
+ return 'profile';
+}
+function go(s,p,replaceTab){
+ if(replaceTab){stack=[{s:s,p:p||{}}]} else {stack.push({s:s,p:p||{}})}
+ render();
+}
+function back(){ if(stack.length>1){stack.pop();render()} }
+function render(){
+ var c=cur(), fn=S[c.s]||S.feed;
+ $('#view').innerHTML=fn(c.p||{});
+ $('#view').scrollTop=0;
+ var isRoot=['feed','passport','games','plan','profile'].indexOf(c.s)>-1 && stack.length===1;
+ $('#hdr').innerHTML='<div class="hdr">'+(stack.length>1?'<button class="ib" id="backBtn">'+ico('back')+'</button>':'')+
+   '<h2>'+(TITLES[c.s]||c.s)+'</h2>'+
+   (c.s==='feed'?'<button class="ib" data-go=\'{"s":"communities"}\'>'+ico('search')+'</button>':'')+
+   (c.s==='games'?'<button class="ib" data-go=\'{"s":"logFlow"}\'>'+ico('plus')+'</button>':'')+
+   (c.s==='profile'?'<button class="ib" data-go=\'{"s":"settings"}\'>'+ico('gear')+'</button>':'')+'</div>';
+ var t=tabOf(c.s);
+ $('#tabs').innerHTML=TABS.map(function(x){return '<button class="'+(t===x[0]?'on':'')+'" data-tab="'+x[0]+'">'+ico(x[2])+x[1]+'</button>'}).join('');
+ var n=NOTES[c.s]||{where:'',links:[],notes:[]};
+ $('#wTitle').textContent=TITLES[c.s]||c.s;
+ $('#wWhere').textContent=n.where||'';
+ $('#wCrumbs').textContent='Path: '+stack.map(function(x){return TITLES[x.s]||x.s}).join('  ›  ');
+ $('#wLinks').innerHTML=(n.links||[]).map(function(l){return '<button data-go=\''+JSON.stringify({s:l[1],p:l[2]})+'\'>'+l[0]+'</button>'}).join('')||'<span class="meta">Nothing further from here.</span>';
+ $('#wNotes').innerHTML=(n.notes||[]).map(function(x){return '<li>'+x+'</li>'}).join('')||'<li>—</li>';
+}
+document.addEventListener('click',function(e){
+ var t=e.target.closest('[data-go]');
+ var tb=e.target.closest('[data-tab]');
+ var bk=e.target.closest('#backBtn');
+ var kd=e.target.closest('[data-kudos]');
+ if(bk){back();return}
+ if(tb){go(tb.dataset.tab,{},true);return}
+ if(kd){kd.classList.toggle('done');return}
+ if(t){
+   var d=JSON.parse(t.dataset.go);
+   if(t.dataset.toast) toast(t.dataset.toast);
+   var sameTab = tabOf(d.s)===tabOf(cur().s);
+   if(d.s===cur().s){ stack[stack.length-1]={s:d.s,p:d.p||{}}; render(); return; }
+   if(['feed','passport','games','plan','profile'].indexOf(d.s)>-1 && !d.p) go(d.s,{},true); else go(d.s,d.p||{},false);
+ }
+});
+function toast(msg){var el=$('#toast');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show')},2600)}
+
+/* theme */
+document.querySelectorAll('.ctrl[data-mode]').forEach(function(b){
+ b.addEventListener('click',function(){
+   document.querySelectorAll('.ctrl[data-mode]').forEach(function(x){x.setAttribute('aria-pressed','false')});
+   b.setAttribute('aria-pressed','true');
+   if(b.dataset.mode==='system')document.documentElement.removeAttribute('data-theme');
+   else document.documentElement.setAttribute('data-theme',b.dataset.mode);
+ });
+});
+
+/* simulated push + capture flow */
+$('#simPush').addEventListener('click',function(){
+ var n=document.createElement('div');
+ n.className='notif';
+ n.innerHTML='<b>Jinx · now</b>Quick, react to Barkley\'s 90-yard touchdown run. <span style="color:var(--link)">Tap to react</span>';
+ $('.scr').appendChild(n);
+ n.addEventListener('click',function(){n.remove();capture()});
+ setTimeout(function(){if(n.parentNode)n.remove()},9000);
+});
+function capture(){
+ var el=document.createElement('div');
+ el.className='capture';
+ $('.scr').appendChild(el);
+ var step=0;
+ function draw(){
+  if(step===0){
+   el.innerHTML='<div class="view"><div><div style="font-size:19px;font-weight:850">React to Barkley\'s 90-yard TD</div><div class="tip">Point at the field and shoot. Selfie fires right after.</div></div></div><div class="bar"><button class="shutter" id="shot"></button></div>';
+   el.querySelector('#shot').onclick=function(){step=1;draw()};
+  } else if(step===1){
+   el.innerHTML='<div class="view"><div><div class="count" id="cd">3</div><div class="tip">Get ready for the selfie</div></div></div><div class="bar"></div>';
+   var n=3, id=setInterval(function(){n--;var c=el.querySelector('#cd');if(c)c.textContent=n;if(n<=0){clearInterval(id);step=2;draw()}},700);
+  } else if(step===2){
+   el.innerHTML='<div class="view" style="background:linear-gradient(160deg,#C98B6B,#3A2A20)"><div><div style="font-size:19px;font-weight:850">Selfie captured</div><div class="tip">Front and back, stitched into one reaction</div></div></div>'+
+     '<div class="bar"><button class="pill" id="retake">Retake</button><button class="pill on" id="postit">Post reaction</button><button class="pill" id="priv">Only me</button></div>';
+   el.querySelector('#retake').onclick=function(){step=0;draw()};
+   el.querySelector('#priv').onclick=function(){el.remove();toast('Saved privately. It still attaches to Relive.')};
+   el.querySelector('#postit').onclick=function(){
+     el.remove(); go('feed',{},true);
+     toast('Posted: your reaction to Barkley\'s 90-yard TD');
+   };
+  }
+ }
+ draw();
+}
+$('#simLock').addEventListener('click',function(){
+ var el=document.createElement('div');
+ el.className='lock';
+ el.innerHTML='<div class="time">7:42</div><div style="opacity:.7;font-size:13px">Sunday, September 20</div>'+
+  '<div class="la"><div style="display:flex;justify-content:space-between;font-size:12px;opacity:.8"><span>● LIVE · Top 3rd</span><span>Jinx</span></div>'+
+  '<div style="font-size:22px;font-weight:850;margin:6px 0">Padres 1, Dodgers 2</div>'+
+  '<div style="font-size:12px;opacity:.8">Your pick: Dodgers · locked · 2 reactions armed</div></div>'+
+  '<button class="pill" style="margin-top:14px" id="unlock">Close</button>';
+ $('.scr').appendChild(el);
+ el.querySelector('#unlock').onclick=function(){el.remove()};
+});
+$('#simFirst').addEventListener('click',function(){go('onboardContacts',{},true)});
+
+render();
+})();
+
+</script>
+</body>
+</html>
