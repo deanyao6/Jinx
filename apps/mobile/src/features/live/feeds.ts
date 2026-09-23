@@ -8,12 +8,26 @@
  * One row per sport, keyed by `sport_id`, behind the shape the MLB path already returns to the
  * app (`LiveState` in features/checkin/lock.ts), so Pick a side, the check-in window, the
  * scoreboard and the eggs read either the same way. A feed never writes to the database: the
- * server stays the source of truth for the final score.
+ * server stays the source of truth for the final score. Since 2026-09-23 the NFL reads ESPN's
+ * free scoreboard the same way (00_repo_reality.md R1: no paid feed), and a row may carry
+ * `extras` for the reaction rules: the plays (MLS), the last play and ESPN's own win
+ * probability (NFL).
  *
  * Polled only while a fan is checked in or on a game page with a game under way, every
  * `pollMs`, backing off on errors (features/checkin/queries.ts, `useLiveState`).
  */
-import { parseCdnLiveState, parseMlsLiveState, type CdnScoreboardGame } from '@jinx/core';
+import {
+  ESPN_NFL_SCOREBOARD_URL,
+  easternDateOf,
+  findEspnNflEvent,
+  parseCdnLiveState,
+  parseEspnNflLiveState,
+  parseMlsKeyEvents,
+  parseMlsLiveState,
+  type CdnScoreboardGame,
+  type EspnNflScoreboard,
+  type MlsPlay,
+} from '@jinx/core';
 
 import type { LiveState } from '@/features/checkin/lock';
 
@@ -47,6 +61,12 @@ const NBA_HEADERS = {
 export const NBA_SCOREBOARD_URL =
   'https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json';
 export const MLS_SUMMARY_URL = 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/summary';
+export const NFL_SCOREBOARD_URL = ESPN_NFL_SCOREBOARD_URL;
+
+/** The day's board: ESPN keys it by the Eastern date, `dates=YYYYMMDD`. */
+export function nflScoreboardUrl(scheduledStart: string): string {
+  return `${NFL_SCOREBOARD_URL}?dates=${easternDateOf(scheduledStart).replace(/-/g, '')}`;
+}
 
 async function getJson<T>(url: string, headers?: Record<string, string>): Promise<T> {
   const res = await fetch(url, { headers: headers ?? { Accept: 'application/json' } });
@@ -95,9 +115,9 @@ export const nbaLiveFeed: LiveFeed = {
   },
 };
 
-type MlsSummaryDoc = Parameters<typeof parseMlsLiveState>[0];
+type MlsSummaryDoc = Parameters<typeof parseMlsLiveState>[0] & Parameters<typeof parseMlsKeyEvents>[0];
 
-/** ESPN's match summary header: status, clock and score for one match. */
+/** ESPN's match summary: status, clock and score for one match, and its key events as plays. */
 export const mlsLiveFeed: LiveFeed = {
   sport: 'mls',
   pollMs: 30_000,
@@ -107,14 +127,53 @@ export const mlsLiveFeed: LiveFeed = {
       `${MLS_SUMMARY_URL}?event=${encodeURIComponent(game.provider_game_id)}`,
     );
     const live = parseMlsLiveState(doc, now);
-    return live ? toRow(live) : null;
+    if (!live) return null;
+    let plays: MlsPlay[] = [];
+    try {
+      plays = parseMlsKeyEvents(doc);
+    } catch {
+      // The header is enough for the scoreboard; the plays only feed the reaction rules.
+    }
+    return { ...toRow(live), extras: { plays } };
   },
 };
 
-/** The feeds the app reads itself. A sport not here reads `game_live_state` (MLB) or nothing (NFL). */
+/**
+ * ESPN's NFL scoreboard for the game's day, matched by club (an nflverse id names both). The
+ * last two minutes of a half read as `two_minute_warning`, the state the eggs' NFL row has
+ * always named for the stretch confetti (features/eggs/live.ts).
+ */
+export const nflLiveFeed: LiveFeed = {
+  sport: 'nfl',
+  pollMs: 30_000,
+  async fetchLive(game, now = new Date().toISOString()) {
+    if (!game.provider_game_id) return null;
+    const doc = await getJson<EspnNflScoreboard>(nflScoreboardUrl(game.scheduled_start));
+    const event = findEspnNflEvent(doc, game.provider_game_id);
+    if (!event) return null;
+    const parsed = parseEspnNflLiveState(event, now);
+    if (!parsed) return null;
+    const row = toRow(parsed.live);
+    const clock = /^(\d+):(\d+)/.exec(row.clock ?? '');
+    const seconds = clock ? Number(clock[1]) * 60 + Number(clock[2]) : null;
+    if (
+      row.status === 'live' &&
+      row.inning_state === 'live' &&
+      (row.inning === 2 || row.inning === 4) &&
+      seconds != null &&
+      seconds <= 120
+    ) {
+      row.inning_state = 'two_minute_warning';
+    }
+    return { ...row, extras: { homeWp: parsed.extras.homeWp, lastPlay: parsed.extras.lastPlay } };
+  },
+};
+
+/** The feeds the app reads itself. A sport not here reads `game_live_state` (MLB). */
 export const CLIENT_LIVE_FEEDS: Readonly<Record<string, LiveFeed>> = {
   nba: nbaLiveFeed,
   mls: mlsLiveFeed,
+  nfl: nflLiveFeed,
 };
 
 export function clientLiveFeed(sport: string | null | undefined): LiveFeed | undefined {

@@ -1,0 +1,56 @@
+{
+ "season": null,
+ "week": {
+  "number": 2
+ },
+ "events": [
+  {
+   "id": "401872947",
+   "date": "2026-09-22T00:15Z",
+   "name": "New York Giants at Los Angeles Rams",
+   "competitions": [
+    {
+     "id": "401872947",
+     "date": "2026-09-22T00:15Z",
+     "status": {
+      "clock": 0.0,
+      "displayClock": "0:00",
+      "period": 4,
+      "type": {
+       "id": "3",
+       "name": "STATUS_FINAL",
+       "state": "post",
+       "completed": true,
+       "description": "Final",
+       "detail": "Final",
+       "shortDetail": "Final"
+      },
+      "isTBDFlex": false
+     },
+     "competitors": [
+      {
+       "id": "14",
+       "homeAway": "home",
+       "score": "28",
+       "team": {
+        "id": "14",
+        "abbreviation": "LAR",
+        "displayName": "Los Angeles Rams"
+       }
+      },
+      {
+       "id": "19",
+       "homeAway": "away",
+       "score": "6",
+       "team": {
+        "id": "19",
+        "abbreviation": "NYG",
+        "displayName": "New York Giants"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

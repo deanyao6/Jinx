@@ -5,6 +5,8 @@ import {
   clientLiveFeed,
   mlsLiveFeed,
   nbaLiveFeed,
+  nflLiveFeed,
+  nflScoreboardUrl,
   pollDelayMs,
   toRow,
 } from '../feeds';
@@ -41,10 +43,10 @@ function mockFetch(handler: (url: string, init?: RequestInit) => { status: numbe
 }
 
 describe('the feeds the app reads itself', () => {
-  it('are the NBA and MLS, keyed by sport; MLB and the NFL have none', () => {
-    expect(Object.keys(CLIENT_LIVE_FEEDS).sort()).toEqual(['mls', 'nba']);
+  it('are the NBA, MLS and the NFL, keyed by sport; MLB stays server-side', () => {
+    expect(Object.keys(CLIENT_LIVE_FEEDS).sort()).toEqual(['mls', 'nba', 'nfl']);
     expect(clientLiveFeed('mlb')).toBeUndefined();
-    expect(clientLiveFeed('nfl')).toBeUndefined();
+    expect(clientLiveFeed('nfl')?.sport).toBe('nfl');
     expect(clientLiveFeed(null)).toBeUndefined();
   });
 
@@ -217,5 +219,64 @@ describe('when a page polls', () => {
     expect(liveStatusLabel('nba', { ...live(6, 'live'), clock: '0:30' })).toBe('2OT 0:30');
     expect(liveStatusLabel('mls', live(5, 'live'))).toBe('Penalties');
     expect(liveStatusLabel('mls', { ...live(3, 'live'), clock: "97'" })).toBe("ET 1 97'");
+  });
+});
+
+// Trimmed from ingest/fixtures/nfl/espn_scoreboard_2026-09-21_NYG_LAR_final.json.
+const NFL_EVENT = (status: Record<string, unknown>, situation?: unknown) => ({
+  id: '401872947',
+  date: '2026-09-22T00:15Z',
+  name: 'New York Giants at Los Angeles Rams',
+  competitions: [
+    {
+      id: '401872947',
+      status,
+      competitors: [
+        { id: '14', homeAway: 'home', score: '28', team: { id: '14', abbreviation: 'LAR', displayName: 'Los Angeles Rams' } },
+        { id: '19', homeAway: 'away', score: '6', team: { id: '19', abbreviation: 'NYG', displayName: 'New York Giants' } },
+      ],
+      ...(situation ? { situation } : {}),
+    },
+  ],
+});
+
+describe('the NFL feed: ESPN’s scoreboard for the game’s day', () => {
+  const game = { provider_game_id: '2026_02_NYG_LA', scheduled_start: '2026-09-22T00:15:00Z' };
+
+  it('asks for the Eastern date of the kickoff, and matches the Rams under ESPN’s spelling', async () => {
+    expect(nflScoreboardUrl('2026-09-22T00:15:00Z')).toBe(
+      'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260921',
+    );
+    const calls = mockFetch(() => ({
+      status: 200,
+      body: { events: [NFL_EVENT({ period: 4, displayClock: '0:00', type: { name: 'STATUS_FINAL', state: 'post', completed: true } })] },
+    }));
+    const row = await nflLiveFeed.fetchLive(game, '2026-09-22T04:00:00Z');
+    expect(calls[0]?.url).toContain('dates=20260921');
+    expect(row).toMatchObject({ status: 'final', inning: 4, inning_state: 'end', clock: null, home_score: 28, away_score: 6, locked: false });
+    expect(row?.extras).toEqual({ homeWp: null, lastPlay: null });
+  });
+
+  it('reads a game under way, the last two minutes of a half as the two-minute warning, and the last play', async () => {
+    mockFetch(() => ({
+      status: 200,
+      body: {
+        events: [
+          NFL_EVENT(
+            { period: 4, displayClock: '1:52', type: { name: 'STATUS_IN_PROGRESS', state: 'in', completed: false } },
+            { lastPlay: { text: 'C.DeJean 38 yd interception return', type: { text: 'Interception Return Touchdown' }, probability: { homeWinPercentage: 0.81 } } },
+          ),
+        ],
+      },
+    }));
+    const row = await nflLiveFeed.fetchLive(game, 'now');
+    expect(row).toMatchObject({ status: 'live', inning: 4, inning_state: 'two_minute_warning', clock: '1:52' });
+    expect(row?.extras).toEqual({ homeWp: 0.81, lastPlay: { text: 'C.DeJean 38 yd interception return', type: 'Interception Return Touchdown' } });
+    expect(liveStatusLabel('nfl', row)).toBe('Q4 1:52');
+  });
+
+  it('is null when the game is not on that day’s board', async () => {
+    mockFetch(() => ({ status: 200, body: { events: [] } }));
+    expect(await nflLiveFeed.fetchLive(game, 'now')).toBeNull();
   });
 });

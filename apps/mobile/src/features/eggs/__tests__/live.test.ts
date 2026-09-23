@@ -23,7 +23,7 @@ const live = (over: Partial<EggLive> = {}): EggLive => ({
 });
 
 describe('the sport table', () => {
-  it('has a complete row for each sport; MLB, the NBA and MLS have a live feed, the NFL none', () => {
+  it('has a complete row for each sport, each with a live feed', () => {
     expect(Object.keys(EGG_SPORTS).sort()).toEqual(['mlb', 'mls', 'nba', 'nfl']);
     for (const row of Object.values(EGG_SPORTS)) {
       expect(row.lateFrom).toBeGreaterThan(0);
@@ -34,7 +34,7 @@ describe('the sport table', () => {
     expect(hasLiveFeed('mlb')).toBe(true);
     expect(hasLiveFeed('nba')).toBe(true);
     expect(hasLiveFeed('mls')).toBe(true);
-    expect(hasLiveFeed('nfl')).toBe(false);
+    expect(hasLiveFeed('nfl')).toBe(true);
     expect(hasLiveFeed('nhl')).toBe(false);
     expect(hasLiveFeed(null)).toBe(false);
   });
@@ -88,29 +88,22 @@ describe('rallyCapEligible', () => {
     ).toBe(false);
   });
 
-  it('is off for NFL today, and for a sport with no row', () => {
+  it('is off for a sport with no row', () => {
     const fourth = live({ period: 4 });
-    expect(rallyCapEligible({ sport: 'nfl', live: fourth, rootingSide: 'home' })).toBe(false);
     expect(rallyCapEligible({ sport: 'nhl', live: fourth, rootingSide: 'home' })).toBe(false);
   });
 
-  it('lights up for NFL the day its row says there is a live feed', () => {
-    const nfl = EGG_SPORTS.nfl as { liveFeed: boolean };
-    nfl.liveFeed = true;
-    try {
-      const at = (period: number) =>
-        rallyCapEligible({ sport: 'nfl', live: live({ period }), rootingSide: 'home' });
-      expect(at(3)).toBe(false);
-      expect(at(4)).toBe(true);
-      expect(
-        isStretchTime({
-          sport: 'nfl',
-          live: live({ period: 2, periodState: 'two_minute_warning' }),
-        }),
-      ).toBe(true);
-    } finally {
-      nfl.liveFeed = false;
-    }
+  it('is on for the NFL from the 4th quarter, and the two-minute warning is its stretch', () => {
+    const at = (period: number) =>
+      rallyCapEligible({ sport: 'nfl', live: live({ period }), rootingSide: 'home' });
+    expect(at(3)).toBe(false);
+    expect(at(4)).toBe(true);
+    expect(
+      isStretchTime({
+        sport: 'nfl',
+        live: live({ period: 2, periodState: 'two_minute_warning' }),
+      }),
+    ).toBe(true);
   });
 });
 
@@ -129,10 +122,11 @@ describe('isStretchTime', () => {
     expect(at(7, 'middle', 'final')).toBe(false);
   });
 
-  it('is never true without live state, for NFL today, or for an unknown sport', () => {
+  it('is never true without live state, in the wrong period, or for an unknown sport', () => {
     expect(isStretchTime({ sport: 'mlb', live: null })).toBe(false);
     const warning = live({ period: 4, periodState: 'two_minute_warning' });
-    expect(isStretchTime({ sport: 'nfl', live: warning })).toBe(false);
+    expect(isStretchTime({ sport: 'nfl', live: warning })).toBe(true);
+    expect(isStretchTime({ sport: 'nfl', live: live({ period: 3, periodState: 'two_minute_warning' }) })).toBe(false);
     expect(isStretchTime({ sport: 'nhl', live: warning })).toBe(false);
   });
 

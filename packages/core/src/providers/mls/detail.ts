@@ -61,6 +61,65 @@ export interface MlsSummaryDetail extends MlsSummary {
   gameInfo?: { attendance?: number };
 }
 
+/**
+ * Every key event of the summary as a play, with the score as it stood after it: the live
+ * feed's plays (features/live/feeds.ts, for the reaction rules) and the detail's, from one
+ * reading of ESPN's `keyEvents`.
+ */
+export function parseMlsKeyEvents(summary: Pick<MlsSummaryDetail, 'keyEvents'>): MlsPlay[] {
+  const events = [...(summary.keyEvents ?? [])].map((e, i) => ({ e, i }));
+  const plays: MlsPlay[] = [];
+  let home = 0;
+  let away = 0;
+  const goalsByName = new Map<string, number>();
+  for (const { e, i } of events) {
+    const type = e.type?.text ?? '';
+    const period = e.period?.number ?? (i === 0 ? 1 : (plays[plays.length - 1]?.period ?? 1));
+    let scoringSide: Side | null = null;
+    let scorer: string | null = null;
+    let kind: MlsScoringKind | null = null;
+    if (GOAL_TYPES.has(type) || /^Goal/.test(type)) {
+      const m = GOAL_TEXT.exec(e.text ?? '');
+      if (m) {
+        // Home is named first in the text (checked on 655997 and 761829).
+        const h = Number(m[2]);
+        const a = Number(m[4]);
+        scoringSide = h > home ? 'home' : a > away ? 'away' : null;
+        home = h;
+        away = a;
+        const who = SCORER.exec(m[5] ?? '');
+        scorer = who?.[1] ?? null;
+      }
+      kind =
+        type === 'Own Goal'
+          ? 'own_goal'
+          : type === 'Penalty - Scored'
+            ? 'penalty'
+            : type === 'Goal - Header'
+              ? 'header'
+              : type === 'Goal - Free-kick'
+                ? 'free_kick'
+                : 'goal';
+      if (scorer) goalsByName.set(scorer, (goalsByName.get(scorer) ?? 0) + 1);
+    }
+    plays.push({
+      seq: i + 1,
+      period,
+      minute: minutesOf(e.clock),
+      clock: e.clock?.displayValue ?? '',
+      wallclock: e.wallclock ?? null,
+      type,
+      text: e.text ?? '',
+      homeScore: home,
+      awayScore: away,
+      scoringSide,
+      scorerName: scorer,
+      kind,
+    });
+  }
+  return plays;
+}
+
 /** What the caller knows from the games row: the schedule half of the detail. */
 export type MlsDetailContext = CanonicalGame;
 
@@ -99,73 +158,24 @@ export function parseMlsSummaryDetail(
   const comp = summary.header?.competitions?.[0];
   const homeName = summary.rosters?.find((r) => r.homeAway === 'home')?.team?.displayName ?? null;
   const awayName = summary.rosters?.find((r) => r.homeAway === 'away')?.team?.displayName ?? null;
-  const events = [...(summary.keyEvents ?? [])].map((e, i) => ({ e, i }));
-
   // Plays: every key event, with the score as it stood after it.
-  const plays: MlsPlay[] = [];
-  let home = 0;
-  let away = 0;
+  const plays = parseMlsKeyEvents(summary);
   const timeline: ScoringEvent[] = [];
-  const goalsByName = new Map<string, number>();
-  for (const { e, i } of events) {
-    const type = e.type?.text ?? '';
-    const period = e.period?.number ?? (i === 0 ? 1 : (plays[plays.length - 1]?.period ?? 1));
-    let scoringSide: Side | null = null;
-    let scorer: string | null = null;
-    let kind: MlsScoringKind | null = null;
-    if (GOAL_TYPES.has(type) || /^Goal/.test(type)) {
-      const m = GOAL_TEXT.exec(e.text ?? '');
-      if (m) {
-        // Home is named first in the text (checked on 655997 and 761829).
-        const h = Number(m[2]);
-        const a = Number(m[4]);
-        scoringSide = h > home ? 'home' : a > away ? 'away' : null;
-        home = h;
-        away = a;
-        const who = SCORER.exec(m[5] ?? '');
-        scorer = who?.[1] ?? null;
-      }
-      kind =
-        type === 'Own Goal'
-          ? 'own_goal'
-          : type === 'Penalty - Scored'
-            ? 'penalty'
-            : type === 'Goal - Header'
-              ? 'header'
-              : type === 'Goal - Free-kick'
-                ? 'free_kick'
-                : 'goal';
-      if (scorer) goalsByName.set(scorer, (goalsByName.get(scorer) ?? 0) + 1);
-    }
-    const play: MlsPlay = {
-      seq: i + 1,
-      period,
-      minute: minutesOf(e.clock),
-      clock: e.clock?.displayValue ?? '',
-      wallclock: e.wallclock ?? null,
-      type,
-      text: e.text ?? '',
-      homeScore: home,
-      awayScore: away,
-      scoringSide,
-      scorerName: scorer,
-      kind,
-    };
-    plays.push(play);
-    if (scoringSide) {
+  for (const play of plays) {
+    if (play.scoringSide) {
       timeline.push({
         seq: timeline.length + 1,
         occurredAt: play.wallclock,
-        period,
+        period: play.period,
         half: null,
         clock: play.clock || null,
-        homeScore: home,
-        awayScore: away,
-        scoringSide,
+        homeScore: play.homeScore,
+        awayScore: play.awayScore,
+        scoringSide: play.scoringSide,
         description: play.text,
-        kind: kind ?? 'goal',
+        kind: play.kind ?? 'goal',
         scorerProviderId: null,
-        scorerName: scorer,
+        scorerName: play.scorerName,
       });
     }
   }

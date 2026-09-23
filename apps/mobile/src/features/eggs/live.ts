@@ -26,10 +26,8 @@ export type EggSport = {
    * Whether `game_live_state` is written for this sport. It is the one switch that says "there
    * is live data": with it off nothing is polled and neither live egg can fire for the sport.
    *
-   * NFL is off because v1 has no live NFL data at all (SPEC.md 4.3: nflverse publishes after
-   * the game). The NFL row is complete otherwise, so the day a live NFL feed writes
-   * `game_live_state` (the quarter in `inning`, the state in `inning_state`) this flips to
-   * true and both eggs light up with no other change.
+   * Every sport has one now: MLB through the server's `game_live_state`, the NBA, MLS and,
+   * since 2026-09-23, the NFL through the phone's own feeds (features/live/feeds.ts).
    */
   liveFeed: boolean;
   /** Rally cap: the period from which the game is late. The 7th inning, the 4th quarter. */
@@ -51,9 +49,11 @@ export const EGG_SPORTS: Readonly<Record<string, EggSport>> = {
     pieces: ['peanut', 'snackBox', 'baseball'],
   },
   nfl: {
-    liveFeed: false,
+    // On since 2026-09-23: the phone reads ESPN's free NFL scoreboard (features/live/feeds.ts,
+    // 00_repo_reality.md R1), the quarter in `inning`, `live`, `halftime` or `end` in
+    // `inning_state`, and `two_minute_warning` for the last two minutes of a half.
+    liveFeed: true,
     lateFrom: 4,
-    // One before each half. No feed writes this state yet; the name is what one should write.
     signatureBreak: {
       name: 'Two-minute warning',
       periods: [2, 4],

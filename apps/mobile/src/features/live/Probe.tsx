@@ -4,14 +4,15 @@ import { View } from 'react-native';
 import { Card } from '@/components/Card';
 import { Text } from '@/components/Text';
 
-import { MLS_SUMMARY_URL, NBA_SCOREBOARD_URL, mlsLiveFeed, nbaLiveFeed } from './feeds';
+import { MLS_SUMMARY_URL, NBA_SCOREBOARD_URL, mlsLiveFeed, nbaLiveFeed, nflLiveFeed, nflScoreboardUrl } from './feeds';
 
 type Result = { label: string; outcome: string; ms: number };
 
 /**
- * Development only: proves from a device build that the two public live feeds answer a fetch
- * from React Native (the VERIFY in docs/prompts/next-wave.md part C). Reached with
- * `jinx:///you/eggs?probe=live`. Each row is the HTTP status and what the parser made of it.
+ * Development only: proves from a device build that the public live feeds answer a fetch from
+ * React Native (the VERIFY in docs/prompts/next-wave.md part C; ESPN's NFL scoreboard added for
+ * 00_repo_reality.md R1). Reached with `jinx:///you/eggs?probe=live`. Each row is the HTTP
+ * status and what the parser made of it.
  */
 export function LiveFeedProbe() {
   const [results, setResults] = useState<Result[] | null>(null);
@@ -63,6 +64,31 @@ export function LiveFeedProbe() {
         await timed('mls feed 761829', async () => {
           const live = await mlsLiveFeed.fetchLive({ provider_game_id: '761829', scheduled_start: '2026-09-20T23:00:00Z' });
           return live ? `${live.status} period ${live.inning} ${live.inning_state} ${live.away_score}-${live.home_score}` : 'null';
+        }),
+      );
+      out.push(
+        await timed('espn nfl scoreboard 2026-09-21', async () => {
+          const res = await fetch(nflScoreboardUrl('2026-09-22T00:15:00Z'), { headers: { Accept: 'application/json' } });
+          const body = (await res.json()) as { events?: { name?: string; competitions?: { status?: { type?: { name?: string } } }[] }[] };
+          const first = body.events?.[0];
+          return `HTTP ${res.status}, ${body.events?.length ?? 0} events, ${first?.name ?? '?'}: ${first?.competitions?.[0]?.status?.type?.name ?? '?'}`;
+        }),
+      );
+      out.push(
+        await timed('nfl feed 2026_02_NYG_LA', async () => {
+          const live = await nflLiveFeed.fetchLive({ provider_game_id: '2026_02_NYG_LA', scheduled_start: '2026-09-22T00:15:00Z' });
+          return live ? `${live.status} Q${live.inning} ${live.inning_state} ${live.away_score}-${live.home_score}` : 'null';
+        }),
+      );
+      out.push(
+        await timed('nfl feed, today’s board', async () => {
+          const res = await fetch(nflScoreboardUrl(new Date().toISOString()), { headers: { Accept: 'application/json' } });
+          const body = (await res.json()) as { events?: { name?: string; competitions?: { status?: { type?: { name?: string }; period?: number; displayClock?: string }; situation?: { lastPlay?: { type?: { text?: string }; probability?: unknown } } }[] }[] };
+          const live = body.events?.find((e) => e.competitions?.[0]?.status?.type?.name === 'STATUS_IN_PROGRESS');
+          const c = live?.competitions?.[0];
+          return live
+            ? `${live.name}: Q${c?.status?.period} ${c?.status?.displayClock}, lastPlay ${c?.situation?.lastPlay?.type?.text ?? 'none'}, probability ${c?.situation?.lastPlay?.probability ? 'yes' : 'no'}`
+            : `HTTP ${res.status}, ${body.events?.length ?? 0} events, none under way`;
         }),
       );
       if (!cancelled) setResults(out);

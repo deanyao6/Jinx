@@ -13,7 +13,9 @@ const LOCK_RULES: Readonly<
   Record<string, { estimateMinutes: number; firstScoreLocks: boolean; live: boolean }>
 > = {
   mlb: { estimateMinutes: 30, firstScoreLocks: true, live: true },
-  nfl: { estimateMinutes: 12, firstScoreLocks: true, live: false },
+  // The phone reads ESPN's NFL scoreboard since 2026-09-23 (features/live/feeds.ts), so the
+  // first score locks it for real; the 12-minute estimate stays the fallback without a feed.
+  nfl: { estimateMinutes: 12, firstScoreLocks: true, live: true },
   // The phone reads the NBA CDN and ESPN itself (features/live/feeds.ts, decision 8 of
   // 2026-09-22). MLS locks at the first goal or halftime; kick-offs run about 13 minutes late,
   // so the estimate without a feed is a quarter of an hour.
@@ -36,6 +38,17 @@ export type LiveState = {
   locked: boolean;
   lock_reason: string | null;
   fetched_at: string;
+  /** What a phone-side feed adds for the reaction rules; the server's MLB row has none. */
+  extras?: LiveExtras;
+};
+
+export type LiveExtras = {
+  /** MLS: ESPN's key events as plays, in order. */
+  plays?: import('@jinx/core').MlsPlay[];
+  /** NFL: ESPN's home win percentage on the last play, 0 to 1, when the board carries one. */
+  homeWp?: number | null;
+  /** NFL: the last play the board names, which is how a return score is told from the rest. */
+  lastPlay?: { text: string | null; type: string | null } | null;
 };
 
 const MIN = 60_000;
