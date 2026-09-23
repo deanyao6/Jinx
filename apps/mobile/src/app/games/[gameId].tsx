@@ -770,7 +770,7 @@ function PlayersCard({
       </View>
       {group.notable.length === 0 ? (
         <Text variant="sub" color="muted">
-          Nothing notable recorded for this side.
+          No superstar had a big game on this side.
         </Text>
       ) : null}
       {/* The roster is still here, just folded away: a count by default, the full

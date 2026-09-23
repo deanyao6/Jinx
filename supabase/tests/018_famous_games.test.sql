@@ -62,10 +62,13 @@ insert into public.game_appearances (game_id, player_id, team_id) values
   ('00000000-0000-0000-0000-0000000000e6', '00000000-0000-0000-0000-0000000000f1', '00000000-0000-0000-0000-0000000000fa')
 on conflict do nothing;
 
--- Honors: Quiet Regular was an All-Star in 1988 (three seasons before: still a star in 1991,
--- not in 1992). Old Legend is a curated franchise player through 1990 only.
+-- Honors: Quiet Regular was an All-Star in 1988 and again in 1990. Since 2026-09-23 one
+-- selection is not enough (migration 20260923110000, `honor_kinds.min_count`), so he is a star
+-- only while both sit inside the three-season window: 1990 and 1991, not 1988 and not 1992.
+-- Old Legend is a curated franchise player through 1990 only.
 insert into public.player_honors (player_id, season, honor, source) values
-  ('00000000-0000-0000-0000-0000000000f2', 1988, 'all_star', 'test');
+  ('00000000-0000-0000-0000-0000000000f2', 1988, 'all_star', 'test'),
+  ('00000000-0000-0000-0000-0000000000f2', 1990, 'all_star', 'test');
 insert into public.franchise_players (player_id, team_id, from_season, to_season, source) values
   ('00000000-0000-0000-0000-0000000000f3', '00000000-0000-0000-0000-0000000000fd', 1980, 1990, 'test');
 
@@ -87,15 +90,15 @@ select is(public.game_local_date('2023-01-17T01:15:00Z', null), '2023-01-16'::da
 -- ---------------------------------------------------------------------------
 -- Superstars
 -- ---------------------------------------------------------------------------
-select ok(public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1988), 'an All-Star is a star that season');
-select ok(public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1991), 'and for three seasons after');
-select ok(not public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1992), 'but not four');
-select ok(not public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1987), 'and not before');
+select ok(not public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1988), 'one All-Star selection is not a star');
+select ok(public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1991), 'two inside the window are, for as long as both are in it');
+select ok(not public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1992), 'but not once only one remains');
+select ok(not public.is_superstar('00000000-0000-0000-0000-0000000000f2', 1987), 'and not before either');
 select ok(public.is_superstar('00000000-0000-0000-0000-0000000000f3', 1985), 'a curated franchise player is a star in his era');
 select ok(not public.is_superstar('00000000-0000-0000-0000-0000000000f3', 1991), 'and not after it');
 select ok(not public.is_superstar('00000000-0000-0000-0000-0000000000f1', 1991), 'nobody else is');
 select is((select label || ' ' || season from public.superstar_honor('00000000-0000-0000-0000-0000000000f2', 1991)),
-  'All-Star 1988', 'superstar_honor names the honor and its season');
+  'All-Star 1990', 'superstar_honor names the honor and its most recent season');
 select results_eq(
   $$select full_name from public.game_stars('00000000-0000-0000-0000-0000000000e5')$$,
   $$values ('Quiet Regular')$$,
