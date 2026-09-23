@@ -115,7 +115,7 @@ export function notificationRoute(n: { kind: string; data: unknown }): string | 
   const gameId = typeof data.game_id === 'string' ? data.game_id : null;
   switch (n.kind) {
     case 'game_day':
-      return gameId ? `/games/checkin/${gameId}` : '/(tabs)/games?segment=upcoming';
+      return gameId ? `/games/checkin/${gameId}` : '/games?segment=upcoming';
     case 'pledge_result':
     case 'pledge_void':
     case 'tagged':
@@ -128,16 +128,16 @@ export function notificationRoute(n: { kind: string; data: unknown }): string | 
     case 'follow_request':
       return '/friends/requests';
     case 'new_follower':
-      return '/(tabs)/profile';
+      return '/profile';
     case 'wrapped_ready': {
       const sport = typeof data.sport_id === 'string' ? data.sport_id : null;
       const season = typeof data.season === 'number' ? data.season : null;
-      return sport && season ? `/wrapped/${sport}/${season}` : '/(tabs)';
+      return sport && season ? `/wrapped/${sport}/${season}` : '/';
     }
     case 'goal_completed':
     case 'new_stamp':
     case 'milestone':
-      return '/(tabs)';
+      return '/';
     default:
       return gameId ? `/games/${gameId}` : null;
   }

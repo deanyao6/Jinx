@@ -22,6 +22,8 @@ import { useAuth, useAuthListener, useSignOut } from '@/features/auth/hooks';
 import { StretchConfetti } from '@/features/eggs/StretchConfetti';
 import { useNavStore } from '@/features/nav/store';
 import { RootStack } from '@/features/navigation/RootStack';
+import { ownedHref } from '@/features/navigation/tabs';
+import { Toast } from '@/features/navigation/toast';
 import { ParityHost } from '@/features/parity/ParityHost';
 import { useTeamPalettes } from '@/features/teams/queries';
 import { useNotificationRuntime } from '@/features/notifications/push';
@@ -162,7 +164,7 @@ function RootNavigator() {
   useEffect(() => {
     if (onboarded && pendingRoute) {
       setPendingRoute(null);
-      router.replace(pendingRoute as Href);
+      router.replace(ownedHref(pendingRoute) as Href);
     }
   }, [onboarded, pendingRoute, router, setPendingRoute]);
 
@@ -243,6 +245,7 @@ function RootLayout() {
                   <ParityHost>
                     <AccentRoot>
                       <RootNavigator />
+                      <Toast />
                       {/* An easter egg. Renders nothing at rest, and never takes a touch. */}
                       <StretchConfetti />
                     </AccentRoot>

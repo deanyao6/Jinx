@@ -12,6 +12,7 @@ import { Platform } from 'react-native';
 
 import { useAuthStore } from '@/features/auth/store';
 import { supabase } from '@/lib/supabase';
+import { ownedHref } from '@/features/navigation/tabs';
 import { notificationRoute } from './queries';
 
 Notifications.setNotificationHandler({
@@ -88,7 +89,8 @@ export function useNotificationRuntime(): void {
       const data = (content.data ?? {}) as Record<string, unknown>;
       const kind = typeof data.kind === 'string' ? data.kind : 'unknown';
       const route = notificationRoute({ kind, data });
-      if (route) router.push(route as Href);
+      // Onto the stack of the tab that owns it, with that tab's root under it (tabs.ts).
+      if (route) router.push(ownedHref(route) as Href);
     });
     return () => sub.remove();
   }, [router]);

@@ -82,7 +82,7 @@ export default function WrappedScreen() {
   };
 
   const title = valid ? wrappedTitle(sport, season) : 'Wrapped';
-  const onClose = () => (router.canGoBack() ? router.back() : router.replace('/(tabs)'));
+  const onClose = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const onPick = () => setPicking(true);
 
   const story = valid && !!wrapped.data;
@@ -172,7 +172,7 @@ export default function WrappedScreen() {
             title={`No ${sportLabel(sport)} games in ${season}`}
             body="Wrapped needs at least one game that went final. Log one and come back."
             actionTitle="Log a game"
-            onAction={() => router.replace('/(tabs)/games?segment=log' as Href)}
+            onAction={() => router.replace('/games?segment=log' as Href)}
           />
           <Button
             title="Pick another season"

@@ -37,6 +37,13 @@ const NO_LINK_NEEDED: Record<string, string> = {
   '/legacy-you': 'superseded by /settings',
   '/legacy-passport': 'superseded by the reference Passport',
   '/legacy-friends': 'superseded by the Friends panel on Profile',
+  // Social v2 routes whose way in arrives with a later prompt (docs/prompts/social/). Each
+  // resolves now so a push or share link sent early does not 404; remove the entry when the
+  // feature that links to it lands.
+  '/post/[postId]': 'opened by push and share links; prompt 2 links it from feed cards',
+  '/community/[slug]': 'prompt 4 lists communities; until then only a link names one',
+  '/passport/streak/[teamId]': 'prompt 4 puts the streak patch on the Passport',
+  '/react/[gameId]': 'opened by the reaction prompt push, which prompt 3 sends',
 };
 
 function walk(dir: string): string[] {
@@ -120,7 +127,7 @@ describe('actions that once had no entry point', () => {
   const read = (rel: string) => readFileSync(join(SRC, rel), 'utf8');
 
   it('Settings offers sign out and data export', () => {
-    const settings = read('app/settings/index.tsx');
+    const settings = read('app/(tabs)/(profile)/settings/index.tsx');
     expect(settings).toContain('useSignOut');
     expect(settings).toContain('useExportData');
   });

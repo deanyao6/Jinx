@@ -4,7 +4,7 @@ import React from 'react';
 
 import { renderScreen } from '@/test/renderScreen';
 
-import GameDetailScreen from '@/app/games/[gameId]';
+import GameDetailScreen from '@/app/(tabs)/(feed,passport,games,plan,profile)/games/[gameId]';
 
 jest.mock('expo-router', () => ({
   useRouter: () => ({ push: jest.fn(), replace: jest.fn(), back: jest.fn() }),

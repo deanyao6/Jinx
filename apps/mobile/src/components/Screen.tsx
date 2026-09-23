@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/theme/ThemeProvider';
+import { useInTabNavigator } from '@/features/navigation/context';
 import { useIsUnderHeader } from './subPageHeader';
 
 type Props = {
@@ -28,6 +29,7 @@ export function Screen({
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const headed = useIsUnderHeader();
+  const overTabBar = useInTabNavigator();
   const below = underHeader ?? headed;
   const base: ViewStyle = {
     flex: 1,
@@ -38,7 +40,7 @@ export function Screen({
     // inset again left a band of nothing at the top of every sub page.
     paddingTop: (below ? 0 : insets.top) + theme.spacing.sm,
     paddingHorizontal: padded ? theme.spacing.lg : 0,
-    paddingBottom: theme.spacing.xl + insets.bottom,
+    paddingBottom: theme.spacing.xl + (overTabBar ? 0 : insets.bottom),
   };
   if (!scroll) {
     return <View style={[base, content, style]}>{children}</View>;

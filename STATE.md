@@ -141,6 +141,23 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
    **ticket forwarding** (Email Routing on Cloudflare, `wrangler login` once): the exact steps
    are in `docs/prompts/next-wave.md` section H.
 
+**Social v2, prompt 1, on branch `social-v2` only (2026-09-22, not on main, not on hosted).**
+Briefs: `docs/prompts/social/`, and `00_repo_reality.md` wins where they disagree. Five tabs,
+Feed, Passport, Games, Plan, Profile, each its own stack: `app/(tabs)/(<tab>)/` holds what one
+tab owns and `app/(tabs)/(feed,passport,games,plan,profile)/` what every tab can push (a game,
+Relive, a profile, a guide), so a game opened from the Passport comes back to the Passport. **No
+path changed** (Dean, Q2): `/games/<id>`, `/u/<handle>`, `/settings`, `/relive/<id>` are what
+they were; `app/+native-intent.tsx` only adds the owning tab's group to a cold link so it opens
+with that tab's root under it. One tab bar drawn by the tab layout; the reference screens'
+`<TabBar/>` stands down inside it and still draws for the parity harness (whose shots now have
+five tabs and Upcoming first, so their scores move). Tapping the showing tab pops to its root;
+tabs are not lazy, so a push into a tab never opened still has a root. Plan is the existing
+feature, kept (Dean, Q1). New routes render placeholders: `/feed`, `/post/<id>`,
+`/post/<id>/comments`, `/communities`, `/community/<slug>`, `/community/<slug>/leaderboard`,
+`/react/<id>`, `/passport/streak/<team>`, `/passport/badges`, `/passport/favorites`. An unknown
+link lands on the Passport with a toast. Tests: `features/navigation/__tests__/tabs.test.tsx`.
+Screens: `docs/evidence/social/navigation/`.
+
 **The welcome screen is rebuilt (2026-09-22), and its wall restocks itself weekly.**
 `design/welcome-reference.html` is its source of truth; `app/(auth)/welcome.tsx` composes
 `features/onboarding/ui/WelcomeArt.tsx` (the wall, scrim and copy) and `WelcomeActions.tsx`

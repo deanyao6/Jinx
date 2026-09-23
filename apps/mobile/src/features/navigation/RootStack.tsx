@@ -11,20 +11,17 @@ import React from 'react';
  * Settings once left the app on Settings with an empty identity card instead of on the welcome
  * screen (Dean, build 4). `invite` is the one deliberate exception: an invite link has to open
  * while signed out.
+ *
+ * Since the five-tab restructure almost every signed-in screen lives inside `(tabs)`, in one of
+ * the tab stacks, so that one guard covers them. What stays up here opens over the tabs: Wrapped,
+ * share cards and the reaction camera.
  */
 export function RootStack({ signedIn, onboarded }: { signedIn: boolean; onboarded: boolean }) {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={onboarded}>
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="games" />
-        <Stack.Screen name="you" />
-        <Stack.Screen name="passport" />
-        <Stack.Screen name="friends" />
-        <Stack.Screen name="u" />
-        <Stack.Screen name="settings" />
-        <Stack.Screen name="guide" />
-        <Stack.Screen name="relive" />
+        <Stack.Screen name="react" options={{ presentation: 'fullScreenModal' }} />
         <Stack.Screen name="wrapped" options={{ presentation: 'fullScreenModal' }} />
         <Stack.Screen name="share" options={{ presentation: 'modal' }} />
       </Stack.Protected>

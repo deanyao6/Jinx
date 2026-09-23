@@ -2,7 +2,7 @@ import { act, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import EasterEggsScreen from '@/app/you/eggs';
+import EasterEggsScreen from '@/app/(tabs)/(profile)/you/eggs';
 import { EGG_CATALOG } from '@/features/eggs/catalog';
 import { eggs } from '@/features/eggs/flags';
 import { useEggPreview } from '@/features/eggs/store';

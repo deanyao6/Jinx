@@ -3,7 +3,7 @@ import React from 'react';
 import { Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import SettingsRoute, { settingsRows } from '@/app/settings/index';
+import SettingsRoute, { settingsRows } from '@/app/(tabs)/(profile)/settings/index';
 
 const mockSignOut = jest.fn();
 const mockExport = jest.fn();

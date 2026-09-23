@@ -110,7 +110,7 @@ export default function InviteScreen() {
           />
           <Button
             title="Back to Friends"
-            onPress={() => router.replace('/(tabs)/profile')}
+            onPress={() => router.replace('/profile')}
             style={{ marginTop: theme.spacing.lg }}
           />
         </Card>
@@ -161,7 +161,7 @@ function Accepted({ owner, taggedGames }: { owner: string; taggedGames: number }
         {done == null && taggedGames === 0 ? (
           <Button
             title="Back to Friends"
-            onPress={() => router.replace('/(tabs)/profile')}
+            onPress={() => router.replace('/profile')}
             style={{ marginTop: theme.spacing.lg }}
           />
         ) : null}
@@ -174,7 +174,7 @@ function Accepted({ owner, taggedGames }: { owner: string; taggedGames: number }
           </Text>
           <Button
             title="See your games"
-            onPress={() => router.replace('/(tabs)/games?segment=history')}
+            onPress={() => router.replace('/games?segment=history')}
             style={{ marginTop: theme.spacing.lg }}
           />
         </Card>
@@ -230,7 +230,7 @@ function Accepted({ owner, taggedGames }: { owner: string; taggedGames: number }
             <Button
               title="Not now"
               variant="ghost"
-              onPress={() => router.replace('/(tabs)/profile')}
+              onPress={() => router.replace('/profile')}
             />
           </View>
         </Card>

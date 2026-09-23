@@ -55,7 +55,7 @@ export default function PastGamesStep() {
 
       <Pressable
         accessibilityRole="button"
-        onPress={() => finish('/(tabs)/games?segment=log')}
+        onPress={() => finish('/games?segment=log')}
         disabled={update.isPending}
         style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
       >

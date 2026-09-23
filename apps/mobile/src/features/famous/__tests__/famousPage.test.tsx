@@ -3,7 +3,7 @@ import React from 'react';
 
 import { renderScreen } from '@/test/renderScreen';
 
-import FamousGamesScreen from '@/app/passport/famous';
+import FamousGamesScreen from '@/app/(tabs)/(passport)/passport/famous';
 
 const mockPush = jest.fn();
 jest.mock('expo-router', () => ({

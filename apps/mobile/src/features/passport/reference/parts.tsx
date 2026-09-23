@@ -7,6 +7,8 @@ import { ICONS, type IconName } from '@/components/reference/icons';
 import { Seal } from '@/components/reference/Seal';
 import { TightText } from '@/components/reference/TightText';
 import { VenueSeal } from '@/features/passport/seals';
+import { useInTabNavigator } from '@/features/navigation/context';
+import { TAB_LABEL, TAB_ORDER, TAB_ROOT, type TabKey } from '@/features/navigation/tabs';
 import { fontFamily } from '@/theme/fonts';
 import { TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { border, iconSize, radius, screenPadding } from '@/theme/reference/tokens';
@@ -543,41 +545,45 @@ export function SuperlativeList({
   );
 }
 
-/** `.tabs`. The active tab takes the screen's team accent. */
-/** Where each tab lives. The screens draw this bar themselves, so it navigates rather
- *  than being driven by a navigator's own tab bar, which would render a second one. */
-const TAB_ROUTES = {
-  Passport: '/',
-  Games: '/games',
-  Plan: '/plan',
-  Profile: '/profile',
-} as const;
+const TAB_ICONS: Record<TabKey, IconName> = {
+  feed: 'i-news',
+  passport: 'i-passport',
+  games: 'i-ticket',
+  plan: 'i-map',
+  profile: 'i-user',
+};
 
-export function TabBar({ active = 'Passport' }: { active?: string }) {
+/** `.tabs`, five of them. The active tab takes the team accent in scope. */
+export function TabBarView({
+  active,
+  onPress,
+  onLongPress,
+}: {
+  active: TabKey | null;
+  onPress: (tab: TabKey) => void;
+  onLongPress?: (tab: TabKey) => void;
+}) {
   const { base, team } = useReferenceTheme();
-  const router = useRouter();
-  const tabs: [keyof typeof TAB_ROUTES, IconName][] = [
-    ['Passport', 'i-passport'],
-    ['Games', 'i-ticket'],
-    ['Plan', 'i-map'],
-    ['Profile', 'i-user'],
-  ];
   return (
-    <View style={[s.tabs, { borderTopColor: base.line, backgroundColor: base.card }]}>
-      {tabs.map(([label, icon]) => {
-        const Icon = ICONS[icon];
-        const on = label === active;
+    <View
+      style={[s.tabs, { borderTopColor: base.line, backgroundColor: base.card }]}
+      accessibilityRole="tablist"
+    >
+      {TAB_ORDER.map((tab) => {
+        const Icon = ICONS[TAB_ICONS[tab]];
+        const on = tab === active;
         const color = on ? team.accent : base.muted;
+        const label = TAB_LABEL[tab];
         return (
           <Pressable
-            key={label}
+            key={tab}
             style={s.tab}
-            onPress={() => {
-              if (!on) router.replace(TAB_ROUTES[label] as Href);
-            }}
+            onPress={() => onPress(tab)}
+            onLongPress={onLongPress ? () => onLongPress(tab) : undefined}
             accessibilityRole="tab"
             accessibilityState={{ selected: on }}
             accessibilityLabel={label}
+            testID={`tab-${tab}`}
           >
             <Icon size={iconSize.tab} color={color} />
             <Text style={[on ? s.tabLabelOn : s.tabLabel, { color }]}>{label}</Text>
@@ -585,6 +591,26 @@ export function TabBar({ active = 'Passport' }: { active?: string }) {
         );
       })}
     </View>
+  );
+}
+
+/**
+ * The reference screens' own tab bar. Inside the tab navigator it renders nothing, because the
+ * navigator's bar is already there; the parity harness renders screens on their own, and there
+ * it draws and navigates to each tab's root.
+ */
+export function TabBar({ active = 'Passport' }: { active?: string }) {
+  const inNavigator = useInTabNavigator();
+  const router = useRouter();
+  if (inNavigator) return null;
+  const current = TAB_ORDER.find((t) => TAB_LABEL[t] === active) ?? null;
+  return (
+    <TabBarView
+      active={current}
+      onPress={(tab) => {
+        if (tab !== current) router.replace(TAB_ROOT[tab] as Href);
+      }}
+    />
   );
 }
 

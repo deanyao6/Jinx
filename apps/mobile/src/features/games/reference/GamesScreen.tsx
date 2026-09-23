@@ -41,7 +41,8 @@ import { border, radius, screenPadding } from '@/theme/reference/tokens';
  */
 type GameRow = GameRowFixture & { gameId?: string };
 
-const SEGMENTS = ['History', 'Upcoming', 'Imports'] as const;
+/** Upcoming first: game day comes before the archive (docs/prompts/social/01, section 1). */
+export const SEGMENTS = ['Upcoming', 'History', 'Imports'] as const;
 
 /**
  * What the "+" offers (docs/interactions.md, Games).
@@ -59,10 +60,23 @@ const ADD_ACTIONS: readonly { label: string; href: Href }[] = [
   { label: 'Upload tickets', href: '/games/import' },
 ];
 
-export function GamesScreen({ initialSegment = 'History' }: { initialSegment?: string }) {
+/**
+ * `segment` and `onSegment` let the route keep the segment in its `?segment=` param, so a
+ * segment is a place a link can name and switching one never adds a back step. Without them
+ * (the parity harness) the screen keeps it in state.
+ */
+export function GamesScreen({
+  initialSegment = 'History',
+  segment,
+  onSegment,
+}: {
+  initialSegment?: string;
+  segment?: string;
+  onSegment?: (segment: string) => void;
+}) {
   return (
     <ReferenceThemeProvider team="none">
-      <Body initialSegment={initialSegment} />
+      <Body initialSegment={initialSegment} controlled={segment} onSegment={onSegment} />
     </ReferenceThemeProvider>
   );
 }
@@ -116,12 +130,21 @@ function routeId(game: GameRow): string {
   return game.gameId ?? game.title;
 }
 
-function Body({ initialSegment }: { initialSegment: string }) {
+function Body({
+  initialSegment,
+  controlled,
+  onSegment,
+}: {
+  initialSegment: string;
+  controlled?: string;
+  onSegment?: (segment: string) => void;
+}) {
   const { base } = useReferenceTheme();
   const repo = useRepository();
   const famousIds = useMyFamousGameIds();
   const router = useRouter();
-  const [segment, setSegment] = React.useState(initialSegment);
+  const [local, setLocal] = React.useState(initialSegment);
+  const segment = controlled ?? local;
   const [query, setQuery] = React.useState('');
   const [menuOpen, setMenuOpen] = React.useState(false);
   const insets = useSafeAreaInsets();
@@ -141,7 +164,8 @@ function Body({ initialSegment }: { initialSegment: string }) {
   }, [all, segment, query, now]);
 
   const selectSegment = (option: string) => {
-    setSegment(option);
+    if (onSegment) onSegment(option);
+    else setLocal(option);
     // The imports inbox is its own screen: it confirms or discards a parsed ticket, which
     // is a different job from listing games, and the repository serves nothing for it. The
     // segment opens it and the pane behind says where it went, rather than reusing the

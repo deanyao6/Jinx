@@ -2,14 +2,10 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import FriendsStackLayout from '@/app/friends/_layout';
-import GamesStackLayout from '@/app/games/_layout';
+import TabStackLayout from '@/app/(tabs)/(feed,passport,games,plan,profile)/_layout';
+import SettingsRoute from '@/app/(tabs)/(profile)/settings/index';
 import InviteStackLayout from '@/app/invite/_layout';
-import PassportStackLayout from '@/app/passport/_layout';
-import SettingsRoute from '@/app/settings/index';
 import ShareStackLayout from '@/app/share/_layout';
-import ProfileStackLayout from '@/app/u/_layout';
-import YouStackLayout from '@/app/you/_layout';
 
 // Settings signs out and exports, which would pull Supabase into a test about one button.
 jest.mock('@/features/auth/hooks', () => ({ useSignOut: () => jest.fn() }));
@@ -27,10 +23,10 @@ const mockCanGoBack = jest.fn(() => true);
  * layout installs can be rendered and pressed without standing up the router. `jest.mock`
  * is hoisted above the imports above, so the layouts see this Stack, not the real one.
  */
-const mockScreenOptions: Record<string, unknown>[] = [];
+const mockScreenOptions: unknown[] = [];
 
 jest.mock('expo-router', () => {
-  const MockStack = ({ screenOptions }: { screenOptions?: Record<string, unknown> }) => {
+  const MockStack = ({ screenOptions }: { screenOptions?: unknown }) => {
     if (screenOptions) mockScreenOptions.push(screenOptions);
     return null;
   };
@@ -82,19 +78,31 @@ describe('group layouts install a back control', () => {
     mockCanGoBack.mockReturnValue(true);
   });
 
-  const layouts: [string, () => React.ReactElement, string][] = [
-    ['games', GamesStackLayout, '/games'],
-    ['you', YouStackLayout, '/settings'],
-    ['passport', PassportStackLayout, '/'],
-    ['friends', FriendsStackLayout, '/profile'],
-    ['u', ProfileStackLayout, '/profile'],
-    ['invite', InviteStackLayout, '/'],
-    ['share', ShareStackLayout, '/'],
+  // The tab stacks hand their Stack a function of the route; the root stacks hand an object.
+  const optionsFor = (name: string) => {
+    const options = mockScreenOptions[0];
+    return (
+      typeof options === 'function'
+        ? (options as (a: { route: { name: string } }) => Record<string, unknown>)({ route: { name } })
+        : options
+    ) as Record<string, unknown> | undefined;
+  };
+
+  // [label, layout, route name inside it, cold deep link fallback]
+  const layouts: [string, () => React.ReactElement, string, string][] = [
+    ['games', TabStackLayout, 'games/[gameId]', '/games'],
+    ['you', TabStackLayout, 'you/about', '/settings'],
+    ['passport', TabStackLayout, 'passport/stamps', '/'],
+    ['friends', TabStackLayout, 'friends/find', '/profile'],
+    ['u', TabStackLayout, 'u/[handle]', '/feed'],
+    ['post', TabStackLayout, 'post/[postId]/index', '/feed'],
+    ['invite', InviteStackLayout, '[token]', '/'],
+    ['share', ShareStackLayout, '[template]', '/'],
   ];
 
-  it.each(layouts)('%s pops when there is history', async (_name, Layout) => {
+  it.each(layouts)('%s pops when there is history', async (_name, Layout, route) => {
     await render(<Layout />);
-    const headerLeft = mockScreenOptions[0]?.headerLeft as HeaderLeft | undefined;
+    const headerLeft = optionsFor(route)?.headerLeft as HeaderLeft | undefined;
     expect(headerLeft).toBeDefined();
     const { getByLabelText } = await render(headerLeft!());
     const button = getByLabelText('Back');
@@ -105,10 +113,10 @@ describe('group layouts install a back control', () => {
 
   it.each(layouts)(
     '%s falls back to a root on a cold deep link',
-    async (_name, Layout, fallback) => {
+    async (_name, Layout, route, fallback) => {
       mockCanGoBack.mockReturnValue(false);
       await render(<Layout />);
-      const headerLeft = mockScreenOptions[0]?.headerLeft as HeaderLeft | undefined;
+      const headerLeft = optionsFor(route)?.headerLeft as HeaderLeft | undefined;
       const { getByLabelText } = await render(headerLeft!());
       await fireEvent.press(getByLabelText('Back'));
       expect(mockReplace).toHaveBeenCalledWith(fallback);

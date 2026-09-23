@@ -2,9 +2,9 @@ import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import LeagueRoute from '@/app/settings/favorites/league';
-import RosterRoute from '@/app/settings/favorites/roster';
-import TeamsRoute, { rosterPromptHref } from '@/app/settings/favorites/teams';
+import LeagueRoute from '@/app/(tabs)/(profile)/settings/favorites/league';
+import RosterRoute from '@/app/(tabs)/(profile)/settings/favorites/roster';
+import TeamsRoute, { rosterPromptHref } from '@/app/(tabs)/(profile)/settings/favorites/teams';
 import type { RosterPlayer } from '@/features/players/queries';
 import type { Team } from '@/features/teams/queries';
 

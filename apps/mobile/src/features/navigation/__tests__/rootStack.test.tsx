@@ -1,4 +1,4 @@
-import { Stack, router, type Href } from 'expo-router';
+import { Stack, Tabs, router, type Href } from 'expo-router';
 import { act, renderRouter, waitFor } from 'expo-router/testing-library';
 import React from 'react';
 import { Text } from 'react-native';
@@ -27,22 +27,24 @@ const page = (label: string) =>
 
 const group = () => <Stack screenOptions={{ headerShown: false }} />;
 
-// A file map in the shape of app/: every top-level route the real navigator guards, each with
-// the layout file that makes its folder one route group (a folder without one is a set of
-// separate top-level routes, `guide/[venueId]`, that a guard naming `guide` never matches), and
-// the welcome screen the (auth) group opens on (its layout pins that, as the real one does).
+// A file map in the shape of app/: the five tab stacks, which one guard on `(tabs)` covers, the
+// Wrapped modal that stays at the root (with the layout that makes its folder one route group: a
+// folder without one is a set of separate top-level routes that a guard naming it never matches),
+// and the welcome screen the (auth) group opens on (its layout pins that, as the real one does).
+const S = '(tabs)/(feed,passport,games,plan,profile)';
 const routes = {
   _layout: Layout,
-  '(tabs)/index': page('passport'),
-  'settings/_layout': group,
-  'settings/index': page('settings'),
-  'settings/favorites/index': page('favorites'),
-  'guide/_layout': group,
-  'guide/[venueId]': page('guide'),
-  'relive/_layout': group,
-  'relive/[gameId]': page('relive'),
-  'games/_layout': group,
-  'games/[gameId]': page('game'),
+  '(tabs)/_layout': () => <Tabs initialRouteName="(passport)" screenOptions={{ headerShown: false }} tabBar={() => null} />,
+  [`${S}/_layout`]: { default: group, unstable_settings: { passport: { initialRouteName: 'index' } } },
+  '(tabs)/(passport)/index': page('passport'),
+  '(tabs)/(profile)/profile': page('profile'),
+  '(tabs)/(profile)/settings/index': page('settings'),
+  '(tabs)/(profile)/settings/favorites/index': page('favorites'),
+  [`${S}/guide/[venueId]`]: page('guide'),
+  [`${S}/relive/[gameId]`]: page('relive'),
+  [`${S}/games/[gameId]`]: page('game'),
+  'wrapped/_layout': group,
+  'wrapped/[sport]/[season]': page('wrapped'),
   '(onboarding)/index': page('onboarding'),
   '(auth)/_layout': { default: group, unstable_settings: { initialRouteName: 'welcome' } },
   '(auth)/welcome': page('welcome'),
@@ -81,10 +83,10 @@ describe('RootStack', () => {
 
     // Sign in again: the passport, with the auth screens gone.
     await setSession(true, true);
-    await expectRoutes(app, ['(tabs)/index']);
+    await expectRoutes(app, ['(tabs)']);
 
     // The other routes that live outside the tabs.
-    for (const href of ['/guide/abc', '/relive/abc', '/games/abc', '/settings/favorites']) {
+    for (const href of ['/guide/abc', '/relive/abc', '/games/abc', '/settings/favorites', '/wrapped/mlb/2025']) {
       await act(async () => router.push(href as Href));
       await expectPathname(app, href);
       await setSession(false, false);

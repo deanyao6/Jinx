@@ -1,7 +1,7 @@
 import { configure } from '@testing-library/react-native';
 import React from 'react';
 
-import PersonScreen from '@/app/friends/person/[id]';
+import PersonScreen from '@/app/(tabs)/(feed,passport,games,plan,profile)/friends/person/[id]';
 import { renderScreen } from '@/test/renderScreen';
 
 configure({ defaultIncludeHiddenElements: true });

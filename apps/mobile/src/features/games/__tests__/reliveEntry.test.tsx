@@ -3,7 +3,7 @@ import React from 'react';
 
 import { renderScreen } from '@/test/renderScreen';
 
-import GameDetailScreen from '@/app/games/[gameId]';
+import GameDetailScreen from '@/app/(tabs)/(feed,passport,games,plan,profile)/games/[gameId]';
 
 const GAME_ID = 'game-chi-phi';
 
