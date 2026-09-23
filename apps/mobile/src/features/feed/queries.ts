@@ -6,6 +6,7 @@ import {
   type InfiniteData,
   type QueryClient,
 } from '@tanstack/react-query';
+import * as Crypto from 'expo-crypto';
 import { File } from 'expo-file-system';
 
 import { useAuthStore } from '@/features/auth/store';
@@ -420,19 +421,19 @@ export function useSaveGamePost() {
           .eq('id', postId);
         if (error) throw error;
       } else {
-        const { data, error } = await supabase
-          .from('posts')
-          .insert({
-            author_id: userId,
-            kind: 'game' satisfies PostKind,
-            attendance_id: input.attendanceId,
-            caption,
-            visibility: input.visibility,
-          })
-          .select('id')
-          .single();
+        // The id is made here and the row is not read back: `insert ... returning` re-checks the
+        // new row against the posts SELECT policy, whose can_view_post() cannot see a row its own
+        // statement is inserting, so Postgres refuses the whole insert (pgTAP 070 pins this).
+        postId = Crypto.randomUUID();
+        const { error } = await supabase.from('posts').insert({
+          id: postId,
+          author_id: userId,
+          kind: 'game' satisfies PostKind,
+          attendance_id: input.attendanceId,
+          caption,
+          visibility: input.visibility,
+        });
         if (error) throw error;
-        postId = data.id;
       }
 
       if (input.newPhotos.length) {

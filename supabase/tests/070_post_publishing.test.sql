@@ -4,7 +4,7 @@
 -- attaching a reaction to a game post makes no second feed entry.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(23);
+select plan(24);
 
 insert into auth.users (id, email) values
   ('b7000000-0000-4000-8000-0000000000a1', 'pp-author@test'),
@@ -82,11 +82,17 @@ select is((public.auto_post_tick(now() + interval '40 minutes')) ->> 'published'
 -- ---- "Post this" publishes at once; a client makes only game and reaction posts ----
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"b7000000-0000-4000-8000-0000000000a2","role":"authenticated"}';
-insert into public.posts (author_id, kind, attendance_id, caption) values
-  ('b7000000-0000-4000-8000-0000000000a2', 'game', 'b7000000-0000-4000-8000-0000000000d4', 'Posted by hand');
+-- The trap the app avoids: `insert ... returning` re-checks the new row against the SELECT
+-- policy, and can_view_post() cannot see a row its own statement is inserting.
+select throws_ok(
+  $$insert into public.posts (author_id, kind, attendance_id) values ('b7000000-0000-4000-8000-0000000000a2', 'game', 'b7000000-0000-4000-8000-0000000000d4') returning id$$,
+  '42501', null, 'insert ... returning is refused, which is why the app makes the id itself and does not read the row back');
+-- The app's own shape (features/feed/queries.ts useSaveGamePost): an id made on the phone, no RETURNING.
+insert into public.posts (id, author_id, kind, attendance_id, caption) values
+  ('b7000000-0000-4000-8000-0000000000f1', 'b7000000-0000-4000-8000-0000000000a2', 'game', 'b7000000-0000-4000-8000-0000000000d4', 'Posted by hand');
 select ok((select published_at is not null and not auto_posted and game_id = '00000000-0000-0000-0000-00000070c001'
-           from public.posts where attendance_id = 'b7000000-0000-4000-8000-0000000000d4'),
-  '"Post this" publishes at once, and the post takes its game from the attendance');
+           from public.posts where id = 'b7000000-0000-4000-8000-0000000000f1'),
+  '"Post this" publishes at once under the id the app made, and takes its game from the attendance');
 select throws_ok(
   $$insert into public.posts (author_id, kind, game_id) values ('b7000000-0000-4000-8000-0000000000a2', 'milestone', '00000000-0000-0000-0000-00000070c001')$$,
   '42501', null, 'a client cannot make a system post');
