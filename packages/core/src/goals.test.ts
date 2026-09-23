@@ -29,6 +29,12 @@ function g(p: Partial<GoalGame> = {}): GoalGame {
     events: [],
     companions: [],
     isNewVenue: false,
+    isNewState: false,
+    timezone: null,
+    temperatureF: null,
+    isDoubleheader: false,
+    isOpeningDay: false,
+    distanceFromHomeMiles: null,
     isFinal: true,
     ...p,
   };
