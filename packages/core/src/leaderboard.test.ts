@@ -49,10 +49,12 @@ describe('pageLeaderboard', () => {
 });
 
 describe('statsForCommunity', () => {
-  it('venue communities only offer venue_games, not stadiums', () => {
+  it('venue communities only offer venue_games, not the venue-agnostic twins', () => {
     const keys = statsForCommunity('venue', 'mlb').map((s) => s.key);
     expect(keys).toContain('venue_games');
     expect(keys).not.toContain('stadiums');
+    expect(keys).not.toContain('games');
+    expect(keys).not.toContain('wins');
   });
 
   it('team communities get the sport-specific stats and not other sports', () => {

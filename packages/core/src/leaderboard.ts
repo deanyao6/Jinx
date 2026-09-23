@@ -17,11 +17,13 @@ export interface LeaderboardStatDef {
 }
 
 const ALL_KINDS: readonly CommunityKind[] = ['team', 'venue', 'school', 'custom'];
+/** Every stat but the plain attendance count and its venue-scoped twin (never both at once). */
+const NON_VENUE_KINDS: readonly CommunityKind[] = ['team', 'school', 'custom'];
 
 /** The stat list (section 2, and 00_repo_reality.md R3 for the NBA and MLS rows). */
 export const LEADERBOARD_STATS: readonly LeaderboardStatDef[] = [
-  { key: 'games', label: 'Games attended', sport: null, kinds: ALL_KINDS },
-  { key: 'wins', label: 'Wins seen', sport: null, kinds: ALL_KINDS },
+  { key: 'games', label: 'Games attended', sport: null, kinds: NON_VENUE_KINDS },
+  { key: 'wins', label: 'Wins seen', sport: null, kinds: NON_VENUE_KINDS },
   { key: 'stadiums', label: 'Stadiums visited', sport: null, kinds: ['team', 'school', 'custom'] },
   { key: 'venue_games', label: 'Games at this venue', sport: null, kinds: ['venue'] },
   { key: 'mlb_home_runs', label: 'Home runs seen', sport: 'mlb', kinds: ALL_KINDS },
