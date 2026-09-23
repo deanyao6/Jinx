@@ -350,6 +350,16 @@ const EVENT_BY_SPORT: Record<string, (input: ScoringNoteInput) => string> = {
     input.kind != null && NBA_KINDS.has(input.kind)
       ? nbaEvent(input.kind as NbaScoringKind, input.description)
       : '',
+  mls: (input) => MLS_KIND_LABEL[input.kind ?? ''] ?? '',
+};
+
+/** "Goal, Lionel Messi"; "Penalty, ..."; "Own goal" (the scorer named is the unlucky one). */
+const MLS_KIND_LABEL: Record<string, string> = {
+  goal: 'Goal',
+  header: 'Header',
+  free_kick: 'Free kick',
+  penalty: 'Penalty',
+  own_goal: 'Own goal',
 };
 
 /**

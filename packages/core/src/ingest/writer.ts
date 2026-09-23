@@ -2,6 +2,7 @@
  * Writes canonical games and game details through a MinimalDb. Shared by Node and Deno.
  */
 import { detectMlbMoments } from '../providers/mlb/moments.js';
+import { detectMlsMoments } from '../providers/mls/detail.js';
 import { detectNbaMoments } from '../providers/nba/moments.js';
 import { detectNflMoments } from '../providers/nfl/moments.js';
 import {
@@ -181,12 +182,13 @@ export interface DetailWriteResult {
 
 /** The moment detectors, by the sport the plays belong to. */
 export const MOMENT_DETECTORS: Record<
-  'mlb' | 'nfl' | 'nba',
+  'mlb' | 'nfl' | 'nba' | 'mls',
   (d: CanonicalGameDetail) => GameEvent[]
 > = {
   mlb: detectMlbMoments,
   nfl: detectNflMoments,
   nba: detectNbaMoments,
+  mls: detectMlsMoments,
 };
 
 /**

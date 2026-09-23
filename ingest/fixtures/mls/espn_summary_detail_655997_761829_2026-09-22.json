@@ -1,0 +1,3816 @@
+{
+ "_note": "summary?event= trimmed 2026-09-22 for the MLS detail parser: 655997 is the 2022 MLS Cup (3-3, LAFC on penalties), 761829 a 2026 league match. keyEvents in full, the first roster entry of each side with every key, the boxscore player keys, and the summary top keys.",
+ "_fetched": "2026-09-22T23:48:58.358Z",
+ "matches": {
+  "655997": {
+   "topKeys": [
+    "boxscore",
+    "format",
+    "gameInfo",
+    "lastFiveGames",
+    "leaders",
+    "broadcasts",
+    "pickcenter",
+    "odds",
+    "hasOdds",
+    "rosters",
+    "news",
+    "article",
+    "videos",
+    "header",
+    "seasonseries",
+    "keyEvents",
+    "commentary",
+    "shootout",
+    "wallclockAvailable",
+    "meta",
+    "standings"
+   ],
+   "header_status": {
+    "type": {
+     "id": "47",
+     "name": "STATUS_FINAL_PEN",
+     "state": "post",
+     "completed": true,
+     "description": "Final Score - After Penalties",
+     "detail": "FT-Pens",
+     "shortDetail": "FT-Pens"
+    }
+   },
+   "keyEventTypes": [
+    "80:Kickoff:1",
+    "94:Yellow Card:1",
+    "138:Goal - Free-kick:1",
+    "81:Halftime:1",
+    "82:Start 2nd Half:2",
+    "70:Goal:2",
+    "94:Yellow Card:2",
+    "76:Substitution:2",
+    "137:Goal - Header:2",
+    "83:End Regular Time:2",
+    "76:Substitution:3",
+    "84:Start Extra Time:3",
+    "85:Halftime Extra Time:3",
+    "86:Start 2nd Half Extra Time:4",
+    "93:Red Card:4",
+    "76:Substitution:4",
+    "70:Goal:4",
+    "137:Goal - Header:4",
+    "87:End Extra Time:4",
+    "88:Start Shootout:5",
+    "89:End Match:5"
+   ],
+   "keyEvents": [
+    {
+     "id": "39390124",
+     "type": {
+      "id": "80",
+      "text": "Kickoff",
+      "type": "kickoff"
+     },
+     "text": "First Half begins.",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 0,
+      "displayValue": ""
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39390387",
+     "type": {
+      "id": "94",
+      "text": "Yellow Card",
+      "type": "yellow-card"
+     },
+     "text": "Jack Elliott (Philadelphia Union) is shown the yellow card for a bad foul.",
+     "shortText": "Jack Elliott Yellow Card",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 807,
+      "displayValue": "14'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "233813",
+        "displayName": "Jack Elliott"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39390570",
+     "type": {
+      "id": "138",
+      "text": "Goal - Free-kick",
+      "type": "goal---free-kick"
+     },
+     "text": "Goal!  Los Angeles Football Club 1, Philadelphia Union 0. Kellyn Acosta (Los Angeles Football Club) from a free kick with a right footed shot to the bottom left corner.",
+     "shortText": "Kellyn Acosta Goal - Free-kick",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 1620,
+      "displayValue": "27'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "159478",
+        "displayName": "Kellyn Acosta"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0.524,
+     "fieldPositionY": 0.675,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0.475
+    },
+    {
+     "id": "39390936",
+     "type": {
+      "id": "81",
+      "text": "Halftime",
+      "type": "halftime"
+     },
+     "text": "First Half ends, Los Angeles Football Club 1, Philadelphia Union 0.",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 2700,
+      "displayValue": "45'+3'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39391214",
+     "type": {
+      "id": "82",
+      "text": "Start 2nd Half",
+      "type": "start-2nd-half"
+     },
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 2700,
+      "displayValue": "45'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39391533",
+     "type": {
+      "id": "70",
+      "text": "Goal",
+      "type": "goal"
+     },
+     "text": "Goal!  Los Angeles Football Club 1, Philadelphia Union 1. Dániel Gazdag (Philadelphia Union) right footed shot from the centre of the box to the centre of the goal. Assisted by José Martínez   following a corner.",
+     "shortText": "Dániel Gazdag Goal",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 3501,
+      "displayValue": "59'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "257844",
+        "displayName": "Dániel Gazdag"
+       }
+      },
+      {
+       "athlete": {
+        "id": "287014",
+        "displayName": "José Andrés Martínez"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0.194,
+     "fieldPositionY": 0.467,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0.482
+    },
+    {
+     "id": "39391662",
+     "type": {
+      "id": "94",
+      "text": "Yellow Card",
+      "type": "yellow-card"
+     },
+     "text": "José Cifuentes (Los Angeles Football Club) is shown the yellow card for a bad foul.",
+     "shortText": "José Cifuentes Yellow Card",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 3853,
+      "displayValue": "65'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "241245",
+        "displayName": "José Cifuentes"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39391817",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Philadelphia Union. Cory Burke replaces Mikael Uhre.",
+     "shortText": "Cory Burke Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4219,
+      "displayValue": "71'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "227598",
+        "displayName": "Cory Burke"
+       }
+      },
+      {
+       "athlete": {
+        "id": "203926",
+        "displayName": "Mikkel Uhre"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39391929",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Los Angeles Football Club. Kwadwo Opoku replaces Cristian Arango.",
+     "shortText": "Kwadwo Opoku Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4415,
+      "displayValue": "74'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "308587",
+        "displayName": "Kwadwo Opoku"
+       }
+      },
+      {
+       "athlete": {
+        "id": "186385",
+        "displayName": "Cristian Arango"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392039",
+     "type": {
+      "id": "70",
+      "text": "Goal",
+      "type": "goal"
+     },
+     "text": "Goal!  Los Angeles Football Club 2, Philadelphia Union 1. Jesús Murillo (Los Angeles Football Club) with an attempt from the centre of the box to the centre of the goal. Assisted by Carlos Vela with a cross   following a corner.",
+     "shortText": "Jesús Murillo Goal",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4940,
+      "displayValue": "83'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "197050",
+        "displayName": "Jesús Murillo"
+       }
+      },
+      {
+       "athlete": {
+        "id": "76098",
+        "displayName": "Carlos Vela"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0.142,
+     "fieldPositionY": 0.528,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0.482
+    },
+    {
+     "id": "39392080",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Philadelphia Union. Paxten Aaronson replaces Jack McGlynn.",
+     "shortText": "Paxten Aaronson Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5025,
+      "displayValue": "84'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "304129",
+        "displayName": "Paxten Aaronson"
+       }
+      },
+      {
+       "athlete": {
+        "id": "303512",
+        "displayName": "Jack McGlynn"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392084",
+     "type": {
+      "id": "137",
+      "text": "Goal - Header",
+      "type": "goal---header"
+     },
+     "text": "Goal!  Los Angeles Football Club 2, Philadelphia Union 2. Jack Elliott (Philadelphia Union) header from the centre of the box to the top left corner. Assisted by Kai Wagner with a cross   following a set piece situation.",
+     "shortText": "Jack Elliott Goal - Header",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5088,
+      "displayValue": "85'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "233813",
+        "displayName": "Jack Elliott"
+       }
+      },
+      {
+       "athlete": {
+        "id": "261317",
+        "displayName": "Kai Wagner"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0.186,
+     "fieldPositionY": 0.425,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0.471
+    },
+    {
+     "id": "39392133",
+     "type": {
+      "id": "94",
+      "text": "Yellow Card",
+      "type": "yellow-card"
+     },
+     "text": "Sebastien Ibeagha (Los Angeles Football Club) is shown the yellow card for a bad foul.",
+     "shortText": "Sebastien Ibeagha Yellow Card",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5182,
+      "displayValue": "87'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "233460",
+        "displayName": "Sebastien Ibeagha"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392196",
+     "type": {
+      "id": "94",
+      "text": "Yellow Card",
+      "type": "yellow-card"
+     },
+     "text": "Julián Carranza (Philadelphia Union) is shown the yellow card.",
+     "shortText": "Julián Carranza Yellow Card",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5400,
+      "displayValue": "90'+1'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "262566",
+        "displayName": "Julián Carranza"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392270",
+     "type": {
+      "id": "83",
+      "text": "End Regular Time",
+      "type": "end-regular-time"
+     },
+     "text": "Second Half ends, Los Angeles Football Club 2, Philadelphia Union 2.",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5400,
+      "displayValue": "90'+8'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392307",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Los Angeles Football Club. Cristian Tello replaces Kellyn Acosta.",
+     "shortText": "Cristian Tello Substitution",
+     "period": {
+      "number": 3
+     },
+     "clock": {
+      "value": 5400,
+      "displayValue": "90'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "132709",
+        "displayName": "Cristian Tello"
+       }
+      },
+      {
+       "athlete": {
+        "id": "159478",
+        "displayName": "Kellyn Acosta"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392308",
+     "type": {
+      "id": "84",
+      "text": "Start Extra Time",
+      "type": "start-extra-time"
+     },
+     "period": {
+      "number": 3
+     },
+     "clock": {
+      "value": 5400,
+      "displayValue": "90'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392380",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Los Angeles Football Club. Gareth Bale replaces Carlos Vela.",
+     "shortText": "Gareth Bale Substitution",
+     "period": {
+      "number": 3
+     },
+     "clock": {
+      "value": 5800,
+      "displayValue": "97'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "77653",
+        "displayName": "Gareth Bale"
+       }
+      },
+      {
+       "athlete": {
+        "id": "76098",
+        "displayName": "Carlos Vela"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392446",
+     "type": {
+      "id": "85",
+      "text": "Halftime Extra Time",
+      "type": "halftime-extra-time"
+     },
+     "text": "First Half Extra Time ends, Los Angeles Football Club 2, Philadelphia Union 2.",
+     "period": {
+      "number": 3
+     },
+     "clock": {
+      "value": 6296,
+      "displayValue": "105'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392472",
+     "type": {
+      "id": "86",
+      "text": "Start 2nd Half Extra Time",
+      "type": "start-2nd-half-extra-time"
+     },
+     "text": "Second Half Extra Time begins Los Angeles Football Club 2, Philadelphia Union 2.",
+     "period": {
+      "number": 4
+     },
+     "clock": {
+      "value": 6300,
+      "displayValue": "105'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392544",
+     "type": {
+      "id": "93",
+      "text": "Red Card",
+      "type": "red-card"
+     },
+     "text": "Maxime Crépeau (Los Angeles Football Club) is shown the red card.",
+     "shortText": "Maxime Crépeau Red Card",
+     "period": {
+      "number": 4
+     },
+     "clock": {
+      "value": 6912,
+      "displayValue": "116'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "159382",
+        "displayName": "Maxime Crépeau"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392558",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Los Angeles Football Club. John McCarthy replaces Kwadwo Opoku.",
+     "shortText": "John McCarthy Substitution",
+     "period": {
+      "number": 4
+     },
+     "clock": {
+      "value": 7014,
+      "displayValue": "117'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "217162",
+        "displayName": "John McCarthy"
+       }
+      },
+      {
+       "athlete": {
+        "id": "308587",
+        "displayName": "Kwadwo Opoku"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392587",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Philadelphia Union. Chris Donovan replaces Cory Burke because of an injury.",
+     "shortText": "Chris Donovan Substitution",
+     "period": {
+      "number": 4
+     },
+     "clock": {
+      "value": 7200,
+      "displayValue": "120'+1'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "333746",
+        "displayName": "Chris Donovan"
+       }
+      },
+      {
+       "athlete": {
+        "id": "227598",
+        "displayName": "Cory Burke"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392607",
+     "type": {
+      "id": "70",
+      "text": "Goal",
+      "type": "goal"
+     },
+     "text": "Goal!  Los Angeles Football Club 2, Philadelphia Union 3. Jack Elliott (Philadelphia Union) right footed shot from very close range to the bottom right corner    following a corner.",
+     "shortText": "Jack Elliott Goal",
+     "period": {
+      "number": 4
+     },
+     "clock": {
+      "value": 7200,
+      "displayValue": "120'+4'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "10739",
+      "displayName": "Philadelphia Union"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "233813",
+        "displayName": "Jack Elliott"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0.04,
+     "fieldPositionY": 0.54,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0.527
+    },
+    {
+     "id": "39392650",
+     "type": {
+      "id": "137",
+      "text": "Goal - Header",
+      "type": "goal---header"
+     },
+     "text": "Goal!  Los Angeles Football Club 3, Philadelphia Union 3. Gareth Bale (Los Angeles Football Club) header from the centre of the box to the top left corner. Assisted by Diego Palacios with a cross.",
+     "shortText": "Gareth Bale Goal - Header",
+     "period": {
+      "number": 4
+     },
+     "clock": {
+      "value": 7200,
+      "displayValue": "120'+8'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "18966",
+      "displayName": "LAFC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "77653",
+        "displayName": "Gareth Bale"
+       }
+      },
+      {
+       "athlete": {
+        "id": "276615",
+        "displayName": "Diego Palacios"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0.152,
+     "fieldPositionY": 0.484,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0.478
+    },
+    {
+     "id": "39392680",
+     "type": {
+      "id": "87",
+      "text": "End Extra Time",
+      "type": "end-extra-time"
+     },
+     "text": "Second Half Extra Time ends, Los Angeles Football Club 3, Philadelphia Union 3.",
+     "period": {
+      "number": 4
+     },
+     "clock": {
+      "value": 7200,
+      "displayValue": "120'+11'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392703",
+     "type": {
+      "id": "88",
+      "text": "Start Shootout",
+      "type": "start-shootout"
+     },
+     "period": {
+      "number": 5
+     },
+     "clock": {
+      "value": 7200,
+      "displayValue": "120'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    },
+    {
+     "id": "39392735",
+     "type": {
+      "id": "89",
+      "text": "End Match",
+      "type": "end-match"
+     },
+     "period": {
+      "number": 5
+     },
+     "clock": {
+      "value": 7200,
+      "displayValue": "120'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "shootout": false,
+     "goalPositionX": 0,
+     "goalPositionY": 0,
+     "fieldPositionX": 0,
+     "fieldPositionY": 0,
+     "fieldPosition2X": 0,
+     "fieldPosition2Y": 0
+    }
+   ],
+   "rosters": [
+    {
+     "homeAway": "home",
+     "team": "LAFC",
+     "count": 20,
+     "first": {
+      "active": true,
+      "starter": true,
+      "jersey": "16",
+      "athlete": {
+       "id": "159382",
+       "uid": "s:600~a:159382",
+       "guid": "51112632-0ac2-36b4-4584-a0305b7d4509",
+       "lastName": "Crépeau",
+       "fullName": "Maxime Crépeau",
+       "displayName": "Maxime Crépeau",
+       "shortName": "M. Crépeau",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/159382/maxime-crepeau",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "headshot": {
+        "href": "https://a.espncdn.com/i/headshots/soccer/players/full/159382.png",
+        "alt": "Maxime Crépeau"
+       },
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/159382/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/159382/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "position": {
+       "name": "Goalkeeper",
+       "displayName": "Goalkeeper",
+       "abbreviation": "G"
+      },
+      "subbedIn": false,
+      "subbedOut": false,
+      "formationPlace": "1",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "saves",
+        "displayName": "Saves",
+        "shortDisplayName": "SV",
+        "description": "The number of times a goalkeeper makes a save.",
+        "abbreviation": "SV",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 14,
+        "displayValue": "14"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 0,
+        "displayValue": "0"
+       }
+      ],
+      "plays": [
+       {
+        "clock": {
+         "displayValue": "116'"
+        },
+        "scoringPlay": false,
+        "substitution": false,
+        "redCard": true,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+       }
+      ]
+     },
+     "subbed": {
+      "active": true,
+      "starter": true,
+      "jersey": "23",
+      "athlete": {
+       "id": "159478",
+       "uid": "s:600~a:159478",
+       "guid": "a24140a5-2d9f-2adc-a084-612d8cff72e5",
+       "lastName": "Acosta",
+       "fullName": "Kellyn Acosta",
+       "displayName": "Kellyn Acosta",
+       "shortName": "K. Acosta",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/159478/kellyn-acosta",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "headshot": {
+        "href": "https://a.espncdn.com/i/headshots/soccer/players/full/159478.png",
+        "alt": "Kellyn Acosta"
+       },
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/159478/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/159478/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "position": {
+       "name": "Left Midfielder",
+       "displayName": "Left Midfielder",
+       "abbreviation": "LM"
+      },
+      "subbedIn": false,
+      "subbedOut": true,
+      "formationPlace": "8",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "offsides",
+        "displayName": "Offsides",
+        "shortDisplayName": "OF",
+        "description": "The number of times a player or team gets caught offside.",
+        "abbreviation": "OF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 1,
+        "displayValue": "1"
+       }
+      ],
+      "subbedOutFor": {
+       "jersey": "37",
+       "athlete": {
+        "id": "132709",
+        "displayName": "Cristian Tello",
+        "links": [
+         {
+          "language": "en-US",
+          "rel": [
+           "playercard",
+           "desktop",
+           "athlete"
+          ],
+          "href": "https://www.espn.com/soccer/player/_/id/132709/cristian-tello",
+          "text": "Player Card",
+          "shortText": "Player Card",
+          "isExternal": false,
+          "isPremium": false
+         }
+        ]
+       }
+      },
+      "plays": [
+       {
+        "clock": {
+         "displayValue": "27'"
+        },
+        "scoringPlay": true,
+        "substitution": false,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false,
+        "didScore": true
+       },
+       {
+        "clock": {
+         "displayValue": "90'"
+        },
+        "scoringPlay": false,
+        "substitution": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+       }
+      ]
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": "PHI",
+     "count": 20,
+     "first": {
+      "active": true,
+      "starter": false,
+      "jersey": "2",
+      "athlete": {
+       "id": "252812",
+       "uid": "s:600~a:252812",
+       "guid": "34b8b6fb-57b3-5078-1012-e56d408164b8",
+       "lastName": "Real",
+       "fullName": "Matthew Real",
+       "displayName": "Matthew Real",
+       "shortName": "M. Real",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/252812/matthew-real",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "headshot": {
+        "href": "https://a.espncdn.com/i/headshots/soccer/players/full/252812.png",
+        "alt": "Matthew Real"
+       },
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/252812/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/252812/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "subbedIn": false,
+      "subbedOut": false,
+      "formationPlace": "0",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "offsides",
+        "displayName": "Offsides",
+        "shortDisplayName": "OF",
+        "description": "The number of times a player or team gets caught offside.",
+        "abbreviation": "OF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 0,
+        "displayValue": "0"
+       }
+      ]
+     },
+     "subbed": {
+      "active": true,
+      "starter": false,
+      "jersey": "30",
+      "athlete": {
+       "id": "304129",
+       "uid": "s:600~a:304129",
+       "guid": "34061d0f-1831-3e65-ad20-4f9d9a77dc69",
+       "lastName": "Aaronson",
+       "fullName": "Paxten Aaronson",
+       "displayName": "Paxten Aaronson",
+       "shortName": "P. Aaronson",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/304129/paxten-aaronson",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "headshot": {
+        "href": "https://a.espncdn.com/i/headshots/soccer/players/full/304129.png",
+        "alt": "Paxten Aaronson"
+       },
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/304129/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/655997/athletes/304129/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "subbedIn": true,
+      "subbedOut": false,
+      "formationPlace": "0",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "offsides",
+        "displayName": "Offsides",
+        "shortDisplayName": "OF",
+        "description": "The number of times a player or team gets caught offside.",
+        "abbreviation": "OF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 1,
+        "displayValue": "1"
+       }
+      ],
+      "subbedInFor": {
+       "jersey": "16",
+       "athlete": {
+        "id": "303512",
+        "displayName": "Jack McGlynn",
+        "links": [
+         {
+          "language": "en-US",
+          "rel": [
+           "playercard",
+           "desktop",
+           "athlete"
+          ],
+          "href": "https://www.espn.com/soccer/player/_/id/303512/jack-mcglynn",
+          "text": "Player Card",
+          "shortText": "Player Card",
+          "isExternal": false,
+          "isPremium": false
+         }
+        ]
+       }
+      },
+      "plays": [
+       {
+        "clock": {
+         "displayValue": "84'"
+        },
+        "scoringPlay": false,
+        "substitution": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+       }
+      ]
+     }
+    }
+   ],
+   "boxscoreKeys": null,
+   "shootoutHeader": [
+    {
+     "homeAway": "home",
+     "score": "3",
+     "shootoutScore": 3,
+     "winner": true
+    },
+    {
+     "homeAway": "away",
+     "score": "3",
+     "shootoutScore": 0,
+     "winner": false
+    }
+   ]
+  },
+  "761829": {
+   "topKeys": [
+    "boxscore",
+    "format",
+    "gameInfo",
+    "lastFiveGames",
+    "leaders",
+    "broadcasts",
+    "pickcenter",
+    "odds",
+    "hasOdds",
+    "news",
+    "rosters",
+    "header",
+    "videos",
+    "keyEvents",
+    "commentary",
+    "wallclockAvailable",
+    "meta",
+    "standings"
+   ],
+   "header_status": {
+    "type": {
+     "id": "28",
+     "name": "STATUS_FULL_TIME",
+     "state": "post",
+     "completed": true,
+     "description": "Full Time",
+     "detail": "FT",
+     "shortDetail": "FT"
+    }
+   },
+   "keyEventTypes": [
+    "80:Kickoff:1",
+    "129:Start Delay:1",
+    "130:End Delay:1",
+    "70:Goal:1",
+    "138:Goal - Free-kick:1",
+    "94:Yellow Card:1",
+    "81:Halftime:1",
+    "82:Start 2nd Half:2",
+    "76:Substitution:2",
+    "94:Yellow Card:2",
+    "70:Goal:2",
+    "83:End Regular Time:2"
+   ],
+   "keyEvents": [
+    {
+     "id": "52771215",
+     "type": {
+      "id": "80",
+      "text": "Kickoff",
+      "type": "kickoff"
+     },
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 0,
+      "displayValue": ""
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:13:49Z",
+     "shootout": false
+    },
+    {
+     "id": "52772044",
+     "type": {
+      "id": "129",
+      "text": "Start Delay",
+      "type": "start-delay"
+     },
+     "text": "Delay in match because of an injury Yannick Bright (Inter Miami CF).",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 241,
+      "displayValue": "5'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:17:50Z",
+     "shootout": false
+    },
+    {
+     "id": "52771774",
+     "type": {
+      "id": "129",
+      "text": "Start Delay",
+      "type": "start-delay"
+     },
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 241,
+      "displayValue": "5'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:17:50Z",
+     "shootout": false
+    },
+    {
+     "id": "52772045",
+     "type": {
+      "id": "130",
+      "text": "End Delay",
+      "type": "end-delay"
+     },
+     "text": "Delay over. They are ready to continue.",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 275,
+      "displayValue": "5'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:18:25Z",
+     "shootout": false
+    },
+    {
+     "id": "52771975",
+     "type": {
+      "id": "130",
+      "text": "End Delay",
+      "type": "end-delay"
+     },
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 275,
+      "displayValue": "5'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:18:25Z",
+     "shootout": false
+    },
+    {
+     "id": "52771687",
+     "type": {
+      "id": "129",
+      "text": "Start Delay",
+      "type": "start-delay"
+     },
+     "text": "Delay in match because of an injury Yannick Bright (Inter Miami CF).",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 295,
+      "displayValue": "5'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:18:44Z",
+     "shootout": false
+    },
+    {
+     "id": "52772158",
+     "type": {
+      "id": "129",
+      "text": "Start Delay",
+      "type": "start-delay"
+     },
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 295,
+      "displayValue": "5'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:18:45Z",
+     "shootout": false
+    },
+    {
+     "id": "52771973",
+     "type": {
+      "id": "130",
+      "text": "End Delay",
+      "type": "end-delay"
+     },
+     "text": "Delay over. They are ready to continue.",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 445,
+      "displayValue": "8'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:21:15Z",
+     "shootout": false
+    },
+    {
+     "id": "52772159",
+     "type": {
+      "id": "130",
+      "text": "End Delay",
+      "type": "end-delay"
+     },
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 445,
+      "displayValue": "8'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:21:15Z",
+     "shootout": false
+    },
+    {
+     "id": "52772531",
+     "type": {
+      "id": "70",
+      "text": "Goal",
+      "type": "goal"
+     },
+     "text": "Goal! Inter Miami CF 0, San Diego 1. Anders Dreyer (San Diego) left footed shot from the centre of the box to the centre of the goal. Assisted by Jeppe Tverskov with a through ball.",
+     "shortText": "Anders Dreyer Goal",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 713,
+      "displayValue": "12'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "250454",
+        "displayName": "Anders Dreyer"
+       }
+      },
+      {
+       "athlete": {
+        "id": "214371",
+        "displayName": "Jeppe Tverskov"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:25:43Z",
+     "shootout": false,
+     "goalPositionY": 51,
+     "fieldPositionX": 90.2,
+     "fieldPositionY": 53.4,
+     "fieldPosition2X": 100,
+     "fieldPosition2Y": 51
+    },
+    {
+     "id": "52773340",
+     "type": {
+      "id": "138",
+      "text": "Goal - Free-kick",
+      "type": "goal---free-kick"
+     },
+     "text": "Goal! Inter Miami CF 1, San Diego 1. Lionel Messi (Inter Miami CF) from a free kick with a left footed shot to the top left corner.",
+     "shortText": "Lionel Messi Goal - Free-kick",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 1392,
+      "displayValue": "24'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "45843",
+        "displayName": "Lionel Messi"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:37:02Z",
+     "shootout": false,
+     "goalPositionY": 54.3,
+     "fieldPositionX": 77.2,
+     "fieldPositionY": 24.7,
+     "fieldPosition2X": 100,
+     "fieldPosition2Y": 54.3
+    },
+    {
+     "id": "52774064",
+     "type": {
+      "id": "94",
+      "text": "Yellow Card",
+      "type": "yellow-card"
+     },
+     "text": "Ian Murphy (San Diego) is shown the yellow card for a bad foul.",
+     "shortText": "Ian Murphy Yellow Card",
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 1938,
+      "displayValue": "33'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "296216",
+        "displayName": "Ian Murphy"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-20T23:46:07Z",
+     "shootout": false
+    },
+    {
+     "id": "52775298",
+     "type": {
+      "id": "81",
+      "text": "Halftime",
+      "type": "halftime"
+     },
+     "period": {
+      "number": 1
+     },
+     "clock": {
+      "value": 2700,
+      "displayValue": "45'+6'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:04:12Z",
+     "shootout": false
+    },
+    {
+     "id": "52776832",
+     "type": {
+      "id": "82",
+      "text": "Start 2nd Half",
+      "type": "start-2nd-half"
+     },
+     "text": "Second Half begins Inter Miami CF 1, San Diego 1.",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 2700,
+      "displayValue": "45'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:24:28Z",
+     "shootout": false
+    },
+    {
+     "id": "52778429",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, San Diego. Cédric Bakambu replaces Marcus Ingvartsen.",
+     "shortText": "Cédric Bakambu Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 3673,
+      "displayValue": "62'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "147193",
+        "displayName": "Cédric Bakambu"
+       }
+      },
+      {
+       "athlete": {
+        "id": "186324",
+        "displayName": "Marcus Ingvartsen"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:40:42Z",
+     "shootout": false
+    },
+    {
+     "id": "52778864",
+     "type": {
+      "id": "94",
+      "text": "Yellow Card",
+      "type": "yellow-card"
+     },
+     "text": "Yannick Bright (Inter Miami CF) is shown the yellow card for a bad foul.",
+     "shortText": "Yannick Bright Yellow Card",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 3833,
+      "displayValue": "64'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "329025",
+        "displayName": "Yannick Bright"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:43:22Z",
+     "shootout": false
+    },
+    {
+     "id": "52779253",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Inter Miami CF. Sergio Reguilón replaces Fricio Caicedo.",
+     "shortText": "Sergio Reguilón Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4083,
+      "displayValue": "69'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "231241",
+        "displayName": "Sergio Reguilón"
+       }
+      },
+      {
+       "athlete": {
+        "id": "402696",
+        "displayName": "Fricio Caicedo"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:47:32Z",
+     "shootout": false
+    },
+    {
+     "id": "52779088",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Inter Miami CF. Alexander Shaw replaces Matías Galarza.",
+     "shortText": "Alexander Shaw Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4085,
+      "displayValue": "69'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "406938",
+        "displayName": "Alexander Shaw"
+       }
+      },
+      {
+       "athlete": {
+        "id": "297328",
+        "displayName": "Matías Galarza"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:47:33Z",
+     "shootout": false
+    },
+    {
+     "id": "52779653",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, San Diego. Christopher McVey replaces Ian Murphy.",
+     "shortText": "Christopher McVey Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4352,
+      "displayValue": "73'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "257114",
+        "displayName": "Christopher McVey"
+       }
+      },
+      {
+       "athlete": {
+        "id": "296216",
+        "displayName": "Ian Murphy"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:52:01Z",
+     "shootout": false
+    },
+    {
+     "id": "52779654",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, San Diego. Alejandro Alvarado replaces Aníbal Godoy.",
+     "shortText": "Alejandro Alvarado Jr. Substitut",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4362,
+      "displayValue": "73'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "303619",
+        "displayName": "Alejandro Alvarado Jr."
+       }
+      },
+      {
+       "athlete": {
+        "id": "116825",
+        "displayName": "Aníbal Godoy"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:52:11Z",
+     "shootout": false
+    },
+    {
+     "id": "52779717",
+     "type": {
+      "id": "70",
+      "text": "Goal",
+      "type": "goal"
+     },
+     "text": "Goal! Inter Miami CF 2, San Diego 1. Luis Suárez (Inter Miami CF) right footed shot from the right side of the box to the bottom left corner. Assisted by Rodrigo De Paul with a through ball.",
+     "shortText": "Luis Suárez Goal",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4434,
+      "displayValue": "74'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "125088",
+        "displayName": "Luis Suárez"
+       }
+      },
+      {
+       "athlete": {
+        "id": "174466",
+        "displayName": "Rodrigo De Paul"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T00:53:22Z",
+     "shootout": false,
+     "goalPositionY": 52.2,
+     "fieldPositionX": 92.3,
+     "fieldPositionY": 33.2,
+     "fieldPosition2X": 100,
+     "fieldPosition2Y": 52.2
+    },
+    {
+     "id": "52780228",
+     "type": {
+      "id": "94",
+      "text": "Yellow Card",
+      "type": "yellow-card"
+     },
+     "text": "Alexander Shaw (Inter Miami CF) is shown the yellow card for a bad foul.",
+     "shortText": "Alexander Shaw Yellow Card",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4858,
+      "displayValue": "81'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "406938",
+        "displayName": "Alexander Shaw"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T01:00:26Z",
+     "shootout": false
+    },
+    {
+     "id": "52780234",
+     "type": {
+      "id": "70",
+      "text": "Goal",
+      "type": "goal"
+     },
+     "text": "Goal! Inter Miami CF 2, San Diego 2. Anders Dreyer (San Diego) left footed shot from the centre of the box to the bottom right corner. Assisted by Jeppe Tverskov with a through ball.",
+     "shortText": "Anders Dreyer Goal",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 4877,
+      "displayValue": "82'"
+     },
+     "scoringPlay": true,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "250454",
+        "displayName": "Anders Dreyer"
+       }
+      },
+      {
+       "athlete": {
+        "id": "214371",
+        "displayName": "Jeppe Tverskov"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T01:00:46Z",
+     "shootout": false,
+     "goalPositionY": 46,
+     "fieldPositionX": 86.7,
+     "fieldPositionY": 47.6,
+     "fieldPosition2X": 100,
+     "fieldPosition2Y": 46
+    },
+    {
+     "id": "52780552",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, Inter Miami CF. Dániel Pintér replaces Germán Berterame.",
+     "shortText": "Dániel Pintér Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5183,
+      "displayValue": "87'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "20232",
+      "displayName": "Inter Miami CF"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "399970",
+        "displayName": "Dániel Pintér"
+       }
+      },
+      {
+       "athlete": {
+        "id": "228394",
+        "displayName": "Germán Berterame"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T01:05:52Z",
+     "shootout": false
+    },
+    {
+     "id": "52780652",
+     "type": {
+      "id": "76",
+      "text": "Substitution",
+      "type": "substitution"
+     },
+     "text": "Substitution, San Diego. Sam Vines replaces Dagur Thórhallsson.",
+     "shortText": "Sam Vines Substitution",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5350,
+      "displayValue": "90'"
+     },
+     "scoringPlay": false,
+     "team": {
+      "id": "22529",
+      "displayName": "San Diego FC"
+     },
+     "participants": [
+      {
+       "athlete": {
+        "id": "260912",
+        "displayName": "Sam Vines"
+       }
+      },
+      {
+       "athlete": {
+        "id": "285939",
+        "displayName": "Dagur Thórhallsson"
+       }
+      }
+     ],
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T01:08:38Z",
+     "shootout": false
+    },
+    {
+     "id": "52780989",
+     "type": {
+      "id": "83",
+      "text": "End Regular Time",
+      "type": "end-regular-time"
+     },
+     "text": "Second Half ends, Inter Miami CF 2, San Diego 2.",
+     "period": {
+      "number": 2
+     },
+     "clock": {
+      "value": 5400,
+      "displayValue": "90'+6'"
+     },
+     "scoringPlay": false,
+     "source": {
+      "id": "38",
+      "description": "SA.ENVOY"
+     },
+     "wallclock": "2026-09-21T01:15:29Z",
+     "shootout": false
+    }
+   ],
+   "rosters": [
+    {
+     "homeAway": "home",
+     "team": "MIA",
+     "count": 20,
+     "first": {
+      "active": true,
+      "starter": true,
+      "jersey": "97",
+      "athlete": {
+       "id": "231059",
+       "uid": "s:600~a:231059",
+       "guid": "22138280-d103-7a6e-f1db-5398b29e1ec2",
+       "lastName": "St. Clair",
+       "fullName": "Dayne St. Clair",
+       "displayName": "Dayne St. Clair",
+       "shortName": "D. St. Clair",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/231059/dayne-st-clair",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "headshot": {
+        "href": "https://a.espncdn.com/i/headshots/soccer/players/full/231059.png",
+        "alt": "Dayne St. Clair"
+       },
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/231059/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/231059/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "position": {
+       "name": "Goalkeeper",
+       "displayName": "Goalkeeper",
+       "abbreviation": "G"
+      },
+      "subbedIn": false,
+      "subbedOut": false,
+      "formationPlace": "1",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "saves",
+        "displayName": "Saves",
+        "shortDisplayName": "SV",
+        "description": "The number of times a goalkeeper makes a save.",
+        "abbreviation": "SV",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 0,
+        "displayValue": "0"
+       }
+      ]
+     },
+     "subbed": {
+      "active": true,
+      "starter": true,
+      "jersey": "15",
+      "athlete": {
+       "id": "402696",
+       "uid": "s:600~a:402696",
+       "guid": "15e752cd-1410-3fb7-9096-a97f56329180",
+       "lastName": "Caicedo",
+       "fullName": "Fricio Caicedo",
+       "displayName": "Fricio Caicedo",
+       "shortName": "F. Caicedo",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/402696/fricio-caicedo",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/402696/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/402696/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "position": {
+       "name": "Left Back",
+       "displayName": "Left Back",
+       "abbreviation": "LB"
+      },
+      "subbedIn": false,
+      "subbedOut": true,
+      "formationPlace": "3",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "offsides",
+        "displayName": "Offsides",
+        "shortDisplayName": "OF",
+        "description": "The number of times a player or team gets caught offside.",
+        "abbreviation": "OF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 0,
+        "displayValue": "0"
+       }
+      ],
+      "subbedOutFor": {
+       "jersey": "3",
+       "athlete": {
+        "id": "231241",
+        "displayName": "Sergio Reguilón",
+        "links": [
+         {
+          "language": "en-US",
+          "rel": [
+           "playercard",
+           "desktop",
+           "athlete"
+          ],
+          "href": "https://www.espn.com/soccer/player/_/id/231241/sergio-reguilon",
+          "text": "Player Card",
+          "shortText": "Player Card",
+          "isExternal": false,
+          "isPremium": false
+         }
+        ]
+       }
+      },
+      "plays": [
+       {
+        "clock": {
+         "displayValue": "69'"
+        },
+        "scoringPlay": false,
+        "substitution": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+       }
+      ]
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": "SD",
+     "count": 20,
+     "first": {
+      "active": true,
+      "starter": true,
+      "jersey": "1",
+      "athlete": {
+       "id": "265874",
+       "uid": "s:600~a:265874",
+       "guid": "f101b2be-b185-e39e-19ba-9683d8cdfb60",
+       "lastName": "dos Santos",
+       "fullName": "CJ dos Santos",
+       "displayName": "CJ dos Santos",
+       "shortName": "C. dos Santos",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/265874/cj-dos-santos",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "headshot": {
+        "href": "https://a.espncdn.com/i/headshots/soccer/players/full/265874.png",
+        "alt": "CJ dos Santos"
+       },
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/265874/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/265874/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "position": {
+       "name": "Goalkeeper",
+       "displayName": "Goalkeeper",
+       "abbreviation": "G"
+      },
+      "subbedIn": false,
+      "subbedOut": false,
+      "formationPlace": "1",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 2,
+        "displayValue": "2"
+       },
+       {
+        "name": "saves",
+        "displayName": "Saves",
+        "shortDisplayName": "SV",
+        "description": "The number of times a goalkeeper makes a save.",
+        "abbreviation": "SV",
+        "value": 6,
+        "displayValue": "6"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 0,
+        "displayValue": "0"
+       }
+      ]
+     },
+     "subbed": {
+      "active": true,
+      "starter": true,
+      "jersey": "32",
+      "athlete": {
+       "id": "296216",
+       "uid": "s:600~a:296216",
+       "guid": "86bd27a0-8c88-3315-8b6a-09d6fb1474d4",
+       "lastName": "Murphy",
+       "fullName": "Ian Murphy",
+       "displayName": "Ian Murphy",
+       "shortName": "I. Murphy",
+       "links": [
+        {
+         "language": "en-US",
+         "rel": [
+          "playercard",
+          "desktop",
+          "athlete"
+         ],
+         "href": "https://www.espn.com/soccer/player/_/id/296216/ian-murphy",
+         "text": "Player Card",
+         "shortText": "Player Card",
+         "isExternal": false,
+         "isPremium": false
+        }
+       ],
+       "headshot": {
+        "href": "https://a.espncdn.com/i/headshots/soccer/players/full/296216.png",
+        "alt": "Ian Murphy"
+       },
+       "jerseyImages": [
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/296216/jersey.png?darkMode=false",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "width": 1440,
+         "height": 1440
+        },
+        {
+         "href": "https://stitcher.espn.com/sports/soccer/leagues/usa.1/events/761829/athletes/296216/jersey.png?darkMode=true",
+         "rel": [
+          "full",
+          "dark"
+         ],
+         "width": 1440,
+         "height": 1440
+        }
+       ]
+      },
+      "position": {
+       "name": "Center Left Defender",
+       "displayName": "Center Left Defender",
+       "abbreviation": "CD-L"
+      },
+      "subbedIn": false,
+      "subbedOut": true,
+      "formationPlace": "4",
+      "media": {},
+      "stats": [
+       {
+        "name": "appearances",
+        "displayName": "Appearances",
+        "shortDisplayName": "APP",
+        "description": "The number of times a player has made an appearance in a match.",
+        "abbreviation": "APP",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsCommitted",
+        "displayName": "Fouls Committed",
+        "shortDisplayName": "FC",
+        "description": "The number of fouls comitted by a player or team.",
+        "abbreviation": "FC",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "foulsSuffered",
+        "displayName": "Fouls Suffered",
+        "shortDisplayName": "FA",
+        "description": "The number of fouls suffered by a player or team.",
+        "abbreviation": "FA",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "ownGoals",
+        "displayName": "Own Goals",
+        "shortDisplayName": "OG",
+        "description": "The number of own goals conceded.",
+        "abbreviation": "OG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "redCards",
+        "displayName": "Red Cards",
+        "shortDisplayName": "RC",
+        "description": "The number of red cards that have been issued.",
+        "abbreviation": "RC",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "subIns",
+        "displayName": "Substitute Appearances",
+        "shortDisplayName": "SUBIN",
+        "description": "The number of times a player has come on a sub in a match.",
+        "abbreviation": "SUB",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "yellowCards",
+        "displayName": "Yellow Cards",
+        "shortDisplayName": "YC",
+        "description": "The number of yellow cards accumulated.",
+        "abbreviation": "YC",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "goalsConceded",
+        "displayName": "Goals Against",
+        "shortDisplayName": "GA",
+        "description": "The number of goals allowed by the goalkeeper.",
+        "abbreviation": "GA",
+        "value": 1,
+        "displayValue": "1"
+       },
+       {
+        "name": "shotsFaced",
+        "displayName": "Shots Faced",
+        "shortDisplayName": "SHF",
+        "description": "The number of shots on target a goalkeeper has faced.",
+        "abbreviation": "SHF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "goalAssists",
+        "displayName": "Assists",
+        "shortDisplayName": "A",
+        "description": "The number of assists.",
+        "abbreviation": "A",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "offsides",
+        "displayName": "Offsides",
+        "shortDisplayName": "OF",
+        "description": "The number of times a player or team gets caught offside.",
+        "abbreviation": "OF",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "shotsOnTarget",
+        "displayName": "Shots On Goal",
+        "shortDisplayName": "SOG",
+        "description": "The number of shots that are on goal.",
+        "abbreviation": "SOG",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalGoals",
+        "displayName": "Total Goals",
+        "shortDisplayName": "G",
+        "description": "The number of goals scored against the opposing team.",
+        "abbreviation": "G",
+        "value": 0,
+        "displayValue": "0"
+       },
+       {
+        "name": "totalShots",
+        "displayName": "Shots",
+        "shortDisplayName": "SHOT",
+        "description": "The number of shots attempted.",
+        "abbreviation": "SHOT",
+        "value": 0,
+        "displayValue": "0"
+       }
+      ],
+      "subbedOutFor": {
+       "jersey": "97",
+       "athlete": {
+        "id": "257114",
+        "displayName": "Christopher McVey",
+        "links": [
+         {
+          "language": "en-US",
+          "rel": [
+           "playercard",
+           "desktop",
+           "athlete"
+          ],
+          "href": "https://www.espn.com/soccer/player/_/id/257114/christopher-mcvey",
+          "text": "Player Card",
+          "shortText": "Player Card",
+          "isExternal": false,
+          "isPremium": false
+         }
+        ]
+       }
+      },
+      "plays": [
+       {
+        "clock": {
+         "displayValue": "33'"
+        },
+        "scoringPlay": false,
+        "substitution": false,
+        "redCard": false,
+        "yellowCard": true,
+        "penaltyKick": false,
+        "ownGoal": false
+       },
+       {
+        "clock": {
+         "displayValue": "73'"
+        },
+        "scoringPlay": false,
+        "substitution": true,
+        "redCard": false,
+        "yellowCard": false,
+        "penaltyKick": false,
+        "ownGoal": false
+       }
+      ]
+     }
+    }
+   ],
+   "boxscoreKeys": null,
+   "shootoutHeader": [
+    {
+     "homeAway": "home",
+     "score": "2",
+     "winner": false
+    },
+    {
+     "homeAway": "away",
+     "score": "2",
+     "winner": false
+    }
+   ]
+  }
+ }
+}

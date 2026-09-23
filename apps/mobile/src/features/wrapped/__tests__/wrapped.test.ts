@@ -69,6 +69,12 @@ describe('wrappedCardCopy', () => {
   const w = parseWrapped(payload)!;
   const copy = (i: number) => wrappedCardCopy(w.cards[i]!, 'mlb', 2026);
 
+  it('calls them matches for MLS', () => {
+    const mls = wrappedCardCopy(w.cards[0]!, 'mls', 2026);
+    expect(mls.label).toBe('Matches attended');
+    expect(mls.body).toBe('matches in the 2026 MLS season.');
+  });
+
   it('writes a headline and body for each card', () => {
     expect(copy(0)).toMatchObject({ label: 'Games attended', headline: '12' });
     expect(copy(1).headline).toBe('8–4');
@@ -128,6 +134,7 @@ describe('seasons', () => {
     );
     expect(opts.map((o) => `${o.sport_id}-${o.season}`)).toEqual([
       'mlb-2026',
+      'mls-2026',
       'nba-2026',
       'nfl-2026',
       'mlb-2025',

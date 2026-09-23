@@ -3,6 +3,7 @@
  *  - Estimated lock: what the app counts down to before the game.
  *  - True lock: computed from play-by-play after the game, used to validate pledges.
  */
+import { mlsTrueLock } from './providers/mls/detail.js';
 import type { CanonicalGameDetail, LiveState, MlbPlay, NbaPlay, NflPlay, Sport } from './types.js';
 
 export const PLEDGE_GRACE_MS = 60_000;
@@ -203,6 +204,8 @@ export function trueLock(detail: CanonicalGameDetail): TrueLock {
       return nflTrueLock(detail.plays.items);
     case 'nba':
       return nbaTrueLock(detail.plays.items);
+    case 'mls':
+      return mlsTrueLock(detail.plays.items);
   }
 }
 

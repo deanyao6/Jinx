@@ -875,3 +875,40 @@ athlete id, stored as `players.provider_player_id` under provider `espn_mls`), `
 status field, so every listed player is active. Fixture
 `ingest/fixtures/mls/espn_roster_20232_trimmed_2026-09-22.json`. Loaded 945 players across the
 30 clubs (28 to 37 each) on 2026-09-22.
+
+## ESPN's MLS summary for detail and Relive (next-wave E.4) — VERIFIED 2026-09-22
+
+`summary?event={id}` (same host and league path as the scoreboard) answers a plain fetch for a
+2022 cup final and a 2026 league match. What it holds, checked on both: `keyEvents[]` (every
+goal, card, substitution, kick-off, halftime, full time, extra-time and shootout marker, each
+with `type.text`, `clock.displayValue` as "45'+2'", `period`, `scoringPlay`, `text`, the
+running score and, for 2026 matches only, a `wallclock`), `rosters[]` (`homeAway`, starters
+and substitutes with `athlete.id`, `position`, `subbedIn`/`subbedOut`, `stats[]`), `header`
+(the shootout score and winner), `commentary[]`. **No win-probability series**: there is no
+`winprobability` key on the soccer summary, unlike the NBA's, so the Relive line is a Poisson
+state model (`mlsInMatchHomeWp`) calibrated so that 0-0 with the whole match ahead equals the
+pregame three-way probability, and decided by the whistle (1 for a home win, 0 otherwise,
+draws included, as the pledge rule reads it). Wall clocks exist from the 2024 season; a match
+without them keeps `timestampsReliable` false and never punishes a pledge.
+
+Independent check (`ingest/src/verify/relive.ts`): the story's goal sequence, the scoring
+timeline and the scorer names against the scoreboard's `details[]` for five matches (the 2022
+MLS Cup with extra time, a red card and a 3-0 shootout; Inter Miami 2-2 San Diego 2026-09-20;
+Toronto 2-3 NYCFC 2024-05-11 with three red cards, one a second yellow; D.C. 1-6 San Jose
+2025-04-06 with a hat trick; Cincinnati 2-3 NYCFC 2024-10-02). All five match on score and
+scorer; the second yellow used to be stored as a moment named "Second yellow card to ...",
+fixed the same day.
+
+Official highlights: `mlssoccer.com`'s match pages are slugs (`/competitions/.../matches/...`)
+that ESPN's event id cannot derive, so every MLS match opens the video hub
+`https://www.mlssoccer.com/video/` (200 on 2026-09-22) with the label "Opens on MLSsoccer.com".
+
+## MLS Wrapped (next-wave E.5) — 2026-09-22
+
+`generate_wrapped` needed nothing sport-specific beyond the moment ranking (the MLS moment
+types were unranked); `user_game_results` already counts a draw as a tie and a shootout win as
+a win. The daily job publishes MLS for `extract(year from now() - interval '1 month')` so an
+MLS Cup in early December still publishes in January. Test `022`: a fan with only MLS matches
+gets a 2026 Wrapped, the draw sits in the record, the hat trick outranks the red card, no NBA
+Wrapped. The app lists MLS among the seasons and calls them matches.
+

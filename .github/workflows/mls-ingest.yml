@@ -53,6 +53,8 @@ jobs:
         run: npx tsx ingest/src/mls/backfill.ts --from $(date -u +%Y) --to $(date -u +%Y) --force
       - name: Exact end times for attended and recent matches (games.final_at)
         run: npx tsx ingest/src/mls/finals.ts --attended --recent 14
+      - name: Detail and Relive for the matches someone logged (detail_queue)
+        run: npx tsx ingest/src/mls/detail.ts --queue
       - name: Current rosters for the favourite-player picker
         run: npx tsx ingest/src/mls/rosters.ts
       - name: Elo with draws and frozen probabilities

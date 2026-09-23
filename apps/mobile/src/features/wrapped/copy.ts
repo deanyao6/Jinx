@@ -31,12 +31,14 @@ function plural(n: number, one: string, many = `${one}s`): string {
 
 export function wrappedCardCopy(card: WrappedCard, sport: string, season: number): WrappedCardCopy {
   const seasonName = `${season} ${sportLabel(sport)}`;
+  // MLS plays matches; the other three play games.
+  const [one, many] = sport === 'mls' ? ['match', 'matches'] : ['game', 'games'];
   switch (card.kind) {
     case 'games':
       return {
-        label: 'Games attended',
+        label: sport === 'mls' ? 'Matches attended' : 'Games attended',
         headline: String(card.games),
-        body: `${card.games === 1 ? 'game' : 'games'} in the ${seasonName} season.`,
+        body: `${card.games === 1 ? one : many} in the ${seasonName} season.`,
         lines: [],
         accent: 'red',
       };

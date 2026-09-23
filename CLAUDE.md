@@ -142,6 +142,7 @@ npx tsx ingest/src/mls/backfill.ts --from 2026 --to 2026   # same against whatev
 npx tsx ingest/src/mls/probe.ts                            # can this machine reach ESPN's MLS scoreboard at all
 npx tsx ingest/src/mls/finals.ts --attended --recent 14   # exact final_at from ESPN's summary wall clocks for attended and recent matches
 npx tsx ingest/src/mls/rosters.ts                          # MLS current rosters (ESPN) into team_rosters
+npx tsx ingest/src/mls/detail.ts --queue                   # MLS detail + Relive from ESPN's summary for queued matches (--events ids, --attended)
 npx tsx ingest/src/elo/run.ts --sport mls                  # the three-outcome Elo: home, draw, away (docs/elo-backtest.md)
 npx tsx ingest/src/famous/curated.ts [--check]             # famous games: seed/famous_games.json by local date (refuses on 0 or 2+ matches), then the championship rows
 npx tsx ingest/src/famous/franchise.ts [--check]           # curated superstars from seed/franchise_players.json (refuses on an ambiguous name)

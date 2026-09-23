@@ -15,7 +15,7 @@ export function currentSeasonFor(sport: string, now = new Date()): number {
 }
 
 /** Every sport Wrapped is built for. */
-export const WRAPPED_SPORTS = ['mlb', 'nfl', 'nba'] as const;
+export const WRAPPED_SPORTS = ['mlb', 'nfl', 'nba', 'mls'] as const;
 
 /** A Wrapped is a preview until the season is over and the publish job has run. */
 export function isPreviewSeason(sport: string, season: number, now = new Date()): boolean {

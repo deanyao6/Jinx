@@ -226,8 +226,16 @@ no result, "Drawn, no result" on the screens and in the notification, out of eve
 shootout is a drawn match and voids too, extra time scores (migration `20260923000800`, test
 `021`). Rosters and favorite players are on: `ingest/src/mls/rosters.ts` loads ESPN's `teams/{id}/roster`
 (945 players across 30 clubs on local and hosted, daily in `mls-ingest.yml`), the players
-prompt lists them (`docs/evidence/mls/journey/players-prompt-inter-miami.png`). Still
-deliberately unavailable: Relive, Wrapped; the game screen says so.
+prompt lists them (`docs/evidence/mls/journey/players-prompt-inter-miami.png`). **Relive and
+detail are on** (`ingest/src/mls/detail.ts`, daily `--queue` in the workflow): one ESPN summary
+per logged match gives the appearances with their lines, the goals with scorer and kind, the
+moments (hat trick, red card, shootout, two-goal comeback), the pledge lock and the exact end,
+and a story of goals, cards, substitutions, breaks and the penalties on a state-model line
+(ESPN's soccer summary has no win-probability series; `packages/core/src/providers/mls/detail.ts`).
+`ingest/src/verify/relive.ts` now checks 5 MLS matches against the scoreboard's `details[]`
+(20 games across four sports check out). Wrapped is on for MLS (calendar year, migration
+`20260923000900`, test `022`); the game screen's "not available yet" sentence is gone.
+Screenshots: `docs/evidence/mls/relive/`, `docs/evidence/mls/wrapped/`.
 
 Not done, and known:
 
@@ -441,7 +449,8 @@ their stars. A game logged today gets its detail with the nightly job, as before
    `jinx:///welcome?token_hash=<hash>` signs in, where the hash is `hashed_token` from local
    GoTrue's `POST /auth/v1/admin/generate_link` (`{"type":"magiclink","email":...}`, service
    role key as `apikey` and bearer). `jinx:///games/<id>?scroll=end` lands on the bottom of a
-   game page (Players seen), and `jinx:///you/eggs?probe=live` runs the public live feeds.
+   game page (Players seen), `jinx:///relive/<id>?step=9` opens Relive on that step of the
+   story, and `jinx:///you/eggs?probe=live` runs the public live feeds.
 10. **The Supabase CLI prints query JSON two ways**: a bare array in a terminal, `{"rows": [...]}`
     when it detects an agent. Handle both, or a script written by one breaks for a person.
 11. **"Accepted" is not "correct".** The storylines validator accepted "105-73" for the 2025

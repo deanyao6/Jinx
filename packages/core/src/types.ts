@@ -144,7 +144,9 @@ export type MlbScoringKind =
  */
 export type NbaScoringKind =
   'three' | 'two' | 'dunk' | 'layup' | 'jumper' | 'free_throw' | 'and_one' | 'other';
-export type ScoringKind = NflScoringKind | MlbScoringKind | NbaScoringKind;
+/** MLS: how a goal was scored (ESPN's key event types). */
+export type MlsScoringKind = 'goal' | 'header' | 'free_kick' | 'penalty' | 'own_goal';
+export type ScoringKind = NflScoringKind | MlbScoringKind | NbaScoringKind | MlsScoringKind;
 
 export interface Appearance {
   providerPlayerId: string;
@@ -319,7 +321,8 @@ export interface CanonicalGameDetail extends CanonicalGame {
   plays:
     | { sport: 'mlb'; items: MlbPlay[] }
     | { sport: 'nfl'; items: NflPlay[] }
-    | { sport: 'nba'; items: NbaPlay[] };
+    | { sport: 'nba'; items: NbaPlay[] }
+    | { sport: 'mls'; items: MlsPlay[] };
   /** Hits by side, for no-hitter and cycle detection (MLB). */
   hits?: { home: number; away: number } | undefined;
   /** Every player's line (NBA), for the box-score moments. */
@@ -375,7 +378,12 @@ export type MomentType =
   | 'quadruple_double'
   | 'twenty_rebounds'
   | 'twenty_assists'
-  | 'comeback_20';
+  | 'comeback_20'
+  // MLS
+  | 'hat_trick'
+  | 'red_card'
+  | 'shootout'
+  | 'comeback_2';
 
 export interface GameEvent {
   type: MomentType;
@@ -395,4 +403,23 @@ export interface SportsDataProvider {
   fetchLiveState?(providerGameId: string): Promise<LiveState>;
   /** The team's current roster. Absent for providers that publish rosters as season files. */
   fetchRoster?(providerTeamId: string): Promise<RosterEntry[]>;
+}
+
+/** One key event of an MLS match from ESPN's summary, with the score after it. */
+export interface MlsPlay {
+  seq: number;
+  /** 1 and 2 the halves, 3 and 4 extra time, 5 the shootout. */
+  period: number;
+  minute: number;
+  /** "45'+6'" as ESPN shows it. */
+  clock: string;
+  wallclock: IsoTimestamp | null;
+  /** ESPN's type text: "Goal", "Goal - Header", "Yellow Card", "Substitution", "Halftime", ... */
+  type: string;
+  text: string;
+  homeScore: number;
+  awayScore: number;
+  scoringSide: Side | null;
+  scorerName: string | null;
+  kind: MlsScoringKind | null;
 }

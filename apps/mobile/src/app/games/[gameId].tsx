@@ -219,6 +219,8 @@ export default function GameDetailScreen() {
   // The window runs to an hour after the game ended (games.final_at, filled since 2026-09-22).
   // A final whose end is not known yet is treated as closed rather than left open for the
   // six-hour fallback.
+  // MLS plays matches; the other three play games.
+  const noun = g.sport_id === 'mls' ? 'match' : 'game';
   const canCheckIn =
     g.status !== 'postponed' &&
     g.status !== 'cancelled' &&
@@ -364,12 +366,6 @@ export default function GameDetailScreen() {
             />
           ) : null}
         </Scoreboard>
-        {g.sport_id === 'mls' ? (
-          <Text variant="sub" color="muted" style={{ marginBottom: theme.spacing.md }}>
-            MLS schedules and results are available. Player stats, live updates and Relive are not
-            available yet.
-          </Text>
-        ) : null}
 
         {/* A famous game, or a personal badge from a favourite player: right under the score. */}
         <FamousCard
@@ -613,12 +609,12 @@ export default function GameDetailScreen() {
               <View style={{ flex: 1 }}>
                 <Text variant="h2">Relive</Text>
                 <Text variant="sub" color="muted" style={{ marginTop: 2 }}>
-                  Play the game back moment by moment, with the win probability as it swung.
+                  {`Play the ${noun} back moment by moment, with the win probability as it swung.`}
                 </Text>
               </View>
             </View>
             <Button
-              title="Relive this game"
+              title={`Relive this ${noun}`}
               variant={a ? 'primary' : 'secondary'}
               onPress={() => router.push(`/relive/${gameId}`)}
             />
@@ -647,7 +643,7 @@ export default function GameDetailScreen() {
           {events.data && events.data.length === 0 ? (
             <Text variant="sub" color="muted">
               {g.status === 'final'
-                ? 'No notable moments detected for this game.'
+                ? `No notable moments detected for this ${noun}.`
                 : 'Moments show up once the game is final.'}
             </Text>
           ) : null}
@@ -679,7 +675,7 @@ export default function GameDetailScreen() {
           <Card>
             <Text variant="sub" color="muted">
               {g.status === 'final'
-                ? 'Players are not loaded for this game yet.'
+                ? `Players are not loaded for this ${noun} yet.`
                 : 'Players show up after the game.'}
             </Text>
           </Card>

@@ -58,6 +58,13 @@ describe('officialHighlightsUrl', () => {
     expect(highlightsSiteLabel('mlb')).toBe('Opens on MLB.com');
   });
 
+  it('sends an MLS match to the league hub, never MLB.com', () => {
+    expect(officialHighlightsUrl({ ...nfl, sport: 'mls', providerGameId: '761829' })).toBe(
+      'https://www.mlssoccer.com/video/',
+    );
+    expect(highlightsSiteLabel('mls')).toBe('Opens on MLSsoccer.com');
+  });
+
   it('falls back to the league hub rather than guess a URL that would 404', () => {
     expect(officialHighlightsUrl({ ...nfl, homeNickname: null })).toBe(NFL_VIDEO_HUB);
     expect(officialHighlightsUrl({ ...nfl, providerGameId: 'garbage' })).toBe(NFL_VIDEO_HUB);

@@ -81,7 +81,7 @@ export class MlsProvider implements SportsDataProvider {
     return parseMlsRoster(await this.get<MlsRoster>(`teams/${providerTeamId}/roster`, 86400000));
   }
 
-  /** ESPN's match summary: key events with wall clocks, commentary, the win probability line. */
+  /** ESPN's match summary: key events with wall clocks, commentary, rosters. No win-probability line (VERIFY, docs/verification.md). */
   async summary(eventId: string, force = false): Promise<MlsSummary> {
     return this.get<MlsSummary>(`summary?event=${eventId}`, force ? 0 : 86400000);
   }

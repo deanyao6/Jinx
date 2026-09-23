@@ -19,8 +19,8 @@
  *
  *   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... npx tsx ingest/src/verify/relive.ts
  *
- * NFL games must already have a story (ingest/src/nfl/relive.ts --game <id>). Exits non-zero on
- * any mismatch.
+ * NFL games must already have a story (ingest/src/nfl/relive.ts --game <id>), MLS matches too
+ * (ingest/src/mls/detail.ts --events <ids>). Exits non-zero on any mismatch.
  */
 import {
   MlbClient,
@@ -34,6 +34,7 @@ import {
 } from '@jinx/core';
 
 import { createDb } from '../db.js';
+import { mlsProvider } from '../mls/provider.js';
 import { diskCache } from '../nba/cache.js';
 
 /**
@@ -50,6 +51,14 @@ const MLB = ['775300', '813026', '823191', '718780', '746419'];
 const NBA = ['0022400001', '0021600001', '0022400144', '0022400718', '0022400807'];
 const NBA_OVERTIME = new Set(['0022400144']);
 const NBA_BUZZER = new Set(['0022400718', '0022400807']);
+/**
+ * MLS, story vs the scoreboard's details[] (goals, cards and the shootout flag), an endpoint the
+ * story never reads: it is built from the summary's keyEvents. 655997 is the 2022 MLS Cup (3-3,
+ * extra time, a red card, LAFC 3-0 on penalties); 761829 Inter Miami 2-2 San Diego (2026-09-20,
+ * Dean's match); 692761 a 3-2 away win; 726902 a 6-1 rout; 693055 a 3-2 home win.
+ */
+const MLS = ['655997', '761829', '692761', '726902', '693055'];
+const MLS_SHOOTOUT = new Set(['655997']);
 /** Two overtime games among them. */
 const NFL = [
   '2025_16_GB_CHI',
@@ -336,6 +345,133 @@ async function checkNba(
   );
 }
 
+type MlsDetail = {
+  type?: { text?: string };
+  clock?: { displayValue?: string };
+  team?: { id?: string };
+  scoringPlay?: boolean;
+  redCard?: boolean;
+  shootout?: boolean;
+  athletesInvolved?: { displayName?: string }[];
+};
+
+async function checkMls(db: ReturnType<typeof createDb>, id: string): Promise<void> {
+  const g = (
+    await db
+      .from('games')
+      .select(
+        'id, scheduled_start, home_score, away_score, decision_method, home_shootout_score, away_shootout_score, winner_team_id, home_team_id, home:home_team_id(name, provider_team_id), away:away_team_id(name, provider_team_id)',
+      )
+      .eq('provider', 'espn_mls')
+      .eq('provider_game_id', id)
+      .maybeSingle()
+  ).data as {
+    id: string;
+    scheduled_start: string;
+    home_score: number;
+    away_score: number;
+    decision_method: string | null;
+    home_shootout_score: number | null;
+    away_shootout_score: number | null;
+    winner_team_id: string | null;
+    home_team_id: string;
+    home: { name: string; provider_team_id: string };
+    away: { name: string; provider_team_id: string };
+  } | null;
+  if (!g) return fail(id, 'not in games');
+  console.log(`${id} ${g.away.name} ${g.away_score}, ${g.home.name} ${g.home_score} (${g.decision_method})`);
+
+  // The independent source: the month's scoreboard, details[] of this event.
+  const provider = mlsProvider();
+  const start = new Date(g.scheduled_start);
+  let event = (await provider.month(start.getUTCFullYear(), start.getUTCMonth() + 1)).events.find(
+    (e) => e.id === id,
+  );
+  if (!event) {
+    const prev = new Date(start.getTime() - 3 * 86_400_000);
+    event = (await provider.month(prev.getUTCFullYear(), prev.getUTCMonth() + 1)).events.find(
+      (e) => e.id === id,
+    );
+  }
+  if (!event) return fail(id, 'not on the scoreboard');
+  const details = ((event.competitions[0] as { details?: MlsDetail[] }).details ?? []).filter(
+    (d) => !d.shootout,
+  );
+  let a = 0;
+  let h = 0;
+  const truth: string[] = [];
+  const scorers: string[] = [];
+  for (const d of details) {
+    if (!d.scoringPlay) continue;
+    if (d.team?.id === g.home.provider_team_id) h++;
+    else a++;
+    truth.push(`${a}-${h}`);
+    scorers.push(d.athletesInvolved?.[0]?.displayName ?? '?');
+  }
+  const redCards = details.filter((d) => d.redCard).length;
+
+  const steps = ((
+    await db
+      .from('game_story_steps')
+      .select('seq, wp_seq, away_score, home_score, label, kind, text')
+      .eq('game_id', g.id)
+      .order('seq')
+  ).data ?? []) as {
+    seq: number;
+    wp_seq: number;
+    away_score: number;
+    home_score: number;
+    label: string;
+    kind: string | null;
+    text: string;
+  }[];
+  const rows = ((
+    await db
+      .from('game_scoring_timeline')
+      .select('seq, away_score, home_score, scorer_name')
+      .eq('game_id', g.id)
+      .order('seq')
+  ).data ?? []) as { seq: number; away_score: number; home_score: number; scorer_name: string | null }[];
+  const wp = ((
+    await db.from('game_wp_timeline').select('seq, home_wp').eq('game_id', g.id).order('seq')
+  ).data ?? []) as { seq: number; home_wp: number }[];
+  const events = ((await db.from('game_events').select('type').eq('game_id', g.id)).data ?? []) as {
+    type: string;
+  }[];
+  if (steps.length === 0) return fail(id, 'no story; run ingest/src/mls/detail.ts --events first');
+
+  const story = steps.filter((s) => s.kind).map((s) => `${s.away_score}-${s.home_score}`);
+  if (story.join(' ') !== truth.join(' '))
+    fail(id, `goals differ\n    story      ${story.join(' ')}\n    scoreboard ${truth.join(' ')}`);
+  const timeline = rows.map((r) => `${r.away_score}-${r.home_score}`);
+  if (timeline.join(' ') !== truth.join(' '))
+    fail(id, `timeline differs\n    timeline   ${timeline.join(' ')}\n    scoreboard ${truth.join(' ')}`);
+  const named = rows.map((r) => r.scorer_name ?? '?');
+  if (named.join('|') !== scorers.join('|'))
+    fail(id, `scorers differ\n    timeline   ${named.join(', ')}\n    scoreboard ${scorers.join(', ')}`);
+  if ((story.at(-1) ?? '0-0') !== `${g.away_score}-${g.home_score}`)
+    fail(id, `last goal step ${story.at(-1)} is not the final`);
+  const seqs = new Set(wp.map((p) => p.seq));
+  if (!steps.every((s) => seqs.has(s.wp_seq))) fail(id, 'a step points at no probability point');
+  const end = Number(wp.at(-1)?.home_wp);
+  const homeWon = g.winner_team_id === g.home_team_id;
+  if (end !== (homeWon ? 1 : 0))
+    fail(id, `the line ends at ${end} but the home side ${homeWon ? 'won' : 'did not win'}`);
+  const cardSteps = steps.filter((s) => /red card|second yellow/i.test(s.text)).length;
+  if (cardSteps !== redCards) fail(id, `${redCards} red card(s) on the scoreboard, ${cardSteps} in the story`);
+  if (redCards > 0 && !events.some((e) => e.type === 'red_card')) fail(id, 'a red card, and no red_card moment');
+  if (MLS_SHOOTOUT.has(id)) {
+    if (!steps.some((s) => s.label === 'Penalties')) fail(id, 'a shootout, and no Penalties step');
+    if (!events.some((e) => e.type === 'shootout')) fail(id, 'a shootout, and no shootout moment');
+    const last = steps.at(-1)!.text;
+    const line = `${g.home_shootout_score}-${g.away_shootout_score}`;
+    if (!last.includes(line)) fail(id, `the last step does not carry the shootout score ${line}: ${last}`);
+  }
+  console.log(
+    `  ${wp.length} points, ${steps.length} steps, ${truth.length} goals matched by score and scorer, ${events.map((e) => e.type).join(', ') || 'no moments'}`,
+  );
+}
+
 async function main() {
   const client = new MlbClient();
   console.log('MLB, story vs the game feed');
@@ -346,8 +482,10 @@ async function main() {
   console.log("\nNBA, story vs ESPN's play list");
   const nba = new NbaClient({ cache: diskCache() });
   for (const id of NBA) await checkNba(db, nba, id);
+  console.log("\nMLS, story vs the scoreboard's details");
+  for (const id of MLS) await checkMls(db, id);
   console.log(
-    problems.length === 0 ? '\nall 15 games check out' : `\n${problems.length} problem(s)`,
+    problems.length === 0 ? '\nall 20 games check out' : `\n${problems.length} problem(s)`,
   );
   process.exit(problems.length === 0 ? 0 : 1);
 }

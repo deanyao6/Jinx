@@ -50,6 +50,7 @@ const CHART_LABELS: Readonly<Record<string, ReliveFixture['chartLabels']>> = {
   mlb: { left: 'First pitch', middle: '7th inning', right: 'Final' },
   nfl: { left: 'Kickoff', middle: 'Halftime', right: 'Final' },
   nba: { left: 'Tip-off', middle: 'Halftime', right: 'Final' },
+  mls: { left: 'Kick-off', middle: 'Halftime', right: 'Full time' },
 };
 
 export function chartLabelsForSport(sportId: string): ReliveFixture['chartLabels'] {
