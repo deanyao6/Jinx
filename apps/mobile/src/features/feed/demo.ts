@@ -177,6 +177,15 @@ export const DEMO_POSTS: readonly Post[] = [
     kudosCount: 14,
     commentCount: 1,
   },
+  {
+    ...base,
+    id: 'demo-p8',
+    kind: 'badge',
+    author: people.jordan,
+    publishedAt: hoursAgo(72),
+    payload: { badge_key: 'walk_off', name: 'Walk-off witnessed', tier: 'silver' },
+    kudosCount: 5,
+  },
 ];
 
 export const DEMO_COMMENTS = [
