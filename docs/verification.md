@@ -1045,9 +1045,10 @@ Wrapped story all render with the team's accent, white on the team's fill. No sc
 where something readable in dark went invisible in light.
 
 G.2, signed out: email and code, and the six onboarding steps as a freshly created, confirmed
-user (an unconfirmed user's magic link is refused as expired), both modes. One nit: the name
-field's placeholder on the first step renders letter-spaced in both modes; the field carries no
-letter spacing of its own.
+user (an unconfirmed user's magic link is refused as expired), both modes. One oddity: the name
+field's placeholder on the first step rendered letter-spaced ("D e a n") in both modes on that
+launch and normally on a later launch; the field carries no letter spacing of its own, so it is
+transient (a font-loading race is the likely cause), not a style to fix.
 
 G.3, the MLS journey in light mode: the players prompt for Inter Miami, the game page for the
 2-2 draw (Duration 2:02, the four goals, Neutral) and for the 2022 MLS Cup ("LAFC won on

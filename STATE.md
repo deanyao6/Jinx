@@ -261,8 +261,8 @@ Not done, and known:
   and 50 under the Bears theme, contact sheets in `docs/evidence/light/`; the signed-out screens
   in both modes in `docs/evidence/signed-out/`; the MLS journey in `docs/evidence/mls/journey/`.
   Dev links for a scripted walk: `?themeTeam=<team id>` picks the theme, `relive/<id>?step=N`
-  opens a story step. Nothing was found invisible in light; the onboarding name placeholder
-  renders letter-spaced in both modes (open).
+  opens a story step. Nothing was found invisible in light; the onboarding name placeholder rendered
+  letter-spaced on one launch and normally on the next, so it is transient, not a style.
 - **Palettes were cross-checked on 2026-09-22** (next-wave F) against jimniels/teamcolors and
   ESPN: the fills all matched ESPN, every MLS `--t2` had been a copy of its primary and now is
   ESPN's alternate (30 rows changed, `docs/palette-diff.md`, `docs/evidence/palettes/`).
