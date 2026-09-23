@@ -30,6 +30,7 @@ import {
   type GameContext,
   useLiveState,
 } from '@/features/checkin/queries';
+import { inOpenSession } from '@/features/checkin/session';
 import { hasLiveFeed } from '@/features/eggs/live';
 import { isUnderWay } from '@/features/live/format';
 import { getPushStatus, registerPush, type PushStatus } from '@/features/notifications/push';
@@ -55,7 +56,7 @@ export default function CheckInScreen() {
   // until the pick is settled; after that this route shows the result card below.
   const c = ctx.data;
   const settled = !!c.pledge && c.pledge.status !== 'provisional';
-  if (c.checked_in_at && c.neutral_for_user && !c.both_favorites && !settled) {
+  if (inOpenSession(c) && c.neutral_for_user && !c.both_favorites && !settled) {
     return (
       <>
         <Stack.Screen options={{ headerShown: false }} />

@@ -36,7 +36,19 @@ export type GameContext = {
   check_in_opens_at: string;
   check_in_closes_at: string;
   estimated_lock_at: string | null;
+  /** When the session started. The name is kept for the builds in the field. */
   checked_in_at: string | null;
+  /**
+   * The check-in as a session (migration 20260924000200). Absent from a server older than that
+   * migration, which only knew open sessions.
+   */
+  checkin?: {
+    started_at: string;
+    ended_at: string | null;
+    end_reason: 'final' | 'left' | 'timeout' | 'geofence_exit' | null;
+    open: boolean;
+    visibility: 'mutuals' | 'off';
+  } | null;
   attendance: {
     id: string;
     status: string;
@@ -331,3 +343,4 @@ export function useNearbyDayGames(favIds: string[], loggedIds: string[]) {
     staleTime: 5 * 60_000,
   });
 }
+

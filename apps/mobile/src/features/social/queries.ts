@@ -92,14 +92,14 @@ export function useReact() {
       if (!userId) throw new Error('Not signed in');
       if (input.event.my_reaction === input.emoji) {
         const { error } = await supabase
-          .from('reactions')
+          .from('feed_reactions')
           .delete()
           .eq('feed_event_id', input.event.id)
           .eq('user_id', userId);
         if (error) throw error;
       } else {
         const { error } = await supabase
-          .from('reactions')
+          .from('feed_reactions')
           .upsert(
             { feed_event_id: input.event.id, user_id: userId, emoji: input.emoji },
             { onConflict: 'feed_event_id,user_id' },

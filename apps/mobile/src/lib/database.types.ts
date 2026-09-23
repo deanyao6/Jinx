@@ -37,15 +37,24 @@ export type Database = {
       attendance_companions: {
         Row: {
           attendance_id: string
+          confirmed_at: string | null
+          invited_by: string | null
           person_id: string
+          status: string
         }
         Insert: {
           attendance_id: string
+          confirmed_at?: string | null
+          invited_by?: string | null
           person_id: string
+          status?: string
         }
         Update: {
           attendance_id?: string
+          confirmed_at?: string | null
+          invited_by?: string | null
           person_id?: string
+          status?: string
         }
         Relationships: [
           {
@@ -53,6 +62,13 @@ export type Database = {
             columns: ["attendance_id"]
             isOneToOne: false
             referencedRelation: "attendances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_companions_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
@@ -208,6 +224,44 @@ export type Database = {
           },
         ]
       }
+      badges: {
+        Row: {
+          criteria: Json
+          description: string
+          is_secret: boolean
+          key: string
+          name: string
+          sport_id: string | null
+          tier: string
+        }
+        Insert: {
+          criteria: Json
+          description: string
+          is_secret?: boolean
+          key: string
+          name: string
+          sport_id?: string | null
+          tier?: string
+        }
+        Update: {
+          criteria?: Json
+          description?: string
+          is_secret?: boolean
+          key?: string
+          name?: string
+          sport_id?: string | null
+          tier?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "badges_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "sports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blocks: {
         Row: {
           blocked_id: string
@@ -285,29 +339,48 @@ export type Database = {
       checkins: {
         Row: {
           accuracy_m: number
-          checked_in_at: string
+          attendance_id: string | null
           distance_m: number
+          end_reason: string | null
+          ended_at: string | null
           game_id: string
           id: string
+          started_at: string
           user_id: string
+          visibility: string
         }
         Insert: {
           accuracy_m: number
-          checked_in_at?: string
+          attendance_id?: string | null
           distance_m: number
+          end_reason?: string | null
+          ended_at?: string | null
           game_id: string
           id?: string
+          started_at?: string
           user_id: string
+          visibility?: string
         }
         Update: {
           accuracy_m?: number
-          checked_in_at?: string
+          attendance_id?: string | null
           distance_m?: number
+          end_reason?: string | null
+          ended_at?: string | null
           game_id?: string
           id?: string
+          started_at?: string
           user_id?: string
+          visibility?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "checkins_attendance_id_fkey"
+            columns: ["attendance_id"]
+            isOneToOne: false
+            referencedRelation: "attendances"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "checkins_game_id_fkey"
             columns: ["game_id"]
@@ -320,6 +393,181 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comments: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          deleted_at: string | null
+          id: string
+          post_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          post_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communities: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_official: boolean
+          is_private: boolean
+          kind: string
+          member_count: number
+          name: string
+          owner_id: string | null
+          slug: string
+          team_id: string | null
+          venue_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_official?: boolean
+          is_private?: boolean
+          kind: string
+          member_count?: number
+          name: string
+          owner_id?: string | null
+          slug: string
+          team_id?: string | null
+          venue_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_official?: boolean
+          is_private?: boolean
+          kind?: string
+          member_count?: number
+          name?: string
+          owner_id?: string | null
+          slug?: string
+          team_id?: string | null
+          venue_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communities_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communities_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communities_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_members: {
+        Row: {
+          community_id: string
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          community_id: string
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          community_id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_members_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_posts: {
+        Row: {
+          community_id: string
+          post_id: string
+        }
+        Insert: {
+          community_id: string
+          post_id: string
+        }
+        Update: {
+          community_id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_posts_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_posts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
             referencedColumns: ["id"]
           },
         ]
@@ -471,6 +719,42 @@ export type Database = {
           },
         ]
       }
+      favorite_games: {
+        Row: {
+          game_id: string
+          note: string | null
+          ordinal: number
+          user_id: string
+        }
+        Insert: {
+          game_id: string
+          note?: string | null
+          ordinal: number
+          user_id: string
+        }
+        Update: {
+          game_id?: string
+          note?: string | null
+          ordinal?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorite_games_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "favorite_games_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feed_events: {
         Row: {
           actor_user_id: string
@@ -512,6 +796,42 @@ export type Database = {
             columns: ["game_id"]
             isOneToOne: false
             referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          feed_event_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          feed_event_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          feed_event_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_reactions_feed_event_id_fkey"
+            columns: ["feed_event_id"]
+            isOneToOne: false
+            referencedRelation: "feed_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feed_reactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -869,18 +1189,21 @@ export type Database = {
       game_win_prob: {
         Row: {
           computed_at: string
+          draw_prob: number | null
           game_id: string
           home_win_prob: number
           method: string
         }
         Insert: {
           computed_at?: string
+          draw_prob?: number | null
           game_id: string
           home_win_prob: number
           method?: string
         }
         Update: {
           computed_at?: string
+          draw_prob?: number | null
           game_id?: string
           home_win_prob?: number
           method?: string
@@ -1188,6 +1511,7 @@ export type Database = {
         Row: {
           honor: string
           label: string
+          min_count: number
           rank: number
           season_first: boolean
           sport_id: string
@@ -1196,6 +1520,7 @@ export type Database = {
         Insert: {
           honor: string
           label: string
+          min_count?: number
           rank: number
           season_first?: boolean
           sport_id: string
@@ -1204,6 +1529,7 @@ export type Database = {
         Update: {
           honor?: string
           label?: string
+          min_count?: number
           rank?: number
           season_first?: boolean
           sport_id?: string
@@ -1294,6 +1620,120 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      kudos: {
+        Row: {
+          created_at: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kudos_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kudos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leaderboard_stats: {
+        Row: {
+          community_id: string
+          period: string
+          season: number
+          stat_key: string
+          updated_at: string
+          user_id: string
+          value: number
+          verified_only: boolean
+        }
+        Insert: {
+          community_id: string
+          period: string
+          season?: number
+          stat_key: string
+          updated_at?: string
+          user_id: string
+          value: number
+          verified_only?: boolean
+        }
+        Update: {
+          community_id?: string
+          period?: string
+          season?: number
+          stat_key?: string
+          updated_at?: string
+          user_id?: string
+          value?: number
+          verified_only?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leaderboard_stats_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leaderboard_stats_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mutes: {
+        Row: {
+          created_at: string
+          muted_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          muted_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          muted_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mutes_muted_id_fkey"
+            columns: ["muted_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mutes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       notification_prefs: {
         Row: {
@@ -1610,19 +2050,130 @@ export type Database = {
           },
         ]
       }
+      post_photos: {
+        Row: {
+          id: string
+          ordinal: number
+          post_id: string
+          storage_path: string
+        }
+        Insert: {
+          id?: string
+          ordinal: number
+          post_id: string
+          storage_path: string
+        }
+        Update: {
+          id?: string
+          ordinal?: number
+          post_id?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_photos_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          attendance_id: string | null
+          author_id: string
+          auto_posted: boolean
+          caption: string | null
+          comment_count: number
+          created_at: string
+          deleted_at: string | null
+          game_id: string | null
+          id: string
+          kind: string
+          kudos_count: number
+          reaction_id: string | null
+          visibility: string
+        }
+        Insert: {
+          attendance_id?: string | null
+          author_id: string
+          auto_posted?: boolean
+          caption?: string | null
+          comment_count?: number
+          created_at?: string
+          deleted_at?: string | null
+          game_id?: string | null
+          id?: string
+          kind: string
+          kudos_count?: number
+          reaction_id?: string | null
+          visibility?: string
+        }
+        Update: {
+          attendance_id?: string | null
+          author_id?: string
+          auto_posted?: boolean
+          caption?: string | null
+          comment_count?: number
+          created_at?: string
+          deleted_at?: string | null
+          game_id?: string | null
+          id?: string
+          kind?: string
+          kudos_count?: number
+          reaction_id?: string | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_attendance_id_fkey"
+            columns: ["attendance_id"]
+            isOneToOne: false
+            referencedRelation: "attendances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_reaction_id_fkey"
+            columns: ["reaction_id"]
+            isOneToOne: false
+            referencedRelation: "reactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_path: string | null
           birth_date: string | null
           created_at: string
+          creator_note: string | null
           display_name: string
+          followers_count: number
+          following_count: number
           handle: string
           home_city: string | null
           home_lat: number | null
           home_lng: number | null
           id: string
+          is_creator: boolean
           is_private: boolean
           onboarded_at: string | null
+          posts_backfilled_at: string
           share_seats: boolean
           show_on_overlap: boolean
           updated_at: string
@@ -1631,14 +2182,19 @@ export type Database = {
           avatar_path?: string | null
           birth_date?: string | null
           created_at?: string
+          creator_note?: string | null
           display_name?: string
+          followers_count?: number
+          following_count?: number
           handle: string
           home_city?: string | null
           home_lat?: number | null
           home_lng?: number | null
           id: string
+          is_creator?: boolean
           is_private?: boolean
           onboarded_at?: string | null
+          posts_backfilled_at?: string
           share_seats?: boolean
           show_on_overlap?: boolean
           updated_at?: string
@@ -1647,45 +2203,149 @@ export type Database = {
           avatar_path?: string | null
           birth_date?: string | null
           created_at?: string
+          creator_note?: string | null
           display_name?: string
+          followers_count?: number
+          following_count?: number
           handle?: string
           home_city?: string | null
           home_lat?: number | null
           home_lng?: number | null
           id?: string
+          is_creator?: boolean
           is_private?: boolean
           onboarded_at?: string | null
+          posts_backfilled_at?: string
           share_seats?: boolean
           show_on_overlap?: boolean
           updated_at?: string
         }
         Relationships: []
       }
-      reactions: {
+      reaction_prompts: {
         Row: {
-          created_at: string
-          emoji: string
-          feed_event_id: string
-          user_id: string
+          audience: string
+          event_id: string | null
+          fired_at: string
+          game_id: string
+          id: string
+          kind: string
+          label: string
+          significance: number | null
+          window_seconds: number
         }
         Insert: {
-          created_at?: string
-          emoji: string
-          feed_event_id: string
-          user_id: string
+          audience?: string
+          event_id?: string | null
+          fired_at?: string
+          game_id: string
+          id?: string
+          kind: string
+          label: string
+          significance?: number | null
+          window_seconds: number
         }
         Update: {
-          created_at?: string
-          emoji?: string
-          feed_event_id?: string
-          user_id?: string
+          audience?: string
+          event_id?: string | null
+          fired_at?: string
+          game_id?: string
+          id?: string
+          kind?: string
+          label?: string
+          significance?: number | null
+          window_seconds?: number
         }
         Relationships: [
           {
-            foreignKeyName: "reactions_feed_event_id_fkey"
-            columns: ["feed_event_id"]
+            foreignKeyName: "reaction_prompts_event_id_fkey"
+            columns: ["event_id"]
             isOneToOne: false
-            referencedRelation: "feed_events"
+            referencedRelation: "game_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reaction_prompts_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reactions: {
+        Row: {
+          attendance_id: string
+          back_path: string
+          captured_at: string
+          front_path: string
+          game_id: string
+          id: string
+          late_seconds: number | null
+          period_label: string | null
+          post_id: string | null
+          prompt_id: string | null
+          user_id: string
+          visibility: string
+          wp_seq: number | null
+        }
+        Insert: {
+          attendance_id: string
+          back_path: string
+          captured_at?: string
+          front_path: string
+          game_id: string
+          id?: string
+          late_seconds?: number | null
+          period_label?: string | null
+          post_id?: string | null
+          prompt_id?: string | null
+          user_id: string
+          visibility?: string
+          wp_seq?: number | null
+        }
+        Update: {
+          attendance_id?: string
+          back_path?: string
+          captured_at?: string
+          front_path?: string
+          game_id?: string
+          id?: string
+          late_seconds?: number | null
+          period_label?: string | null
+          post_id?: string | null
+          prompt_id?: string | null
+          user_id?: string
+          visibility?: string
+          wp_seq?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reactions_attendance_id_fkey"
+            columns: ["attendance_id"]
+            isOneToOne: false
+            referencedRelation: "attendances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reactions_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reactions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reactions_prompt_id_fkey"
+            columns: ["prompt_id"]
+            isOneToOne: false
+            referencedRelation: "reaction_prompts"
             referencedColumns: ["id"]
           },
           {
@@ -1699,6 +2359,7 @@ export type Database = {
       }
       reports: {
         Row: {
+          action: string | null
           created_at: string
           id: string
           reason: string
@@ -1709,6 +2370,7 @@ export type Database = {
           target_type: string
         }
         Insert: {
+          action?: string | null
           created_at?: string
           id?: string
           reason: string
@@ -1719,6 +2381,7 @@ export type Database = {
           target_type: string
         }
         Update: {
+          action?: string | null
           created_at?: string
           id?: string
           reason?: string
@@ -1732,6 +2395,64 @@ export type Database = {
           {
             foreignKeyName: "reports_reporter_id_fkey"
             columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      season_streaks: {
+        Row: {
+          end_season: number
+          is_active: boolean
+          min_games: number
+          seasons: number
+          sport_id: string
+          start_season: number
+          team_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          end_season: number
+          is_active?: boolean
+          min_games: number
+          seasons: number
+          sport_id: string
+          start_season: number
+          team_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          end_season?: number
+          is_active?: boolean
+          min_games?: number
+          seasons?: number
+          sport_id?: string
+          start_season?: number
+          team_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "season_streaks_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "sports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "season_streaks_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "season_streaks_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -2068,6 +2789,42 @@ export type Database = {
           },
         ]
       }
+      user_badges: {
+        Row: {
+          badge_key: string
+          context: Json
+          earned_at: string
+          user_id: string
+        }
+        Insert: {
+          badge_key: string
+          context?: Json
+          earned_at?: string
+          user_id: string
+        }
+        Update: {
+          badge_key?: string
+          context?: Json
+          earned_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_key_fkey"
+            columns: ["badge_key"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["key"]
+          },
+          {
+            foreignKeyName: "user_badges_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_bucket_lists: {
         Row: {
           added_at: string
@@ -2097,6 +2854,45 @@ export type Database = {
           },
           {
             foreignKeyName: "user_bucket_lists_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_counts: {
+        Row: {
+          games: number
+          season: number
+          sport_id: string
+          user_id: string
+          verified_games: number
+        }
+        Insert: {
+          games?: number
+          season?: number
+          sport_id: string
+          user_id: string
+          verified_games?: number
+        }
+        Update: {
+          games?: number
+          season?: number
+          sport_id?: string
+          user_id?: string
+          verified_games?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_counts_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "sports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_counts_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -2431,6 +3227,7 @@ export type Database = {
         Returns: boolean
       }
       can_view_avatar: { Args: { p_object_name: string }; Returns: boolean }
+      can_view_post: { Args: { p_post_id: string }; Returns: boolean }
       can_view_profile: { Args: { target: string }; Returns: boolean }
       can_view_seats: { Args: { p_attendance_id: string }; Returns: boolean }
       can_view_user: { Args: { target: string }; Returns: boolean }
@@ -2685,6 +3482,11 @@ export type Database = {
         Returns: number
       }
       is_blocked_between: { Args: { a: string; b: string }; Returns: boolean }
+      is_community_member: {
+        Args: { p_community_id: string }
+        Returns: boolean
+      }
+      is_muted: { Args: { p_muted: string }; Returns: boolean }
       is_mutual: { Args: { a: string; b: string }; Returns: boolean }
       is_superstar: {
         Args: { p_player: string; p_season: number }
@@ -2817,6 +3619,7 @@ export type Database = {
         }[]
       }
       players_seen_count: { Args: { p_user: string }; Returns: number }
+      post_author: { Args: { p_post_id: string }; Returns: string }
       process_game_final: { Args: { p_game_id: string }; Returns: Json }
       profile_view: { Args: { p_handle: string }; Returns: Json }
       publish_wrapped_if_season_over: {

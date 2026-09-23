@@ -157,6 +157,19 @@ feature, kept (Dean, Q1). New routes render placeholders: `/feed`, `/post/<id>`,
 `/react/<id>`, `/passport/streak/<team>`, `/passport/badges`, `/passport/favorites`. An unknown
 link lands on the Passport with a toast. Tests: `features/navigation/__tests__/tabs.test.tsx`.
 Screens: `docs/evidence/social/navigation/`.
+**The v2 schema is on local only** (migrations `20260924000100` to `000800`, pgTAP `060` to
+`067`, SPEC 5.3): the emoji table is `feed_reactions` and `reactions` is the photo table (R2);
+`checkins` is a session, `checked_in_at` renamed `started_at` with `ended_at`, `end_reason`,
+`attendance_id`, `visibility` (R4; `game_context` still answers `checked_in_at`, and Pick a side
+needs an open session); companion tags carry a status, confirmed at once for a placeholder and
+pending for a linked user (R5); posts, post photos, kudos, comments, mutes, reaction prompts,
+reactions, communities, members, community posts, leaderboards, streaks, badges, counts and four
+favorites, each with its RLS and counters kept by triggers. Proven by `supabase db diff`, which
+applied every migration to a fresh shadow database and found no difference from local. **Before
+this goes to hosted:** builds 4 and 5 write emoji to `reactions`, so on a hosted database with
+these migrations their emoji taps fail (and they show pending companion tags as companions).
+Ship a build carrying this branch first, or accept that. Storage buckets for post and reaction
+photos are not made yet (prompts 2 and 3).
 
 **The welcome screen is rebuilt (2026-09-22), and its wall restocks itself weekly.**
 `design/welcome-reference.html` is its source of truth; `app/(auth)/welcome.tsx` composes

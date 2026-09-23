@@ -211,7 +211,9 @@ welcome_wall_cards(week_start date, rank int 1..6, payload jsonb, created_at, pk
 ### 5.2 User data
 ```
 profiles(id uuid pk = auth.users.id, handle text unique, display_name, avatar_path,
-      home_city, home_lat, home_lng, is_private bool default false, created_at)
+      home_city, home_lat, home_lng, is_private bool default false, created_at,
+      is_creator bool, creator_note, followers_count int, following_count int,  -- server-written (social v2)
+      posts_backfilled_at timestamptz)          -- attendances before this never become posts
 user_teams(user_id, team_id, created_at)                    -- favorite teams; many allowed
 attendances(id uuid pk, user_id, game_id, source text: 'manual' | 'screenshot' | 'email' | 'checkin',
       verified bool, verified_via text null, section text null, row text null, seat text null,
@@ -220,15 +222,18 @@ attendances(id uuid pk, user_id, game_id, source text: 'manual' | 'screenshot' |
       created_at, updated_at, unique(user_id, game_id))
 people(id uuid pk, owner_user_id, display_name, linked_user_id uuid null, created_at)
       -- companions; a person may be a placeholder ("Dad") or linked to a real account
-attendance_companions(attendance_id, person_id)
+attendance_companions(attendance_id, person_id, status text: 'pending' | 'confirmed' | 'declined',
+      confirmed_at, invited_by)                 -- a placeholder person is confirmed at once; a linked user starts pending and answers
 pledges(id uuid pk, user_id, game_id, team_id, pledged_at timestamptz,
       win_prob_at_pledge numeric, status text: 'provisional' | 'valid' | 'void',
       void_reason text null, result text null: 'win' | 'loss' | 'tie', unique(user_id, game_id))
-checkins(id uuid pk, user_id, game_id, checked_in_at, distance_m int, accuracy_m int)
-      -- do not store raw coordinates
+checkins(id uuid pk, user_id, game_id, started_at, ended_at null, end_reason text null:
+      'final' | 'left' | 'timeout' | 'geofence_exit', attendance_id, distance_m int, accuracy_m int,
+      visibility text: 'mutuals' | 'off')       -- a session, not a moment; do not store raw coordinates
 follows(follower_id, followee_id, created_at, status text: 'active' | 'requested')
 blocks(blocker_id, blocked_id, created_at)
-reports(id, reporter_id, target_type, target_id, reason, created_at, resolved_at)
+reports(id, reporter_id, target_type, target_id, reason, created_at, resolved_at, action text null)
+mutes(user_id, muted_id, created_at)                        -- seen by the muter alone
 ticket_imports(id uuid pk, user_id, source text: 'screenshot' | 'email', storage_path text null,
       raw_text text null, parsed jsonb null, status text: 'pending' | 'parsed' | 'needs_review' | 'matched' | 'failed' | 'discarded',
       candidate_game_ids uuid[], matched_attendance_id uuid null, created_at)
@@ -240,9 +245,39 @@ user_bucket_lists(user_id, bucket_list_id, added_at)
 goals(id uuid pk, user_id, year int, title, definition jsonb, source text: 'template' | 'custom' | 'suggested',
       completed_at timestamptz null, created_at)
 feed_events(id uuid pk, actor_user_id, type text, game_id null, payload jsonb, created_at, visibility text)
-reactions(feed_event_id, user_id, emoji text, created_at)
+feed_reactions(feed_event_id, user_id, emoji text, created_at)   -- was `reactions` until social v2
 wrapped_snapshots(user_id, sport_id, season, payload jsonb, generated_at)
 user_stats_cache(user_id pk, payload jsonb, computed_at)
+```
+
+### 5.3 Social v2 (docs/prompts/social/)
+Posts are the feed's unit; reactions are photos taken at a moment of a game. Counters are kept by
+triggers, never by a client; streaks, badges, counts and leaderboards are written by the server
+alone. The visibility rules, in words, head each migration (`20260924000100` to `000800`).
+```
+posts(id uuid pk, author_id, kind text: 'game' | 'reaction' | 'stamp' | 'milestone' | 'goal' | 'wrapped',
+      attendance_id null, reaction_id null, game_id null, caption null,
+      visibility text: 'followers' | 'public' | 'private', auto_posted bool, created_at,
+      kudos_count int, comment_count int, deleted_at null)   -- one subject: game -> attendance, reaction -> reaction
+post_photos(id uuid pk, post_id, storage_path, ordinal int 0..9)
+kudos(post_id, user_id, created_at, pk (post_id, user_id))
+comments(id uuid pk, post_id, author_id, body, created_at, deleted_at null)
+reaction_prompts(id uuid pk, game_id, kind text: 'checkin' | 'event', event_id null, fired_at,
+      window_seconds int, audience text: 'home' | 'away' | 'all', significance null, label)
+reactions(id uuid pk, user_id, game_id, prompt_id null, attendance_id, back_path, front_path,
+      captured_at, late_seconds null, wp_seq null, period_label null, visibility, post_id null)
+communities(id uuid pk, slug unique, name, kind text: 'team' | 'venue' | 'school' | 'custom',
+      team_id null, venue_id null, description, is_official bool, is_private bool, owner_id null,
+      member_count int, created_at)
+community_members(community_id, user_id, role text: 'member' | 'moderator' | 'owner', joined_at)
+community_posts(community_id, post_id)
+leaderboard_stats(user_id, community_id, period text: 'season' | 'month' | 'all', season int
+      (the season, yyyymm for a month, 0 for all), stat_key, value, verified_only, updated_at)
+season_streaks(user_id, team_id, sport_id, start_season, end_season, seasons, min_games, is_active, updated_at)
+badges(key pk, name, description, criteria jsonb (a 6.13 predicate), tier, sport_id null, is_secret)
+user_badges(user_id, badge_key, earned_at, context jsonb)
+user_counts(user_id, sport_id, season int (0 for lifetime), games, verified_games)
+favorite_games(user_id, ordinal int 1..4, game_id, note null)
 ```
 
 Indexes: `attendances(user_id)`, `attendances(game_id)`, `games(scheduled_start)`, `games(sport_id, season)`, `game_appearances(player_id)`, `follows(followee_id)`, `feed_events(actor_user_id, created_at desc)`.
@@ -492,11 +527,24 @@ The reference shapes (used inside seals and thumbnails) are stylized placeholder
 Users upload a profile photo (cropped circle). Until they do, show a generated default avatar in the reference's style. Wherever a person appears (friend rows, avatar stacks, facepiles, profile), use their photo, ringed in their primary team's color where the reference shows a ring.
 
 ### 8.7 Navigation
-Tab bar: **Passport**, **Games**, **Plan**, **Profile**. The active tab uses the current screen's team accent.
-- Passport → record game log (slide-over), stamps, superlatives, players seen, moments.
-- Games → game detail → Relive; check-in → Pick a side; imports inbox.
-- Plan → game-day plan (demo shell behind `FEATURE_PLAN` in v1).
-- Profile → Friends (slide-over panel with With, Following, Rivals segments), Goals, Map, Wrapped, Settings.
+Tab bar (social v2): **Feed**, **Passport**, **Games**, **Plan**, **Profile**, Feed leftmost. The
+active tab uses the team accent in scope. Each tab is its own stack: switching tabs keeps every
+stack where it was, and tapping the tab that is showing pops it to its root. A game, Relive, a
+person's profile or a stadium guide opens on whichever tab it was tapped from. Paths never change
+between builds: a cold deep link opens on the owning tab with that tab's root under it, and an
+unknown link lands on the Passport with a toast. Segments (Feed's Following / Discover in `?tab=`,
+Games' Upcoming / History / Imports in `?segment=`) rewrite a query param in place and never push.
+- Feed (`/feed`) → a post (`/post/[postId]`) and its comments, communities (`/communities`), a
+  community (`/community/[slug]`) and its leaderboard, other fans' profiles (`/u/[handle]`).
+- Passport (`/`) → record game log (slide-over), stamps, superlatives, players seen, moments,
+  badges (`/passport/badges`), four favorites (`/passport/favorites`), a team streak
+  (`/passport/streak/[teamId]`).
+- Games (`/games`) → game detail → Relive; check-in → Pick a side; imports inbox; log flow.
+- Plan (`/plan`) → the game-day plan (kept as built, Dean 2026-09-23).
+- Profile (`/profile`) → friends, goals, map, Wrapped as before (prompt 4 trims it to counts, four
+  favorites and recent games); the gear opens Settings (`/settings`), which now also holds friends,
+  communities, badges and four favorites beside every account page.
+- Over the tabs: Wrapped, share cards, and the reaction camera (`/react/[gameId]`).
 - Stadium guide opens from a venue or stamp (demo shell behind `FEATURE_GUIDE` in v1).
 
 ### 8.8 Screens

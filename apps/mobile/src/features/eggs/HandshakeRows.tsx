@@ -8,6 +8,7 @@ import { Row } from '@/components/Row';
 import { Text } from '@/components/Text';
 import { isWithinCheckInWindow } from '@/features/checkin/lock';
 import { useGameContext } from '@/features/checkin/queries';
+import { inOpenSession } from '@/features/checkin/session';
 import { useProfile } from '@/features/profile/queries';
 import { openShare } from '@/features/share/navigate';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -55,7 +56,7 @@ export function HandshakeRows({
   const profile = useProfile();
 
   const ctx = context.data ?? null;
-  const viewerCheckedIn = !!ctx?.checked_in_at;
+  const viewerCheckedIn = inOpenSession(ctx);
   // The clock is state, not a call during render: a minute's tick is also what closes the
   // window on a screen that has been left open since before the final.
   const [now, setNow] = React.useState(() => Date.now());
