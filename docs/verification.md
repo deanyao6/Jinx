@@ -810,7 +810,7 @@ Relive rows, which only attended games ever had) and 2,756 on hosted (2,793 deta
 after, 48 famous games without detail now wanting it); players rows stay (rosters, honors, moves
 and firsts reference them). Local after `vacuum full`: 145 MB. Hosted reports its size once
 autovacuum runs. Proof that nothing a fan can see changed: the Relive verifier's 15 games pass,
-the 21 curated famous games resolve, and every attended game keeps its detail (test `019`).
+the 21 curated famous games resolve, and every attended game keeps its detail (test `019`). On 2026-09-22 at the end of the wave a `vacuum full` of games, game_appearances, game_scoring_timeline, game_events and game_win_prob on hosted (through `supabase db query --linked`) took it from 116 MB to 52 MB.
 
 ## Live feeds from the phone (next-wave C) — VERIFIED 2026-09-22
 
@@ -1030,4 +1030,34 @@ Before and after, the ten biggest (badge ring and the stripe under the scoreboar
 `after-<club>.png` for Cincinnati, Chicago, Seattle, Columbus, New England, San Jose, LA
 Galaxy, San Diego, D.C. and Dallas. Dean may adjust any of them in Figma; the 13 reference rows
 were not touched.
+
+## Light mode and the unwalked journeys (next-wave G) — WALKED 2026-09-22
+
+Method: a script opens each of 50 routes by deep link on the session's simulator and shoots
+it (`docs/evidence/light/<theme>-light/NN-<route>.png`), relaunching the app before the tab
+roots and after the routes presented as modals, whose sheet otherwise sits over the next shot.
+Two dev links made it scriptable: `?themeTeam=<team id>` picks the team the app wears (the
+settings theme picker) and `relive/<id>?step=N` opens a story step. Both are `__DEV__` only.
+
+G.1, light mode under the Phillies (red accents) and the Bears (navy): every screen readable;
+chips, the text fields inside cards, toggles, badges, rings, the map, the share card and the
+Wrapped story all render with the team's accent, white on the team's fill. No screen was found
+where something readable in dark went invisible in light.
+
+G.2, signed out: email and code, and the six onboarding steps as a freshly created, confirmed
+user (an unconfirmed user's magic link is refused as expired), both modes. One nit: the name
+field's placeholder on the first step renders letter-spaced in both modes; the field carries no
+letter spacing of its own.
+
+G.3, the MLS journey in light mode: the players prompt for Inter Miami, the game page for the
+2-2 draw (Duration 2:02, the four goals, Neutral) and for the 2022 MLS Cup ("LAFC won on
+penalties (0–3, away–home)"), the search screen, the log sheet, the Nu Stadium stamp, the MLS
+bucket list at 1 of 30, players seen with Dreyer, Messi and Suárez, Messi's page, Relive at
+full time, the 2026 MLS Wrapped preview ("1 match") and the share card.
+
+G.4, parity: `npm run parity` on 2026-09-22 (demo mode on for the run, off again after) compared
+34 shots: mean 6.55% mismatch, passport-all 4.14% light and 3.55% dark, exactly the figures of
+the 2026-09-16 run, so the light-mode walk changed nothing the reference measures; the worst
+is relive-mid at 21.03% light (the reference's fixture story against the app's demo story).
+The sheets are in `design/parity/sheets/` (reference | app | diff), for Dean to approve.
 

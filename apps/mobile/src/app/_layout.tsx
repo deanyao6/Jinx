@@ -29,6 +29,7 @@ import { useProfile } from '@/features/profile/queries';
 import { initSentry, wrapRoot } from '@/lib/sentry';
 import { useJinxFonts } from '@/theme/fonts';
 import { AccentRoot } from '@/features/teams/AccentRoot';
+import { useThemeTeamStore } from '@/features/teams/themeStore';
 import { TeamPaletteProvider } from '@/theme/reference/TeamTheme';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 import { darkColors, lightColors } from '@/theme/tokens';
@@ -144,10 +145,19 @@ function RootNavigator() {
   // Development only: any route opened with `?signOut=1` (`xcrun simctl openurl booted
   // jinx:///settings?signOut=1`) signs out, because nothing can tap the confirm sheet in the
   // simulator (STATE.md trap 9). A production build ignores the parameter.
-  const { signOut: signOutParam } = useGlobalSearchParams<{ signOut?: string }>();
+  const { signOut: signOutParam, themeTeam } = useGlobalSearchParams<{
+    signOut?: string;
+    themeTeam?: string;
+  }>();
   useEffect(() => {
     if (__DEV__ && signOutParam === '1' && signedIn) void signOut();
   }, [signOutParam, signedIn, signOut]);
+  // Development only, the same way: `?themeTeam=<team id>` picks the team the app wears (the
+  // theme picker in settings), so a light-mode walk can be shot under two themes by script.
+  const userId = profile.data?.id;
+  useEffect(() => {
+    if (__DEV__ && themeTeam && userId) useThemeTeamStore.getState().setThemeTeam(userId, themeTeam);
+  }, [themeTeam, userId]);
 
   useEffect(() => {
     if (onboarded && pendingRoute) {
