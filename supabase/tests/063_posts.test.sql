@@ -94,8 +94,18 @@ select is((select count(*)::int from public.posts where id in ('b6300000-0000-40
 -- ---------------------------------------------------------------------------
 -- Writing posts: the server's columns stay the server's
 -- ---------------------------------------------------------------------------
-insert into public.posts (id, author_id, kind, visibility, kudos_count, comment_count, auto_posted)
-values ('b6300000-0000-4000-8000-0000000000d8', 'b6300000-0000-4000-8000-0000000000a1', 'milestone', 'public', 50, 7, true);
+-- A client writes game and reaction posts only; system posts are the server's (20260924010000,
+-- tested in 070). So this one is a game post, about a second game the author logged.
+reset role;
+insert into public.games (id, sport_id, season, game_type, scheduled_start, home_team_id, away_team_id, status, provider, provider_game_id)
+select '00000000-0000-0000-0000-00000063c002', sport_id, season, game_type, scheduled_start + interval '1 day', home_team_id, away_team_id, status, provider, 'po-g2'
+from public.games where id = '00000000-0000-0000-0000-00000063c001';
+insert into public.attendances (id, user_id, game_id, source) values
+  ('b6300000-0000-4000-8000-0000000000c3', 'b6300000-0000-4000-8000-0000000000a1', '00000000-0000-0000-0000-00000063c002', 'manual');
+set local role authenticated;
+set local request.jwt.claims to '{"sub":"b6300000-0000-4000-8000-0000000000a1","role":"authenticated"}';
+insert into public.posts (id, author_id, kind, attendance_id, visibility, kudos_count, comment_count, auto_posted)
+values ('b6300000-0000-4000-8000-0000000000d8', 'b6300000-0000-4000-8000-0000000000a1', 'game', 'b6300000-0000-4000-8000-0000000000c3', 'public', 50, 7, true);
 select is((select kudos_count + comment_count from public.posts where id = 'b6300000-0000-4000-8000-0000000000d8'), 0, 'a new post starts with zero counters whatever the client sends');
 select is((select auto_posted from public.posts where id = 'b6300000-0000-4000-8000-0000000000d8'), false, 'a client cannot mark a post auto-posted');
 update public.posts set kudos_count = 99, caption = 'Great night' where id = 'b6300000-0000-4000-8000-0000000000d1';
