@@ -6,10 +6,12 @@
  *
  * First touchdown: every season's play-by-play in order, the first play with touchdown = 1 and
  * a td_player_id names the game (`firstTouchdowns`; the same column the scoring timeline uses
- * for its scorer, packages/core/src/providers/nfl/parse.ts). The floor is PBP_FLOOR: a player
- * whose rookie season is before it may have scored before the data begins, so he gets no
- * first. A first already stored is never replaced, so the daily run over the current season
- * only adds players scoring for the first time. Defaults to the current season.
+ * for its scorer, packages/core/src/providers/nfl/parse.ts).
+ *
+ * A first is only recorded for a player whose rookie season is inside the scanned range
+ * (`canKnowFirst`): a scan that starts after he debuted cannot see the touchdown that was
+ * really his first. The daily run reads the current season alone, so it records rookies and
+ * nobody else. A first already stored is never replaced. Defaults to the current season.
  */
 import { chunk, firstTouchdowns, selectAll, upsertRows, type TouchdownPlay } from '@jinx/core';
 
@@ -21,6 +23,19 @@ import { currentNflSeason } from './run.js';
 
 /** The first season of play-by-play this pipeline reads. */
 export const PBP_FLOOR = 2000;
+
+/**
+ * Can a scan starting at `from` know this player's first touchdown?
+ *
+ * Only when it reaches back to his rookie season. Before 2026-09-23 this asked whether the
+ * rookie season was after PBP_FLOOR, which is true of nearly everyone, so the daily run over
+ * the current season alone recorded each player's first touchdown OF THAT SEASON as his first
+ * ever: DeVonta Smith, a 2021 rookie, carried a 2026 badge. Hosted held 112 such rows and 104
+ * were wrong.
+ */
+export function canKnowFirst(rookieSeason: number | null | undefined, from: number): boolean {
+  return rookieSeason != null && rookieSeason >= from && rookieSeason >= PBP_FLOOR;
+}
 
 async function seasonPlays(season: number): Promise<TouchdownPlay[]> {
   let fetched;
@@ -80,8 +95,7 @@ async function main(): Promise<void> {
     let added = 0;
     for (const [gsis, game] of found) {
       if (firsts.has(gsis)) continue;
-      const rookie = players.get(gsis)?.rookieSeason;
-      if (rookie == null || rookie < PBP_FLOOR) continue;
+      if (!canKnowFirst(players.get(gsis)?.rookieSeason, from)) continue;
       firsts.set(gsis, game);
       added += 1;
     }
