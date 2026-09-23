@@ -334,7 +334,7 @@ $$;
 
 revoke all on function public.recompute_user_counts(uuid) from public, anon, authenticated;
 revoke all on function public.season_game_counts(uuid) from public, anon, authenticated;
-revoke all on function public.recompute_user_leaderboard_stats(uuid) from public, anon, authenticated;
+revoke all on function public.recompute_user_leaderboard_stats(uuid, uuid) from public, anon, authenticated;
 
 -- ---------------------------------------------------------------------------
 -- The optional post-final hooks (same guarded pattern as evaluate_goals_for_users). Recomputing
@@ -486,11 +486,12 @@ begin
 end;
 $$;
 
+drop trigger if exists community_members_after_insert on public.community_members;
 create trigger community_members_after_insert
   after insert on public.community_members
   for each row execute function public.community_members_after_insert();
 
 -- A badge earned makes a system post (section 5: "creates a system post and a share card").
-alter table public.feed_events drop constraint feed_events_type_check;
+alter table public.feed_events drop constraint if exists feed_events_type_check;
 alter table public.feed_events add constraint feed_events_type_check
   check (type in ('logged_game', 'pledge_won', 'pledge_lost', 'new_stamp', 'goal_completed', 'milestone', 'wrapped_published', 'famous_game', 'badge_earned'));

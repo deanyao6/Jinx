@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, View } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
@@ -18,6 +18,7 @@ import {
   useJoinCommunity,
   useLeaveCommunity,
 } from '@/features/communities/queries';
+import { REPORT_REASONS, useReport } from '@/features/social/queries';
 import { statsForCommunity, type Sport } from '@jinx/core';
 import { TeamTheme } from '@/theme/reference/TeamTheme';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -104,6 +105,19 @@ function CommunityBody({
   const theme = useTheme();
   const router = useRouter();
   const feed = useCommunityFeed(joined ? communityId : undefined);
+  const report = useReport();
+
+  const onReport = () => {
+    Alert.alert('Report this community', 'What is wrong with it?', [
+      ...REPORT_REASONS.map((reason) => ({
+        text: reason,
+        onPress: () => {
+          report.mutate({ targetType: 'community', targetId: communityId, reason });
+        },
+      })),
+      { text: 'Cancel', style: 'cancel' as const },
+    ]);
+  };
 
   return (
     <Screen>
@@ -129,6 +143,7 @@ function CommunityBody({
             onPress={joined ? onLeave : onJoin}
             disabled={busy}
           />
+          <Button title="Report" variant="ghost" onPress={onReport} />
         </View>
       </Card>
 
