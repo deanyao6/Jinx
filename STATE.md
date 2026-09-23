@@ -669,6 +669,17 @@ the ones that disagree with the file.
 
 ## 7. Traps, each of which cost a previous session real time
 
+**Building locally can break the next EAS build, through the fingerprint** (2026-09-23, builds 6
+and 7). The iOS build writes files back into `node_modules`: react-native-maps' podspec has a
+`script_phase` that rewrites `ios/AirMaps/RNMapsDefines.h` (`HAVE_GOOGLE_MAPS` is 1 as published
+and 0 here, with no Google Maps pods), and `expo-modules-jsi/apple` collects Xcode's
+`.DerivedData` and a built `Products/` xcframework. Both directories are fingerprint sources.
+EAS computes its fingerprint **before** `xcodebuild` runs, so it never sees them, and the two
+sides disagree. `apps/mobile/.fingerprintignore` now excludes all three paths, which are build
+outputs and not inputs; with it the hash is identical whether or not a local build has run.
+**Do not delete that file**, and if a build ever fails in `CONFIGURE_EXPO_UPDATES`, read the
+fingerprint diff in the log and add whatever new build output appears there.
+
 **A drifted `node_modules` fails an EAS build through the fingerprint, not through a compile
 error** (2026-09-23, build 6). `runtimeVersion.policy` is `fingerprint`, so EAS hashes the
 project on its own builder and refuses the build when that disagrees with the hash computed

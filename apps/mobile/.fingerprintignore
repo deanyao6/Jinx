@@ -1,0 +1,11 @@
+# Files that the local iOS build writes back into node_modules. They are build outputs, not
+# inputs, but the fingerprint runtime policy hashes them, so building on this machine changed
+# the fingerprint and EAS refused the build in CONFIGURE_EXPO_UPDATES. Builds 6 and 7 both died
+# that way. EAS computes its fingerprint before xcodebuild runs, so it never sees these.
+#
+# react-native-maps' podspec has a script_phase that rewrites this header, setting
+# HAVE_GOOGLE_MAPS from whether the Google Maps pods are present (1 as published, 0 here).
+**/react-native-maps/ios/AirMaps/RNMapsDefines.h
+# Xcode's module cache and built xcframework, written into the package during a local build.
+**/expo-modules-jsi/apple/.DerivedData/**
+**/expo-modules-jsi/apple/Products/**
