@@ -669,6 +669,20 @@ the ones that disagree with the file.
 
 ## 7. Traps, each of which cost a previous session real time
 
+**A drifted `node_modules` fails an EAS build through the fingerprint, not through a compile
+error** (2026-09-23, build 6). `runtimeVersion.policy` is `fingerprint`, so EAS hashes the
+project on its own builder and refuses the build when that disagrees with the hash computed
+here. Build 6 died in `CONFIGURE_EXPO_UPDATES` with local `71c08621` against EAS `b58dda72`,
+and the entire difference was one directory: `node_modules/react-native-maps`, same version,
+same 388 files, different contents, because this checkout's tree had drifted from
+`package-lock.json`. EAS installs from the lockfile, so **`npm ci` is the fix**, and afterwards
+that directory hashed `919126d9` here, exactly what EAS had computed. **Before any EAS build,
+run `npx expo-doctor` and prefer `npm ci` over `npm install`.** Doctor was failing two checks
+at the time and the build started anyway: `app.json` carried `newArchEnabled`, which SDK 57
+dropped from the schema and which the generated project sets by itself
+(`RCT_NEW_ARCH_ENABLED=1`), and eight packages trailed the versions the SDK expects.
+
+
 **A native dependency added in JS does not reach the simulator until `ios/` is regenerated**
 (2026-09-23). `npm run ios` used to run prebuild only when `ios/` was missing, so social v2's
 `expo-camera` and `expo-contacts` compiled against a week-old Xcode project: the build succeeded,
