@@ -164,7 +164,6 @@ export function mlbEventCandidate(play: MlbLivePlay, ctx: MlbPlayContext): Event
 // NFL: free and coarse. ESPN's scoreboard shows score changes; the play arrives overnight.
 // ---------------------------------------------------------------------------
 
-const NFL_GAME_SECONDS = 4 * 15 * 60;
 
 /**
  * A rough home win probability from margin and time, the NBA model's shape with football's
