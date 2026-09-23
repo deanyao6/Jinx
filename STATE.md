@@ -669,6 +669,16 @@ the ones that disagree with the file.
 
 ## 7. Traps, each of which cost a previous session real time
 
+**A native dependency added in JS does not reach the simulator until `ios/` is regenerated**
+(2026-09-23). `npm run ios` used to run prebuild only when `ios/` was missing, so social v2's
+`expo-camera` and `expo-contacts` compiled against a week-old Xcode project: the build succeeded,
+the app installed, and it died at launch with `Cannot find native module 'ExpoContactsNext'` the
+moment onboarding reached the contacts step. `Podfile.lock` had no reference to either module.
+`scripts/ios-sim.sh` now keeps `ios/.jinx-native-stamp`, a hash of `apps/mobile/package.json` and
+`app.json`, and regenerates plus re-pods plus restarts Metro when it changes. **If you ever see
+"Cannot find native module", the answer is always prebuild and `pod install`, never the JS.**
+
+
 **`INSERT ... RETURNING` can be refused by RLS even when the insert is legal** (2026-09-23, cost
 the feed session a shipped-but-broken composer). PostgREST's `.insert().select()` compiles to
 `INSERT ... RETURNING`, and Postgres re-checks the returned row against the table's SELECT
