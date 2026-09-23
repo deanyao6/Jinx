@@ -109,14 +109,13 @@ tests must cover both.
 
 These are not blocked on the other parts, so start everything else and come back.
 
-### Q1. Does Plan really become a "coming soon" screen? (prompt 1, section 1)
+### Q1. Plan: DECIDED 2026-09-23, keep it and build on it
 
-Plan is built and tested today. The brief would replace it with a placeholder, which deletes
-working code and would be visible to anyone on TestFlight as a feature disappearing.
-
-**Recommendation: keep the existing Plan.** The prototype predates it, or Dean decided it is not
-good enough. If he does want it hidden, hide it behind `FEATURE_PLAN=false` rather than deleting
-the code, so nothing is lost.
+Dean's call: **keep the existing Plan feature, and add anything new on top of it.** Prompt 1's
+"ship Plan as a coming soon screen" is overruled; the prototype predates the real feature.
+`features/plan/gameDay.ts`, `features/plan/reference/` and `(tabs)/plan.tsx` stay exactly as they
+are, with their tests. Nothing about Plan is deleted, replaced or hidden behind a flag. Anything
+the briefs want to add to Plan is additive.
 
 ### Q2. Routes: DECIDED 2026-09-23, keep the current paths and add only the new ones
 
