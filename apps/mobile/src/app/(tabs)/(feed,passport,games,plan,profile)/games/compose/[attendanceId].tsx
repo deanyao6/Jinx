@@ -127,7 +127,12 @@ function Composer({
         accessibilityLabel="Caption"
       />
 
-      <SectionHeader title="Photos" action={room > 0 ? 'Add' : undefined} onAction={() => void addPhotos()} />
+      {/* Once there are photos, "Add" moves up to the heading; before, the button is the way in. */}
+      <SectionHeader
+        title="Photos"
+        action={room > 0 && (seed.photoPaths.length || photos.length) ? 'Add' : undefined}
+        onAction={() => void addPhotos()}
+      />
       {seed.photoPaths.length || photos.length ? (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
           {seed.photoPaths.map((p) => (

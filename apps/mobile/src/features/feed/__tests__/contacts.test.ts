@@ -1,10 +1,15 @@
-import { createHash } from 'node:crypto';
+import { matchContacts, type MatchCall } from '../contacts';
+
+// Node's own SHA-256 under Jest; the app uses expo-crypto (the module is mocked below).
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { createHash } = require('crypto') as {
+  createHash: (alg: string) => { update: (s: string) => { digest: (enc: 'hex') => string } };
+};
 
 jest.mock('expo-contacts', () => ({}));
 jest.mock('expo-crypto', () => ({}));
 jest.mock('@/lib/supabase', () => ({ supabase: {} }));
 
-import { matchContacts, type MatchCall } from '../contacts';
 
 const sha256Hex = async (s: string) => createHash('sha256').update(s).digest('hex');
 

@@ -7,6 +7,7 @@ import { PersonAvatar } from '@/components/PersonAvatar';
 import { Text } from '@/components/Text';
 import { gameDate } from '@/features/feed/copy';
 import { useAnswerTag, usePendingTags, type PendingTag } from '@/features/feed/queries';
+import { env } from '@/lib/env';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /**
@@ -23,7 +24,8 @@ export function tagQuestion(tag: Pick<PendingTag, 'taggerName' | 'awayName' | 'h
 
 export function PendingTags() {
   const tags = usePendingTags();
-  if (!tags.data?.length) return null;
+  // Demo mode shows fixture people only, never a real account's cached question.
+  if (env.demo || !tags.data?.length) return null;
   return (
     <View style={{ gap: 12, marginBottom: 12 }}>
       {tags.data.map((tag) => (

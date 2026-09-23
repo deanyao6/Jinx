@@ -14,6 +14,7 @@ import { COMMENT_MAX, postHeadline } from '@/features/feed/copy';
 import { friendlySocialError } from '@/features/feed/errors';
 import { useAddComment, useComments, usePost } from '@/features/feed/queries';
 import { CommentLine } from '@/features/feed/ui/CommentLine';
+import { useInTabNavigator } from '@/features/navigation/context';
 import { env } from '@/lib/env';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -25,6 +26,8 @@ import { useTheme } from '@/theme/ThemeProvider';
 export default function CommentsRoute() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  // Over the tab bar the home indicator is already cleared.
+  const overTabBar = useInTabNavigator();
   const { postId } = useLocalSearchParams<{ postId: string }>();
   const post = usePost(postId);
   const comments = useComments(postId);
@@ -85,7 +88,7 @@ export default function CommentsRoute() {
         style={{
           paddingHorizontal: theme.spacing.lg,
           paddingTop: theme.spacing.sm,
-          paddingBottom: insets.bottom + theme.spacing.sm,
+          paddingBottom: (overTabBar ? 0 : insets.bottom) + theme.spacing.sm,
           backgroundColor: theme.colors.card,
           gap: 8,
         }}
