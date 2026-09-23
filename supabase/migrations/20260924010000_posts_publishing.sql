@@ -121,7 +121,7 @@ end;
 $$;
 
 -- A client writes game and reaction posts; stamps, milestones, goals and Wrapped are the
--- server's. Redefined from 20260924000500 with the kind added.
+-- server's. The policy is 20260924000400's, as 20260924000500 last redefined it, with the kind added.
 drop policy posts_insert on public.posts;
 create policy posts_insert on public.posts for insert to authenticated
   with check (

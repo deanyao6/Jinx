@@ -45,7 +45,8 @@ select is((select count(*)::integer from public.compatibility_with('b7400000-000
   'a one-way follow gets nothing');
 select is((select count(*)::integer from public.compatibility_cache), 0, 'the cache is not readable directly');
 reset role;
-select is((select count(*)::integer from public.compatibility_cache), 1, 'the mutual pair was cached, once');
+select is((select count(*)::integer from public.compatibility_cache
+            where user_lo::text like 'b7400000%' and user_hi::text like 'b7400000%'), 1, 'the mutual pair was cached, once');
 
 insert into public.blocks (blocker_id, blocked_id) values ('b7400000-0000-4000-8000-0000000000b1', 'b7400000-0000-4000-8000-0000000000a1');
 set local role authenticated;
