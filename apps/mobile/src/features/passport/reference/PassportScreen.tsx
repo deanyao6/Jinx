@@ -219,9 +219,12 @@ function StreakPatches() {
   const { base } = useReferenceTheme();
   const streaks = useStreaks();
   if (env.demo || !streaks.data || streaks.data.length === 0) return null;
+  // The longest few, not every team with any history at all: a fan with a scattered log of
+  // one-off games for a dozen teams should not get a dozen 1-season patches.
+  const shown = streaks.data.slice(0, 3);
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
-      {streaks.data.map((s) => (
+      {shown.map((s) => (
         <Pressable
           key={s.team_id}
           accessibilityRole="button"

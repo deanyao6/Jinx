@@ -75,8 +75,7 @@ function StreakDetailBody({ teamId }: { teamId: string }) {
       </Card>
 
       <Notice>
-        Computed, not set by you: consecutive seasons with at least one {s.team_name} game. The
-        floor is your worst season inside the run, so it rises on its own.
+        {`Computed, not set by you: consecutive seasons with at least one ${s.team_name} game. The floor is your worst season inside the run, so it rises on its own.`}
       </Notice>
 
       {seasons.map((row) => (
@@ -112,7 +111,7 @@ function StreakDetailBody({ teamId }: { teamId: string }) {
 
       {!s.is_active ? (
         <Notice tone="error" style={{ marginTop: theme.spacing.md }}>
-          Broken: the season after this run ended with no {s.team_name} games.
+          {`Broken: the season after this run ended with no ${s.team_name} games.`}
         </Notice>
       ) : null}
     </Screen>

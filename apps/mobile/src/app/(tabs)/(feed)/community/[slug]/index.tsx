@@ -136,16 +136,19 @@ function CommunityBody({
             {description}
           </Text>
         ) : null}
-        <View style={{ flexDirection: 'row', gap: 8, marginTop: theme.spacing.md }}>
-          <Button
-            title={joined ? 'Leave' : 'Join'}
-            variant={joined ? 'secondary' : 'primary'}
-            onPress={joined ? onLeave : onJoin}
-            disabled={busy}
-          />
-          <Button title="Report" variant="ghost" onPress={onReport} />
-        </View>
       </Card>
+      {/* Actions live on the canvas, not inside the solid hero: the accent-colored button
+          variants read as accent-on-canvas, which disappears against a card already filled
+          with that same accent. */}
+      <View style={{ flexDirection: 'row', gap: 8, marginBottom: theme.spacing.md }}>
+        <Button
+          title={joined ? 'Leave' : 'Join'}
+          variant={joined ? 'secondary' : 'primary'}
+          onPress={joined ? onLeave : onJoin}
+          disabled={busy}
+        />
+        <Button title="Report" variant="ghost" onPress={onReport} />
+      </View>
 
       {joined ? (
         <>
@@ -222,7 +225,9 @@ function LeaderboardPreview({
   statKey: string;
   onPress: () => void;
 }) {
-  const board = useCommunityLeaderboard(communityId, 'season', 0, statKey, false);
+  // All-time, not season: the preview does not know the community's current season number
+  // (that resolution lives in the full leaderboard screen), and all-time is always valid.
+  const board = useCommunityLeaderboard(communityId, 'all', 0, statKey, false);
   const viewer = board.data?.find((r) => r.is_viewer);
   const label = statKey
     .replace(/^(mlb|nfl|nba|mls)_/, '')

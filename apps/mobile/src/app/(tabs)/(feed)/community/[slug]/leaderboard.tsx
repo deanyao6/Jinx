@@ -128,7 +128,7 @@ function LeaderboardBody({
       {board.isPending ? <Loading /> : null}
       {board.isError ? <ErrorNotice error={board.error} onRetry={board.refetch} /> : null}
       {board.data && board.data.length === 0 ? (
-        <Notice>Nobody has ranked yet for {statLabel(statKey).toLowerCase()}.</Notice>
+        <Notice>{`Nobody has ranked yet for ${statLabel(statKey).toLowerCase()}.`}</Notice>
       ) : null}
 
       {page.map((row) => (
