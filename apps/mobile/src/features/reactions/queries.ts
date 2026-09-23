@@ -161,38 +161,41 @@ export async function postReaction(userId: string, input: CaptureInput): Promise
     await supabase.storage.from(REACTION_BUCKET).remove([backPath]);
     throw e;
   }
-  const { data: reaction, error } = await supabase
-    .from('reactions')
-    .insert({
-      id,
-      user_id: userId,
-      game_id: input.gameId,
-      prompt_id: input.promptId,
-      attendance_id: input.attendanceId,
-      back_path: backPath,
-      front_path: frontPath,
-      visibility: input.visibility,
-      period_label: input.periodLabel,
-    })
-    .select('id')
-    .single();
+  // No RETURNING on either insert: RETURNING re-checks the row against the SELECT policy, and
+  // `can_view_post` reads `posts` with the statement's own snapshot, so it cannot see the row it
+  // is asked about and the insert is refused. The ids are minted here instead.
+  const { error } = await supabase.from('reactions').insert({
+    id,
+    user_id: userId,
+    game_id: input.gameId,
+    prompt_id: input.promptId,
+    attendance_id: input.attendanceId,
+    back_path: backPath,
+    front_path: frontPath,
+    visibility: input.visibility,
+    period_label: input.periodLabel,
+  });
   if (error) {
     await supabase.storage.from(REACTION_BUCKET).remove([backPath, frontPath]);
     throw error;
   }
   let postId: string | null = null;
   if (input.visibility !== 'private') {
-    const { data: post, error: postError } = await supabase
+    postId = Crypto.randomUUID();
+    const { error: postError } = await supabase
       .from('posts')
-      .insert({ author_id: userId, kind: 'reaction', reaction_id: reaction.id, game_id: input.gameId, visibility: input.visibility })
-      .select('id')
-      .single();
-    if (postError) throw postError;
-    postId = post.id;
-    const { error: linkError } = await supabase.from('reactions').update({ post_id: post.id }).eq('id', reaction.id);
-    if (linkError) throw linkError;
+      .insert({ id: postId, author_id: userId, kind: 'reaction', reaction_id: id, game_id: input.gameId, visibility: input.visibility });
+    if (!postError) {
+      const { error: linkError } = await supabase.from('reactions').update({ post_id: postId }).eq('id', id);
+      if (linkError) throw linkError;
+    } else {
+      // A reaction that was meant to be posted and could not be is not kept half-done.
+      await supabase.from('reactions').delete().eq('id', id);
+      await supabase.storage.from(REACTION_BUCKET).remove([backPath, frontPath]);
+      throw postError;
+    }
   }
-  return { id: reaction.id, postId };
+  return { id, postId };
 }
 
 export function usePostReaction() {

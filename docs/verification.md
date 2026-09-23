@@ -1093,3 +1093,19 @@ missing `situation` costs nothing but the return-score case. The probe on the Ea
 Rams row through the feed, and today's board with any live game's `situation` summarised.
 The first game of week 3 is Thursday 2026-09-24 at 20:15 EDT; run the probe then to fill this
 in.
+
+**From the device build, 2026-09-23 01:19 PDT** (`docs/evidence/social/reactions/probe-espn-nfl-from-device-build.png`):
+`…/scoreboard?dates=20260921` answered 200 in 63 ms with React Native's default agent and
+`Accept: application/json` alone, 1 event, Giants at Rams `STATUS_FINAL`; through
+`nflLiveFeed.fetchLive` the same game read `final Q4 end 6-28`; today's board (`dates=20260922`
+in Eastern time) answered 200 with 0 events. So the NFL feed works from a build the way the
+NBA CDN and ESPN's MLS summary do. A game under way is still the open item above.
+
+**An RLS trap found the same night, worth knowing for every table whose SELECT policy is a
+function over the table itself:** `insert into posts … returning id` is refused with "new row
+violates row-level security policy" even though the INSERT policy passes. RETURNING re-checks
+the row against the SELECT policy, `can_view_post(id)`, a STABLE function that reads `posts`
+with the statement's snapshot and so cannot see the row being inserted. Without RETURNING the
+same insert succeeds. The client mints the post id itself and inserts with no `.select()`
+(`features/reactions/queries.ts`); anything using supabase-js `.insert().select()` on `posts`
+hits this.

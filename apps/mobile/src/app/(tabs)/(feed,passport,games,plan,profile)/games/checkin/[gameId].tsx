@@ -1,6 +1,6 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Pressable, View, type ScrollView } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
@@ -74,6 +74,15 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
   const checkIn = useCheckIn();
   const [failure, setFailure] = useState<{ reason: string; distance_m?: number } | null>(null);
   const [now, setNow] = useState(() => Date.now());
+  // Development only: `?scroll=end` lands on the session panel, because the simulator cannot
+  // be scrolled by a script (STATE.md trap 9), the same way the game page does it.
+  const { scroll } = useLocalSearchParams<{ scroll?: string }>();
+  const scrollRef = useRef<ScrollView>(null);
+  useEffect(() => {
+    if (!__DEV__ || scroll !== 'end') return;
+    const t = setTimeout(() => scrollRef.current?.scrollToEnd({ animated: false }), 1200);
+    return () => clearTimeout(t);
+  }, [scroll]);
 
   const checkedIn = !!ctx.checked_in_at;
   // The feed hears the final before the table does: the window then closes an hour after it.
@@ -122,7 +131,7 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
 
   return (
     <SideTheme team={pageTeam}>
-      <Screen>
+      <Screen scrollRef={scrollRef}>
         <Stack.Screen options={{ title: 'Check in' }} />
         {checkedIn ? (
           <View

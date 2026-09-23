@@ -208,8 +208,9 @@ main, not on hosted).** Brief: `docs/prompts/social/03_reactions.md` under `00_r
   gating is conservative (a score that swings the margin, or a return score the board names);
   `ingest/src/nfl/relabel.ts` rewrites those prompts overnight to the real play from nflverse,
   recomputes significance and pins them (in `nfl-ingest.yml` after relive). Checked from this
-  laptop with fixtures (`docs/verification.md`); **a game under way and the `situation` object
-  were not seen** (none was on), and the fetch from a device build is recorded below.
+  laptop with fixtures and from the device build (`docs/verification.md`: the Giants at Rams
+  final parsed as Q4 6-28 through the feed on the simulator); **a game under way and the
+  `situation` object were not seen** (none was on).
 - **The capture** (`features/reactions/capture/CaptureScreen.tsx`, `/react/<gameId>?prompt=`):
   back camera and shutter, a three-second countdown, the selfie on its own, the stitched preview,
   Retake, Post (a `posts` row of kind `reaction`) or Only me (private, no post). Photos in the
@@ -227,7 +228,10 @@ main, not on hosted).** Brief: `docs/prompts/social/03_reactions.md` under `00_r
   ticket game today, or a favorite's game when the phone is already allowed to read its location
   and is inside the geofence). A local notification 30 minutes before every Going game.
 - **Evidence:** `docs/evidence/social/reactions/` (a simulated game day on the dedicated
-  simulator, see its README).
+  simulator: check in, an event prompt and its capture, the scheduled prompt, a private
+  self-trigger, the strip, Relive, the session's end and the post-game offer; its README says
+  what was staged and what the run found and fixed: an RLS refusal of any `posts` insert with
+  RETURNING, a broken `pin_reactions`, orphaned reactions on a failed post).
 
 Not done, and known: the feed's copy of the check-in banner waits for prompt 2's Feed screen
 (`GamesSessionCards` is ready to mount); the NBA four-point play is not detectable from a

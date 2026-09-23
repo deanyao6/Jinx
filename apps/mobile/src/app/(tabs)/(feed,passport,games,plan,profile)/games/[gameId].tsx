@@ -375,6 +375,10 @@ export default function GameDetailScreen() {
           homeTeamId={g.home?.id ?? g.home_team_id}
         />
 
+        {/* Reactions taken at this game: mine, and the ones their posts let me see. Right
+            under the score, where the prototype's game page puts them. */}
+        <ReactionStrip gameId={gameId} />
+
         {context.length ? (
           <View style={{ flexDirection: 'row', gap: 10, marginBottom: theme.spacing.md }}>
             {context.map((x) => (
@@ -391,9 +395,6 @@ export default function GameDetailScreen() {
           homeTeamId={g.home?.id ?? g.home_team_id}
           awayTeamId={g.away?.id ?? g.away_team_id}
         />
-
-        {/* Reactions taken at this game: mine, and the ones their posts let me see. */}
-        <ReactionStrip gameId={gameId} />
 
         {canCheckIn ? (
           <Card tone="accent">

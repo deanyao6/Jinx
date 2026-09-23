@@ -3,7 +3,7 @@
 -- photo bucket, and what game_reactions shows to whom.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(19);
+select plan(21);
 
 insert into auth.users (id, email) values
   ('b8200000-0000-4000-8000-0000000000a1', 'rc-a@test'),
@@ -72,6 +72,16 @@ select is((select count(*)::int from storage.objects where bucket_id = 'reaction
 select throws_ok(
   $$insert into storage.objects (bucket_id, name) values ('reaction-photos', 'b8200000-0000-4000-8000-0000000000a1/g1/y.jpg')$$,
   '42501', null, 'nobody writes into another fan''s folder');
+
+-- Pinning: once the line exists, a reaction sits on the last point at or before its capture.
+reset role;
+insert into public.game_wp_timeline (game_id, seq, period, half, home_wp, occurred_at) values
+  ('00000000-0000-0000-0000-00000082c001', 1, 1, null, 0.5, now() - interval '50 minutes'),
+  ('00000000-0000-0000-0000-00000082c001', 2, 2, null, 0.7, now() - interval '10 minutes'),
+  ('00000000-0000-0000-0000-00000082c001', 3, 2, null, 0.9, now() + interval '10 minutes');
+select is(public.pin_reactions('00000000-0000-0000-0000-00000082c001'), 1, 'pin_reactions pins the unpinned reaction');
+select is((select wp_seq from public.reactions where id = 'b8200000-0000-4000-8000-0000000000f1'), 2, 'to the last point at or before the capture');
+set local role authenticated;
 
 -- Self-triggers: uncapped by the prompt rules, five at most, and three fans within 90 seconds is a crowd moment.
 set local request.jwt.claims to '{"sub":"b8200000-0000-4000-8000-0000000000b1","role":"authenticated"}';

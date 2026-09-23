@@ -61,7 +61,7 @@ export function PromptBanner({ delivery, onDismiss }: { delivery: PromptDelivery
       >
         <Camera size={22} color={a.onFill} />
         <View style={{ flex: 1 }}>
-          <Text variant="bodyStrong" numberOfLines={2} style={{ color: a.onFill }}>
+          <Text variant="bodyStrong" numberOfLines={3} style={{ color: a.onFill }}>
             {delivery.copy}
           </Text>
           <Text variant="caption" style={{ color: a.onFill, opacity: 0.85 }}>

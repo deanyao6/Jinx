@@ -211,11 +211,11 @@ export function CaptureScreen({ gameId, promptId, auto = null }: { gameId: strin
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRun, step, sessionOpen]);
   useEffect(() => {
-    if (!autoRun || autoRun === 'preview' || step !== 'preview') return;
+    if (!autoRun || autoRun === 'preview' || step !== 'preview' || problem) return;
     const t = setTimeout(() => void submit(autoRun === 'private' ? 'private' : 'followers'), 800);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoRun, step]);
+  }, [autoRun, step, problem]);
 
   const facing: CameraType = step === 'front' || step === 'countdown' ? 'front' : 'back';
   const heading =

@@ -132,7 +132,7 @@
         "expo-image-picker",
         {
           "photosPermission": "Jinx reads the photos you choose: a ticket screenshot to log a game, pictures from a game you went to, or a profile photo.",
-          "cameraPermission": "Jinx uses the camera to photograph a ticket so it can log the game, or to take your profile photo."
+          "cameraPermission": "Jinx uses the camera to photograph a ticket so it can log the game, for your profile photo, and for a reaction at a game: one shot of the field, then a selfie."
         }
       ],
       [

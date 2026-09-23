@@ -503,13 +503,16 @@ as $$
 declare v_count integer := 0;
 begin
   update public.reactions r
-    set wp_seq = t.seq
-    from lateral (
-      select seq from public.game_wp_timeline w
+    set wp_seq = (
+      select w.seq from public.game_wp_timeline w
       where w.game_id = r.game_id and w.occurred_at is not null and w.occurred_at <= r.captured_at
       order by w.occurred_at desc limit 1
-    ) t
-    where r.game_id = p_game_id and r.wp_seq is null;
+    )
+    where r.game_id = p_game_id and r.wp_seq is null
+      and exists (
+        select 1 from public.game_wp_timeline w
+        where w.game_id = r.game_id and w.occurred_at is not null and w.occurred_at <= r.captured_at
+      );
   get diagnostics v_count = row_count;
   return v_count;
 end;
