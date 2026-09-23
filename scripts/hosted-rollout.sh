@@ -96,8 +96,11 @@ SQL
   say "3. Edge Functions"
   npm run --silent functions:sync
   # inbound-email stays undeployed until a domain exists (STATE.md section 5).
+  # evaluate-social recomputes leaderboards, counts, streaks and badges; process_game_final calls
+  # it through call_edge_function. It was missing from this list on 2026-09-23, so the first
+  # social rollout left pg_net answering 404 and nothing on hosted ever recomputed.
   npx supabase functions deploy cleanup-imports delete-account mlb-sync mlb-live nba-sync nba-live send-push \
-    evaluate-goals storylines parse-ticket --project-ref "$REF"
+    evaluate-goals evaluate-social storylines parse-ticket --project-ref "$REF"
   # The one public function: the signed-out welcome screen reads it with no session.
   npx supabase functions deploy welcome-wall --no-verify-jwt --project-ref "$REF"
 }
@@ -125,10 +128,12 @@ verify() {
 
   say "6. The other scheduled functions answer an authenticated call"
   local fn code
-  for fn in send-push evaluate-goals mlb-live cleanup-imports; do
+  # evaluate-social is here so a missing deploy shows up as a FAIL line rather than as two
+  # silent 404s in net._http_response, which is how it hid on 2026-09-23.
+  for fn in send-push evaluate-goals evaluate-social mlb-live cleanup-imports; do
     code="$(curl -s -o "$WORK/out" -w '%{http_code}' -X POST "${URL}/functions/v1/${fn}" \
       -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" -H "x-cron-secret: ${CRON_SECRET}" \
-      -H 'Content-Type: application/json' -d '{}')"
+      -H 'Content-Type: application/json' -d "$([ "$fn" = evaluate-social ] && echo '{"user_ids":[]}' || echo '{}')")"
     printf '%s  %-16s HTTP %s  %s\n' "$([ "$code" = 200 ] && echo PASS || echo FAIL)" "$fn" "$code" "$(head -c 200 "$WORK/out")"
   done
 
