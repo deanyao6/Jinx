@@ -66,17 +66,23 @@ async function main(): Promise<void> {
   const db = createDb();
   const players = await loadNflPlayers();
 
-  // Rookie seasons for every NFL player we know, from players.csv.
-  const known = await selectAll<{ provider_player_id: string; full_name: string }>(
-    db,
-    'players',
-    'provider_player_id, full_name',
-    (q) => q.eq('provider', 'nflverse').is('rookie_season', null),
+  // Rookie seasons for every NFL player we know, from players.csv, which is the source of
+  // truth for the column. This used to read only the players whose rookie season was null, so
+  // a value that was once written wrong stayed wrong forever: on 2026-09-23 thirty players of
+  // the 2010 draft class, Ndamukong Suh and Eric Berry among them, were stored as 2011 rookies
+  // although players.csv says 2010 and they scored in 2010. It now reads them all and writes
+  // back only the ones that disagree with the file.
+  const known = await selectAll<{
+    provider_player_id: string;
+    full_name: string;
+    rookie_season: number | null;
+  }>(db, 'players', 'provider_player_id, full_name, rookie_season', (q) =>
+    q.eq('provider', 'nflverse'),
   );
   const rookieRows: Record<string, unknown>[] = [];
   for (const p of known) {
     const info = players.get(p.provider_player_id);
-    if (info?.rookieSeason) {
+    if (info?.rookieSeason && info.rookieSeason !== p.rookie_season) {
       rookieRows.push({
         sport_id: 'nfl',
         full_name: p.full_name,
@@ -86,8 +92,8 @@ async function main(): Promise<void> {
       });
     }
   }
-  await upsertRows(db, 'players', rookieRows, 'provider,provider_player_id');
-  console.log(`${rookieRows.length} rookie seasons filled`);
+  if (rookieRows.length) await upsertRows(db, 'players', rookieRows, 'provider,provider_player_id');
+  console.log(`${rookieRows.length} rookie seasons written (of ${known.length} known players)`);
 
   const firsts = new Map<string, string>();
   for (let season = from; season <= to; season += 1) {
@@ -101,6 +107,7 @@ async function main(): Promise<void> {
     }
     console.log(`${season}: ${added} first touchdowns`);
   }
+
 
   // provider game id -> games.id, for the games we hold.
   const gameIds = new Map<string, string>();

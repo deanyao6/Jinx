@@ -349,6 +349,21 @@ nightly job's list). Proven: a newly logged 2025 game was detailed by the next
 run alone (1 of 285), the Relive verifier still passes all 15 games, all 90 famous NFL games keep
 their stars. A game logged today gets its detail with the nightly job, as before. Test `019`.
 
+**A first touchdown is a career first again (2026-09-23).** Dean found a badge on his own
+passport saying he saw DeVonta Smith's first touchdown at Eagles at Titans; Smith is a 2021
+rookie and it was his first of 2026. `ingest/src/nfl/firsts.ts` skipped only players whose
+rookie season was before `PBP_FLOOR`, but the daily job reads the current season alone, so
+every player's first touchdown of that season was stored as his first ever. All 112 rows on
+hosted came from 2026 games and 104 were wrong; local was right because the full backfill had
+run there. `canKnowFirst(rookieSeason, from)` now requires the scan to reach the rookie season,
+so a one-season run records rookies and nobody else (`ingest/src/nfl/firsts.test.ts`, 5 tests).
+The bad rows were deleted and the full 2000-2026 scan rerun on hosted: **3,101 firsts, none
+before the player's rookie season, Smith back on `2021_01_PHI_ATL`**. The same run exposed a
+second bug: the rookie-season fill read only players whose column was null, so 130 wrong values
+from an old load never healed, and 30 of the 2010 draft class (Suh, Eric Berry) were stored as
+2011 rookies although players.csv says 2010. It now reads every nflverse player and writes back
+the ones that disagree with the file.
+
 **Known wrong, not yet fixed:**
 
 - **The local database is 145 MB, under M1's 150 MB bar at last (2026-09-22).** It was 278 MB
