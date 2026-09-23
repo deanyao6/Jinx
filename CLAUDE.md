@@ -150,6 +150,8 @@ npx tsx ingest/src/mlb/honors.ts [--from 1997 --to 2026]   # MLB MVP, Cy Young, 
 npx tsx ingest/src/mlb/debuts.ts                           # MLB debut dates (people endpoint, 100 a request)
 npx tsx ingest/src/mlb/moves.ts [--from 2016-01-01]        # MLB joins from the transactions feed (default: last 30 days)
 npx tsx ingest/src/nfl/honors.ts                           # NFL honors from the hand-kept seed/nfl_awards.json
+npx tsx ingest/src/nba/honors.ts                           # NBA honors (MVP top five, All-NBA teams, ROY, Finals MVP) from seed/nba_awards.json
+npx tsx ingest/src/mls/honors.ts                           # MLS honors (MVP and finalists, Best XI, Golden Boot, ROY, Cup MVP) from seed/mls_awards.json
 npx tsx ingest/src/nfl/moves.ts [--from 2016 --to 2026]    # NFL joins from the weekly rosters
 npx tsx ingest/src/nfl/firsts.ts [--from 2000 --to 2026]   # NFL first touchdowns (play-by-play) and rookie seasons
 ```

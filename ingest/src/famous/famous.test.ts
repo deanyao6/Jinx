@@ -20,7 +20,10 @@ import { yearRanges } from '../mlb/moves.js';
 import { NFL_AWARDS_FILE, validateNflAwards, type NflAwardRow } from '../nfl/honors.js';
 import { teamForSeason, weekStarts } from '../nfl/moves.js';
 import { CURATED_FILE, validateCurated } from './curated.js';
-import { nflCandidates, normName } from './franchise.js';
+import { MLS_AWARDS } from '../mls/honors.js';
+import { NBA_AWARDS } from '../nba/honors.js';
+import { validateAwards, type AwardRow } from './awards.js';
+import { espnSoccerAthletes, nbaCandidates, nflCandidates, normName } from './franchise.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const MLB = path.resolve(HERE, '../../fixtures/mlb');
@@ -190,3 +193,75 @@ describe('franchise players', () => {
     ).toHaveLength(2);
   });
 });
+
+describe('seed/nba_awards.json and seed/mls_awards.json (next-wave D.1)', () => {
+  const nba = load<AwardRow[]>(NBA_AWARDS.path);
+  const mls = load<AwardRow[]>(MLS_AWARDS.path);
+
+  it('are valid, 22 NBA rows a season from 2013-14 and 17 to 19 MLS rows a season from 2016', () => {
+    expect(validateAwards(NBA_AWARDS, nba)).toEqual([]);
+    expect(validateAwards(MLS_AWARDS, mls)).toEqual([]);
+    const perSeason = (rows: AwardRow[]) => {
+      const m = new Map<number, number>();
+      for (const r of rows) m.set(r.season, (m.get(r.season) ?? 0) + 1);
+      return m;
+    };
+    expect([...perSeason(nba).values()].every((n) => n === 22)).toBe(true);
+    expect(Math.min(...perSeason(nba).keys())).toBe(2013);
+    expect([...perSeason(mls).values()].every((n) => n >= 17 && n <= 19)).toBe(true);
+    expect(Math.min(...perSeason(mls).keys())).toBe(2016);
+  });
+
+  it('name the 2025 winners: Gilgeous-Alexander by PERSON_ID, Messi by ESPN id', () => {
+    expect(nba.find((r) => r.season === 2025 && r.honor === 'mvp')).toMatchObject({
+      person_id: '1628983',
+      name: 'Shai Gilgeous-Alexander',
+    });
+    expect(mls.find((r) => r.season === 2025 && r.honor === 'mvp')).toMatchObject({
+      espn_id: '45843',
+      name: 'Lionel Messi',
+    });
+  });
+
+  it('reject a row with the wrong kind of id', () => {
+    expect(validateAwards(NBA_AWARDS, [{ season: 2025, honor: 'mvp', name: 'X', person_id: '00-0034857' }])).toEqual([
+      'row 1: person_id looks like 203999 (stats.nba.com PERSON_ID)',
+    ]);
+    expect(validateAwards(MLS_AWARDS, [{ season: 2025, honor: 'all_star', name: 'X', espn_id: '1' }])).toEqual([
+      'row 1: honor must be one of mvp, mvp_finalist, best_xi, golden_boot, roy, cup_mvp',
+    ]);
+  });
+});
+
+describe('NBA and MLS franchise resolvers', () => {
+  it('picks the NBA player whose career overlaps the seasons, by normalised name', () => {
+    const players = [
+      { personId: '2544', name: 'LeBron James', fromYear: 2003, toYear: 2026 },
+      { personId: '1', name: 'Lebron James', fromYear: 1980, toYear: 1985 },
+      { personId: '203999', name: 'Nikola Jokić', fromYear: 2015, toYear: 2026 },
+    ];
+    expect(nbaCandidates(players, { sport: 'nba', name: 'LeBron James', from: 2003, to: null }).map((p) => p.personId)).toEqual(['2544']);
+    expect(nbaCandidates(players, { sport: 'nba', name: 'Nikola Jokic', from: 2015, to: null }).map((p) => p.personId)).toEqual(['203999']);
+  });
+
+  it("keeps only the soccer athletes with that name from ESPN's search (Diego Valeri, not Diego Valerio)", () => {
+    const res = load<Record<string, unknown>>(
+      path.resolve(HERE, '../../fixtures/mls/espn_search_v2_diego_valeri_2026-09-22.json'),
+    );
+    const body = (res['body'] ?? res) as Parameters<typeof espnSoccerAthletes>[0];
+    expect(espnSoccerAthletes(body, 'Diego Valeri')).toEqual([
+      { id: '86179', name: 'Diego Valeri', club: 'Portland Timbers', competition: 'Leagues Cup' },
+    ]);
+  });
+
+  it('seed/franchise_players.json carries an id for every MLS name ESPN knows twice', () => {
+    const file = load<{ transcendent: { sport: string; name: string; id?: string }[]; teams: { sport: string; name: string; id?: string }[] }>(
+      path.join(ROOT, 'seed', 'franchise_players.json'),
+    );
+    const mls = [...file.transcendent, ...file.teams].filter((e) => e.sport === 'mls');
+    expect(mls.length).toBeGreaterThan(100);
+    for (const name of ['Carlos Vela', 'Luciano Acosta', 'Riqui Puig', 'Valentín Castellanos'])
+      expect(mls.filter((e) => e.name === name).every((e) => /^\d+$/.test(e.id ?? ''))).toBe(true);
+  });
+});
+

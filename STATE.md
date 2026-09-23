@@ -235,7 +235,12 @@ and a story of goals, cards, substitutions, breaks and the penalties on a state-
 `ingest/src/verify/relive.ts` now checks 5 MLS matches against the scoreboard's `details[]`
 (20 games across four sports check out). Wrapped is on for MLS (calendar year, migration
 `20260923000900`, test `022`); the game screen's "not available yet" sentence is gone.
-Screenshots: `docs/evidence/mls/relive/`, `docs/evidence/mls/wrapped/`.
+Screenshots: `docs/evidence/mls/relive/`, `docs/evidence/mls/wrapped/`. **NBA and MLS
+superstars are loaded** (D.1, 2026-09-22): `seed/nba_awards.json` and `seed/mls_awards.json`
+through `ingest/src/nba/honors.ts` and `ingest/src/mls/honors.ts`, honor kinds by migration
+`20260923001000`, and `seed/franchise_players.json` now holds all four sports (350 rows,
+`ingest/src/famous/franchise.ts` resolves NBA and MLS names too); Messi is a superstar at the
+Inter Miami match, LeBron at a 2016 Cavaliers game (`docs/evidence/superstars/`).
 
 Not done, and known:
 

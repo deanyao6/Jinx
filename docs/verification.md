@@ -912,3 +912,48 @@ MLS Cup in early December still publishes in January. Test `022`: a fan with onl
 gets a 2026 Wrapped, the draw sits in the record, the hat trick outranks the red card, no NBA
 Wrapped. The app lists MLS among the seasons and calls them matches.
 
+## NBA and MLS superstars (next-wave D.1) — SOURCED 2026-09-22
+
+`seed/nba_awards.json` (286 rows, 2013-14 to 2025-26: MVP, the MVP top five, the three All-NBA
+teams, Rookie of the Year, Finals MVP) and `seed/mls_awards.json` (176 rows, 2016 to 2025: the
+Landon Donovan MVP and its finalists, Best XI, Golden Boot, Rookie/Young Player of the Year,
+MLS Cup MVP) were built from live fetches on 2026-09-22, each row carrying its source URL.
+Winners, All-NBA and Best XI from Wikipedia through the MediaWiki parse API; **the NBA MVP top
+five is not on Wikipedia** (the season pages carry three finalists, and only from 2016-17), so
+places two to five come from the NBA's own releases on pr.nba.com: prose for five seasons,
+voting PDFs for six (403 to curl's default agent, 200 with a browser agent and a pr.nba.com
+referer), and JPGs for 2024-25 and 2025-26, read visually (SGA 913, Jokić 787, Antetokounmpo
+470, Tatum 311, Mitchell 74; SGA 939, Jokić 634, Wembanyama 569, Dončić 250, Cunningham 117),
+worth a second pair of eyes. Finals MVP is filed under its season's start year (the 2026
+Finals, Jalen Brunson, is `season: 2025`).
+
+Ids. NBA: `commonallplayers?LeagueID=00&Season=2025-26&IsOnlyCurrentSeason=0` (5,227 players,
+the stats headers as for every stats.nba.com call); all 74 honoree names matched exactly one
+player whose FROM_YEAR..TO_YEAR overlaps the honor seasons, and `playercareerstats` for all 74
+confirmed the Wikipedia team for all 234 Wikipedia-sourced rows (0 mismatches). MLS: ESPN's
+search **VERIFY**: `https://site.api.espn.com/apis/search/v2?query=<name>&limit=5` works
+(HTTP 200, `results[]` of `type: "player"` whose `contents[].uid` is `s:600~a:<athleteId>`,
+sport 600 being soccer, with `subtitle` the last club and `description` the last competition;
+fixture `ingest/fixtures/mls/espn_search_v2_diego_valeri_2026-09-22.json`);
+`site.web.api.espn.com/apis/common/v3/search` answers `{"count":0,"items":[]}` for every
+variant (fixture `espn_search_v3_empty_2026-09-22.json`). Search alone was not trusted: 15 of
+53 names return several soccer athletes (Carlos Vela has two ESPN records, 76098 and 136304)
+and four are spelled differently on ESPN (Riqui Puig is "Ricard Puig", Taty is "Valentín"
+Castellanos), so **every one of the 92 MLS honoree names was found in an actual lineup**
+(`summary?event=` `rosters[].roster[].athlete`) of that season and club. The same was done for
+the 21 franchise names ESPN's search knows more than once (or not at all): each `id` in
+`seed/franchise_players.json` for an MLS name was read from a lineup of the club in the
+entry's first season (Puig 270611 in LA's 2022 lineup, Castellanos 252933 in NYCFC's 2018,
+Löwen 189505 in St. Louis's 2023, the club's first season, so his entry starts in 2023).
+
+`ingest/src/famous/franchise.ts` resolves NBA names through `commonallplayers` (career overlap
+with the entry's seasons, like nflverse) and MLS names through the search above (soccer
+athletes only; two records need the `id`). The merged file has 28 transcendent and 322 team
+rows across four sports; all 350 resolve on local and hosted. Migration `20260923001000` adds
+the honor kinds (NBA: MVP finalist, first- to third-team All-NBA, ranked between Finals MVP and
+Rookie of the Year; MLS: MVP, MLS Cup MVP, MVP finalist, Golden Boot, Best XI, Rookie of the
+Year); test `023`.
+
+Not collected: NBA All-Stars (`honor_kinds` has the row; no rows were asked for). The
+`seed/franchise_players.nba_mls.draft.json` file was merged into the main file and removed.
+

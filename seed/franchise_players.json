@@ -1,32 +1,276 @@
 {
-  "_about": "Dean owns this file. A player listed here is a superstar for every season from `from` to `to` (null = still), on top of the award bars in player_honors. `team` null is the transcendent tier: a star wherever they play. `id` (MLB person id or nflverse gsis id) is only needed when the name alone is ambiguous; ingest/src/famous/franchise.ts refuses to load a name that matches more than one player and says which ids to choose from. First draft by an agent on 2026-09-17: edit freely.",
+  "_about": "Dean owns this file. A player listed here is a superstar for every season from `from` to `to` (null = still), on top of the award bars in player_honors. `team` null is the transcendent tier: a star wherever they play. `id` (MLB person id or nflverse gsis id) is only needed when the name alone is ambiguous; ingest/src/famous/franchise.ts refuses to load a name that matches more than one player and says which ids to choose from. First draft by an agent on 2026-09-17: edit freely. NBA and MLS rows merged from an agent's draft on 2026-09-22 (tenures read from each player's Wikipedia infobox; NBA seasons are start years, MLS calendar years, clipped at 2000 and 2016).",
   "transcendent": [
-    { "sport": "mlb", "name": "Shohei Ohtani", "from": 2018, "to": null },
-    { "sport": "mlb", "name": "Aaron Judge", "from": 2017, "to": null },
-    { "sport": "mlb", "name": "Mike Trout", "from": 2012, "to": null },
-    { "sport": "mlb", "name": "Bryce Harper", "from": 2012, "to": null },
-    { "sport": "mlb", "name": "Mookie Betts", "from": 2016, "to": null },
-    { "sport": "nfl", "name": "Patrick Mahomes", "from": 2018, "to": null },
-    { "sport": "nfl", "name": "Travis Kelce", "from": 2016, "to": null },
-    { "sport": "nfl", "name": "Jalen Hurts", "from": 2022, "to": null },
-    { "sport": "nfl", "name": "Saquon Barkley", "from": 2018, "to": null },
-    { "sport": "nfl", "name": "Tom Brady", "from": 2000, "to": 2022 }
+    {
+      "sport": "mlb",
+      "name": "Shohei Ohtani",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "name": "Aaron Judge",
+      "from": 2017,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "name": "Mike Trout",
+      "from": 2012,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "name": "Bryce Harper",
+      "from": 2012,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "name": "Mookie Betts",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "name": "Patrick Mahomes",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "name": "Travis Kelce",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "name": "Jalen Hurts",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "name": "Saquon Barkley",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "name": "Tom Brady",
+      "from": 2000,
+      "to": 2022
+    },
+    {
+      "sport": "nba",
+      "name": "LeBron James",
+      "from": 2003,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "name": "Stephen Curry",
+      "from": 2009,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "name": "Kevin Durant",
+      "from": 2007,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "name": "Giannis Antetokounmpo",
+      "from": 2013,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "name": "Nikola Jokić",
+      "from": 2015,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "name": "Kobe Bryant",
+      "from": 2000,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "name": "Shaquille O'Neal",
+      "from": 2000,
+      "to": 2008
+    },
+    {
+      "sport": "nba",
+      "name": "Tim Duncan",
+      "from": 2000,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "name": "Luka Dončić",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "name": "Shai Gilgeous-Alexander",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "name": "Lionel Messi",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "name": "Zlatan Ibrahimović",
+      "from": 2018,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "name": "Wayne Rooney",
+      "from": 2018,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "name": "Sebastian Giovinco",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "name": "David Villa",
+      "from": 2016,
+      "to": 2018
+    },
+    {
+      "sport": "mls",
+      "name": "Carlos Vela",
+      "from": 2018,
+      "to": 2024,
+      "id": "76098"
+    },
+    {
+      "sport": "mls",
+      "name": "Josef Martínez",
+      "from": 2017,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "name": "Kaká",
+      "from": 2016,
+      "to": 2017,
+      "id": "21364"
+    }
   ],
   "teams": [
-    { "sport": "mlb", "team": "ATL", "name": "Freddie Freeman", "from": 2013, "to": 2021 },
-    { "sport": "mlb", "team": "ATL", "name": "Ronald Acuña Jr.", "from": 2018, "to": null },
-    { "sport": "mlb", "team": "AZ", "name": "Paul Goldschmidt", "from": 2013, "to": 2018 },
-    { "sport": "mlb", "team": "AZ", "name": "Corbin Carroll", "from": 2023, "to": null },
-    { "sport": "mlb", "team": "BAL", "name": "Manny Machado", "from": 2013, "to": 2018 },
-    { "sport": "mlb", "team": "BAL", "name": "Gunnar Henderson", "from": 2023, "to": null },
-    { "sport": "mlb", "team": "BOS", "name": "David Ortiz", "from": 2003, "to": 2016 },
-    { "sport": "mlb", "team": "BOS", "name": "Rafael Devers", "from": 2019, "to": 2025 },
-    { "sport": "mlb", "team": "CHC", "name": "Kris Bryant", "from": 2015, "to": 2021 },
-    { "sport": "mlb", "team": "CHC", "name": "Anthony Rizzo", "from": 2014, "to": 2021 },
-    { "sport": "mlb", "team": "CWS", "name": "José Abreu", "from": 2014, "to": 2022 },
-    { "sport": "mlb", "team": "CIN", "name": "Joey Votto", "from": 2010, "to": 2023 },
-    { "sport": "mlb", "team": "CIN", "name": "Elly De La Cruz", "from": 2023, "to": null },
-    { "sport": "mlb", "team": "CLE", "name": "Francisco Lindor", "from": 2016, "to": 2020 },
+    {
+      "sport": "mlb",
+      "team": "ATL",
+      "name": "Freddie Freeman",
+      "from": 2013,
+      "to": 2021
+    },
+    {
+      "sport": "mlb",
+      "team": "ATL",
+      "name": "Ronald Acuña Jr.",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "AZ",
+      "name": "Paul Goldschmidt",
+      "from": 2013,
+      "to": 2018
+    },
+    {
+      "sport": "mlb",
+      "team": "AZ",
+      "name": "Corbin Carroll",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "BAL",
+      "name": "Manny Machado",
+      "from": 2013,
+      "to": 2018
+    },
+    {
+      "sport": "mlb",
+      "team": "BAL",
+      "name": "Gunnar Henderson",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "BOS",
+      "name": "David Ortiz",
+      "from": 2003,
+      "to": 2016
+    },
+    {
+      "sport": "mlb",
+      "team": "BOS",
+      "name": "Rafael Devers",
+      "from": 2019,
+      "to": 2025
+    },
+    {
+      "sport": "mlb",
+      "team": "CHC",
+      "name": "Kris Bryant",
+      "from": 2015,
+      "to": 2021
+    },
+    {
+      "sport": "mlb",
+      "team": "CHC",
+      "name": "Anthony Rizzo",
+      "from": 2014,
+      "to": 2021
+    },
+    {
+      "sport": "mlb",
+      "team": "CWS",
+      "name": "José Abreu",
+      "from": 2014,
+      "to": 2022
+    },
+    {
+      "sport": "mlb",
+      "team": "CIN",
+      "name": "Joey Votto",
+      "from": 2010,
+      "to": 2023
+    },
+    {
+      "sport": "mlb",
+      "team": "CIN",
+      "name": "Elly De La Cruz",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "CLE",
+      "name": "Francisco Lindor",
+      "from": 2016,
+      "to": 2020
+    },
     {
       "sport": "mlb",
       "team": "CLE",
@@ -35,41 +279,244 @@
       "from": 2017,
       "to": null
     },
-    { "sport": "mlb", "team": "COL", "name": "Nolan Arenado", "from": 2015, "to": 2020 },
-    { "sport": "mlb", "team": "DET", "name": "Miguel Cabrera", "from": 2008, "to": 2023 },
-    { "sport": "mlb", "team": "DET", "name": "Tarik Skubal", "from": 2024, "to": null },
-    { "sport": "mlb", "team": "HOU", "name": "Jose Altuve", "from": 2014, "to": null },
-    { "sport": "mlb", "team": "KC", "name": "Salvador Perez", "from": 2013, "to": null },
-    { "sport": "mlb", "team": "KC", "name": "Bobby Witt Jr.", "from": 2023, "to": null },
-    { "sport": "mlb", "team": "LAD", "name": "Clayton Kershaw", "from": 2011, "to": 2025 },
-    { "sport": "mlb", "team": "MIA", "name": "Giancarlo Stanton", "from": 2012, "to": 2017 },
-    { "sport": "mlb", "team": "MIL", "name": "Christian Yelich", "from": 2018, "to": null },
-    { "sport": "mlb", "team": "MIN", "name": "Joe Mauer", "from": 2006, "to": 2018 },
-    { "sport": "mlb", "team": "NYM", "name": "Jacob deGrom", "from": 2015, "to": 2022 },
-    { "sport": "mlb", "team": "NYM", "name": "Pete Alonso", "from": 2019, "to": null },
-    { "sport": "mlb", "team": "NYY", "name": "Derek Jeter", "from": 2000, "to": 2014 },
-    { "sport": "mlb", "team": "NYY", "name": "Gerrit Cole", "from": 2020, "to": null },
-    { "sport": "mlb", "team": "PHI", "name": "Aaron Nola", "from": 2017, "to": null },
-    { "sport": "mlb", "team": "PHI", "name": "Kyle Schwarber", "from": 2022, "to": null },
-    { "sport": "mlb", "team": "PHI", "name": "Jimmy Rollins", "from": 2001, "to": 2014 },
-    { "sport": "mlb", "team": "PIT", "name": "Andrew McCutchen", "from": 2011, "to": 2017 },
-    { "sport": "mlb", "team": "PIT", "name": "Paul Skenes", "from": 2024, "to": null },
-    { "sport": "mlb", "team": "SD", "name": "Fernando Tatis Jr.", "from": 2019, "to": null },
-    { "sport": "mlb", "team": "SD", "name": "Manny Machado", "from": 2019, "to": null },
-    { "sport": "mlb", "team": "SEA", "name": "Julio Rodríguez", "from": 2022, "to": null },
-    { "sport": "mlb", "team": "SEA", "name": "Félix Hernández", "from": 2009, "to": 2016 },
-    { "sport": "mlb", "team": "SF", "name": "Buster Posey", "from": 2010, "to": 2021 },
-    { "sport": "mlb", "team": "STL", "name": "Yadier Molina", "from": 2008, "to": 2022 },
-    { "sport": "mlb", "team": "STL", "name": "Albert Pujols", "from": 2001, "to": 2011 },
-    { "sport": "mlb", "team": "TB", "name": "Evan Longoria", "from": 2008, "to": 2017 },
-    { "sport": "mlb", "team": "TEX", "name": "Corey Seager", "from": 2022, "to": null },
-    { "sport": "mlb", "team": "TOR", "name": "Vladimir Guerrero Jr.", "from": 2019, "to": null },
-    { "sport": "mlb", "team": "WSH", "name": "Max Scherzer", "from": 2015, "to": 2021 },
-    { "sport": "mlb", "team": "WSH", "name": "Juan Soto", "from": 2018, "to": 2022 },
-
-    { "sport": "nfl", "team": "ARI", "name": "Larry Fitzgerald", "from": 2004, "to": 2020 },
-    { "sport": "nfl", "team": "ATL", "name": "Julio Jones", "from": 2012, "to": 2020 },
-    { "sport": "nfl", "team": "ATL", "name": "Bijan Robinson", "from": 2024, "to": null },
+    {
+      "sport": "mlb",
+      "team": "COL",
+      "name": "Nolan Arenado",
+      "from": 2015,
+      "to": 2020
+    },
+    {
+      "sport": "mlb",
+      "team": "DET",
+      "name": "Miguel Cabrera",
+      "from": 2008,
+      "to": 2023
+    },
+    {
+      "sport": "mlb",
+      "team": "DET",
+      "name": "Tarik Skubal",
+      "from": 2024,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "HOU",
+      "name": "Jose Altuve",
+      "from": 2014,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "KC",
+      "name": "Salvador Perez",
+      "from": 2013,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "KC",
+      "name": "Bobby Witt Jr.",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "LAD",
+      "name": "Clayton Kershaw",
+      "from": 2011,
+      "to": 2025
+    },
+    {
+      "sport": "mlb",
+      "team": "MIA",
+      "name": "Giancarlo Stanton",
+      "from": 2012,
+      "to": 2017
+    },
+    {
+      "sport": "mlb",
+      "team": "MIL",
+      "name": "Christian Yelich",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "MIN",
+      "name": "Joe Mauer",
+      "from": 2006,
+      "to": 2018
+    },
+    {
+      "sport": "mlb",
+      "team": "NYM",
+      "name": "Jacob deGrom",
+      "from": 2015,
+      "to": 2022
+    },
+    {
+      "sport": "mlb",
+      "team": "NYM",
+      "name": "Pete Alonso",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "NYY",
+      "name": "Derek Jeter",
+      "from": 2000,
+      "to": 2014
+    },
+    {
+      "sport": "mlb",
+      "team": "NYY",
+      "name": "Gerrit Cole",
+      "from": 2020,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "PHI",
+      "name": "Aaron Nola",
+      "from": 2017,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "PHI",
+      "name": "Kyle Schwarber",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "PHI",
+      "name": "Jimmy Rollins",
+      "from": 2001,
+      "to": 2014
+    },
+    {
+      "sport": "mlb",
+      "team": "PIT",
+      "name": "Andrew McCutchen",
+      "from": 2011,
+      "to": 2017
+    },
+    {
+      "sport": "mlb",
+      "team": "PIT",
+      "name": "Paul Skenes",
+      "from": 2024,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "SD",
+      "name": "Fernando Tatis Jr.",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "SD",
+      "name": "Manny Machado",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "SEA",
+      "name": "Julio Rodríguez",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "SEA",
+      "name": "Félix Hernández",
+      "from": 2009,
+      "to": 2016
+    },
+    {
+      "sport": "mlb",
+      "team": "SF",
+      "name": "Buster Posey",
+      "from": 2010,
+      "to": 2021
+    },
+    {
+      "sport": "mlb",
+      "team": "STL",
+      "name": "Yadier Molina",
+      "from": 2008,
+      "to": 2022
+    },
+    {
+      "sport": "mlb",
+      "team": "STL",
+      "name": "Albert Pujols",
+      "from": 2001,
+      "to": 2011
+    },
+    {
+      "sport": "mlb",
+      "team": "TB",
+      "name": "Evan Longoria",
+      "from": 2008,
+      "to": 2017
+    },
+    {
+      "sport": "mlb",
+      "team": "TEX",
+      "name": "Corey Seager",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "TOR",
+      "name": "Vladimir Guerrero Jr.",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "mlb",
+      "team": "WSH",
+      "name": "Max Scherzer",
+      "from": 2015,
+      "to": 2021
+    },
+    {
+      "sport": "mlb",
+      "team": "WSH",
+      "name": "Juan Soto",
+      "from": 2018,
+      "to": 2022
+    },
+    {
+      "sport": "nfl",
+      "team": "ARI",
+      "name": "Larry Fitzgerald",
+      "from": 2004,
+      "to": 2020
+    },
+    {
+      "sport": "nfl",
+      "team": "ATL",
+      "name": "Julio Jones",
+      "from": 2012,
+      "to": 2020
+    },
+    {
+      "sport": "nfl",
+      "team": "ATL",
+      "name": "Bijan Robinson",
+      "from": 2024,
+      "to": null
+    },
     {
       "sport": "nfl",
       "team": "BAL",
@@ -78,7 +525,13 @@
       "from": 2019,
       "to": null
     },
-    { "sport": "nfl", "team": "BAL", "name": "Ray Lewis", "from": 2000, "to": 2012 },
+    {
+      "sport": "nfl",
+      "team": "BAL",
+      "name": "Ray Lewis",
+      "from": 2000,
+      "to": 2012
+    },
     {
       "sport": "nfl",
       "team": "BUF",
@@ -87,22 +540,118 @@
       "from": 2020,
       "to": null
     },
-    { "sport": "nfl", "team": "CAR", "name": "Cam Newton", "from": 2011, "to": 2020 },
-    { "sport": "nfl", "team": "CHI", "name": "Brian Urlacher", "from": 2000, "to": 2012 },
-    { "sport": "nfl", "team": "CIN", "name": "Joe Burrow", "from": 2021, "to": null },
-    { "sport": "nfl", "team": "CIN", "name": "Ja'Marr Chase", "from": 2021, "to": null },
-    { "sport": "nfl", "team": "CLE", "name": "Myles Garrett", "from": 2018, "to": null },
-    { "sport": "nfl", "team": "DAL", "name": "Dak Prescott", "from": 2016, "to": null },
-    { "sport": "nfl", "team": "DAL", "name": "CeeDee Lamb", "from": 2021, "to": null },
-    { "sport": "nfl", "team": "DEN", "name": "Peyton Manning", "from": 2000, "to": 2015 },
-    { "sport": "nfl", "team": "DEN", "name": "Von Miller", "from": 2011, "to": 2021 },
-    { "sport": "nfl", "team": "DET", "name": "Calvin Johnson", "from": 2008, "to": 2015 },
-    { "sport": "nfl", "team": "DET", "name": "Amon-Ra St. Brown", "from": 2022, "to": null },
-    { "sport": "nfl", "team": "GB", "name": "Aaron Rodgers", "from": 2008, "to": null },
-    { "sport": "nfl", "team": "HOU", "name": "J.J. Watt", "from": 2012, "to": 2021 },
-    { "sport": "nfl", "team": "HOU", "name": "C.J. Stroud", "from": 2023, "to": null },
-    { "sport": "nfl", "team": "IND", "name": "Andrew Luck", "from": 2012, "to": 2018 },
-    { "sport": "nfl", "team": "JAX", "name": "Josh Hines-Allen", "from": 2021, "to": null },
+    {
+      "sport": "nfl",
+      "team": "CAR",
+      "name": "Cam Newton",
+      "from": 2011,
+      "to": 2020
+    },
+    {
+      "sport": "nfl",
+      "team": "CHI",
+      "name": "Brian Urlacher",
+      "from": 2000,
+      "to": 2012
+    },
+    {
+      "sport": "nfl",
+      "team": "CIN",
+      "name": "Joe Burrow",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "CIN",
+      "name": "Ja'Marr Chase",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "CLE",
+      "name": "Myles Garrett",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "DAL",
+      "name": "Dak Prescott",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "DAL",
+      "name": "CeeDee Lamb",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "DEN",
+      "name": "Peyton Manning",
+      "from": 2000,
+      "to": 2015
+    },
+    {
+      "sport": "nfl",
+      "team": "DEN",
+      "name": "Von Miller",
+      "from": 2011,
+      "to": 2021
+    },
+    {
+      "sport": "nfl",
+      "team": "DET",
+      "name": "Calvin Johnson",
+      "from": 2008,
+      "to": 2015
+    },
+    {
+      "sport": "nfl",
+      "team": "DET",
+      "name": "Amon-Ra St. Brown",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "GB",
+      "name": "Aaron Rodgers",
+      "from": 2008,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "HOU",
+      "name": "J.J. Watt",
+      "from": 2012,
+      "to": 2021
+    },
+    {
+      "sport": "nfl",
+      "team": "HOU",
+      "name": "C.J. Stroud",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "IND",
+      "name": "Andrew Luck",
+      "from": 2012,
+      "to": 2018
+    },
+    {
+      "sport": "nfl",
+      "team": "JAX",
+      "name": "Josh Hines-Allen",
+      "from": 2021,
+      "to": null
+    },
     {
       "sport": "nfl",
       "team": "KC",
@@ -111,11 +660,41 @@
       "from": 2018,
       "to": null
     },
-    { "sport": "nfl", "team": "LV", "name": "Maxx Crosby", "from": 2021, "to": null },
-    { "sport": "nfl", "team": "LAC", "name": "Justin Herbert", "from": 2020, "to": null },
-    { "sport": "nfl", "team": "LA", "name": "Aaron Donald", "from": 2014, "to": 2023 },
-    { "sport": "nfl", "team": "LA", "name": "Matthew Stafford", "from": 2021, "to": null },
-    { "sport": "nfl", "team": "MIA", "name": "Tyreek Hill", "from": 2018, "to": null },
+    {
+      "sport": "nfl",
+      "team": "LV",
+      "name": "Maxx Crosby",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "LAC",
+      "name": "Justin Herbert",
+      "from": 2020,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "LA",
+      "name": "Aaron Donald",
+      "from": 2014,
+      "to": 2023
+    },
+    {
+      "sport": "nfl",
+      "team": "LA",
+      "name": "Matthew Stafford",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "MIA",
+      "name": "Tyreek Hill",
+      "from": 2018,
+      "to": null
+    },
     {
       "sport": "nfl",
       "team": "MIN",
@@ -132,20 +711,1747 @@
       "from": 2007,
       "to": 2016
     },
-    { "sport": "nfl", "team": "NO", "name": "Drew Brees", "from": 2006, "to": 2020 },
-    { "sport": "nfl", "team": "NYG", "name": "Eli Manning", "from": 2007, "to": 2019 },
-    { "sport": "nfl", "team": "NYJ", "name": "Sauce Gardner", "from": 2022, "to": null },
-    { "sport": "nfl", "team": "PHI", "name": "Jason Kelce", "from": 2014, "to": 2023 },
-    { "sport": "nfl", "team": "PHI", "name": "Lane Johnson", "from": 2017, "to": null },
-    { "sport": "nfl", "team": "PHI", "name": "A.J. Brown", "from": 2022, "to": null },
-    { "sport": "nfl", "team": "PIT", "name": "Ben Roethlisberger", "from": 2004, "to": 2021 },
-    { "sport": "nfl", "team": "PIT", "name": "T.J. Watt", "from": 2018, "to": null },
-    { "sport": "nfl", "team": "SF", "name": "George Kittle", "from": 2018, "to": null },
-    { "sport": "nfl", "team": "SF", "name": "Christian McCaffrey", "from": 2019, "to": null },
-    { "sport": "nfl", "team": "SEA", "name": "Russell Wilson", "from": 2012, "to": 2021 },
-    { "sport": "nfl", "team": "SEA", "name": "Bobby Wagner", "from": 2014, "to": 2021 },
-    { "sport": "nfl", "team": "TB", "name": "Mike Evans", "from": 2014, "to": 2025 },
-    { "sport": "nfl", "team": "TEN", "name": "Derrick Henry", "from": 2019, "to": null },
-    { "sport": "nfl", "team": "WAS", "name": "Jayden Daniels", "from": 2024, "to": null }
+    {
+      "sport": "nfl",
+      "team": "NO",
+      "name": "Drew Brees",
+      "from": 2006,
+      "to": 2020
+    },
+    {
+      "sport": "nfl",
+      "team": "NYG",
+      "name": "Eli Manning",
+      "from": 2007,
+      "to": 2019
+    },
+    {
+      "sport": "nfl",
+      "team": "NYJ",
+      "name": "Sauce Gardner",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "PHI",
+      "name": "Jason Kelce",
+      "from": 2014,
+      "to": 2023
+    },
+    {
+      "sport": "nfl",
+      "team": "PHI",
+      "name": "Lane Johnson",
+      "from": 2017,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "PHI",
+      "name": "A.J. Brown",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "PIT",
+      "name": "Ben Roethlisberger",
+      "from": 2004,
+      "to": 2021
+    },
+    {
+      "sport": "nfl",
+      "team": "PIT",
+      "name": "T.J. Watt",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "SF",
+      "name": "George Kittle",
+      "from": 2018,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "SF",
+      "name": "Christian McCaffrey",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "SEA",
+      "name": "Russell Wilson",
+      "from": 2012,
+      "to": 2021
+    },
+    {
+      "sport": "nfl",
+      "team": "SEA",
+      "name": "Bobby Wagner",
+      "from": 2014,
+      "to": 2021
+    },
+    {
+      "sport": "nfl",
+      "team": "TB",
+      "name": "Mike Evans",
+      "from": 2014,
+      "to": 2025
+    },
+    {
+      "sport": "nfl",
+      "team": "TEN",
+      "name": "Derrick Henry",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "nfl",
+      "team": "WAS",
+      "name": "Jayden Daniels",
+      "from": 2024,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Joe Johnson",
+      "from": 2005,
+      "to": 2011
+    },
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Al Horford",
+      "from": 2007,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Trae Young",
+      "from": 2018,
+      "to": 2025
+    },
+    {
+      "sport": "nba",
+      "team": "ATL",
+      "name": "Jalen Johnson",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Paul Pierce",
+      "from": 2000,
+      "to": 2012
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Kevin Garnett",
+      "from": 2007,
+      "to": 2012
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Jayson Tatum",
+      "from": 2017,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "BOS",
+      "name": "Jaylen Brown",
+      "from": 2016,
+      "to": 2025
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Jason Kidd",
+      "from": 2001,
+      "to": 2007
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Vince Carter",
+      "from": 2004,
+      "to": 2008
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Kevin Durant",
+      "from": 2019,
+      "to": 2022
+    },
+    {
+      "sport": "nba",
+      "team": "BKN",
+      "name": "Brook Lopez",
+      "from": 2008,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "CHA",
+      "name": "Kemba Walker",
+      "from": 2011,
+      "to": 2018
+    },
+    {
+      "sport": "nba",
+      "team": "CHA",
+      "name": "LaMelo Ball",
+      "from": 2020,
+      "to": 2025
+    },
+    {
+      "sport": "nba",
+      "team": "CHA",
+      "name": "Gerald Wallace",
+      "from": 2004,
+      "to": 2010
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "Derrick Rose",
+      "from": 2008,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "Jimmy Butler",
+      "from": 2011,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "Zach LaVine",
+      "from": 2017,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "CHI",
+      "name": "DeMar DeRozan",
+      "from": 2021,
+      "to": 2023
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "LeBron James",
+      "from": 2003,
+      "to": 2009
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "LeBron James",
+      "from": 2014,
+      "to": 2017
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "Kyrie Irving",
+      "from": 2011,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "Donovan Mitchell",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "CLE",
+      "name": "Evan Mobley",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "DAL",
+      "name": "Dirk Nowitzki",
+      "from": 2000,
+      "to": 2018
+    },
+    {
+      "sport": "nba",
+      "team": "DAL",
+      "name": "Luka Dončić",
+      "from": 2018,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "DAL",
+      "name": "Cooper Flagg",
+      "from": 2025,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "DEN",
+      "name": "Carmelo Anthony",
+      "from": 2003,
+      "to": 2010
+    },
+    {
+      "sport": "nba",
+      "team": "DEN",
+      "name": "Nikola Jokić",
+      "from": 2015,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "DEN",
+      "name": "Jamal Murray",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Chauncey Billups",
+      "from": 2002,
+      "to": 2008
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Ben Wallace",
+      "from": 2000,
+      "to": 2005
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Ben Wallace",
+      "from": 2009,
+      "to": 2011
+    },
+    {
+      "sport": "nba",
+      "team": "DET",
+      "name": "Cade Cunningham",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "GSW",
+      "name": "Stephen Curry",
+      "from": 2009,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "GSW",
+      "name": "Klay Thompson",
+      "from": 2011,
+      "to": 2023
+    },
+    {
+      "sport": "nba",
+      "team": "GSW",
+      "name": "Draymond Green",
+      "from": 2012,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "Yao Ming",
+      "from": 2002,
+      "to": 2010
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "Tracy McGrady",
+      "from": 2004,
+      "to": 2009
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "James Harden",
+      "from": 2012,
+      "to": 2020
+    },
+    {
+      "sport": "nba",
+      "team": "HOU",
+      "name": "Alperen Şengün",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Reggie Miller",
+      "from": 2000,
+      "to": 2004
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Jermaine O'Neal",
+      "from": 2000,
+      "to": 2007
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Paul George",
+      "from": 2010,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "IND",
+      "name": "Tyrese Haliburton",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Chris Paul",
+      "from": 2011,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Blake Griffin",
+      "from": 2009,
+      "to": 2017
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Kawhi Leonard",
+      "from": 2019,
+      "to": 2025
+    },
+    {
+      "sport": "nba",
+      "team": "LAC",
+      "name": "Paul George",
+      "from": 2019,
+      "to": 2023
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Kobe Bryant",
+      "from": 2000,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Shaquille O'Neal",
+      "from": 2000,
+      "to": 2003
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "LeBron James",
+      "from": 2018,
+      "to": 2025
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Anthony Davis",
+      "from": 2019,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "LAL",
+      "name": "Luka Dončić",
+      "from": 2024,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Zach Randolph",
+      "from": 2009,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Marc Gasol",
+      "from": 2008,
+      "to": 2018
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Mike Conley",
+      "from": 2007,
+      "to": 2018
+    },
+    {
+      "sport": "nba",
+      "team": "MEM",
+      "name": "Ja Morant",
+      "from": 2019,
+      "to": 2025
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Dwyane Wade",
+      "from": 2003,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Dwyane Wade",
+      "from": 2017,
+      "to": 2018
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "LeBron James",
+      "from": 2010,
+      "to": 2013
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Jimmy Butler",
+      "from": 2019,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "MIA",
+      "name": "Bam Adebayo",
+      "from": 2017,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "MIL",
+      "name": "Giannis Antetokounmpo",
+      "from": 2013,
+      "to": 2025
+    },
+    {
+      "sport": "nba",
+      "team": "MIL",
+      "name": "Khris Middleton",
+      "from": 2013,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "MIL",
+      "name": "Damian Lillard",
+      "from": 2023,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Kevin Garnett",
+      "from": 2000,
+      "to": 2006
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Kevin Garnett",
+      "from": 2014,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Karl-Anthony Towns",
+      "from": 2015,
+      "to": 2023
+    },
+    {
+      "sport": "nba",
+      "team": "MIN",
+      "name": "Anthony Edwards",
+      "from": 2020,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "NOP",
+      "name": "Chris Paul",
+      "from": 2005,
+      "to": 2010
+    },
+    {
+      "sport": "nba",
+      "team": "NOP",
+      "name": "Anthony Davis",
+      "from": 2012,
+      "to": 2018
+    },
+    {
+      "sport": "nba",
+      "team": "NOP",
+      "name": "Zion Williamson",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "NYK",
+      "name": "Carmelo Anthony",
+      "from": 2010,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "NYK",
+      "name": "Jalen Brunson",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "NYK",
+      "name": "Karl-Anthony Towns",
+      "from": 2024,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "OKC",
+      "name": "Kevin Durant",
+      "from": 2007,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "team": "OKC",
+      "name": "Russell Westbrook",
+      "from": 2008,
+      "to": 2018
+    },
+    {
+      "sport": "nba",
+      "team": "OKC",
+      "name": "Shai Gilgeous-Alexander",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "ORL",
+      "name": "Tracy McGrady",
+      "from": 2000,
+      "to": 2003
+    },
+    {
+      "sport": "nba",
+      "team": "ORL",
+      "name": "Dwight Howard",
+      "from": 2004,
+      "to": 2011
+    },
+    {
+      "sport": "nba",
+      "team": "ORL",
+      "name": "Paolo Banchero",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "PHI",
+      "name": "Allen Iverson",
+      "from": 2000,
+      "to": 2006
+    },
+    {
+      "sport": "nba",
+      "team": "PHI",
+      "name": "Joel Embiid",
+      "from": 2014,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "PHI",
+      "name": "Tyrese Maxey",
+      "from": 2020,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Steve Nash",
+      "from": 2004,
+      "to": 2011
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Amar'e Stoudemire",
+      "from": 2002,
+      "to": 2009
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Devin Booker",
+      "from": 2015,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "PHX",
+      "name": "Kevin Durant",
+      "from": 2022,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "Brandon Roy",
+      "from": 2006,
+      "to": 2010
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "LaMarcus Aldridge",
+      "from": 2006,
+      "to": 2014
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "Damian Lillard",
+      "from": 2012,
+      "to": 2022
+    },
+    {
+      "sport": "nba",
+      "team": "POR",
+      "name": "Damian Lillard",
+      "from": 2025,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "Chris Webber",
+      "from": 2000,
+      "to": 2004
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "DeMarcus Cousins",
+      "from": 2010,
+      "to": 2016
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "De'Aaron Fox",
+      "from": 2017,
+      "to": 2024
+    },
+    {
+      "sport": "nba",
+      "team": "SAC",
+      "name": "Domantas Sabonis",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Tim Duncan",
+      "from": 2000,
+      "to": 2015
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Tony Parker",
+      "from": 2001,
+      "to": 2017
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Manu Ginóbili",
+      "from": 2002,
+      "to": 2017
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Kawhi Leonard",
+      "from": 2011,
+      "to": 2017
+    },
+    {
+      "sport": "nba",
+      "team": "SAS",
+      "name": "Victor Wembanyama",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Vince Carter",
+      "from": 2000,
+      "to": 2004
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Chris Bosh",
+      "from": 2003,
+      "to": 2009
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "DeMar DeRozan",
+      "from": 2009,
+      "to": 2017
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Kyle Lowry",
+      "from": 2012,
+      "to": 2020
+    },
+    {
+      "sport": "nba",
+      "team": "TOR",
+      "name": "Scottie Barnes",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Karl Malone",
+      "from": 2000,
+      "to": 2002
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Deron Williams",
+      "from": 2005,
+      "to": 2010
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Donovan Mitchell",
+      "from": 2017,
+      "to": 2021
+    },
+    {
+      "sport": "nba",
+      "team": "UTA",
+      "name": "Rudy Gobert",
+      "from": 2013,
+      "to": 2021
+    },
+    {
+      "sport": "nba",
+      "team": "WAS",
+      "name": "Gilbert Arenas",
+      "from": 2003,
+      "to": 2010
+    },
+    {
+      "sport": "nba",
+      "team": "WAS",
+      "name": "John Wall",
+      "from": 2010,
+      "to": 2019
+    },
+    {
+      "sport": "nba",
+      "team": "WAS",
+      "name": "Bradley Beal",
+      "from": 2012,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Josef Martínez",
+      "from": 2017,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Miguel Almirón",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Miguel Almirón",
+      "from": 2025,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "ATL",
+      "name": "Thiago Almada",
+      "from": 2022,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "ATX",
+      "name": "Sebastián Driussi",
+      "from": 2021,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "ATX",
+      "name": "Brad Stuver",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "MTL",
+      "name": "Ignacio Piatti",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "MTL",
+      "name": "Victor Wanyama",
+      "from": 2020,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "CLT",
+      "name": "Karol Świderski",
+      "from": 2022,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "CLT",
+      "name": "Kristijan Kahlina",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "CLT",
+      "name": "Wilfried Zaha",
+      "from": 2025,
+      "to": 2026
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Nemanja Nikolić",
+      "from": 2017,
+      "to": 2019,
+      "id": "176773"
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Bastian Schweinsteiger",
+      "from": 2017,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Xherdan Shaqiri",
+      "from": 2022,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "CHI",
+      "name": "Hugo Cuypers",
+      "from": 2024,
+      "to": 2026
+    },
+    {
+      "sport": "mls",
+      "team": "COL",
+      "name": "Tim Howard",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "COL",
+      "name": "Axel Sjöberg",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Federico Higuaín",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Gyasi Zardes",
+      "from": 2018,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Lucas Zelarayán",
+      "from": 2020,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Cucho Hernández",
+      "from": 2022,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "CLB",
+      "name": "Darlington Nagbe",
+      "from": 2020,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Wayne Rooney",
+      "from": 2018,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Luciano Acosta",
+      "from": 2016,
+      "to": 2019,
+      "id": "199958"
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Christian Benteke",
+      "from": 2022,
+      "to": 2026
+    },
+    {
+      "sport": "mls",
+      "team": "DC",
+      "name": "Bill Hamid",
+      "from": 2016,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "CIN",
+      "name": "Luciano Acosta",
+      "from": 2021,
+      "to": 2024,
+      "id": "199958"
+    },
+    {
+      "sport": "mls",
+      "team": "CIN",
+      "name": "Brandon Vázquez",
+      "from": 2020,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "CIN",
+      "name": "Evander",
+      "from": 2025,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Matt Hedges",
+      "from": 2016,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Matt Hedges",
+      "from": 2025,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Mauro Díaz",
+      "from": 2016,
+      "to": 2018,
+      "id": "127069"
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Jesús Ferreira",
+      "from": 2017,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Ricardo Pepi",
+      "from": 2019,
+      "to": 2021
+    },
+    {
+      "sport": "mls",
+      "team": "DAL",
+      "name": "Petar Musa",
+      "from": 2024,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "HOU",
+      "name": "DaMarcus Beasley",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "HOU",
+      "name": "Héctor Herrera",
+      "from": 2022,
+      "to": 2024,
+      "id": "146866"
+    },
+    {
+      "sport": "mls",
+      "team": "HOU",
+      "name": "Héctor Herrera",
+      "from": 2026,
+      "to": null,
+      "id": "146866"
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Lionel Messi",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Jordi Alba",
+      "from": 2023,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Sergio Busquets",
+      "from": 2023,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Luis Suárez",
+      "from": 2024,
+      "to": null,
+      "id": "125088"
+    },
+    {
+      "sport": "mls",
+      "team": "MIA",
+      "name": "Gonzalo Higuaín",
+      "from": 2020,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Robbie Keane",
+      "from": 2016,
+      "to": 2016
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Zlatan Ibrahimović",
+      "from": 2018,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Javier Hernández",
+      "from": 2020,
+      "to": 2023,
+      "id": "146419"
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Riqui Puig",
+      "from": 2022,
+      "to": null,
+      "id": "270611"
+    },
+    {
+      "sport": "mls",
+      "team": "LA",
+      "name": "Giovani dos Santos",
+      "from": 2016,
+      "to": 2018
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Carlos Vela",
+      "from": 2018,
+      "to": 2024,
+      "id": "76098"
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Diego Rossi",
+      "from": 2018,
+      "to": 2022,
+      "id": "235817"
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Denis Bouanga",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "LAFC",
+      "name": "Giorgio Chiellini",
+      "from": 2022,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Emanuel Reynoso",
+      "from": 2020,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Dayne St. Clair",
+      "from": 2019,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Darwin Quintero",
+      "from": 2018,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "MIN",
+      "name": "Robin Lod",
+      "from": 2019,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "NSH",
+      "name": "Hany Mukhtar",
+      "from": 2020,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "NSH",
+      "name": "Walker Zimmerman",
+      "from": 2020,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "NSH",
+      "name": "Sam Surridge",
+      "from": 2023,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Carles Gil",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Gustavo Bou",
+      "from": 2019,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Matt Turner",
+      "from": 2016,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "NE",
+      "name": "Matt Turner",
+      "from": 2025,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "David Villa",
+      "from": 2016,
+      "to": 2018
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "Maxi Moralez",
+      "from": 2017,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "Valentín Castellanos",
+      "from": 2018,
+      "to": 2023,
+      "id": "252933"
+    },
+    {
+      "sport": "mls",
+      "team": "NYC",
+      "name": "Andrea Pirlo",
+      "from": 2016,
+      "to": 2017
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Bradley Wright-Phillips",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Bradley Wright-Phillips",
+      "from": 2022,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Sacha Kljestan",
+      "from": 2016,
+      "to": 2017
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Luis Robles",
+      "from": 2016,
+      "to": 2019,
+      "id": "135944"
+    },
+    {
+      "sport": "mls",
+      "team": "RBNY",
+      "name": "Emil Forsberg",
+      "from": 2024,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Kaká",
+      "from": 2016,
+      "to": 2017,
+      "id": "21364"
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Nani",
+      "from": 2019,
+      "to": 2021,
+      "id": "67716"
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Pedro Gallese",
+      "from": 2020,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "ORL",
+      "name": "Facundo Torres",
+      "from": 2022,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Andre Blake",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Kai Wagner",
+      "from": 2019,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Jakob Glesnes",
+      "from": 2020,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Dániel Gazdag",
+      "from": 2021,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "PHI",
+      "name": "Alejandro Bedoya",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Diego Valeri",
+      "from": 2016,
+      "to": 2021
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Sebastián Blanco",
+      "from": 2017,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Diego Chará",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "POR",
+      "name": "Evander",
+      "from": 2023,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Kyle Beckerman",
+      "from": 2016,
+      "to": 2020
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Nick Rimando",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Albert Rusnák",
+      "from": 2017,
+      "to": 2021,
+      "id": "171573"
+    },
+    {
+      "sport": "mls",
+      "team": "RSL",
+      "name": "Diego Luna",
+      "from": 2022,
+      "to": null,
+      "id": "148356"
+    },
+    {
+      "sport": "mls",
+      "team": "SD",
+      "name": "Hirving Lozano",
+      "from": 2025,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "SD",
+      "name": "Anders Dreyer",
+      "from": 2025,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "SJ",
+      "name": "Chris Wondolowski",
+      "from": 2016,
+      "to": 2021
+    },
+    {
+      "sport": "mls",
+      "team": "SJ",
+      "name": "Cristian Espinoza",
+      "from": 2019,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Nicolás Lodeiro",
+      "from": 2016,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Raúl Ruidíaz",
+      "from": 2018,
+      "to": 2024,
+      "id": "158640"
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Jordan Morris",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Cristian Roldan",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Stefan Frei",
+      "from": 2016,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "SEA",
+      "name": "Clint Dempsey",
+      "from": 2016,
+      "to": 2018
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Tim Melia",
+      "from": 2016,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Graham Zusi",
+      "from": 2016,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Johnny Russell",
+      "from": 2018,
+      "to": 2024
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Matt Besler",
+      "from": 2016,
+      "to": 2020
+    },
+    {
+      "sport": "mls",
+      "team": "SKC",
+      "name": "Dániel Sallói",
+      "from": 2016,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "STL",
+      "name": "Roman Bürki",
+      "from": 2022,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "STL",
+      "name": "Eduard Löwen",
+      "from": 2023,
+      "to": 2026,
+      "id": "189505"
+    },
+    {
+      "sport": "mls",
+      "team": "STL",
+      "name": "João Klauss",
+      "from": 2022,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Sebastian Giovinco",
+      "from": 2016,
+      "to": 2019
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Michael Bradley",
+      "from": 2016,
+      "to": 2023
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Jozy Altidore",
+      "from": 2016,
+      "to": 2021
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Alejandro Pozuelo",
+      "from": 2019,
+      "to": 2022
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Federico Bernardeschi",
+      "from": 2022,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "TOR",
+      "name": "Lorenzo Insigne",
+      "from": 2022,
+      "to": 2025
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Kendall Waston",
+      "from": 2016,
+      "to": 2018
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Brian White",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Ryan Gauld",
+      "from": 2021,
+      "to": null
+    },
+    {
+      "sport": "mls",
+      "team": "VAN",
+      "name": "Thomas Müller",
+      "from": 2025,
+      "to": null,
+      "id": "123465"
+    }
   ]
 }
