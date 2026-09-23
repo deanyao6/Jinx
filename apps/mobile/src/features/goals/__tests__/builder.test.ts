@@ -110,6 +110,12 @@ describe('buildCustomGoal', () => {
       events: ['walk_off'],
       companions: [],
       isNewVenue: true,
+      isNewState: false,
+      timezone: null,
+      temperatureF: null,
+      isDoubleheader: false,
+      isOpeningDay: false,
+      distanceFromHomeMiles: null,
       isFinal: true,
     };
     const progress = evaluateGoal(draft!.definition, [game]);
