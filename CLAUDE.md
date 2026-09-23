@@ -51,7 +51,21 @@ of all three environments. Highlights that change how you work:
   `eas init`: it rewrites the slug and injects Android permissions.
 - **The repo is public** at `deanyao6/Jinx`. No secrets are tracked; keep it that way.
 
-## Reactions (social v2, prompt 3, branch `social-v2-reactions`, 2026-09-23)
+## Social v2 (on `main` since 2026-09-23, commit `f014693`)
+
+Four parallel sessions built the feed and posts, reactions, communities and leaderboards,
+streaks, badges and four favorites on branch `social-v2`, then merged. The briefs are in
+`docs/prompts/social/`, and **`00_repo_reality.md` wins wherever a brief disagrees with the
+repo**. 22 migrations (`20260924*`), pgTAP `060` to `090`.
+
+**None of it is on hosted and no build carries it.** Deploying takes three steps in this order:
+push the 22 migrations, redeploy `mlb-live`, then cut a native build (`expo-camera` and
+`expo-contacts` are new, so the fingerprint policy correctly refuses to deliver this JS to
+builds 4 and 5). Read STATE.md section 3 before doing any of it: **builds 4 and 5 write emoji
+to `reactions`, which is now the photo table**, so those builds break against a hosted database
+that has these migrations.
+
+## Reactions (social v2, prompt 3, 2026-09-23)
 
 The BeReal mechanic for live games. The rules are pure in `packages/core/src/reactions/`
 (windows, whitelists, the significance gate, caps, the crowd signal, the NFL relabel); the

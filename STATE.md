@@ -4,7 +4,15 @@
 works, what is half done, what is deliberately switched off, and what only Dean can do. Anyone
 picking the project up, person or agent, should be able to start from here and nothing else.
 
-Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**; the NBA **2026-09-18, 01:10 PDT**; venue timezones and search **2026-09-18, 09:40 PDT**; the MLS merge **2026-09-22**, by running the commands quoted, not by reading commits.
+Last verified: **2026-09-17, 22:05 PDT**; famous games **2026-09-18, 00:20 PDT**; the NBA **2026-09-18, 01:10 PDT**; venue timezones and search **2026-09-18, 09:40 PDT**; the MLS merge **2026-09-22**; **social v2 on main 2026-09-23, 02:00 PDT**, by running the commands quoted, not by reading commits.
+
+**Social v2 landed on `main` on 2026-09-23 as `f014693`** (feed and posts, reactions, communities
+and leaderboards, streaks, badges, four favorites, five tabs). It was built by four parallel
+sessions on `social-v2` and merged only after the whole gate passed on the merged tree:
+`npm test` 1,030 across 105 suites, `npm run db:test` 837 across 55 files, typecheck, lint and
+`functions:check` clean, and `npx supabase db diff --schema public` applying all 22
+`20260924*` migrations to a fresh shadow database in numeric order and returning an **empty
+diff**. **None of it is on hosted, and no build carries it.** Section 3 says what that means.
 Keep it that way: when you change what is true, change this file in the same commit.
 
 ---
@@ -45,8 +53,8 @@ orphan a loaded database.
 | | What it is | State |
 |---|---|---|
 | **local** | Supabase on ports 54421-54427 | 118,831 games, 2000 onward (82,240 MLB + NFL, 36,591 NBA), plus 4,962 MLS 2016 onward. Every migration. Where you develop |
-| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. Every migration through `20260923100000` as of 2026-09-22 22:55 UTC |
-| **TestFlight** | EAS `@deanyao/jinx` | Build 4 submitted 2026-09-17, waiting on Apple processing |
+| **hosted** | Supabase `vekdufflzklfxljqufbq` | What Dean's phone talks to. Games 2016 onward, his choice, 14,826 of them NBA and 4,962 MLS. Every migration through `20260923110000`. **None of the 22 `20260924*` social v2 migrations are on hosted** (verified `npx supabase migration list --linked`, 2026-09-23 02:00 PDT) |
+| **TestFlight** | EAS `@deanyao/jinx` | Build 4 submitted 2026-09-17, waiting on Apple processing. **No build carries social v2**, and none can over the air: `expo-camera` and `expo-contacts` were added, so the fingerprint runtime policy will correctly refuse to deliver this JS to builds 4 and 5. Social v2 needs a native build |
 
 **Hosted, as verified today:**
 
@@ -115,6 +123,44 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
 
 ## 5. What is left
 
+### Social v2: what it needs before anyone can use it (2026-09-23)
+
+It is on `main` and fully green locally, but **nothing of it reaches a phone yet**. In order:
+
+1. **Push the 22 `20260924*` migrations to hosted.** Do not do this casually: builds 4 and 5
+   write emoji reactions to `reactions`, which is now the front-and-back photo table, so the
+   moment hosted has these migrations those builds fail on that insert and render pending
+   companion tags as confirmed. Ship step 3 close behind, or accept that the two installed
+   builds break.
+2. **Redeploy `mlb-live`** (it now runs the MLB reaction rules server-side) and deploy any new
+   Edge Function the social work added.
+3. **Cut a native build.** `expo-camera` (reactions) and `expo-contacts` (contacts import) are
+   new native dependencies, so this cannot ship as an OTA update; the fingerprint runtime policy
+   will correctly refuse to deliver it to builds 4 and 5.
+
+Known gaps recorded by the sessions, none of them blockers for `main`:
+
+- **The NFL live feed has never seen a game in progress.** It was verified from a device build
+  against a final (Giants at Rams, Q4, 6-28), so ESPN's in-progress status names and the
+  `situation.lastPlay` object, where a return score and ESPN's own win probability come from,
+  are still unseen. First chance is **Thursday 2026-09-24, 20:15 EDT**: run
+  `jinx:///you/eggs?probe=live`. Details in `docs/verification.md`.
+- **The NBA four-point play** is not detectable from a 30-second scoreboard poll and is not
+  attempted. The **NFL fourth-down-then-score rule** is overnight-only.
+- **The Feed tab's check-in banner is not mounted**; `GamesSessionCards` is ready for the feed
+  screen to mount at its top.
+- **A push arrives up to two minutes after the in-app banner**, because `send-push` runs every
+  two minutes.
+- **The simulated game day staged its data in SQL** and fired prompts through
+  `fire_reaction_prompt`, so the phone-side path from feed poll to `report_live_moment` is
+  covered by unit tests and pgTAP, not by a live game.
+- **Live Activity was cut** for v1 (no Expo module; needs ActivityKit through a custom native
+  module plus an entitlement). The session screen works without it.
+- **Background check-in is designed and not shipped**; see `docs/CHECKIN.md`.
+- **User-created communities are schema-only** (`kind='custom'`); see `docs/COMMUNITIES.md`,
+  which also records that `venues.state` is null for 63 of 294 venues, so `new_state` badges
+  cannot fire at those venues.
+
 **Needs Dean, and only Dean:**
 
 1. **Ticket forwarding on the domain.** Email sign-in is done: the domain is `jinxsports.fans`
@@ -141,7 +187,7 @@ npx tsx ingest/src/verify/relive.ts          # 10 real games against independent
    **ticket forwarding** (Email Routing on Cloudflare, `wrangler login` once): the exact steps
    are in `docs/prompts/next-wave.md` section H.
 
-**Social v2, prompt 1, on branch `social-v2` only (2026-09-22, not on main, not on hosted).**
+**Social v2, prompt 1, on `main` since 2026-09-23 (merged as f014693; on local, not on hosted).**
 Briefs: `docs/prompts/social/`, and `00_repo_reality.md` wins where they disagree. Five tabs,
 Feed, Passport, Games, Plan, Profile, each its own stack: `app/(tabs)/(<tab>)/` holds what one
 tab owns and `app/(tabs)/(feed,passport,games,plan,profile)/` what every tab can push (a game,
@@ -171,8 +217,8 @@ these migrations their emoji taps fail (and they show pending companion tags as 
 Ship a build carrying this branch first, or accept that. Storage buckets for post and reaction
 photos are not made yet (prompts 2 and 3).
 
-**Social v2, prompt 3: reactions, on branch `social-v2-reactions` (2026-09-23, local only, not on
-main, not on hosted).** Brief: `docs/prompts/social/03_reactions.md` under `00_repo_reality.md`
+**Social v2, prompt 3: reactions, on `main` since 2026-09-23 (merged as f014693; on local, not on
+hosted).** Brief: `docs/prompts/social/03_reactions.md` under `00_repo_reality.md`
 (R1 no paid feed, R3 four sports, R4 sessions on `checkins`). What exists:
 
 - **Sessions end** (migration `20260924020000`, pgTAP `080`): the final plus 30 minutes and the
@@ -242,7 +288,7 @@ arrives up to two minutes after the banner. On the merged `social-v2` tree every
 a native build carrying `expo-camera`.
 
 **Social v2, prompt 4 (communities, leaderboards, streaks, badges, counts, four favorites), on
-branch `social-v2-communities` off `social-v2` (2026-09-23, not merged, not on hosted).** Brief:
+`main` since 2026-09-23 (merged as f014693; on local, not on hosted).** Brief:
 `docs/prompts/social/04_communities_and_leaderboards.md`; `00_repo_reality.md` wins where they
 disagree; design note on what shipped and what did not: `docs/COMMUNITIES.md`. Migrations
 `20260924030000` to `030200`, pgTAP `090`. `goal_games()` gained the six fields badges need
@@ -277,8 +323,8 @@ leaderboard, the streak "at risk" nudge (the pure function exists and is tested;
 server side), and Profile's counts block (`useCounts()` and `user_counts` are real and tested;
 no screen renders it).
 
-**Social v2, prompt 2: the feed, on branch `social-v2-feed` then `social-v2` (2026-09-23, local
-only, not on hosted, not on main).** Migrations `20260924010000` to `010500`, pgTAP `070` to
+**Social v2, prompt 2: the feed, on `main` since 2026-09-23 (merged as f014693; on local, not on
+hosted).** Migrations `20260924010000` to `010500`, pgTAP `070` to
 `076`, app code in `features/feed/`. **Posts supersede the v1 feed in the app; `feed_events`
 stays** as the server's event log: builds 4 and 5 still read it through `feed()` (and write emoji
 to `feed_reactions`), the export carries it, and a trigger turns its stamp, milestone, goal and
@@ -622,6 +668,30 @@ the ones that disagree with the file.
 ---
 
 ## 7. Traps, each of which cost a previous session real time
+
+**`INSERT ... RETURNING` can be refused by RLS even when the insert is legal** (2026-09-23, cost
+the feed session a shipped-but-broken composer). PostgREST's `.insert().select()` compiles to
+`INSERT ... RETURNING`, and Postgres re-checks the returned row against the table's SELECT
+policy. `can_view_post()` is STABLE, so it cannot see the row its own statement is inserting, and
+the whole insert is rejected with 42501. The same statement without RETURNING succeeds. Every
+pgTAP test passed because SQL tests insert without RETURNING. **Mint the id on the phone
+(`Crypto.randomUUID()`) and never read a new row back.** More generally: an RLS path proven only
+as the service role in pgTAP can still be broken in the app, so exercise one real user action.
+
+**Applying SQL outside `supabase migration up --local` hides broken migrations** (2026-09-23,
+cost four test files and nearly shipped a migration that could not apply). A session hand-applied
+drafts, leaving an orphaned one-argument overload of `recompute_user_leaderboard_stats` behind;
+every single-argument call became ambiguous and broke four unrelated test files, while its
+migration revoked a signature the file never creates and would have failed on any fresh database.
+**Before merging a branch of migrations, run `npx supabase db diff --schema public`**: it applies
+every migration to a fresh shadow database and never touches the loaded local one. An empty diff
+means the set applies from scratch in the order hosted will use and matches local exactly.
+
+**With several sessions sharing one local database, a red `db:test` may be someone else's state**
+(2026-09-23). Seeded catalogs collide with test fixtures (prompt 4's 33 badges against prompt 1's
+`three_parks_weekend`), and any real use of a feature leaves rows that break assertions counting a
+whole table. Scope fixtures with a distinctive prefix and never assert on a table's total.
+
 
 1. **`apps/mobile/.env` never reaches an EAS build.** It is gitignored and EAS uploads the git
    tree. Build config lives in `eas env:list production`. A build without those values installs
