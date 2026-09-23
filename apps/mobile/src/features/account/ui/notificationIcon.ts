@@ -9,6 +9,8 @@ const KIND_ICONS: Record<NotificationKind, IconName> = {
   new_stamp: 'i-passport',
   milestone: 'i-trend',
   tagged: 'i-users',
+  kudos: 'i-spark',
+  comment: 'i-news',
   person_linked: 'i-users',
   new_follower: 'i-user',
   follow_request: 'i-user',

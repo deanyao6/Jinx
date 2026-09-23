@@ -8,23 +8,22 @@ import { LegacyBackButton } from '@/components/reference/BackHeader';
 import { Segmented } from '@/components/Segmented';
 import { Text } from '@/components/Text';
 import { useFollowRequests } from '@/features/social/queries';
-import { FeedSegment } from '@/features/social/ui/FeedSegment';
 import { OverlapSegment } from '@/features/social/ui/OverlapSegment';
 import { RivalsSegment } from '@/features/social/ui/RivalsSegment';
 import { WithSegment } from '@/features/social/ui/WithSegment';
 import { useTheme } from '@/theme/ThemeProvider';
 
-type Segment = 'feed' | 'with' | 'rivals' | 'overlap';
+// The v1 Feed segment is gone: posts on the Feed tab replaced it (social brief 02).
+type Segment = 'with' | 'rivals' | 'overlap';
 
 const SEGMENTS: { key: Segment; label: string }[] = [
-  { key: 'feed', label: 'Feed' },
   { key: 'with', label: 'With' },
   { key: 'rivals', label: 'Rivals' },
   { key: 'overlap', label: 'Overlap' },
 ];
 
 function isSegment(s: string | undefined): s is Segment {
-  return s === 'feed' || s === 'with' || s === 'rivals' || s === 'overlap';
+  return s === 'with' || s === 'rivals' || s === 'overlap';
 }
 
 export default function FriendsScreen() {
@@ -33,7 +32,7 @@ export default function FriendsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { segment: param } = useLocalSearchParams<{ segment?: string }>();
-  const [segment, setSegment] = useState<Segment>(isSegment(param) ? param : 'feed');
+  const [segment, setSegment] = useState<Segment>(isSegment(param) ? param : 'with');
   const [seenParam, setSeenParam] = useState(param);
   if (param !== seenParam) {
     setSeenParam(param);
@@ -70,14 +69,6 @@ export default function FriendsScreen() {
       <Segmented options={SEGMENTS} value={segment} onChange={setSegment} />
     </View>
   );
-
-  if (segment === 'feed') {
-    return (
-      <View style={{ flex: 1, backgroundColor: c.screen }}>
-        <FeedSegment header={header} onFindPeople={goFind} />
-      </View>
-    );
-  }
 
   return (
     <View style={{ flex: 1, backgroundColor: c.screen }}>

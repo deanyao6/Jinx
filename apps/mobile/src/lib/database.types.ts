@@ -2556,6 +2556,35 @@ export type Database = {
         }
         Relationships: []
       }
+      reaction_poll_state: {
+        Row: {
+          game_id: string
+          last_at_bat: number
+          scheduled_reported: boolean
+          updated_at: string
+        }
+        Insert: {
+          game_id: string
+          last_at_bat?: number
+          scheduled_reported?: boolean
+          updated_at?: string
+        }
+        Update: {
+          game_id?: string
+          last_at_bat?: number
+          scheduled_reported?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reaction_poll_state_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: true
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reaction_prompt_deliveries: {
         Row: {
           copy: string
@@ -4452,7 +4481,7 @@ export type Database = {
       }
       recompute_user_counts: { Args: { p_user: string }; Returns: undefined }
       recompute_user_leaderboard_stats: {
-        Args: { p_user: string }
+        Args: { p_community_id?: string; p_user: string }
         Returns: undefined
       }
       record_json: {

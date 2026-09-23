@@ -26,3 +26,6 @@ export * from './search.js';
 export * from './streaks.js';
 export * from './leaderboard.js';
 export * from './badges.js';
+export * from './compatibility.js';
+export * from './contacts.js';
+export * from './profanity.js';

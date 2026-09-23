@@ -70,7 +70,7 @@ function TeamsPage({
     <View style={{ flex: 1, backgroundColor: theme.colors.screen }}>
       <Screen>
         <StepIntro
-          step={2}
+          step={3}
           title="Your teams"
           body="Pick as many as you like. Games with your teams count toward your record. You can change these later."
           onBack={onBack}

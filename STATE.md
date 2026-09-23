@@ -207,6 +207,43 @@ leaderboard, the streak "at risk" nudge (the pure function exists and is tested;
 server side), and Profile's counts block (`useCounts()` and `user_counts` are real and tested;
 no screen renders it).
 
+**Social v2, prompt 2: the feed, on branch `social-v2-feed` then `social-v2` (2026-09-23, local
+only, not on hosted, not on main).** Migrations `20260924010000` to `010500`, pgTAP `070` to
+`076`, app code in `features/feed/`. **Posts supersede the v1 feed in the app; `feed_events`
+stays** as the server's event log: builds 4 and 5 still read it through `feed()` (and write emoji
+to `feed_reactions`), the export carries it, and a trigger turns its stamp, milestone, goal and
+Wrapped events into system posts, so no rule is written twice. The v1 Feed segment and its UI
+(`FeedSegment`, `FeedEventCard`, `useFeed`, `useReact`) are deleted; a famous game now shows as
+a gold pill on the game post instead of its own event. **Auto-post**: the server drafts a game
+post 15 minutes after the final and publishes it at 30 (pg_cron `auto-post`, every 5 minutes),
+once per fan and game ever (`auto_post_runs`); turning it off mid-window deletes the draft; a
+game logged more than two days after it ended waits for "Post this" instead, and a stamp or
+milestone from a game more than a week old makes no post, which keeps onboarding backfill out of
+followers' feeds. The draft shows on the game page ("Your post") and as a banner on Games.
+**Feed**: Following and Discover, reverse chronological, keyset pages on (published_at, id),
+counts per viewer so a block hides a kudos from the number too; Discover is creators (ranked
+daily, `creator-rankings` cron) and fans at your games plus creator and community posts.
+**Kudos and comments**: no kudos on your own post, one batched notification ("Maya and 3 others
+gave kudos."), 500-character flat comments, delete by either author, a soft profanity warning.
+**Rate limits** answer `JX429` and **profane names** `JX451`, both turned into sentences.
+**Profanity is one list** (`packages/core/src/profanity.ts`; `lib/profanity.ts` re-exports it,
+SQL `contains_profanity` mirrors it and a test compares them). **Contacts**: onboarding step 2 of
+7 and Friends > Find people; salted SHA-256 on the phone, hashes only over the wire (tested on the
+payload), matched against each account's sign-in email and phone, nothing stored;
+`discoverable_by_contacts` switch in Privacy; `seven_follows_at` and the service-only view
+`onboarding_follow_goal` measure the 7-follow goal. **Compatibility** (mutuals only, cached a
+day, `packages/core/src/compatibility.ts` and its SQL twin) and the record together sit on a
+profile, with the creator badge and note, their posts, and Mute. **Companion consent (R5)**: a
+placeholder like "Dad" is confirmed silently as before; a linked user is asked "Dean says you were
+at Mets at Phillies, Sep 20. Add it?" at the top of their feed, accept logs the game and drafts a
+post if their auto-post is on, decline removes the tag silently and drops any re-tag of that
+person at that game by that tagger, and a blocked tagger's tag never lands. Editing a log now only
+adds and removes the tags that changed, so a friend is never asked twice. Moderation process:
+`docs/moderation.md` (queue: `report_queue`, service role). Creators are set by
+`supabase/scripts/creator.sql`. **`expo-contacts` is new native code: this needs a native build,
+not an `eas update`**, and App Store Connect's privacy answers need Contacts (not linked).
+The invite rows share `APP_DOWNLOAD_TEXT`, which still has no real link.
+
 **The welcome screen is rebuilt (2026-09-22), and its wall restocks itself weekly.**
 `design/welcome-reference.html` is its source of truth; `app/(auth)/welcome.tsx` composes
 `features/onboarding/ui/WelcomeArt.tsx` (the wall, scrim and copy) and `WelcomeActions.tsx`

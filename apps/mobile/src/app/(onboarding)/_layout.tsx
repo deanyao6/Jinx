@@ -7,6 +7,7 @@ export default function OnboardingLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="contacts" />
       <Stack.Screen name="teams" />
       <Stack.Screen name="players" />
       <Stack.Screen name="city" />

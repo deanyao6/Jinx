@@ -101,8 +101,8 @@ describe('the favorite players step', () => {
 
   it('is the step after the teams one, of six', async () => {
     const { getByText } = await renderStep();
-    expect(ONBOARDING_STEPS).toBe(6);
-    expect(getByText('Step 3 of 6')).toBeTruthy();
+    expect(ONBOARDING_STEPS).toBe(7);
+    expect(getByText('Step 4 of 7')).toBeTruthy();
     expect(getByText('Any favorite players?')).toBeTruthy();
   });
 

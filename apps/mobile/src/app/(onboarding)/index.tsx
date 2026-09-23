@@ -43,7 +43,7 @@ function HandleForm({ profile, metaName }: { profile: Profile; metaName: string 
     if (!canContinue) return;
     try {
       await update.mutateAsync({ handle: normalizeHandle(handle), display_name: name.trim() });
-      router.push('/(onboarding)/teams');
+      router.push('/(onboarding)/contacts');
     } catch {
       // error surfaced below
     }

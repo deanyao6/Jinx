@@ -32,3 +32,12 @@ cd apps/mobile && npx expo start --ios
 ## Milestones
 
 See SPEC.md Section 12. Progress is tracked in [docs/progress.md](docs/progress.md).
+
+## Admin notes
+
+- **Creators.** A creator is a superfan account shown in Discover with a badge, a follower
+  count and a one-line note. There is no application form: we pick them. Run
+  `supabase/scripts/creator.sql` with the service role (the file says how), which also rebuilds
+  Discover's creator ranking so the change shows at once. It is otherwise rebuilt daily.
+- **Moderation.** Reports land in `public.reports`; the open queue is the `report_queue` view,
+  readable with the service role only. The review process is [docs/moderation.md](docs/moderation.md).
