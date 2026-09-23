@@ -1,9 +1,10 @@
 import { useRouter, type Href } from 'expo-router';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SlideOver } from '@/components/reference/SlideOver';
+import { useBadges, useFavoriteGames, useStreaks } from '@/features/communities/queries';
 import { useRepository } from '@/features/data/context';
 import { EmptyState } from '@/features/data/EmptyState';
 import type { PassportFixture } from '@/features/data/shapes';
@@ -13,6 +14,7 @@ import { favoritePlayerItems } from '@/features/players/passport';
 import { useFavoritePlayersSeen } from '@/features/players/queries';
 import { env } from '@/lib/env';
 import { formatGameDate } from '@/lib/format';
+import { streakPatchLabel } from '@jinx/core';
 import { ReferenceThemeProvider, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { screenPadding } from '@/theme/reference/tokens';
 
@@ -166,6 +168,9 @@ function PassportBody({
           />
         ) : null}
         <FavoritePlayers pill={pill} />
+        <StreakPatches />
+        <FourFavoritesSection />
+        <BadgesPreview />
         {/* A real row opens the game its number is from, or the games you saw the player in, so
             the full list needs its own way in. The demo rows name no real game: they open the
             full list, and the header stays as the reference draws it, with no action. */}
@@ -204,6 +209,103 @@ function PassportBody({
  * parity screenshots are unchanged. It is absent until you have a favourite, and under a team
  * pill until you have seen one of them play for that team.
  */
+/**
+ * Season streak patches, one per team with a run going (section 3). Not in
+ * `design/reference.html`; added for social v2 the same way `FavoritePlayers` was: its own
+ * query, absent in demo mode, so the parity screenshots are unchanged.
+ */
+function StreakPatches() {
+  const router = useRouter();
+  const { base } = useReferenceTheme();
+  const streaks = useStreaks();
+  if (env.demo || !streaks.data || streaks.data.length === 0) return null;
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
+      {streaks.data.map((s) => (
+        <Pressable
+          key={s.team_id}
+          accessibilityRole="button"
+          onPress={() => router.push(`/passport/streak/${s.team_id}` as Href)}
+          style={({ pressed }) => ({
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 5,
+            borderRadius: 999,
+            paddingVertical: 5,
+            paddingHorizontal: 11,
+            backgroundColor: base.card,
+            borderWidth: 1,
+            borderColor: s.is_active ? base.line : base.line,
+            opacity: pressed ? 0.7 : 1,
+          })}
+        >
+          <Text style={{ fontSize: 12, fontWeight: '700', color: base.ink }}>
+            {streakPatchLabel(s.team_name, {
+              startSeason: s.start_season,
+              endSeason: s.end_season,
+              seasons: s.seasons,
+              minGames: s.min_games,
+              isActive: s.is_active,
+            })}
+          </Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}
+
+/** Four favorite games preview, section 6: absent until at least one is picked. */
+function FourFavoritesSection() {
+  const router = useRouter();
+  const favorites = useFavoriteGames();
+  if (env.demo || !favorites.data || favorites.data.length === 0) return null;
+  return (
+    <View style={{ marginBottom: 18 }}>
+      <SectionHeader
+        title="Four favorite games"
+        action="Edit"
+        onActionPress={() => router.push('/passport/favorites' as Href)}
+      />
+      <SuperlativeList
+        items={favorites.data.map((f) => ({
+          icon: 'i-spark',
+          label: new Date(f.date).getFullYear().toString() || 'Favorite',
+          value: f.note ?? f.matchup,
+          chip: '',
+        }))}
+        onItemPress={() => router.push(`/games/${favorites.data![0]!.game_id}` as Href)}
+      />
+    </View>
+  );
+}
+
+/** Earned badges preview, section 5: absent until the fan has earned one. */
+function BadgesPreview() {
+  const router = useRouter();
+  const badges = useBadges();
+  const earned = (badges.data ?? []).filter((b) => b.earned_at);
+  if (env.demo || earned.length === 0) return null;
+  return (
+    <View style={{ marginBottom: 18 }}>
+      <SectionHeader
+        title="Badges"
+        action={`See all ${badges.data!.length}`}
+        onActionPress={() => router.push('/passport/badges' as Href)}
+      />
+      <SuperlativeList
+        items={earned.slice(0, 6).map((b) => ({
+          icon: 'i-verified',
+          label: b.name,
+          value: b.tier === 'legendary' ? 'Legendary' : b.tier === 'rare' ? 'Rare' : 'Earned',
+          chip: '',
+          tone: b.tier === 'standard' ? undefined : 'gold',
+        }))}
+        onItemPress={() => router.push('/passport/badges' as Href)}
+      />
+    </View>
+  );
+}
+
 function FavoritePlayers({ pill }: { pill: string }) {
   const router = useRouter();
   const seen = useFavoritePlayersSeen();

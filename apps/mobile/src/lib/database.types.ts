@@ -4280,6 +4280,13 @@ export type Database = {
           state: string
         }[]
       }
+      my_season_game_counts: {
+        Args: { p_team_id: string }
+        Returns: {
+          games: number
+          season: number
+        }[]
+      }
       my_storage_paths: { Args: never; Returns: string[] }
       my_tags_at_game: {
         Args: { p_game_id: string }
