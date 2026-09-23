@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "jinx",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "updates": {
       "url": "https://u.expo.dev/ea474a72-1186-4600-90e1-8dffcdbcafa2",
       "fallbackToCacheTimeout": 0
