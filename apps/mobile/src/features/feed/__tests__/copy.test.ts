@@ -44,6 +44,7 @@ describe('headlines, one per kind', () => {
     expect(postHeadline(byKind('milestone'))).toBe('50th game attended');
     expect(postHeadline(byKind('goal'))).toBe('Finished Every NL West park');
     expect(postHeadline(byKind('wrapped'))).toBe('MLB 2026 Wrapped is out');
+    expect(postHeadline(byKind('badge'))).toBe('Earned Walk-off witnessed');
   });
 
   it('puts the winner first once final, and says "at" before', () => {

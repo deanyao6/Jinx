@@ -4,7 +4,7 @@
 -- attaching a reaction to a game post makes no second feed entry.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(24);
+select plan(25);
 
 insert into auth.users (id, email) values
   ('b7000000-0000-4000-8000-0000000000a1', 'pp-author@test'),
@@ -115,6 +115,11 @@ insert into public.feed_events (actor_user_id, type, payload) values
   ('b7000000-0000-4000-8000-0000000000b1', 'pledge_won', '{}');
 select is((select count(*)::integer from public.posts where author_id = 'b7000000-0000-4000-8000-0000000000b1' and kind in ('goal')), 0,
   'a muted system post kind is not made');
+update public.profiles set muted_post_kinds = array['goal', 'badge'] where id = 'b7000000-0000-4000-8000-0000000000b1';
+insert into public.feed_events (actor_user_id, type, payload) values
+  ('b7000000-0000-4000-8000-0000000000b1', 'badge_earned', '{"badge_key":"x","name":"X","tier":"bronze"}');
+select is((select count(*)::integer from public.posts where author_id = 'b7000000-0000-4000-8000-0000000000b1' and kind = 'badge'), 0,
+  'badge posts, prompt 4''s kind, can be muted too (20260924010600)');
 select is((select count(*)::integer from public.posts where author_id = 'b7000000-0000-4000-8000-0000000000b1'), 1,
   'and a pledge event has no post kind at all');
 

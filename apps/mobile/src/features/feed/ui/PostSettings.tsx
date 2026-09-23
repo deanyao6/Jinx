@@ -17,6 +17,7 @@ const SYSTEM_KINDS: { key: SystemPostKind; title: string; body: string }[] = [
   { key: 'milestone', title: 'Milestones', body: 'Your 10th, 25th, 50th and 100th game.' },
   { key: 'goal', title: 'Goals', body: 'When you finish one.' },
   { key: 'wrapped', title: 'Wrapped', body: 'When a season recap is ready.' },
+  { key: 'badge', title: 'Badges', body: 'When you earn one.' },
 ];
 
 /**

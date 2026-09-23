@@ -523,7 +523,7 @@ export function useComposerSeed(attendanceId: string | undefined) {
 // Settings: auto-post, default audience, system post kinds
 // ---------------------------------------------------------------------------
 
-export type SystemPostKind = 'stamp' | 'milestone' | 'goal' | 'wrapped';
+export type SystemPostKind = 'stamp' | 'milestone' | 'goal' | 'wrapped' | 'badge';
 export type PostSettings = {
   autoPost: boolean;
   visibility: Visibility;
