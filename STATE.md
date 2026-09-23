@@ -171,6 +171,73 @@ these migrations their emoji taps fail (and they show pending companion tags as 
 Ship a build carrying this branch first, or accept that. Storage buckets for post and reaction
 photos are not made yet (prompts 2 and 3).
 
+**Social v2, prompt 3: reactions, on branch `social-v2-reactions` (2026-09-23, local only, not on
+main, not on hosted).** Brief: `docs/prompts/social/03_reactions.md` under `00_repo_reality.md`
+(R1 no paid feed, R3 four sports, R4 sessions on `checkins`). What exists:
+
+- **Sessions end** (migration `20260924020000`, pgTAP `080`): the final plus 30 minutes and the
+  six-hour timeout by `close_stale_checkins()` (pg_cron every five minutes, plain SQL, so trap 3
+  does not apply), "I have left" by `end_checkin()`, "not tonight" by `mute_checkin_prompts()`,
+  `also_here()` for mutual follows with an open session who allow it (a section when seats are
+  shared, never a location), and two profile switches, `checkin_visibility` and
+  `reaction_prompts`, on the Privacy screen. Geofence exit is designed, not built:
+  `docs/CHECKIN.md`. No background location permission is requested anywhere.
+- **Prompts fire from one place** (`20260924020100`, pgTAP `081`): `fire_reaction_prompt()`
+  applies the caps (three a game, one scheduled held back, two events, twelve minutes apart per
+  fan, the merge inside the late window, silence after two ignored, nothing in the first ten
+  minutes or after a session ends), targets the side a play benefits (a favorite or a locked
+  neutral pick; `all` for a walk-off, a no-hitter, a crowd moment), writes one
+  `reaction_prompt_deliveries` row and one `reaction_prompt` notification per fan, and dedupes
+  by event key. Copy is built from `reaction_copy_templates` by (margin bucket per sport,
+  period phrase, favorite or pledged or neutral), editable in the table without a code change.
+  The rules themselves are pure in `packages/core/src/reactions/` (58 tests): the scheduled
+  window per sport (MLB 7th to 8th, NFL Q4 before the two-minute warning, NBA from Q4, MLS from
+  70', a blowout at the window's start), the whitelists and the 15-point significance gate for
+  all four sports, the NFL approximation, the caps, the crowd signal, the overnight relabel.
+- **Who runs the rules.** MLB: `mlb-live` reads `/winProbability` beside the live feed every
+  minute while anyone is checked in, judges the plate appearances it has not seen
+  (`reaction_poll_state`, `20260924020200`, pgTAP `083`) and fires. NBA, MLS and NFL: the
+  checked-in phone, whose feeds the server cannot reach, through `report_live_moment()`
+  (`features/reactions/useReactionEngine.ts`, the pure step in `engine.ts`); any phone there
+  may report, the server dedupes, and MLB reports are refused. The crowd signal (three fans
+  self-triggering within 90 seconds) is a trigger on `reactions`, no feed needed.
+- **The NFL reads ESPN's free scoreboard from the phone** (R1): `features/live/feeds.ts`
+  `nflLiveFeed`, matched by club (LA is LAR, WAS is WSH on ESPN), the day's board by Eastern
+  date, `two_minute_warning` for the last two minutes of a half, the last play and ESPN's own
+  win probability when the board carries them. The NFL lock and both live eggs are on. Live
+  gating is conservative (a score that swings the margin, or a return score the board names);
+  `ingest/src/nfl/relabel.ts` rewrites those prompts overnight to the real play from nflverse,
+  recomputes significance and pins them (in `nfl-ingest.yml` after relive). Checked from this
+  laptop with fixtures (`docs/verification.md`); **a game under way and the `situation` object
+  were not seen** (none was on), and the fetch from a device build is recorded below.
+- **The capture** (`features/reactions/capture/CaptureScreen.tsx`, `/react/<gameId>?prompt=`):
+  back camera and shutter, a three-second countdown, the selfie on its own, the stitched preview,
+  Retake, Post (a `posts` row of kind `reaction`) or Only me (private, no post). Photos in the
+  private `reaction-photos` bucket, read through the reaction's own visibility (pgTAP `082`).
+  Lateness is the server's clock ("late by 4 min"). Offline, the capture is queued and posted
+  when the app is back. Sequential capture, not multi-cam; **Live Activity is cut** for v1
+  (`design/PORTING_NOTES.md`). `expo-camera` is new native code: **this needs a build, not an
+  update**.
+- **Where a reaction lives**: the strip on the game page, inline in Relive at the point on the
+  line it was taken (`wp_seq`; unpinned ones on the final step), the feed as its own post
+  (prompt 2 renders posts), the viewer with who-sees-it and delete for mine, report and block
+  for others'. The checked-in screen has the session panel (score line, reactions of three,
+  React now up to five of your own, Also here, not tonight, I have left) and the post-game offer
+  once it ends; the Games tab has the live session card and the check-in offer (a logged or
+  ticket game today, or a favorite's game when the phone is already allowed to read its location
+  and is inside the geofence). A local notification 30 minutes before every Going game.
+- **Evidence:** `docs/evidence/social/reactions/` (a simulated game day on the dedicated
+  simulator, see its README).
+
+Not done, and known: the feed's copy of the check-in banner waits for prompt 2's Feed screen
+(`GamesSessionCards` is ready to mount); the NBA four-point play is not detectable from a
+30-second scoreboard poll and is not attempted; the NFL fourth-down-then-score rule needs
+play-by-play and is overnight-only; `send-push` runs every two minutes on hosted, so a push
+arrives up to two minutes after the banner; the local pgTAP suite carries three red files from
+the other two social sessions (`063`, `066`, `067`) whose migrations and data sit in the shared
+local database. **Before hosted:** the three migrations, `mlb-live` redeployed, the bucket, and
+a native build carrying `expo-camera`.
+
 **The welcome screen is rebuilt (2026-09-22), and its wall restocks itself weekly.**
 `design/welcome-reference.html` is its source of truth; `app/(auth)/welcome.tsx` composes
 `features/onboarding/ui/WelcomeArt.tsx` (the wall, scrim and copy) and `WelcomeActions.tsx`

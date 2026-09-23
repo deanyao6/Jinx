@@ -9,6 +9,7 @@ import { CaptureScreen } from '@/features/reactions/capture/CaptureScreen';
  * everything, so the screen carries its own way out.
  */
 export default function ReactRoute() {
-  const { gameId, prompt } = useLocalSearchParams<{ gameId: string; prompt?: string }>();
-  return <CaptureScreen gameId={gameId} promptId={prompt ?? null} />;
+  const { gameId, prompt, auto } = useLocalSearchParams<{ gameId: string; prompt?: string; auto?: string }>();
+  const run = auto === 'post' || auto === 'private' || auto === 'preview' ? auto : null;
+  return <CaptureScreen gameId={gameId} promptId={prompt ?? null} auto={run} />;
 }

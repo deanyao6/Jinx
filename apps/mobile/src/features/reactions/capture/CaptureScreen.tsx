@@ -34,7 +34,7 @@ const COUNTDOWN_SECONDS = 3;
  * Self-triggered when opened without a prompt. Offline, the capture is queued and posted when
  * the app is back, late by however long that took.
  */
-export function CaptureScreen({ gameId, promptId }: { gameId: string; promptId: string | null }) {
+export function CaptureScreen({ gameId, promptId, auto = null }: { gameId: string; promptId: string | null; auto?: 'post' | 'private' | 'preview' | null }) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -55,6 +55,7 @@ export function CaptureScreen({ gameId, promptId }: { gameId: string; promptId: 
   const [problem, setProblem] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<string | null>(null);
   const [cameraReady, setCameraReady] = useState(false);
+  const sessionOpen = inOpenSession(ctx.data);
 
   const label = delivery.data?.prompt?.label ?? null;
   const firedAt = delivery.data?.fired_at ?? null;
@@ -196,6 +197,26 @@ export function CaptureScreen({ gameId, promptId }: { gameId: string; promptId: 
     }
   };
 
+  // Development only: `/react/<id>?auto=post|private|preview` runs the flow by itself, because
+  // nothing can tap the simulator (STATE.md trap 9): the shutter fires a moment after the
+  // screen is up, the selfie follows the countdown as always, and then it posts, saves
+  // privately, or stops at the preview for a screenshot. A production build ignores it.
+  const autoRun = __DEV__ ? auto : null;
+  const autoFired = useRef(false);
+  useEffect(() => {
+    if (!autoRun || step !== 'back' || autoFired.current || !sessionOpen) return;
+    autoFired.current = true;
+    const t = setTimeout(() => void onShutter(), 1500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRun, step, sessionOpen]);
+  useEffect(() => {
+    if (!autoRun || autoRun === 'preview' || step !== 'preview') return;
+    const t = setTimeout(() => void submit(autoRun === 'private' ? 'private' : 'followers'), 800);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRun, step]);
+
   const facing: CameraType = step === 'front' || step === 'countdown' ? 'front' : 'back';
   const heading =
     step === 'countdown'
@@ -209,7 +230,6 @@ export function CaptureScreen({ gameId, promptId }: { gameId: string; promptId: 
     step === 'countdown' || step === 'front'
       ? 'Get ready for the selfie'
       : 'Point at the field and shoot. The selfie fires right after.';
-  const sessionOpen = inOpenSession(ctx.data);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#0A0D12' }}>

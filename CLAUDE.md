@@ -51,6 +51,15 @@ of all three environments. Highlights that change how you work:
   `eas init`: it rewrites the slug and injects Android permissions.
 - **The repo is public** at `deanyao6/Jinx`. No secrets are tracked; keep it that way.
 
+## Reactions (social v2, prompt 3, branch `social-v2-reactions`, 2026-09-23)
+
+The BeReal mechanic for live games. The rules are pure in `packages/core/src/reactions/`
+(windows, whitelists, the significance gate, caps, the crowd signal, the NFL relabel); the
+database enforces them in `fire_reaction_prompt()`; MLB fires from `mlb-live`, the NBA, MLS
+and NFL from the checked-in phone (`features/reactions/`). The NFL reads ESPN's free scoreboard
+from the phone (`features/live/feeds.ts`). Sessions: `docs/CHECKIN.md`. Every rule is keyed by
+`sport_id`; add a row, never a branch on the sport.
+
 ## Docs
 | File | What it holds |
 |---|---|
@@ -154,6 +163,7 @@ npx tsx ingest/src/nba/honors.ts                           # NBA honors (MVP top
 npx tsx ingest/src/mls/honors.ts                           # MLS honors (MVP and finalists, Best XI, Golden Boot, ROY, Cup MVP) from seed/mls_awards.json
 npx tsx ingest/src/nfl/moves.ts [--from 2016 --to 2026]    # NFL joins from the weekly rosters
 npx tsx ingest/src/nfl/firsts.ts [--from 2000 --to 2026]   # NFL first touchdowns (play-by-play) and rookie seasons
+npx tsx ingest/src/nfl/relabel.ts [--game 2026_03_ATL_GB]  # rewrite coarse live NFL reaction prompts to the real play (nightly, after relive)
 ```
 
 ## Conventions
