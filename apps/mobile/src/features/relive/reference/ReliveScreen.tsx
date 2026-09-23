@@ -18,6 +18,7 @@ import { fontFamily } from '@/theme/fonts';
 import { ReferenceThemeProvider, TeamTheme, useReferenceTheme } from '@/theme/reference/TeamTheme';
 import { motion, screenPadding } from '@/theme/reference/tokens';
 
+import { ReliveReactions } from '@/features/reactions/ui/ReliveReactions';
 import { PhotoViewer } from '../PhotoViewer';
 import { fanCountLabel, pickMedia, useAddPhotos, useGamePhotos, type GamePhoto } from '../photos';
 import { useReliveGame } from '../useReliveGame';
@@ -299,6 +300,16 @@ function Body({
             <Text style={[s.storyText, { color: base.ink }]}>{current.text}</Text>
           </View>
         </View>
+
+        {/* Reactions pinned to this moment of the story (SPEC social v2, prompt 3, section 5). */}
+        {real ? (
+          <ReliveReactions
+            gameId={real.gameId}
+            prevWp={index > 0 ? (steps[index - 1]?.wp ?? null) : null}
+            wp={current.wp}
+            isLast={index === steps.length - 1}
+          />
+        ) : null}
 
         <WinProbChart series={winProb} upTo={current.wp} />
 

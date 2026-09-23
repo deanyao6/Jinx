@@ -13,7 +13,7 @@ import { ToggleRow } from '@/features/account/ui/ToggleRow';
 import { useProfile, useUpdateProfile, type ProfilePatch } from '@/features/profile/queries';
 import { useTheme } from '@/theme/ThemeProvider';
 
-type Key = 'is_private' | 'share_seats' | 'show_on_overlap';
+type Key = 'is_private' | 'share_seats' | 'show_on_overlap' | 'checkin_visible' | 'reaction_prompts';
 
 const SETTINGS: { key: Key; title: string; body: string }[] = [
   {
@@ -31,7 +31,23 @@ const SETTINGS: { key: Key; title: string; body: string }[] = [
     title: 'Show on overlap',
     body: 'Let mutual follows see “before you connected” cards for games you were both at.',
   },
+  {
+    key: 'checkin_visible',
+    title: 'Show that I am checked in',
+    body: 'Mutual friends at the same game see you in Also here: that you are there, and your section if you share seats. Never your location.',
+  },
+  {
+    key: 'reaction_prompts',
+    title: 'Reaction prompts',
+    body: 'While you are checked in: one late in the game and up to two big moments, as notifications. Off means none, ever. You can still react on your own.',
+  },
 ];
+
+/** The profile's value for a switch. Check-in visibility is a word on the row, not a boolean. */
+function valueOf(p: { is_private: boolean; share_seats: boolean; show_on_overlap: boolean; checkin_visibility: string; reaction_prompts: boolean }, key: Key): boolean {
+  if (key === 'checkin_visible') return p.checkin_visibility !== 'off';
+  return !!p[key];
+}
 
 /** Privacy toggles on the profile row (SPEC.md 8.9, 9). */
 export default function PrivacyScreen() {
@@ -41,7 +57,7 @@ export default function PrivacyScreen() {
   const p = profile.data;
 
   const onToggle = (key: Key, value: boolean) => {
-    const patch: ProfilePatch = { [key]: value };
+    const patch: ProfilePatch = key === 'checkin_visible' ? { checkin_visibility: value ? 'mutuals' : 'off' } : { [key]: value };
     update.mutate(patch);
   };
 
@@ -60,7 +76,7 @@ export default function PrivacyScreen() {
                 key={s.key}
                 title={s.title}
                 body={s.body}
-                value={!!p[s.key]}
+                value={valueOf(p, s.key)}
                 onValueChange={(v) => onToggle(s.key, v)}
               />
             ))}

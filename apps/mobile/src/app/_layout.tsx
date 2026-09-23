@@ -25,6 +25,7 @@ import { RootStack } from '@/features/navigation/RootStack';
 import { ownedHref } from '@/features/navigation/tabs';
 import { Toast } from '@/features/navigation/toast';
 import { ParityHost } from '@/features/parity/ParityHost';
+import { SessionRuntime } from '@/features/reactions/SessionRuntime';
 import { useTeamPalettes } from '@/features/teams/queries';
 import { useNotificationRuntime } from '@/features/notifications/push';
 import { useProfile } from '@/features/profile/queries';
@@ -246,6 +247,9 @@ function RootLayout() {
                     <AccentRoot>
                       <RootNavigator />
                       <Toast />
+                      {/* A check-in session's runtime: the prompt banner, the phone-side
+                        engine, queued captures and the 30-minute reminders. */}
+                      <SessionRuntime />
                       {/* An easter egg. Renders nothing at rest, and never takes a touch. */}
                       <StretchConfetti />
                     </AccentRoot>

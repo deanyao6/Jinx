@@ -39,6 +39,7 @@ import {
 import { Scoreboard } from '@/features/games/ui/Scoreboard';
 import { ScoringSection } from '@/features/games/ui/ScoringSection';
 import { SideTheme } from '@/features/games/ui/SideTheme';
+import { ReactionStrip } from '@/features/reactions/ui/ReactionStrip';
 import { useGameStorySteps } from '@/features/relive/queries';
 import { storylineCards, useStorylines } from '@/features/storylines/queries';
 import {
@@ -390,6 +391,9 @@ export default function GameDetailScreen() {
           homeTeamId={g.home?.id ?? g.home_team_id}
           awayTeamId={g.away?.id ?? g.away_team_id}
         />
+
+        {/* Reactions taken at this game: mine, and the ones their posts let me see. */}
+        <ReactionStrip gameId={gameId} />
 
         {canCheckIn ? (
           <Card tone="accent">

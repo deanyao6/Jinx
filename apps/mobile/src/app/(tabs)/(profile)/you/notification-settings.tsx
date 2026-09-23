@@ -37,6 +37,7 @@ const GROUP_OF: Record<NotificationKind, Group> = {
   game_day: 'games',
   pledge_result: 'games',
   pledge_void: 'games',
+  reaction_prompt: 'games',
   goal_completed: 'passport',
   new_stamp: 'passport',
   milestone: 'passport',

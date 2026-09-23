@@ -3,6 +3,7 @@ export const NOTIFICATION_KINDS = [
   'game_day',
   'pledge_result',
   'pledge_void',
+  'reaction_prompt',
   'goal_completed',
   'new_stamp',
   'milestone',
@@ -30,6 +31,10 @@ export const KIND_LABELS: Record<NotificationKind, { title: string; body: string
   pledge_void: {
     title: 'Pledge voids',
     body: 'When a pledge came in after the lock and did not count.',
+  },
+  reaction_prompt: {
+    title: 'Reaction prompts',
+    body: 'While you are checked in: one late in the game and up to two big moments.',
   },
   goal_completed: { title: 'Goals completed', body: 'When you finish a goal.' },
   new_stamp: { title: 'New stamps', body: 'A new venue or milestone stamp on your passport.' },

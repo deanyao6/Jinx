@@ -44,6 +44,8 @@ export type ProfilePatch = Partial<
     | 'is_private'
     | 'share_seats'
     | 'show_on_overlap'
+    | 'checkin_visibility'
+    | 'reaction_prompts'
   >
 >;
 

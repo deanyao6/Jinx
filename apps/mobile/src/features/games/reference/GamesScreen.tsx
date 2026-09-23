@@ -8,6 +8,7 @@ import { ICONS } from '@/components/reference/icons';
 import { useRepository, useRepositoryStatus } from '@/features/data/context';
 import { RepositoryAvatar } from '@/features/data/RepositoryAvatar';
 import type { GameRowFixture, PersonRef } from '@/features/data/shapes';
+import { GamesSessionCards } from '@/features/checkin/ui/GamesSessionCards';
 import { useMyFamousGameIds } from '@/features/famous/queries';
 import { FamousMark } from '@/features/famous/ui/FamousMark';
 import { TabBar } from '@/features/passport/reference/parts';
@@ -217,6 +218,10 @@ function Body({
             returnKeyType="search"
           />
         </View>
+
+        {/* An open session and today's check-in offer. Nothing in demo mode, so the parity
+            shot of this screen is unchanged. */}
+        <GamesSessionCards />
 
         <Segmented options={SEGMENTS} selected={segment} onSelect={selectSegment} />
 

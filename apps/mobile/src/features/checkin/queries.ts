@@ -48,6 +48,8 @@ export type GameContext = {
     end_reason: 'final' | 'left' | 'timeout' | 'geofence_exit' | null;
     open: boolean;
     visibility: 'mutuals' | 'off';
+    /** The per-game "not tonight" (migration 20260924020000). Absent from an older server. */
+    prompts_muted?: boolean;
   } | null;
   attendance: {
     id: string;

@@ -31,6 +31,7 @@ import {
   useLiveState,
 } from '@/features/checkin/queries';
 import { inOpenSession } from '@/features/checkin/session';
+import { SessionPanel } from '@/features/checkin/ui/SessionPanel';
 import { hasLiveFeed } from '@/features/eggs/live';
 import { isUnderWay } from '@/features/live/format';
 import { getPushStatus, registerPush, type PushStatus } from '@/features/notifications/push';
@@ -76,10 +77,11 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
 
   const checkedIn = !!ctx.checked_in_at;
   // The feed hears the final before the table does: the window then closes an hour after it.
+  // Checked in, the session panel reads the same poll for its live line.
   const live = useLiveState(
     gameId,
     ctx.sport_id,
-    !checkedIn && hasLiveFeed(ctx.sport_id) && isUnderWay(ctx.status, ctx.scheduled_start, now),
+    hasLiveFeed(ctx.sport_id) && isUnderWay(ctx.status, ctx.scheduled_start, now),
   );
   const finalAt =
     ctx.final_at ?? (live.data?.status === 'final' ? live.data.fetched_at : null);
@@ -211,6 +213,8 @@ function CheckInBody({ gameId, ctx }: { gameId: string; ctx: GameContext }) {
         ) : (
           <FavoritePanel gameId={gameId} ctx={ctx} />
         )}
+
+        {checkedIn ? <SessionPanel gameId={gameId} ctx={ctx} live={live.data} /> : null}
 
         {checkedIn ? <PushPrimer /> : null}
 

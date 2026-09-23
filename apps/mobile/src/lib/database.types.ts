@@ -2556,6 +2556,35 @@ export type Database = {
         }
         Relationships: []
       }
+      reaction_poll_state: {
+        Row: {
+          game_id: string
+          last_at_bat: number
+          scheduled_reported: boolean
+          updated_at: string
+        }
+        Insert: {
+          game_id: string
+          last_at_bat?: number
+          scheduled_reported?: boolean
+          updated_at?: string
+        }
+        Update: {
+          game_id?: string
+          last_at_bat?: number
+          scheduled_reported?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reaction_poll_state_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: true
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reaction_prompt_deliveries: {
         Row: {
           copy: string
@@ -4278,6 +4307,13 @@ export type Database = {
           publish_at: string
           scheduled_start: string
           state: string
+        }[]
+      }
+      my_season_game_counts: {
+        Args: { p_team_id: string }
+        Returns: {
+          games: number
+          season: number
         }[]
       }
       my_storage_paths: { Args: never; Returns: string[] }

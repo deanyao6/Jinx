@@ -43,7 +43,6 @@ const NO_LINK_NEEDED: Record<string, string> = {
   '/post/[postId]': 'opened by push and share links; prompt 2 links it from feed cards',
   '/community/[slug]': 'prompt 4 lists communities; until then only a link names one',
   '/passport/streak/[teamId]': 'prompt 4 puts the streak patch on the Passport',
-  '/react/[gameId]': 'opened by the reaction prompt push, which prompt 3 sends',
 };
 
 function walk(dir: string): string[] {

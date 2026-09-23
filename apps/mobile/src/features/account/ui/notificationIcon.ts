@@ -5,6 +5,7 @@ const KIND_ICONS: Record<NotificationKind, IconName> = {
   game_day: 'i-clock',
   pledge_result: 'i-target',
   pledge_void: 'i-flag',
+  reaction_prompt: 'i-camera',
   goal_completed: 'i-check-c',
   new_stamp: 'i-passport',
   milestone: 'i-trend',

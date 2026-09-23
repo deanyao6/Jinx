@@ -178,8 +178,8 @@ describe('rally cap', () => {
     expect(mockListener).toBeNull();
   });
 
-  it('never polls live state for NFL, which has none in v1', async () => {
-    mockAttendances.mockReturnValue(checkedIn({ sport: 'nfl' }));
+  it('never polls live state for a sport with no feed (the NFL reads ESPN since 2026-09-23)', async () => {
+    mockAttendances.mockReturnValue(checkedIn({ sport: 'nhl' }));
     const screen = await render(wordmark);
     await waitFor(() => screen.getByTestId('rally-cap-wordmark'));
     expect(mockLiveEnabled).toHaveBeenCalledWith(GAME, false);

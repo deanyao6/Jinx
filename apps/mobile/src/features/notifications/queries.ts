@@ -116,6 +116,10 @@ export function notificationRoute(n: { kind: string; data: unknown }): string | 
   switch (n.kind) {
     case 'game_day':
       return gameId ? `/games/checkin/${gameId}` : '/games?segment=upcoming';
+    case 'reaction_prompt': {
+      const promptId = typeof data.prompt_id === 'string' ? data.prompt_id : null;
+      return gameId ? `/react/${gameId}${promptId ? `?prompt=${promptId}` : ''}` : null;
+    }
     case 'pledge_result':
     case 'pledge_void':
     case 'tagged':
