@@ -464,7 +464,9 @@ their stars. A game logged today gets its detail with the nightly job, as before
    GoTrue's `POST /auth/v1/admin/generate_link` (`{"type":"magiclink","email":...}`, service
    role key as `apikey` and bearer). `jinx:///games/<id>?scroll=end` lands on the bottom of a
    game page (Players seen), `jinx:///relive/<id>?step=9` opens Relive on that step of the
-   story, and `jinx:///you/eggs?probe=live` runs the public live feeds.
+   story, `?themeTeam=<team id>` picks the theme the app wears, and `jinx:///you/eggs?probe=live`
+   runs the public live feeds. A magic-link hash is single use, and `?signOut=1` only works on a
+   route the current user can reach: for a user still in onboarding use `jinx:///teams?signOut=1`.
 10. **The Supabase CLI prints query JSON two ways**: a bare array in a terminal, `{"rows": [...]}`
     when it detects an agent. Handle both, or a script written by one breaks for a person.
 11. **"Accepted" is not "correct".** The storylines validator accepted "105-73" for the 2025
