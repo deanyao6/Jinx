@@ -293,15 +293,19 @@ $$;
 create trigger profiles_auto_post_off after update of auto_post on public.profiles
   for each row execute function public.profiles_auto_post_off();
 
--- What the Games tab needs about my own posts: drafts in their window, and games waiting for
--- "Post this".
+-- What the Games tab and the game page need about my own posts: drafts in their window, games
+-- posted, and games waiting for "Post this", with enough of the game to name it.
 create or replace function public.my_post_states()
 returns table (
   attendance_id uuid,
   game_id uuid,
   post_id uuid,
   state text,          -- 'draft', 'posted' or 'unposted'
-  publish_at timestamptz
+  publish_at timestamptz,
+  home_name text,
+  away_name text,
+  scheduled_start timestamptz,
+  ended_at timestamptz
 )
 language sql
 stable
@@ -310,9 +314,13 @@ set search_path = public
 as $$
   select a.id, a.game_id, p.id,
          case when p.id is null then 'unposted' when p.published_at is null then 'draft' else 'posted' end,
-         p.publish_at
+         p.publish_at,
+         coalesce(ht.nickname, ht.name), coalesce(awt.nickname, awt.name),
+         g.scheduled_start, public.game_ended_at(g)
   from public.attendances a
   join public.games g on g.id = a.game_id
+  join public.teams ht on ht.id = g.home_team_id
+  join public.teams awt on awt.id = g.away_team_id
   left join public.posts p on p.attendance_id = a.id and p.deleted_at is null
   where a.user_id = auth.uid() and a.status = 'attended' and g.status = 'final';
 $$;

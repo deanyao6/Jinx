@@ -24,6 +24,7 @@ import {
   useUnblock,
   type ProfileView,
 } from '@/features/social/queries';
+import { CreatorLine, MuteButton, ProfilePosts, Together } from '@/features/feed/ui/ProfileSocial';
 import { FollowButton } from '@/features/social/ui/FollowButton';
 import { ProfilePassport } from '@/features/social/ui/ProfilePassport';
 import { TeamPill } from '@/features/social/ui/TeamPill';
@@ -121,10 +122,13 @@ export default function ProfileScreen() {
   const body = (
     <>
       <ProfileHeader p={p} name={name} onEdit={() => router.push('/you/edit-profile')} />
+      <CreatorLine userId={p.id} />
       {p.can_view ? (
         <>
           <ProfileTiles stats={p.stats} />
+          {p.is_me ? null : <Together userId={p.id} isMutual={p.is_mutual} />}
           <ProfilePassport stats={p.stats} name={p.is_me ? 'You' : name} />
+          <ProfilePosts userId={p.id} />
         </>
       ) : (
         <EmptyState
@@ -178,6 +182,7 @@ export default function ProfileScreen() {
               <Text variant="caption" color="muted" style={{ flex: 1 }}>
                 Something wrong with this account?
               </Text>
+              <MuteButton userId={p.id} />
               <Button
                 title="Report"
                 variant="ghost"

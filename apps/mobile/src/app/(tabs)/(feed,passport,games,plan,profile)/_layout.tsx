@@ -57,6 +57,7 @@ const SCREENS: Record<string, ScreenOptions> = {
   'games/bulk': { title: 'Log a season' },
   'games/checkin/[gameId]': { title: 'Check in' },
   'games/imports': { title: 'Imports' },
+  'games/compose/[attendanceId]': { title: 'Your post', presentation: 'modal' },
   'games/import': { title: 'Upload tickets' },
   // Passport
   'passport/stamps': { title: 'Stamps' },
@@ -85,6 +86,7 @@ const SCREENS: Record<string, ScreenOptions> = {
   // Profile
   'friends/find': { title: 'Find people' },
   'friends/requests': { title: 'Follow requests' },
+  'friends/contacts': { title: 'Your contacts' },
   'friends/person/[id]': { title: 'Companion' },
   'you/edit-profile': { title: 'Edit profile' },
   'you/privacy': { title: 'Privacy' },

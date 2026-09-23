@@ -7,8 +7,12 @@
 -- the report queue view, and carries declines in the data export.
 
 -- ---------------------------------------------------------------------------
--- Handles and display names pass a profanity filter. The lists are packages/core/src/profanity.ts
--- word for word; profanity.test.ts reads this file and fails if they differ.
+-- Handles and display names pass a profanity filter: the rule the app has applied since
+-- SPEC.md Section 11, now enforced here too. The list and the rule are
+-- packages/core/src/profanity.ts (`containsProfanity`) word for word; profanity.test.ts reads
+-- this file and fails if they differ. Lowercase, letter swaps undone, then any word anywhere
+-- in the name with spaces and punctuation dropped, except the short words that live inside
+-- ordinary names ("bass", "Cassidy"), which must stand alone.
 -- ---------------------------------------------------------------------------
 
 create or replace function public.contains_profanity(p_text text)
@@ -16,27 +20,34 @@ returns boolean
 language sql
 immutable
 as $$
-  with swapped as (
-    select translate(lower(coalesce(p_text, '')), '013457@$!', 'oieastasi') as t
+  with t as (
+    select translate(lower(coalesce(p_text, '')), '013457@$!', 'oieastasi') as swapped
+  ),
+  parts as (
+    select regexp_replace(swapped, '[^a-z]', '', 'g') as compact,
+           regexp_split_to_array(btrim(regexp_replace(swapped, '[^a-z]+', ' ', 'g')), ' ') as words
+    from t
   )
   select exists (
-    select 1 from swapped, regexp_split_to_table(swapped.t, '[^a-z]+') as w
-    where w = any (
+    select 1
+    from parts, unnest(
       -- profane words
-      array['asshole', 'assholes', 'bastard', 'bastards', 'bitch', 'bitches', 'bitchy', 'bullshit',
-  'chink', 'chinks', 'cock', 'cocks', 'cocksucker', 'cunt', 'cunts', 'dick', 'dickhead',
-  'dicks', 'fag', 'faggot', 'faggots', 'fags', 'fuck', 'fucked', 'fucker', 'fuckers',
-  'fucking', 'fucks', 'kike', 'kikes', 'motherfucker', 'motherfuckers', 'motherfucking',
-  'nigga', 'niggas', 'nigger', 'niggers', 'pussy', 'retard', 'retarded', 'retards', 'shit',
-  'shits', 'shitty', 'slut', 'sluts', 'spic', 'spics', 'twat', 'twats', 'wank', 'wanker',
-  'whore', 'whores']
-    )
-  ) or exists (
-    select 1 from swapped, unnest(
-      -- profane fragments
-      array['cunt', 'fag', 'fuck', 'kike', 'motherf', 'nigga', 'nigger', 'retard', 'shit', 'slut', 'whore']
-    ) as f
-    where position(f in regexp_replace(swapped.t, '[^a-z]', '', 'g')) > 0
+      array['anal', 'anus', 'arse', 'ass', 'ballsack', 'bastard', 'bitch', 'blowjob', 'bollock', 'boner',
+    'boob', 'bugger', 'bullshit', 'chink', 'clit', 'cock', 'coon', 'cum', 'cunt', 'dago',
+    'dick', 'dildo', 'dyke', 'fag', 'faggot', 'fuck', 'gook', 'handjob', 'hitler', 'homo',
+    'jizz', 'kike', 'kkk', 'lesbo', 'milf', 'motherfucker', 'nazi', 'negro', 'nigga', 'nigger',
+    'paki', 'penis', 'piss', 'porn', 'prick', 'pussy', 'queef', 'raghead', 'rape', 'retard',
+    'scrotum', 'shit', 'slut', 'spic', 'tits', 'tranny', 'twat', 'vagina', 'wank', 'wetback',
+    'whore']
+    ) as w
+    where parts.compact <> ''
+      and case
+        when w = any (
+          -- profane words needing a boundary
+          array['ass', 'cum', 'homo', 'anal', 'anus', 'fag', 'coon']
+        ) then w = any (parts.words)
+        else position(w in parts.compact) > 0
+      end
   );
 $$;
 

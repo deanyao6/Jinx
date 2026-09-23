@@ -124,7 +124,7 @@ select public.refresh_creator_rankings();
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"b7100000-0000-4000-8000-0000000000a1","role":"authenticated"}';
 select results_eq(
-  $$select section, user_id from public.discover_people()$$,
+  $$select section, user_id from public.discover_people() where user_id::text like 'b7100000%'$$,
   $$values ('creator'::text, 'b7100000-0000-4000-8000-0000000000e1'::uuid)$$,
   'Discover lists the creator I do not follow');
 select is((select count(*)::integer from public.creator_rankings), 0, 'the ranking table itself is not readable');

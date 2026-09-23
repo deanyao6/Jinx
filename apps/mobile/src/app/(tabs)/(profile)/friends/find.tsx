@@ -8,7 +8,6 @@ import { ErrorNotice } from '@/components/ErrorNotice';
 import { Loading } from '@/components/Loading';
 import { Row } from '@/components/Row';
 import { SectionHeader } from '@/components/SectionHeader';
-import { Text } from '@/components/Text';
 import { TextField } from '@/components/TextField';
 import { useDebounced } from '@/features/games/ui/useDebounced';
 import { shareAppLink } from '@/features/people/invite';
@@ -96,8 +95,17 @@ export default function FindPeopleScreen() {
         </>
       ) : null}
 
-      <SectionHeader title="Not on the app yet?" />
+      <SectionHeader title="People you know" />
       <Card>
+        <Row
+          icon="i-users"
+          title="Find from your contacts"
+          subtitle="Matched on your phone; nothing from your address book is kept."
+          accessibilityLabel="Find from your contacts"
+          first
+          chevron
+          onPress={() => router.push('/friends/contacts')}
+        />
         <Row
           icon="i-share"
           title="Share an invite"
@@ -107,9 +115,6 @@ export default function FindPeopleScreen() {
           onPress={() => void shareAppLink()}
         />
       </Card>
-      <Text variant="caption" color="muted">
-        Contacts import is not part of this version.
-      </Text>
     </FormScreen>
   );
 }

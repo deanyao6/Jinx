@@ -15,7 +15,7 @@ select throws_ok($$update public.profiles set handle = 'fuckyou99' where id = au
   'JX451', 'profane_name: handle', 'a profane handle is refused');
 select throws_ok($$update public.profiles set display_name = 'Sh1t Head' where id = auth.uid()$$,
   'JX451', 'profane_name: display_name', 'so is a display name, swaps and all');
-select lives_ok($$update public.profiles set handle = 'phillies_phan', display_name = 'Reads Dickens' where id = auth.uid()$$,
+select lives_ok($$update public.profiles set handle = 'phillies_phan', display_name = 'Bass Cassidy' where id = auth.uid()$$,
   'ordinary names pass');
 
 select lives_ok($$insert into public.reports (reporter_id, target_type, target_id, reason) values

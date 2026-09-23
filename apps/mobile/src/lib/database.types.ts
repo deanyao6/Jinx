@@ -408,6 +408,7 @@ export type Database = {
           ended_at: string | null
           game_id: string
           id: string
+          prompts_muted: boolean
           started_at: string
           user_id: string
           visibility: string
@@ -420,6 +421,7 @@ export type Database = {
           ended_at?: string | null
           game_id: string
           id?: string
+          prompts_muted?: boolean
           started_at?: string
           user_id: string
           visibility?: string
@@ -432,6 +434,7 @@ export type Database = {
           ended_at?: string | null
           game_id?: string
           id?: string
+          prompts_muted?: boolean
           started_at?: string
           user_id?: string
           visibility?: string
@@ -1894,6 +1897,7 @@ export type Database = {
       }
       leaderboard_stats: {
         Row: {
+          achieved_at: string
           community_id: string
           period: string
           season: number
@@ -1904,6 +1908,7 @@ export type Database = {
           verified_only: boolean
         }
         Insert: {
+          achieved_at?: string
           community_id: string
           period: string
           season?: number
@@ -1914,6 +1919,7 @@ export type Database = {
           verified_only?: boolean
         }
         Update: {
+          achieved_at?: string
           community_id?: string
           period?: string
           season?: number
@@ -2415,6 +2421,7 @@ export type Database = {
           auto_post: boolean
           avatar_path: string | null
           birth_date: string | null
+          checkin_visibility: string
           contacts_prompted_at: string | null
           created_at: string
           creator_note: string | null
@@ -2433,6 +2440,7 @@ export type Database = {
           onboarded_at: string | null
           post_visibility: string
           posts_backfilled_at: string
+          reaction_prompts: boolean
           seven_follows_at: string | null
           share_seats: boolean
           show_on_overlap: boolean
@@ -2442,6 +2450,7 @@ export type Database = {
           auto_post?: boolean
           avatar_path?: string | null
           birth_date?: string | null
+          checkin_visibility?: string
           contacts_prompted_at?: string | null
           created_at?: string
           creator_note?: string | null
@@ -2460,6 +2469,7 @@ export type Database = {
           onboarded_at?: string | null
           post_visibility?: string
           posts_backfilled_at?: string
+          reaction_prompts?: boolean
           seven_follows_at?: string | null
           share_seats?: boolean
           show_on_overlap?: boolean
@@ -2469,6 +2479,7 @@ export type Database = {
           auto_post?: boolean
           avatar_path?: string | null
           birth_date?: string | null
+          checkin_visibility?: string
           contacts_prompted_at?: string | null
           created_at?: string
           creator_note?: string | null
@@ -2487,6 +2498,7 @@ export type Database = {
           onboarded_at?: string | null
           post_visibility?: string
           posts_backfilled_at?: string
+          reaction_prompts?: boolean
           seven_follows_at?: string | null
           share_seats?: boolean
           show_on_overlap?: boolean
@@ -2520,39 +2532,145 @@ export type Database = {
           },
         ]
       }
+      reaction_copy_templates: {
+        Row: {
+          id: number
+          side: string
+          situation: string
+          sport_id: string | null
+          template: string
+        }
+        Insert: {
+          id?: never
+          side: string
+          situation: string
+          sport_id?: string | null
+          template: string
+        }
+        Update: {
+          id?: never
+          side?: string
+          situation?: string
+          sport_id?: string | null
+          template?: string
+        }
+        Relationships: []
+      }
+      reaction_prompt_deliveries: {
+        Row: {
+          copy: string
+          fired_at: string
+          game_id: string
+          opened_at: string | null
+          prompt_id: string
+          reacted_at: string | null
+          user_id: string
+        }
+        Insert: {
+          copy: string
+          fired_at?: string
+          game_id: string
+          opened_at?: string | null
+          prompt_id: string
+          reacted_at?: string | null
+          user_id: string
+        }
+        Update: {
+          copy?: string
+          fired_at?: string
+          game_id?: string
+          opened_at?: string | null
+          prompt_id?: string
+          reacted_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reaction_prompt_deliveries_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reaction_prompt_deliveries_prompt_id_fkey"
+            columns: ["prompt_id"]
+            isOneToOne: false
+            referencedRelation: "reaction_prompts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reaction_prompt_deliveries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reaction_prompts: {
         Row: {
           audience: string
+          away_score: number | null
+          benefit_side: string | null
           event_id: string | null
+          event_key: string | null
           fired_at: string
           game_id: string
+          home_score: number | null
           id: string
           kind: string
           label: string
+          label_final: string | null
+          period_label: string | null
+          relabeled_at: string | null
+          rule: string | null
           significance: number | null
+          source: string
           window_seconds: number
+          wp_seq: number | null
         }
         Insert: {
           audience?: string
+          away_score?: number | null
+          benefit_side?: string | null
           event_id?: string | null
+          event_key?: string | null
           fired_at?: string
           game_id: string
+          home_score?: number | null
           id?: string
           kind: string
           label: string
+          label_final?: string | null
+          period_label?: string | null
+          relabeled_at?: string | null
+          rule?: string | null
           significance?: number | null
+          source?: string
           window_seconds: number
+          wp_seq?: number | null
         }
         Update: {
           audience?: string
+          away_score?: number | null
+          benefit_side?: string | null
           event_id?: string | null
+          event_key?: string | null
           fired_at?: string
           game_id?: string
+          home_score?: number | null
           id?: string
           kind?: string
           label?: string
+          label_final?: string | null
+          period_label?: string | null
+          relabeled_at?: string | null
+          rule?: string | null
           significance?: number | null
+          source?: string
           window_seconds?: number
+          wp_seq?: number | null
         }
         Relationships: [
           {
@@ -2583,6 +2701,7 @@ export type Database = {
           period_label: string | null
           post_id: string | null
           prompt_id: string | null
+          self_triggered: boolean
           user_id: string
           visibility: string
           wp_seq: number | null
@@ -2598,6 +2717,7 @@ export type Database = {
           period_label?: string | null
           post_id?: string | null
           prompt_id?: string | null
+          self_triggered?: boolean
           user_id: string
           visibility?: string
           wp_seq?: number | null
@@ -2613,6 +2733,7 @@ export type Database = {
           period_label?: string | null
           post_id?: string | null
           prompt_id?: string | null
+          self_triggered?: boolean
           user_id?: string
           visibility?: string
           wp_seq?: number | null
@@ -3592,6 +3713,16 @@ export type Database = {
     }
     Functions: {
       accept_person_invite: { Args: { p_token: string }; Returns: Json }
+      also_here: {
+        Args: { p_game_id: string }
+        Returns: {
+          avatar_path: string
+          display_name: string
+          handle: string
+          section: string
+          user_id: string
+        }[]
+      }
       answer_companion_tag: {
         Args: {
           p_accept: boolean
@@ -3625,11 +3756,36 @@ export type Database = {
       can_view_avatar: { Args: { p_object_name: string }; Returns: boolean }
       can_view_post: { Args: { p_post_id: string }; Returns: boolean }
       can_view_profile: { Args: { target: string }; Returns: boolean }
+      can_view_reaction: { Args: { p_id: string }; Returns: boolean }
       can_view_seats: { Args: { p_attendance_id: string }; Returns: boolean }
       can_view_user: { Args: { target: string }; Returns: boolean }
+      canonical_team_for_franchise: {
+        Args: { p_franchise_id: string }
+        Returns: string
+      }
       check_in: {
         Args: { p_accuracy_m: number; p_distance_m: number; p_game_id: string }
         Returns: Json
+      }
+      close_stale_checkins: { Args: { p_now?: string }; Returns: number }
+      community_leaderboard: {
+        Args: {
+          p_community_id: string
+          p_friends_only?: boolean
+          p_limit?: number
+          p_period: string
+          p_season: number
+          p_stat_key: string
+        }
+        Returns: {
+          avatar_path: string
+          display_name: string
+          handle: string
+          is_viewer: boolean
+          rank: number
+          user_id: string
+          value: number
+        }[]
       }
       companion_games: {
         Args: { p_person_id: string }
@@ -3729,6 +3885,7 @@ export type Database = {
       contact_salt: { Args: never; Returns: string }
       contains_profanity: { Args: { p_text: string }; Returns: boolean }
       create_person_invite: { Args: { p_person_id: string }; Returns: string }
+      current_season: { Args: { p_sport: string }; Returns: number }
       detail_queue_pending: {
         Args: { p_limit?: number; p_provider: string }
         Returns: {
@@ -3764,6 +3921,7 @@ export type Database = {
         Args: { lat1: number; lat2: number; lng1: number; lng2: number }
         Returns: number
       }
+      end_checkin: { Args: { p_game_id: string }; Returns: Json }
       enqueue_game_detail: {
         Args: { p_game_id: string; p_reason: string }
         Returns: undefined
@@ -3773,6 +3931,10 @@ export type Database = {
         Returns: string
       }
       evaluate_goals_for_users: {
+        Args: { p_users: string[] }
+        Returns: undefined
+      }
+      evaluate_social_for_users: {
         Args: { p_users: string[] }
         Returns: undefined
       }
@@ -3821,6 +3983,26 @@ export type Database = {
           isOneToOne: false
           isSetofReturn: true
         }
+      }
+      fire_reaction_prompt: {
+        Args: {
+          p_audience?: string
+          p_away_score?: number
+          p_benefit_side?: string
+          p_event_key?: string
+          p_game_id: string
+          p_home_score?: number
+          p_in_scheduled_window?: boolean
+          p_kind: string
+          p_label: string
+          p_now?: string
+          p_period_label?: string
+          p_rule?: string
+          p_significance?: number
+          p_source?: string
+          p_window_seconds?: number
+        }
+        Returns: Json
       }
       follows_active: {
         Args: { p_followee: string; p_follower: string }
@@ -3875,6 +4057,28 @@ export type Database = {
           season: number
           season_first: boolean
           team_id: string
+        }[]
+      }
+      game_reactions: {
+        Args: { p_game_id: string; p_limit?: number }
+        Returns: {
+          avatar_path: string
+          back_path: string
+          captured_at: string
+          display_name: string
+          front_path: string
+          handle: string
+          id: string
+          label: string
+          late_seconds: number
+          mine: boolean
+          period_label: string
+          post_id: string
+          prompt_id: string
+          self_triggered: boolean
+          user_id: string
+          visibility: string
+          wp_seq: number
         }[]
       }
       game_stars: {
@@ -3993,6 +4197,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      mute_checkin_prompts: {
+        Args: { p_game_id: string; p_muted: boolean }
+        Returns: Json
+      }
       mutuals_at_game: {
         Args: { p_game_id: string }
         Returns: {
@@ -4062,9 +4270,13 @@ export type Database = {
         Args: never
         Returns: {
           attendance_id: string
+          away_name: string
+          ended_at: string
           game_id: string
+          home_name: string
           post_id: string
           publish_at: string
+          scheduled_start: string
           state: string
         }[]
       }
@@ -4123,6 +4335,7 @@ export type Database = {
         Args: { p_linked: string; p_owner: string }
         Returns: string
       }
+      pin_reactions: { Args: { p_game_id: string }; Returns: number }
       players_seen: {
         Args: {
           p_limit?: number
@@ -4199,9 +4412,35 @@ export type Database = {
         Args: { p_kind: string; p_max: number; p_window: string }
         Returns: undefined
       }
+      reaction_period_phrase: {
+        Args: { p_period_label: string; p_sport: string }
+        Returns: string
+      }
+      reaction_prompt_copy: {
+        Args: {
+          p_kind: string
+          p_label: string
+          p_margin: number
+          p_other: string
+          p_period_label: string
+          p_side: string
+          p_sport: string
+          p_team: string
+        }
+        Returns: string
+      }
       rebuild_curated_bucket_lists: { Args: never; Returns: undefined }
       rebuild_schedule_famous_games: { Args: never; Returns: number }
       recompute_rooting_for_user: {
+        Args: { p_user: string }
+        Returns: undefined
+      }
+      recompute_social_stats_for_users: {
+        Args: { p_users: string[] }
+        Returns: undefined
+      }
+      recompute_user_counts: { Args: { p_user: string }; Returns: undefined }
+      recompute_user_leaderboard_stats: {
         Args: { p_user: string }
         Returns: undefined
       }
@@ -4227,6 +4466,23 @@ export type Database = {
       refresh_my_stats: { Args: never; Returns: Json }
       refresh_user_stats: { Args: { p_user: string }; Returns: undefined }
       remove_device_tokens: { Args: { p_tokens: string[] }; Returns: undefined }
+      report_live_moment: {
+        Args: {
+          p_audience?: string
+          p_away_score?: number
+          p_benefit_side?: string
+          p_event_key?: string
+          p_game_id: string
+          p_home_score?: number
+          p_in_scheduled_window?: boolean
+          p_kind: string
+          p_label: string
+          p_period_label?: string
+          p_rule?: string
+          p_significance?: number
+        }
+        Returns: Json
+      }
       rivalries: {
         Args: never
         Returns: {
@@ -4244,6 +4500,10 @@ export type Database = {
         }[]
       }
       roman_numeral: { Args: { p_n: number }; Returns: string }
+      rooting_side_at: {
+        Args: { p_game_id: string; p_user: string }
+        Returns: string
+      }
       rotate_inbound_token: { Args: never; Returns: string }
       search_entities_v2: {
         Args: { p_phrases: string[]; p_sport?: string }
@@ -4329,6 +4589,28 @@ export type Database = {
           state: string
         }[]
       }
+      season_ended: {
+        Args: { p_season: number; p_sport: string }
+        Returns: boolean
+      }
+      season_game_counts: {
+        Args: { p_user: string }
+        Returns: {
+          games: number
+          season: number
+          sport_id: string
+          team_id: string
+        }[]
+      }
+      season_status: {
+        Args: never
+        Returns: {
+          ended: boolean
+          season: number
+          sport_id: string
+        }[]
+      }
+      seed_official_communities: { Args: never; Returns: undefined }
       set_bucket_list_progress: {
         Args: { p_bucket_list_id: string; p_progress: Json }
         Returns: undefined
@@ -4337,6 +4619,7 @@ export type Database = {
         Args: { p_completed: boolean; p_goal_id: string; p_progress: Json }
         Returns: undefined
       }
+      slugify: { Args: { p_text: string }; Returns: string }
       superstar_honor: {
         Args: { p_player: string; p_season: number }
         Returns: {

@@ -213,7 +213,9 @@ as $$
            'home_abbr', ht.abbreviation, 'away_abbr', awt.abbreviation,
            'home_score', g.home_score, 'away_score', g.away_score,
            'winner_team_id', g.winner_team_id, 'is_tie', g.is_tie,
-           'venue_name', v.name, 'venue_tz', v.tz
+           'venue_name', v.name, 'venue_tz', v.tz,
+           -- "Super Bowl LIX": what the v1 feed's famous_game event said, now on the card.
+           'famous_title', public.famous_game_headline(g.id) ->> 'title'
          ) end,
          case
            when att.rooting_team_id is null or g.status <> 'final' then null

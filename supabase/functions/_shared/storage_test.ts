@@ -45,7 +45,7 @@ function fakeAdmin(objects: Record<string, Set<string>>) {
 }
 
 Deno.test('every bucket that holds user files is cleaned on account deletion', () => {
-  assertEquals([...USER_BUCKETS].sort(), ['attendance-photos', 'avatars', 'ticket-imports']);
+  assertEquals([...USER_BUCKETS].sort(), ['attendance-photos', 'avatars', 'post-photos', 'ticket-imports']);
 });
 
 Deno.test('a profile photo goes with the account, and nobody else is touched', async () => {
@@ -53,6 +53,7 @@ Deno.test('a profile photo goes with the account, and nobody else is touched', a
     avatars: new Set(['user-a/avatar-1700000000000.jpg', 'user-b/avatar-1700000000001.jpg']),
     'attendance-photos': new Set(['user-a/att-1/photo.jpg', 'user-a/att-2/clip.mp4']),
     'ticket-imports': new Set<string>(),
+    'post-photos': new Set(['user-a/post-1/0.jpg', 'user-b/post-2/0.jpg']),
   };
   const { admin, removed } = fakeAdmin(objects);
   const counts: Record<string, number> = {};
@@ -60,11 +61,12 @@ Deno.test('a profile photo goes with the account, and nobody else is touched', a
     counts[bucket] = await removeUserObjects(admin, bucket, 'user-a');
   }
 
-  assertEquals(counts, { 'ticket-imports': 0, 'attendance-photos': 2, avatars: 1 });
+  assertEquals(counts, { 'ticket-imports': 0, 'attendance-photos': 2, avatars: 1, 'post-photos': 1 });
   assertEquals(removed.avatars, ['user-a/avatar-1700000000000.jpg']);
   assert(
     objects.avatars.has('user-b/avatar-1700000000001.jpg'),
     "another user's avatar is left alone",
   );
   assertEquals(objects['attendance-photos'].size, 0);
+  assert(objects['post-photos'].has('user-b/post-2/0.jpg'), "another user's post photo is left alone");
 });

@@ -1,59 +1,138 @@
 /**
- * The profanity filter (social brief 02, sections 3 and 8).
+ * The profanity filter (SPEC.md Section 11; social brief 02, sections 3 and 8). One list, three
+ * places:
  *
- * Two strengths:
- *   - In a comment it is a soft warning: the fan sees "This might come across badly" and can
- *     post anyway. Only whole words count, so "Dickens" and "scrapbook" pass.
- *   - In a handle or a display name it is a hard stop, enforced by the database as well
- *     (`contains_profanity` in supabase/migrations/20260924010500_moderation.sql). There are no
- *     word breaks in "fuckyou99", so the handful of words that are never innocent inside another
- *     word are matched anywhere.
+ *   - Handles and display names: a hard stop. Lowercased, common letter swaps undone ("sh1t"),
+ *     spaces and punctuation dropped ("F.u.c.k"), then any word matched anywhere, except the
+ *     few short ones that live inside ordinary names ("bass", "Cassidy", "Cumberland"), which
+ *     must stand alone. False positives on rare names are accepted: pick another handle. The
+ *     database enforces the same rule (`contains_profanity` in
+ *     supabase/migrations/20260924010500_moderation.sql).
+ *   - Comments: a soft warning ("This might come across badly. Post anyway?"). Whole words only,
+ *     with a few plain endings, so "Dickens" and "scrapbook" pass without a word.
  *
- * The lists are mirrored in SQL; profanity.test.ts reads the migration and fails if the two
- * ever differ.
+ * Moved here from apps/mobile/src/lib/profanity.ts (which re-exports it) so the app and the
+ * database read one list; profanity.test.ts fails if the SQL copy ever differs.
  */
+export const PROFANE_WORDS = [
+  'anal',
+  'anus',
+  'arse',
+  'ass',
+  'ballsack',
+  'bastard',
+  'bitch',
+  'blowjob',
+  'bollock',
+  'boner',
+  'boob',
+  'bugger',
+  'bullshit',
+  'chink',
+  'clit',
+  'cock',
+  'coon',
+  'cum',
+  'cunt',
+  'dago',
+  'dick',
+  'dildo',
+  'dyke',
+  'fag',
+  'faggot',
+  'fuck',
+  'gook',
+  'handjob',
+  'hitler',
+  'homo',
+  'jizz',
+  'kike',
+  'kkk',
+  'lesbo',
+  'milf',
+  'motherfucker',
+  'nazi',
+  'negro',
+  'nigga',
+  'nigger',
+  'paki',
+  'penis',
+  'piss',
+  'porn',
+  'prick',
+  'pussy',
+  'queef',
+  'raghead',
+  'rape',
+  'retard',
+  'scrotum',
+  'shit',
+  'slut',
+  'spic',
+  'tits',
+  'tranny',
+  'twat',
+  'vagina',
+  'wank',
+  'wetback',
+  'whore',
+] as const;
 
-/** Whole words, after undoing the usual letter swaps. */
-export const PROFANE_WORDS: readonly string[] = [
-  'asshole', 'assholes', 'bastard', 'bastards', 'bitch', 'bitches', 'bitchy', 'bullshit',
-  'chink', 'chinks', 'cock', 'cocks', 'cocksucker', 'cunt', 'cunts', 'dick', 'dickhead',
-  'dicks', 'fag', 'faggot', 'faggots', 'fags', 'fuck', 'fucked', 'fucker', 'fuckers',
-  'fucking', 'fucks', 'kike', 'kikes', 'motherfucker', 'motherfuckers', 'motherfucking',
-  'nigga', 'niggas', 'nigger', 'niggers', 'pussy', 'retard', 'retarded', 'retards', 'shit',
-  'shits', 'shitty', 'slut', 'sluts', 'spic', 'spics', 'twat', 'twats', 'wank', 'wanker',
-  'whore', 'whores',
-];
+/** Short words that are common inside ordinary names; in a name they must stand alone. */
+export const PROFANE_WORDS_NEEDING_BOUNDARY = ['ass', 'cum', 'homo', 'anal', 'anus', 'fag', 'coon'] as const;
 
-/** Matched anywhere, for handles and names with no spaces. */
-export const PROFANE_FRAGMENTS: readonly string[] = [
-  'cunt', 'fag', 'fuck', 'kike', 'motherf', 'nigga', 'nigger', 'retard', 'shit', 'slut', 'whore',
-];
-
-const SWAPS: Record<string, string> = {
+const LEET: Record<string, string> = {
   '0': 'o',
   '1': 'i',
-  '!': 'i',
   '3': 'e',
   '4': 'a',
-  '@': 'a',
   '5': 's',
-  $: 's',
   '7': 't',
+  '@': 'a',
+  $: 's',
+  '!': 'i',
 };
 
-/** Lowercase, with 0 read as o, 1 and ! as i, 3 as e, 4 and @ as a, 5 and $ as s, 7 as t. */
-export function unswap(text: string): string {
-  return text.toLowerCase().replace(/[013457@$!]/g, (ch) => SWAPS[ch] ?? ch);
+function unswap(input: string): string {
+  return input
+    .toLowerCase()
+    .split('')
+    .map((ch) => LEET[ch] ?? ch)
+    .join('');
 }
 
-/** Whether a comment deserves the soft warning. */
+export function normalizeForProfanity(input: string): string {
+  return unswap(input).replace(/[^a-z]/g, '');
+}
+
+/** Same normalization but keeps word boundaries as single spaces. */
+function spaced(input: string): string {
+  return unswap(input).replace(/[^a-z]+/g, ' ').trim();
+}
+
+const BOUNDARY = new Set<string>(PROFANE_WORDS_NEEDING_BOUNDARY);
+
+/** Handles and display names: the hard stop. */
+export function containsProfanity(input: string): boolean {
+  const compact = normalizeForProfanity(input);
+  if (!compact) return false;
+  const words = spaced(input).split(' ');
+  for (const word of PROFANE_WORDS) {
+    if (BOUNDARY.has(word)) {
+      if (words.includes(word)) return true;
+      continue;
+    }
+    if (compact.includes(word)) return true;
+  }
+  return false;
+}
+
+const ENDINGS = ['', 's', 'es', 'ed', 'er', 'ers', 'ing', 'head', 'heads', 'hole', 'holes', 'ty', 'ter'];
+
+/** Comments: whether to show the soft warning. Whole words, plain endings. */
 export function hasProfanity(text: string): boolean {
-  const words = unswap(text).split(/[^a-z]+/);
-  return words.some((w) => w.length > 0 && PROFANE_WORDS.includes(w));
+  const words = spaced(text).split(' ').filter(Boolean);
+  return words.some((w) => PROFANE_WORDS.some((p) => ENDINGS.some((e) => w === p + e)));
 }
 
-/** Whether a handle or display name is refused. */
-export function nameHasProfanity(name: string): boolean {
-  const flat = unswap(name).replace(/[^a-z]/g, '');
-  return hasProfanity(name) || PROFANE_FRAGMENTS.some((f) => flat.includes(f));
-}
+export const PROFANITY_WORD_COUNT = PROFANE_WORDS.length;

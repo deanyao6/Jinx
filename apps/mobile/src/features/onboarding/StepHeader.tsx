@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme/ThemeProvider';
 
-export const ONBOARDING_STEPS = 6;
+export const ONBOARDING_STEPS = 7;
 
 type Props = { step: number; title: string; subtitle?: string };
 
